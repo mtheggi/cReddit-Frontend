@@ -12,6 +12,7 @@ export default {
         reddit_navbar: "#0C1416",
         reddit_sky: "#50E9F4",
         reddit_search_light: "#213236",
+        reddit_greenyDark: "#0B1416",
       },
       spacing: {
         '1%': '1%',

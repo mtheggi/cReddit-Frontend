@@ -2,3 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* #1A282D : hovre bg*/ 
+/* #0B1416 : bg */
+
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #0B1416;
+  }
+  
+  /* This will style the scrollbar thumb (the part you drag) */
+  ::-webkit-scrollbar-thumb {
+    background-color: #757474; 
+    border-radius: 15px;
+  }
+  
+
+html {
+ 
+  background-color: #0B1416;
+}
