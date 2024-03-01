@@ -1,18 +1,57 @@
 import redditLogo from '../assets/reddit_logo.png';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, CursorArrowRippleIcon, MagnifyingGlassIcon, PlusIcon, } from '@heroicons/react/24/outline'
+import redditWord from '../assets/reddit_word.png';
+import avatar from '../assets/avatar.png';
+import Searchbar from './Searchbar';
 
+
+//Todo integrate the menu icon with the side bar
 
 const Navbar = () => {
+  
     return (
-        <header className="flex w-full bg-reddit_dark p-2.5">
-            <div className="mx-4">
-                <img src={redditLogo} alt="Logo" className="w-9 h-9 " />
+        <header className="flex w-full bg-reddit_navbar p-2 items-center">
+            <div className='ml-2.5'>
+                <Bars3Icon className="h-9 w-7 text-white xl:hidden cursor-pointer" />
+            </div>
+            
+
+            <div className="flex mr-2 relative left-4 xl:left-5 h-full items-center">
+                <img src={redditLogo} alt="Logo" className="w-8 h-8 min-w-8" />
+                <img src={redditWord} alt="Logo" className=" ml-2 w-18 h-6  cursor-pointer hidden lg:block" />
             </div>
 
-            <form action="" className="bg-gray-800 h-9 p-1 flex rounded-full px-3 py-2">
-                <MagnifyingGlassIcon className="text-gray-300 h-5 w-6 mr-1" />
-                <input type="text" className="bg-gray-800 h-6 mt-[-0.1rem] text-sm text-white focus:outline-none " placeholder='Search Reddit' />
-            </form>
+            <div className='flex flex-grow ml-7 xl:ml-11% items-center'>   
+            <Searchbar />
+            </div>
+
+            <div className='flex items-center ml-3 xl:ml-5.5%  mr-3 xl:mr-7'>
+
+                <div className='hidden hover:bg-reddit_search_light w-10 h-10 ml-2 rounded-full justify-center items-center cursor-pointer xl:inline-flex'>
+                    <CursorArrowRippleIcon className="h-7 w-6 text-white" />
+                </div>
+
+                <div className='hover:bg-reddit_search_light ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
+                    <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-7 text-white" />
+                </div>
+
+                <div className='hover:bg-reddit_search_light w-24 h-10  rounded-full flex justify-center items-center cursor-pointer '>
+                    <PlusIcon className="h-6.5 w-7  text-white" />
+                    <p className=' ml-1 mr-0.5 text-white text-sm'>Create </p>
+                </div>
+
+                <div className='hover:bg-reddit_search_light w-10 h-10 ml-1 rounded-full flex justify-center items-center cursor-pointer '>
+                    <BellIcon className="h-7 w-6 text-white" />
+                </div>
+
+                <div className='hover:bg-reddit_search_light w-10 h-10 ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
+                    <div className=' bg-reddit_sky w-8 h-8 rounded-full'>
+                        <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
+                    </div>
+                </div>
+            </div>
+
+
 
         </header>
     );
