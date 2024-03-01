@@ -3,6 +3,7 @@ import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, CursorArrowRippleI
 import redditWord from '../assets/reddit_word.png';
 import avatar from '../assets/avatar.png';
 import Searchbar from './Searchbar';
+import Separator from './sidebar/Nav-Icons/Separator';
 
 
 //Todo integrate the menu icon with the side bar
@@ -50,8 +51,6 @@ const Navbar = () => {
                     </div>
                 </div>
             </div>
-
-
 
         </header>
     );
