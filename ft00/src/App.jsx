@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-import Navbar from './components/Navbar';
+import './ft00.css';
 
+import Navbar from './Components/Navbar';
 
 
 function App() {
