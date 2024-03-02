@@ -16,9 +16,13 @@
     background-color: #757474; 
     border-radius: 15px;
   }
-  
-
 html {
  
   background-color: #0B1416;
+}
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
