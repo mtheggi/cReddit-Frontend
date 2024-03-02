@@ -1,7 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
-import Navbar from './Components/Navbar';
+import Navbar from './Components/navbar/Navbar';
 import Sidebar from './Components/sidebar/Sidebar';
+import Mainfeed from './Components/mainfeed/Mainfeed';
 
 
 
@@ -10,10 +11,16 @@ function App() {
 
   return (
 
-    <div className="App h-screen flex flex-col bg-reddit_greenyDark">
+    <div className="App h-screen flex flex-col bg-gray-600 overflow-hidden">
       <Navbar />
-      <Sidebar />
+
+      <div className='h-full flex justify-center  '>
+      <Mainfeed />
+      </div>
+      
     </div>
+
+
 
   )
 }
