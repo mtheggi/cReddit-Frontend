@@ -9,7 +9,7 @@ const Sidebar = () => {
 
     return (
 
-        <div className="styled-scrollbars fixed w-1/6 ml-5 h-screen mt-12 flex-col bg-reddit_greenyDark overflow-y-scroll">
+        <div className="styled-scrollbars w-1/6 ml-5 h-screen mt-12 flex-col bg-reddit_greenyDark overflow-y-scroll">
             <NavIcon href="#" text="Home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
             <NavIcon href="#" text="Popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
             <NavIcon href="#" text="All" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
