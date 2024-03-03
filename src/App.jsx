@@ -3,9 +3,9 @@ import './index.css';
 import Navbar from './Components/navbar/Navbar';
 import Sidebar from './Components/sidebar/Sidebar';
 import Mainfeed from './Components/mainfeed/Mainfeed';
-import Share from './Components/sidebar/Post/Share';
-import Comment from './Components/sidebar/Post/Comment';
-import Vote from './Components/sidebar/Post/Vote';
+import Share from './Components/mainfeed/Share';
+import Comment from './Components/mainfeed/Comment';
+import Vote from './Components/mainfeed/Vote';
 
 function App() {
 
@@ -16,10 +16,7 @@ function App() {
       <div className='top-0 w-full inline-flex z-50'><Navbar /></div>
       <div className="w-full inline-flex flex-row justify-start content-center">
         <Sidebar />
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Share /></span>
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Comment /></span>
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Vote /></span>
-
+        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Mainfeed /></span>
       </div >
     </div>
 

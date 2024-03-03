@@ -4,7 +4,9 @@ import redditLogo from '../../assets/reddit_logo.png';
 import postImg from '../../assets/post_img.png';
 import { useState } from "react";
 import { ChevronDownIcon, EllipsisHorizontalIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
-
+import Comment from './Comment';
+import Share from './Share';
+import Vote from './Vote';
 
 
 const Mainfeed = () => {
@@ -100,11 +102,13 @@ const Mainfeed = () => {
                     </div>
 
                     <div className='w-full h-full mt-2'>
-                        <img src={postImg} alt="Post" className='rounded-2xl'/>
+                        <img src={postImg} alt="Post" className='rounded-2xl' />
                     </div>
 
-                    <div>
-                        {/* buttons */}
+                    <div className='flex flex-row mt-2' >
+                        <Vote />
+                        <Comment />
+                        <Share />
                     </div>
                 </div>
 
