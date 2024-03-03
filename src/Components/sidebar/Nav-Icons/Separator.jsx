@@ -3,7 +3,7 @@ import { Dropdown } from "bootstrap";
 const Separator = () => {
     return (
         <>
-            <div className="w-full bg-reddit_greenyDark" >
+            <div className="w-full mt-0 bg-reddit_greenyDark" >
                 <hr className="border-t-1 border-gray-500" />
             </div>
         </>

@@ -30,7 +30,7 @@ const CommunityIcon = ({ text }) => {
         <div className="flex flex-row justify-between px-4 py-2 ">
             <div className="flex flex-row justify-start">
                 <img src="https://xsgames.co/randomusers/avatar.php?g=pixel " className="h-6 w-6 rounded-xl" alt="randomImgs" />
-                <span className="text-white ml-3">{text}</span>
+                <span className="text-gray-300 text-sm font-light ml-3">{text}</span>
             </div>
             <span
                 className="h-5 w-5 mr-2"
