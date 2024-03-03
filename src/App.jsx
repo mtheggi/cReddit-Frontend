@@ -3,22 +3,31 @@ import './index.css';
 import Navbar from './Components/navbar/Navbar';
 import Sidebar from './Components/sidebar/Sidebar';
 import Mainfeed from './Components/mainfeed/Mainfeed';
-import Share from './Components/sidebar/Post/Share';
-import Comment from './Components/sidebar/Post/Comment';
-import Vote from './Components/sidebar/Post/Vote';
+import redditLogo from './assets/reddit_logo.png'
+import Recent from './Components/mainfeed/Recent';
+1
 
 function App() {
 
 
   return (
 
-    <div className="App h-screen flex flex-col bg-reddit_greenyDark">
-      <div className='top-0 w-full inline-flex z-50'><Navbar /></div>
-      <div className="w-full inline-flex flex-row justify-start content-center">
-        <Sidebar />
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Share /></span>
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Comment /></span>
-        <span className='relative inline-flex mt-12 items-center cursor-pointer'><Vote /></span>
+    <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
+      <Navbar />
+      <div className="w-full mt-15 inline-flex flex-row justify-center">
+
+
+        <div className='flex flex-row w-fit mr-0 lg:mr-5 xl:ml-0 lg:ml-3'>
+          <div className='h-full hidden xl:flex w-60 mt-3 mr-2 no-select ml-auto'>
+            <Sidebar />
+          </div>
+
+          <div className='mxl:w-192 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2'>
+            <Mainfeed />
+          </div>
+
+          <Recent />
+        </div>
 
       </div >
     </div>

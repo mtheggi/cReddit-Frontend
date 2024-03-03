@@ -11,7 +11,7 @@ import Separator from '../sidebar/Nav-Icons/Separator';
 const Navbar = () => {
 
     return (
-        <div className="flex flex-col w-full h-15">
+        <div className="flex z-2 flex-col w-full h-15">
 
             <header className="flex w-full fixed bg-reddit_navbar p-2 items-center">
                 <div className='ml-2.5'>
@@ -21,7 +21,7 @@ const Navbar = () => {
 
                 <div className="flex mr-4 xs:mr-2 relative left-4 xl:left-5 h-full items-center">
                     <img src={redditLogo} alt="Logo" className="w-8 h-8 min-w-8" />
-                    <img src={redditWord} alt="Logo" className=" ml-2 w-18 h-7  cursor-pointer hidden lg:block" />
+                    <img src={redditWord} alt="Logo" className=" ml-2 w-17 h-6  cursor-pointer hidden lg:block" />
                 </div>
 
                 <div className='flex xs:flex-grow ml-auto xs:ml-7 xl:ml-11% items-center'>
