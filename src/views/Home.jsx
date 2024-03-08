@@ -1,3 +1,12 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from '../Components/navbar/Navbar';
+import Sidebar from '../Components/sidebar/Sidebar';
+import Mainfeed from '../Components/mainfeed/Mainfeed';
+import Recent from '../Components/mainfeed/Recent';
+import { useState, useEffect, useRef } from 'react';
+
+
+
 const Home = () => {
 
     const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -78,7 +87,7 @@ const Home = () => {
         };
     });
     return (
-        <div className="w-full h-full">
+        <>
             <div className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? 'block' : 'hidden'}`} onClick={() => setIsVisibleLeftSidebar(false)}> </div>
             <Navbar isVisibleLeftSidebar={isVisibleLeftSidebar} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} navbarRef={navbarRef} />
             <div className="w-full mt-14 inline-flex flex-row justify-center overflow-hidden">
@@ -100,7 +109,7 @@ const Home = () => {
                 </div>
 
             </div >
-        </div>
+        </>
 
 
 
