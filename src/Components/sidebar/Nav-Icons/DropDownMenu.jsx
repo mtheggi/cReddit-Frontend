@@ -11,15 +11,15 @@ const DropDownMenu = ({ MenuHeader }) => {
         <>
             <div className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg py-2 ">
 
-                <div onClick={() => { setIsDropped(!isDropped) }} className='flex justify-between h-10 rounded-xl items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
+                <div onClick={(event) => { event.stopPropagation(); setIsDropped(!isDropped); }} className='flex justify-between h-10 rounded-xl items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
                     <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
                     <span className='items-center'>
-                        {isDropped ? <ChevronUpIcon className="h-5 w-5 mr-2  text-gray-300" /> : <ChevronDownIcon className="h-5 w-5 mr-2  text-gray-300" />}
+                        {isDropped ? <ChevronUpIcon className="h-5 w-5 mr-2  text-gray-300" /> : <ChevronDownIcon className="h-5 w-5 mr-2 text-gray-300" />}
                     </span>
                 </div>
 
             </div >
-            {!isResources && isDropped && <div>
+            {!isResources && isDropped && <div className=""> 
                 <CommunityIcon text={"r/testcomminty"} />
                 <CommunityIcon text={"r/samirsaiid"} />
                 <CommunityIcon text={"r/Pizzalovers"} />
@@ -33,7 +33,7 @@ const DropDownMenu = ({ MenuHeader }) => {
 
             </div>
             }
-            {isResources && isDropped && <div>
+            {isResources && isDropped && <div className="">
                 <NavIcon href="#" text="About Reddit"> <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon href="#" text="Advertise" ><SignalIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon href="#" text="Help" ><QuestionMarkCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>

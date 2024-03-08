@@ -16,6 +16,8 @@ export default {
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
+        reddit_downvote: "#6A5CFF",
+        reddit_upvote: "#D93A01",
       },
       gridTemplateColumns: {
         '24': 'repeat(24, minmax(0, 1fr))',
@@ -138,8 +140,11 @@ export default {
         '80%': '80%',
         '90%': '90%',
         '100%': '100%',
+
         
         '13': '52px',
+        '14': '56px',
+        '14.5': '58px',
         '15': '60px',
         '16': '64px',
         '17': '68px',
@@ -226,6 +231,12 @@ export default {
         '98': '392px',
         '99': '396px',
         '100': '400px',
+        '101': '404px',
+        '102': '408px',
+        '103': '412px',
+        '104': '416px',
+        '148': '592px',
+        '149': '596px',
         '150': '600px',
         '151': '604px',
         '152': '608px',
@@ -262,6 +273,7 @@ export default {
         '192': '768px',
         '198': '792px',
         '0.1px': '0.04px',
+        '1px': '1px',
       },
     },
     screens: {

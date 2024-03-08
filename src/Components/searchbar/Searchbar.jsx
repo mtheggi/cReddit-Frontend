@@ -23,7 +23,7 @@ const Searchbar = () => {
 
     return (
 
-        <form action="" className={`xs:bg-reddit_search h-10 xs:mr-4 xl:max-w-168 ml-auto xl:mr-7% mxl:max-w-186 xs:min-w-24 min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3  ${isHoveredSearch ? ' xs:bg-reddit_search_light' : ''}`}>
+        <form action="" className={`xs:bg-reddit_search h-10 xs:mr-4 xl:max-w-148 ml-auto xl:mr-14% mxl:max-w-170 xs:min-w-24 min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3  ${isHoveredSearch ? ' xs:bg-reddit_search_light' : ''}`}>
             <MagnifyingGlassIcon className="text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  ml-3 xs:ml-0 xs:mr-1" />
             <input type="text" className="bg-reddit_search h-7 w-11/12 text-sm hidden xs:block font-extralight text-white focus:outline-none hover:bg-reddit_search_light" placeholder={placeholder}
                 onMouseEnter={() => setIsHoveredSearch(true)}

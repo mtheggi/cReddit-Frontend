@@ -7,7 +7,7 @@
 
 
 ::-webkit-scrollbar {
-    width: 5px;
+    width: 4px;
     background-color: #0B1416;
   }
   
@@ -16,10 +16,45 @@
     background-color: #757474; 
     border-radius: 15px;
   }
+
 html {
  
   background-color: #0B1416;
 }
+
+.scrollbar_mod {
+  overflow-y: scroll; /* Show scrollbar */
+}
+
+/* For Chrome, Safari, and Opera */
+.scrollbar_mod::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.scrollbar_mod::-webkit-scrollbar-track {
+  background: transparent; /* Make the track transparent */
+}
+
+.scrollbar_mod::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0); /* Make the thumb transparent */
+}
+
+.scrollbar_mod.scrolling::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the thumb when scrolling */
+}
+
+/* For Firefox */
+.scrollbar_mod {
+  scrollbar-width:thin; /* Make the scrollbar thin */
+  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
+  scrollbar-color: rgba(0, 0, 0, 0) transparent; /* Make the scrollbar transparent */
+}
+
+.scrollbar_mod.scrolling {
+  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
+  transition: scrollbar-color  0.3s ease;
+}
+
 .no-select {
   user-select: none;
   -webkit-user-select: none;
