@@ -1,9 +1,9 @@
+/*eslint-disable */
 import NavIcon from "./Nav-Icons/Nav-Icons";
 import { HomeIcon, EllipsisHorizontalCircleIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
 import Separator from "./Nav-Icons/Separator";
 import DropDownMenu from "./Nav-Icons/DropDownMenu";
-const Sidebar = () => {
+const Sidebar = ({ setIsCommunityOpen }) => {
 
     // Todo: Make the dropdown action have some animation
     return (
@@ -16,7 +16,7 @@ const Sidebar = () => {
                 <Separator />
                 <DropDownMenu MenuHeader="RECENT" />
                 <Separator />
-                <DropDownMenu MenuHeader="COMMUNITIES" />
+                <DropDownMenu MenuHeader="COMMUNITIES" setIsCommunityOpen={setIsCommunityOpen} />
                 <Separator />
                 <DropDownMenu MenuHeader="RESOURCES" />
             </div>

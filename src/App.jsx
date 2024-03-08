@@ -3,12 +3,11 @@ import './index.css';
 import Navbar from './Components/navbar/Navbar';
 import Sidebar from './Components/sidebar/Sidebar';
 import Mainfeed from './Components/mainfeed/Mainfeed';
-import redditLogo from './assets/reddit_logo.png'
 import Recent from './Components/mainfeed/Recent';
-1
-
+import CreateCommunity from './Components/createCommunity/CreateCommunity';
+import { useState } from 'react';
 function App() {
-
+  const [isCommunityOpen, setIsCommunityOpen] = useState(false);
 
   return (
 
@@ -19,8 +18,12 @@ function App() {
 
         <div className='flex flex-row w-fit mr-0 lg:mr-5 xl:ml-0 lg:ml-3'>
           <div className='h-full hidden xl:flex w-60 mt-3 mr-2 no-select ml-auto'>
-            <Sidebar />
+            <Sidebar setIsCommunityOpen={setIsCommunityOpen} />
           </div>
+          <div className="">
+            {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} />}
+          </div>
+
 
           <div className='mxl:w-192 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2'>
             <Mainfeed />
@@ -30,7 +33,7 @@ function App() {
         </div>
 
       </div >
-    </div>
+    </div >
 
 
   )

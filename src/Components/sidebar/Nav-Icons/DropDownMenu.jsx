@@ -1,12 +1,20 @@
+/*eslint-disable */
 import { useState } from 'react';
-import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon, DocumentTextIcon, MicrophoneIcon, ChevronDownIcon, WrenchIcon, BookOpenIcon, ScaleIcon, NewspaperIcon, ChatBubbleOvalLeftIcon, PresentationChartLineIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
+import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon, DocumentTextIcon, MicrophoneIcon, ChevronDownIcon, WrenchIcon, BookOpenIcon, ScaleIcon, NewspaperIcon, ChatBubbleOvalLeftIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import CommunityIcon from './Community-icon';
 import NavIcon from './Nav-Icons';
 import Separator from './Separator';
+import CreateCommunityIcon from './CreateCommunityIcon'
 
-const DropDownMenu = ({ MenuHeader }) => {
-    const [isDropped, setIsDropped] = useState(false);
-    const [isResources, setIsResources] = useState(MenuHeader === "RESOURCES");
+import PropTypes from 'prop-types';
+
+const DropDownMenu = ({ MenuHeader, setIsCommunityOpen }) => {
+    const [isDropped, setIsDropped] = useState(true);
+    const [isResources] = useState(MenuHeader === "RESOURCES");
+    const [isCommunity] = useState(MenuHeader === "COMMUNITIES");
+    const [isRecent] = useState(MenuHeader === "RECENT");
+
+
     return (
         <>
             <div className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg py-2 ">
@@ -19,7 +27,15 @@ const DropDownMenu = ({ MenuHeader }) => {
                 </div>
 
             </div >
-            {!isResources && isDropped && <div>
+            {isRecent && isDropped && <div>
+
+                <NavIcon href="#" text="r/testIcoons" ><ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
+            </div>
+            }
+
+
+            {isCommunity && isDropped && <div>
+                <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} />
                 <CommunityIcon text={"r/testcomminty"} />
                 <CommunityIcon text={"r/samirsaiid"} />
                 <CommunityIcon text={"r/Pizzalovers"} />
@@ -53,6 +69,9 @@ const DropDownMenu = ({ MenuHeader }) => {
         </>
 
     );
+}
+DropDownMenu.propTypes = {
+    MenuHeader: PropTypes.string
 }
 
 export default DropDownMenu;

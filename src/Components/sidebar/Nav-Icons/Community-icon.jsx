@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import propsTypes from "prop-types";
+
+EmptyStart.propTypes = {
+    color: propsTypes.string
+}
 
 function EmptyStart({ color }) {
     return (
@@ -25,9 +30,8 @@ function EmptyStart({ color }) {
 const CommunityIcon = ({ text }) => {
 
     const [isHover, setIsHover] = useState(false)
-    console.log("ushover ", isHover)
     return (
-        <div className="flex flex-row justify-between px-4 py-2 ">
+        <div className="flex flex-row justify-between px-4 py-2 SideIcon-Container">
             <div className="flex flex-row justify-start">
                 <img src="https://xsgames.co/randomusers/avatar.php?g=pixel " className="h-6 w-6 rounded-xl" alt="randomImgs" />
                 <span className="text-gray-300 text-sm font-light ml-3">{text}</span>
@@ -42,5 +46,8 @@ const CommunityIcon = ({ text }) => {
         </div>
     );
 }
+CommunityIcon.propTypes = {
+    text: propsTypes.string
 
+}
 export default CommunityIcon;
