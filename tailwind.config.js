@@ -16,6 +16,10 @@ export default {
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
+        reddit_downvote: "#6A5CFF",
+        reddit_upvote: "#D93A01",
+        reddit_links: "#629FFF",
+        
       },
       gridTemplateColumns: {
         '24': 'repeat(24, minmax(0, 1fr))',
@@ -139,6 +143,8 @@ export default {
         '90%': '90%',
         '100%': '100%',
         
+        '3.5': '14px',
+        '4': '16px',
         '13': '52px',
         '15': '60px',
         '16': '64px',
@@ -226,6 +232,7 @@ export default {
         '98': '392px',
         '99': '396px',
         '100': '400px',
+        '132': '528px',
         '150': '600px',
         '151': '604px',
         '152': '608px',

@@ -5,6 +5,8 @@ import Sidebar from './Components/sidebar/Sidebar';
 import Mainfeed from './Components/mainfeed/Mainfeed';
 import redditLogo from './assets/reddit_logo.png'
 import Recent from './Components/mainfeed/Recent';
+import ResetUsername from './Components/authentication/ResetUsername';
+import ResetPass from './Components/authentication/ResetPass';
 1
 
 function App() {
@@ -13,7 +15,7 @@ function App() {
   return (
 
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
-      <Navbar />
+      {/* <Navbar />
       <div className="w-full mt-15 inline-flex flex-row justify-center">
 
 
@@ -29,7 +31,13 @@ function App() {
           <Recent />
         </div>
 
-      </div >
+      </div > */}
+      <div className='flex flex-row w-full h-full justify-center items-center'>
+        <ResetPass />
+      </div>
+
+
+
     </div>
 
 
