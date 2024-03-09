@@ -19,6 +19,7 @@ export default {
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
+        red: "#FF585B",
       },
       gridTemplateColumns: {
         '24': 'repeat(24, minmax(0, 1fr))',

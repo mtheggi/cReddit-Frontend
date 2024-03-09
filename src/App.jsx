@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import Navbar from './Components/navbar/Navbar';
 import Sidebar from './Components/sidebar/Sidebar';
 import Mainfeed from './Components/mainfeed/Mainfeed';
@@ -30,11 +31,7 @@ function App() {
           <Recent />
         </div>
 
-      </div > */}
-
-        <div className="w-full inline-flex flex-row mt-3 xl:ml-15% xs:ml-10">
-            <h1 className="text-white text-xl font-bold font-plex">User Settings</h1>
-        </div>   
+      </div > */}  
 
         <Settings />
         
