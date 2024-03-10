@@ -7,6 +7,8 @@ import redditLogo from './assets/reddit_logo.png'
 import Recent from './Components/mainfeed/Recent';
 import ResetUsername from './Components/authentication/ResetUsername';
 import ResetPass from './Components/authentication/ResetPass';
+import { FloatingLabel } from 'react-bootstrap';
+import FloatingInput from './Components/authentication/FloatingInput';
 1
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
       </div > */}
       <div className='flex flex-row w-full h-full justify-center items-center'>
         <ResetPass />
+       
       </div>
 
 
