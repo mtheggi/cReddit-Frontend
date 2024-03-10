@@ -35,7 +35,8 @@ function App() {
 
       </div > */}
       <div className='flex flex-row w-full h-full justify-center items-center'>
-        <ResetPass />
+        {/* <ResetPass /> */}
+        <ResetUsername/>
        
       </div>
 
