@@ -4,6 +4,7 @@ import Profile from "./Profile";
 import SafetyAndPrivacy from "./SafetyAndPrivacy";
 import Emails from "./Emails";
 import Notifications from "./Notifications"
+import Feed from "./Feed";
 
 const Tabs = [
   "Account",
@@ -51,7 +52,7 @@ function Settings() {
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
         {currTab == 2 && <SafetyAndPrivacy />}
-        {/* {currTab == 3 && <FeedSettings />} */}
+        {currTab == 3 && <Feed />}
         {currTab == 4 && <Notifications />}
         {currTab == 5 && <Emails />}
       </div>

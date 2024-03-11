@@ -33,7 +33,7 @@ const notificationsSettings = {
   ],
 };
 
-function Emails() {
+function Notifications() {
   
   const [toggles, setToggles] = useState({
     privateMessages: true,
@@ -93,4 +93,4 @@ function Emails() {
   );
 }
 
-export default Emails;
+export default Notifications;
