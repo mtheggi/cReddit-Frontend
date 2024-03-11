@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Account from "./Account";
-import Profile from "./Profile";
+import SafetyAndPrivacy from "./SafetyAndPrivacy";
 
 const Tabs = [
   "Account",
@@ -47,7 +47,7 @@ function Settings() {
       <div className="flex flex-row w-full mt-10 mb-10 xl:ml-15% xs:ml-10">
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
-        {/* {currTab == 2 && <SafetyAndPrivacy />} */}
+        {currTab == 2 && <SafetyAndPrivacy />}
         {/* {currTab == 3 && <FeedSettings />} */}
         {/* {currTab == 4 && <Notifications />} */}
         {/* {currTab == 5 && <Emails />} */}

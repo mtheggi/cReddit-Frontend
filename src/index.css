@@ -11,11 +11,12 @@
     background-color: #0B1416;
   }
   
-  /* This will style the scrollbar thumb (the part you drag) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #757474; 
-    border-radius: 15px;
-  }
+/* This will style the scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background-color: #757474; 
+  border-radius: 15px;
+}
+
 html {
  
   background-color: #0B1416;
