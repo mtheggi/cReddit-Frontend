@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Account from "./Account";
 import Profile from "./Profile";
+import SafetyAndPrivacy from "./SafetyAndPrivacy";
 
 const Tabs = [
   "Account",
@@ -20,13 +21,13 @@ function Settings() {
 
   return (
     <>
-      <div className="w-full mt-20 xl:ml-15% xs:ml-10">
+      <div className="w-full mt-20 xl:ml-19% xs:ml-10">
         <h1 className="text-white text-lg font-bold font-plex">
           User Settings
         </h1>
       </div>
 
-      <div className="flex flex-row w-full mt-10 2 xl:ml-15% xs:ml-10">
+      <div className="flex flex-row w-full mt-10 2 xl:ml-19% xs:ml-10">
         {Tabs.map((tab, i) => {
           return (
             <a
@@ -42,12 +43,12 @@ function Settings() {
           );
         })}
       </div>
-      <hr className=" border-gray-500 mt-0 xl:ml-14% xs:ml-6 w-100% max-w-5xl " />
+      <hr className=" border-gray-500 mt-0 xl:ml-18% xs:ml-6 w-100% max-w-5xl " />
 
-      <div className="flex flex-row w-full mt-10 mb-10 xl:ml-15% xs:ml-10">
+      <div className="flex flex-row w-full mt-10 xl:ml-19% xs:ml-10">
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
-        {/* {currTab == 2 && <SafetyAndPrivacy />} */}
+        {currTab == 2 && <SafetyAndPrivacy />}
         {/* {currTab == 3 && <FeedSettings />} */}
         {/* {currTab == 4 && <Notifications />} */}
         {/* {currTab == 5 && <Emails />} */}
