@@ -11,17 +11,18 @@ import SwitchButton from "./SwitchButton";
 const CreateCommunity = ({ setIsCommunityOpen }) => {
 
     const [communityName, setCommunityName] = useState("");
-    const [selectedRadio, setSelectedRadio] = useState("");
+    const [selectedRadio, setSelectedRadio] = useState(""); // ids= ${type}-community-type q
+    const [isMature, setIsMature] = useState(false);
 
     const handleRadioChange = (e) => {
         setSelectedRadio(e.target.id);
     }
 
-    console.log(selectedRadio);
+
     // const handleCreateCommunity = () => {
 
     // }
-    console.log(communityName);
+
     return (
         <div className="community-modal flex flex-row items-center justify-center">
             <div className="overlay"></div>
@@ -70,16 +71,17 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                                 <p className="text-xs">Must be over 18 to view and contribute  </p>
                             </span>
                         </div>
-
-                        <SwitchButton />
+                        <div id="ismature-switch-btn">
+                            <SwitchButton isSwtched={isMature} setIsSwitched={setIsMature} />
+                        </div>
                     </div>
 
 
 
                     <div className="flex justify-end">
-                        <button onClick={() => { setIsCommunityOpen(false) }} className="bg-reddit_search hover:bg-reddit_search_light mx-2 my-3 px-3 py-3 h-10 rounded-full flex items-center">Cancel</button>
+                        <button id="cancel-create-community" onClick={() => { setIsCommunityOpen(false) }} className="bg-reddit_search hover:bg-reddit_search_light mx-2 my-3 px-3 py-3 h-10 rounded-full flex items-center">Cancel</button>
 
-                        <button className={`my-3 px-3 py-3 h-10 rounded-full flex items-center ${communityName.length === 0 ? `bg-reddit_search hover:bg-reddit_search_light opacity-60` : `bg-reddit_blue hover:bg-reddit_light_blue`}`} disabled={communityName.length === 0}>{communityName.length === 0 ? "Create your community" : `r/${communityName}`}</button>
+                        <button id="name-create-community" className={`my-3 px-3 py-3 h-10 rounded-full flex items-center ${communityName.length === 0 ? `bg-reddit_search hover:bg-reddit_search_light opacity-60` : `bg-reddit_blue hover:bg-reddit_light_blue`}`} disabled={communityName.length === 0}>{communityName.length === 0 ? "Create your community" : `r/${communityName}`}</button>
                     </div>
                 </div>
             </div>
