@@ -19,7 +19,7 @@ function Setting({
 
   return (
     <>
-      <div className="flex flex-row max-w-3xl mb-2 justify-end mt-10">
+      <div className="flex flex-row max-w-3xl mb-2 justify-end mt-10 ">
         <div className="flex flex-col w-full items-start justify center">
           <h4 className="text-white text-md font-plex ">{title}</h4>
           <h6 className="text-gray-600 text-xs font-bold font-plex mt-1">

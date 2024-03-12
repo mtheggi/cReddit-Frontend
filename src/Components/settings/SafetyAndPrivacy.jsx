@@ -27,17 +27,6 @@ function SafetyAndPrivacy() {
         message="Posts from muted communities won't show up in your feeds or recommendations."
       />
       <FloatingInput label="MUTE NEW COMMUNITY" buttonText="ADD" />
-
-      <Subtitle title="SENSITIVE ADVERTISING CATEGORIES" />
-      <Setting title="Alcohol" message="Allowed" toggleButton={true} />
-      <Setting title="Dating" message="Allowed" toggleButton={true} />
-      <Setting title="Gambling" message="Allowed" toggleButton={true} />
-      <Setting
-        title="Pregnancy and parenting"
-        message="Allowed"
-        toggleButton={true}
-      />
-      <Setting title="Weight loss" message="Allowed" toggleButton={true} />
     </div>
   );
 }
