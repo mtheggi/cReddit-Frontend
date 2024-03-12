@@ -89,18 +89,19 @@ const Home = () => {
     return (
         <>
             <div className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? 'block' : 'hidden'}`} onClick={() => setIsVisibleLeftSidebar(false)}> </div>
-            <Navbar isVisibleLeftSidebar={isVisibleLeftSidebar} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} navbarRef={navbarRef} />
+            <Navbar setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} navbarRef={navbarRef} />
             <div className="w-full mt-14 inline-flex flex-row justify-center overflow-hidden">
 
                 <div className={`relative flex flex-row w-fit lg:mr-5 xl:mr-3% mxl:mr-10 h-full`}>
 
-                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto mt-2 scrollbar_mod overflow-x-hidden`}>
                         <Sidebar />
                     </div>
 
-                    <div className='mxl:w-192 mt-2 flex flex-row overflow-auto overflow-x-hidden scrollbar_mod flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
+                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
                         <Mainfeed />
                     </div>
+
 
                     <div className='w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
                         <Recent />

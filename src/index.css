@@ -61,3 +61,38 @@ html {
   -moz-user-select: none;
   -ms-user-select: none;
 }
+
+
+
+.scrollbar_mod_mf {
+  overflow-y: scroll; /* Show scrollbar */
+}
+
+/* For Chrome, Safari, and Opera */
+.scrollbar_mod_mf::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.scrollbar_mod_mf::-webkit-scrollbar-track {
+  background: transparent; /* Make the track transparent */
+}
+
+.scrollbar_mod_mf::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0); /* Make the thumb transparent */
+}
+
+.scrollbar_mod_mf.scrolling::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the thumb when scrolling */
+}
+
+/* For Firefox */
+.scrollbar_mod_mf {
+  scrollbar-width:thin; /* Make the scrollbar thin */
+  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
+  scrollbar-color: #3a3939 transparent; 
+}
+
+.scrollbar_mod_mf.scrolling {
+  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
+  transition: scrollbar-color  0.3s ease;
+}

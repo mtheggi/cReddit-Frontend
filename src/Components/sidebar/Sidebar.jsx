@@ -10,15 +10,15 @@ const Sidebar = () => {
 
      
             <div className="flex h-fit flex-col w-full">
-                <NavIcon href="#" text="Home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-                <NavIcon href="#" text="Popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-                <NavIcon href="#" text="All" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
+                <NavIcon href="#" text="Home" id="sidebar_home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
+                <NavIcon href="#" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
+                <NavIcon href="#" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <Separator />
-                <DropDownMenu MenuHeader="RECENT" />
+                <DropDownMenu MenuHeader="RECENT" id="sidebar_recent" />
                 <Separator />
-                <DropDownMenu MenuHeader="COMMUNITIES" />
+                <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" />
                 <Separator />
-                <DropDownMenu MenuHeader="RESOURCES" />
+                <DropDownMenu MenuHeader="RESOURCES" id="sidebar_resources" />
             </div>
     );
 }

@@ -49,7 +49,7 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
 
 }
 
-const Vote = () => {
+const Vote = ({id}) => {
 
     const [voters, setVoters] = useState(12);
     const [isUpvote, setIsUpvote] = useState(false);
@@ -90,9 +90,9 @@ const Vote = () => {
 
     return (
         <div className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${isDownvote ? 'bg-reddit_downvote' : (isUpvote ? 'bg-reddit_upvote':'bg-reddit_search')}  rounded-3xl`}>
-            <span onMouseEnter={()=>setIsHoverUpvote(true)} onMouseLeave={()=>setIsHoverUpvote(false)} role="button" className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? 'hover:bg-opacity-30' : ''} rounded-full w-7 h-8 flex justify-center items-center`} onClick={handleUpvote}><UpVote isUpvote={isUpvote} isDownvote={isDownvote} isHoverUpvote={isHoverUpvote} /> </span>
+            <span id={"mainfeed_"+id+"_upvote"} onMouseEnter={()=>setIsHoverUpvote(true)} onMouseLeave={()=>setIsHoverUpvote(false)} role="button" className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? 'hover:bg-opacity-30' : ''} rounded-full w-7 h-8 flex justify-center items-center`} onClick={handleUpvote}><UpVote isUpvote={isUpvote} isDownvote={isDownvote} isHoverUpvote={isHoverUpvote} /> </span>
             <span className="text-gray-300 text-sm">{voters}</span>
-            <span onMouseEnter={()=>setIsHoverDownvote(true)} onMouseLeave={()=>setIsHoverDownvote(false)} role="button" className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? 'hover:bg-opacity-30' : ''} w-7 h-8 rounded-full flex justify-center items-center`} onClick={handleDownvote} ><DownVote isDownvote={isDownvote} isUpvote={isUpvote} isHoverDownvote={isHoverDownvote} /></span>
+            <span id={"mainfeed_"+id+"_downvote"} onMouseEnter={()=>setIsHoverDownvote(true)} onMouseLeave={()=>setIsHoverDownvote(false)} role="button" className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? 'hover:bg-opacity-30' : ''} w-7 h-8 rounded-full flex justify-center items-center`} onClick={handleDownvote} ><DownVote isDownvote={isDownvote} isUpvote={isUpvote} isHoverDownvote={isHoverDownvote} /></span>
         </div>
     );
 }
