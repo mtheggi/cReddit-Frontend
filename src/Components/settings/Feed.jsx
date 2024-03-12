@@ -3,13 +3,15 @@ import Setting from './Setting';
 import Subtitle from './Subtitle'
 
 const feedSettings = {
-  contentPreferences: [
+  contentPreferencesBeforeDropdown: [
     { id: 'showMatureContent', title: 'Show mature (18+) content', description: 'See NSFW (Not Safe for Work) mature and adult images, videos, written content, and other media in your Reddit feeds and search results.'},
     { id: 'blurMatureImages', title: 'Blur mature images and media', description: 'Blur previews and thumbnails for any images or videos tagged as NSFW (Not Safe for Work).' },
     { id: 'EnableHomeFeedRecommendations', title: 'Enable home feed recommendations', description: 'Allow us to introduce recommended posts in your home feed.'},
     { id: 'autoplayMedia', title: 'Autoplay media', description: 'Play videos and gifs automatically when in the viewport.'},
     { id: 'reduceAnimations', title: 'Reduce Animations', description: 'Reduce animations on posts, comments, and feeds.'},
     { id: 'communityThemes', title: 'Community themes', description: 'Use custom themes for all communities. You can also turn this off on a per community basis.'},
+  ],
+  contentPreferencesAfterDropdown: [
     { id: 'openPostsInNewTab', title: 'Open posts in new tab', description: 'Enable to always open posts in a new tab.'}
   ],
   postPreferences: [
@@ -59,8 +61,20 @@ function Feed() {
       <h3 className="text-white text-xl font-bold font-plex">
         Feed Settings
       </h3>
-      {renderSection(feedSettings.contentPreferences, 'Content Preferences')}
+      {renderSection(feedSettings.contentPreferencesBeforeDropdown, 'Content Preferences')}
+      <Setting
+        title="Community content sort"
+        message="Choose how you would like content organized in communities you visit. This will not affect global feeds such as Home, or Popular."
+        menuItems={[{ name: "Hot" }, { name: "New" }, { name: "Top" }, { name: "Rising"}]}
+      />
+      <Setting
+        title="Global Content View"
+        message="Choose how you would like content displayed in feeds. This control is also found above your feed."
+        menuItems={[{ name: "Card" }, { name: "Classic" }, { name: "Compact" }]}
+      />
+      {renderSection(feedSettings.contentPreferencesAfterDropdown, 'Content Preferences')}
       {renderSection(feedSettings.postPreferences, 'Post Preferences')}
+
     </div>
   );
 }
