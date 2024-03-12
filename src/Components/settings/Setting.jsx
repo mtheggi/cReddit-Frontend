@@ -11,15 +11,11 @@ function Setting({
   menuItems,
   regularButtonOnClick,
   toggleButtonOnClick,
+  isToggled,
 }) {
-  const [isToggled, setIsToggled] = useState(false);
   const [selectedMenuItem, setSelectedMenuItem] = useState(
     menuItems ? menuItems[0].name : ""
   );
-
-  const toggleIcon = () => {
-    setIsToggled(!isToggled);
-  };
 
   return (
     <>
@@ -36,7 +32,8 @@ function Setting({
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
-                value=""
+                checked={isToggled}
+                onChange={toggleButtonOnClick}
                 className="sr-only peer"
                 style={{ position: "absolute", height: "0", width: "0" }}
               ></input>
