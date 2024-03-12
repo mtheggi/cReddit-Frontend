@@ -3,7 +3,7 @@ import Account from "./Account";
 import Profile from "./Profile";
 import SafetyAndPrivacy from "./SafetyAndPrivacy";
 import Emails from "./Emails";
-import Notifications from "./Notifications"
+import Notifications from "./Notifications";
 import Feed from "./Feed";
 
 const Tabs = [
@@ -23,14 +23,14 @@ function Settings() {
   }
 
   return (
-    <>
-      <div className="w-full mt-20 xl:ml-19% xs:ml-10">
+    <div className="flex flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
+      <div className="w-full mt-20 max-w-6xl">
         <h1 className="text-white text-lg font-bold font-plex">
           User Settings
         </h1>
       </div>
 
-      <div className="flex flex-row w-full mt-10 2 xl:ml-19% xs:ml-10">
+      <div className="flex flex-wrap w-full mt-10 max-w-6xl">
         {Tabs.map((tab, i) => {
           return (
             <a
@@ -46,9 +46,9 @@ function Settings() {
           );
         })}
       </div>
-      <hr className=" border-gray-500 mt-0 xl:ml-18% xs:ml-6 w-100% max-w-5xl " />
+      <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
 
-      <div className="flex flex-row w-full mt-10 xl:ml-19% xs:ml-10">
+      <div className="flex flex-row w-full mt-10 mb-5 max-w-6xl">
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
         {currTab == 2 && <SafetyAndPrivacy />}
@@ -56,7 +56,7 @@ function Settings() {
         {currTab == 4 && <Notifications />}
         {currTab == 5 && <Emails />}
       </div>
-    </>
+    </div>
   );
 }
 export default Settings;
