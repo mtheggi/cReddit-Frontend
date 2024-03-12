@@ -27,7 +27,7 @@ function Settings() {
         </h1>
       </div>
 
-      <div className="flex flex-row w-full mt-10 2 xl:ml-19% xs:ml-10">
+      <div className="flex flex-wrap w-full mt-10 2 xl:ml-19% xs:ml-10">
         {Tabs.map((tab, i) => {
           return (
             <a
@@ -45,7 +45,7 @@ function Settings() {
       </div>
       <hr className=" border-gray-500 mt-0 xl:ml-18% xs:ml-6 w-100% max-w-5xl " />
 
-      <div className="flex flex-row w-full mt-10 xl:ml-19% xs:ml-10">
+      <div className="flex flex-row w-full mt-10 xl:ml-19% xs:ml-10 mb-5">
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
         {currTab == 2 && <SafetyAndPrivacy />}
