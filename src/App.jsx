@@ -10,7 +10,8 @@ function App() {
   return (
 
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
-     <Home />
+     {/* <Home /> */}
+     <Settings />
     </div>
 
 

@@ -20,13 +20,13 @@ function SafetyAndPrivacy() {
         title="People You’ve Blocked"
         message="Blocked people can’t send you chat requests or private messages."
       />
-      <FloatingInput label="BLOCK NEW USER" buttonText="ADD" />
+      <FloatingInput label="BLOCK NEW USER" buttonText="ADD" id="blocked_users" />
 
       <Setting
         title="Communities You've Muted"
         message="Posts from muted communities won't show up in your feeds or recommendations."
       />
-      <FloatingInput label="MUTE NEW COMMUNITY" buttonText="ADD" />
+      <FloatingInput label="MUTE NEW COMMUNITY" buttonText="ADD" id="muted_communities" />
     </div>
   );
 }

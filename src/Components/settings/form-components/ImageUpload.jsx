@@ -22,10 +22,10 @@ function ImageUpload() {
       <svg className="mb-2" viewBox="0 0 36 36" version="1.1">
         <circle cx="18" cy="18" fill="#fff" r="18" stroke="inherit"></circle>
         <path
-          clip-rule="evenodd"
+          clipRule="evenodd"
           d="m25.2 16.8001h-6v-6c0-.6624-.5364-1.2-1.2-1.2s-1.2.5376-1.2 1.2v6h-6c-.6636 0-1.20002.5376-1.20002 1.2s.53642 1.2 1.20002 1.2h6v6c0 .6624.5364 1.2 1.2 1.2s1.2-.5376 1.2-1.2v-6h6c.6636 0 1.2-.5376 1.2-1.2s-.5364-1.2-1.2-1.2z"
           fill="inherit"
-          fill-rule="evenodd"
+          fillRule="evenodd"
         ></path>
       </svg>
 
