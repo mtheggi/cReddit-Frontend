@@ -37,8 +37,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     </a>
                 </div>
 
-                <div className='flex xs:flex-grow ml-auto xs:ml-7 xl:ml-11% items-center'>
-                    <Searchbar />
+        <div className="flex xs:flex-grow ml-auto xs:ml-7 xl:ml-11% items-center">
+          <Searchbar />
 
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 

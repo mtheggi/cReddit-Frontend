@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Home from './views/Home';
-1
+import Settings from './Components/settings/Settings';
 
 function App() {
 
