@@ -41,7 +41,10 @@ function SocialLinksModal(props) {
         Add Social Link
       </Modal.Title>
       <Modal.Body className="border-l border-b border-r border-gray-700 flex flex-wrap justify-center items-center text-white bg-reddit_greenyDark rounded-b-sm font-plex ">
-        <button className="flex flex-row justify-center items-center p-2.5 bg-gray-700 rounded-3xl m-0.5 mt-3">
+        <button
+          id={`${props.id}-custom-url-button`}
+          className="flex flex-row justify-center items-center p-2.5 bg-gray-700 rounded-3xl m-0.5 mt-3"
+        >
           <img
             className="pr-1 pl-1"
             src="https://www.redditstatic.com/desktop2x/img/social-links/custom.png"
@@ -52,6 +55,10 @@ function SocialLinksModal(props) {
         </button>
         {socials.map((social, i) => (
           <button
+            id={`${props.id}-${social
+              .toLowerCase()
+              .split(" ")
+              .join("-")}-button`}
             key={i}
             className="flex flex-row justify-center items-center p-2.5 bg-gray-700 rounded-3xl m-0.5 mt-3"
           >

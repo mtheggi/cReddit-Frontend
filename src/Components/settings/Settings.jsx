@@ -36,10 +36,11 @@ function Settings() {
         {Tabs.map((tab, i) => {
           return (
             <a
-              key={i}
-              id={`setting-tab-${i}`}
-              className={`text-white text-sm  font-bold font-plex pl-5 pr-5 pb-2.5 pt-3 ${i == currTab ? "border-b-3 border-white" : ""
-                }`}
+              key={tab}
+              id={`setting-navbar-${tab.toLowerCase()}-tab`}
+              className={`text-white text-sm font-bold font-plex pl-5 pr-5 pb-3 ${
+                i == currTab ? "border-b-3 border-white" : ""
+              }`}
             >
               <div className="cursor-pointer" onClick={() => onSetTab(i)}>
                 {tab}
@@ -63,3 +64,14 @@ function Settings() {
   );
 }
 export default Settings;
+
+/* ID Documentation */
+
+// Settings Navbar {id, key}
+//    -  Account {setting-tab-account-tab, Account}
+//    -  Profile {setting-tab-profile-tab, Profile}
+//    -  Safety & Privacy {setting-tab-safety & privacy-tab, Safety & Privacy}
+//    -  Feed Settings {setting-tab-feed settings-tab, Feed Settings}
+//    -  Notifications {setting-tab-notifications-tab, Notifications}
+//    -  Emails {setting-tab-emails-tab, Emails}
+//

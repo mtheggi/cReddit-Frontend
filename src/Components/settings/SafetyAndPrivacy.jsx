@@ -20,15 +20,28 @@ function SafetyAndPrivacy() {
         title="People You’ve Blocked"
         message="Blocked people can’t send you chat requests or private messages."
       />
-      <FloatingInput label="BLOCK NEW USER" buttonText="ADD" id="blocked_users" />
+      <FloatingInput
+        id="safety-block-user-input"
+        label="BLOCK NEW USER"
+        buttonText="ADD"
+      />
 
       <Setting
         title="Communities You've Muted"
         message="Posts from muted communities won't show up in your feeds or recommendations."
       />
-      <FloatingInput label="MUTE NEW COMMUNITY" buttonText="ADD" id="muted_communities" />
+      <FloatingInput
+        id="safety-mute-community-input"
+        label="MUTE NEW COMMUNITY"
+        buttonText="ADD"
+      />
     </div>
   );
 }
 
 export default SafetyAndPrivacy;
+
+/* ID Documentation */
+
+// safety-block-user-input: Input to block new user
+// safety-mute-community-input: Input to mute new community

@@ -12,6 +12,7 @@ function Setting({
   regularButtonOnClick,
   toggleButtonOnClick,
   isToggled,
+  clickableID,
 }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(
     menuItems ? menuItems[0].name : ""
@@ -31,6 +32,7 @@ function Setting({
           <div className="flex flex-row justify-end w-full items-center pb-1 pr-1">
             <label className="inline-flex cursor-pointer items-center">
               <input
+                id={clickableID?.toLowerCase()}
                 type="checkbox"
                 checked={isToggled}
                 onChange={toggleButtonOnClick}
@@ -45,6 +47,7 @@ function Setting({
         {regularButton && (
           <div className="flex flex-row justify-end w-full items-center pb-1 pr-1">
             <button
+              id={clickableID?.toLowerCase()}
               className="text-white text-sm font-bold font-plex bg-reddit_darkGray p-2 rounded-3xl border border-reddit_darkGray hover:bg-gray-800 hover:border-white"
               onClick={regularButtonOnClick}
             >
@@ -56,6 +59,7 @@ function Setting({
         {menuItems && (
           <div className="flex flex-row justify-end w-full items-center mb-3 pr-1 bg-reddit_darkGray">
             <SimpleMenu
+              id={clickableID?.toLowerCase()}
               title={selectedMenuItem}
               menuItems={menuItems}
               onSelect={setSelectedMenuItem}
