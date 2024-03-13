@@ -1,8 +1,18 @@
-# React + Vite
+# IDS Documentation  
+### component
+    * id = "specifed name" 
+        - Explaination
+### Usercard.jsx
+         
+    * follow button ID = "follow-btn-usercard" 
+    * Chat   button ID = "chat-btn-usercard"
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### createPost.jsx
+    * cancel create community button : id ="cancel-create-community" 
+    * button that have community name and create community : id = "name-create-community" 
+    * Mature swtich button : id= "ismature-switch-btn" 
+    * radio buttons for types : 
+                id ="Public-community-type"
+                id = "Private-community-type"
+                id = "Restricted-community-type"
+    * community name input text field :  id = "community-name"

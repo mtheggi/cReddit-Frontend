@@ -17,6 +17,8 @@ export default {
         reddit_sky: "#50E9F4",
         reddit_search_light: "#213236",
         reddit_greenyDark: "#0B1416",
+        reddit_blue: "#1460d1",
+        reddit_light_blue: "#1870f4",
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
@@ -142,6 +144,7 @@ export default {
         '68%': '68%',
         '69%': '69%',
         '70%': '70%',
+        '74%': '74%',
         '80%': '80%',
         '90%': '90%',
         '91%': '91%',
@@ -154,6 +157,8 @@ export default {
         '98%': '98%',
         '99%': '99%',
         '100%': '100%',
+
+        
         '13': '52px',
         '14': '56px',
         '14.5': '58px',
@@ -247,6 +252,7 @@ export default {
         '102': '408px',
         '103': '412px',
         '104': '416px',
+        '125': '500px',
         '148': '592px',
         '149': '596px',
         '150': '600px',

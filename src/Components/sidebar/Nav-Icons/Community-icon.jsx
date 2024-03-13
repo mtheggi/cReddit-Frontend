@@ -1,5 +1,10 @@
 import { useState } from "react";
 
+import propsTypes from "prop-types";
+
+EmptyStart.propTypes = {
+    color: propsTypes.string
+}
 
 function EmptyStart({ color, isBookmarked }) {
 
@@ -35,7 +40,7 @@ const CommunityIcon = ({ text, divId, bookmarkId }) => {
 
     const [isBookmarked, setIsHisBookmarkedover] = useState(false)
     return (
-        <div id={divId} className="flex flex-row justify-between pl-3 pr-4 py-1.5 hover:bg-reddit_hover rounded-xl items-center cursor-pointer">
+        <div id={divId} className="flex flex-row justify-between pl-3 pr-4 py-1.5 hover:bg-reddit_hover SideIcon-Container rounded-xl items-center cursor-pointer">
             <div className="flex flex-row justify-start">
                 <img src="https://xsgames.co/randomusers/avatar.php?g=pixel " className="h-6 w-6 rounded-xl" alt="randomImgs" />
                 <span className="text-gray-300 text-sm font-light ml-3">{text}</span>
@@ -48,5 +53,8 @@ const CommunityIcon = ({ text, divId, bookmarkId }) => {
         </div>
     );
 }
+CommunityIcon.propTypes = {
+    text: propsTypes.string
 
+}
 export default CommunityIcon;

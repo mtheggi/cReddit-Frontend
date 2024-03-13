@@ -3,11 +3,13 @@ import Navbar from '../Components/navbar/Navbar';
 import Sidebar from '../Components/sidebar/Sidebar';
 import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
+import CreateCommunity from '../Components/createCommunity/CreateCommunity';
 import { useState, useEffect, useRef } from 'react';
 
 
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+    const [isCommunityOpen, setIsCommunityOpen] = useState(false);
 
     const sidebarRef = useRef();
     const recentRef = useRef();
@@ -96,8 +98,11 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
                 <div className={`relative flex flex-row w-fit lg:mr-5 xl:mr-3% mxl:mr-10 h-full`}>
 
-                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto mt-2 scrollbar_mod overflow-x-hidden`}>
-                        <Sidebar />
+                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} />
+                    </div>
+                    <div className="">
+                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} />}
                     </div>
 
                     <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
