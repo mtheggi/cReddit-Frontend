@@ -35,7 +35,7 @@ function Settings() {
           return (
             <a
               key={tab}
-              id={`setting-tab-${i}`}
+              id={`setting-navbar-${tab.toLowerCase()}-tab`}
               className={`text-white text-sm font-bold font-plex pl-5 pr-5 pb-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
               }`}
@@ -64,9 +64,10 @@ export default Settings;
 /* ID Documentation */
 
 // Settings Navbar {id, key}
-//    -  Account {setting-tab-0, Account}
-//    -  Profile {setting-tab-1, Profile}
-//    -  Safety & Privacy {setting-tab-2, Safety & Privacy}
-//    -  Feed Settings {setting-tab-3, Feed Settings}
-//    -  Notifications {setting-tab-4, Notifications}
-//    -  Emails {setting-tab-5, Emails}
+//    -  Account {setting-tab-account-tab, Account}
+//    -  Profile {setting-tab-profile-tab, Profile}
+//    -  Safety & Privacy {setting-tab-safety & privacy-tab, Safety & Privacy}
+//    -  Feed Settings {setting-tab-feed settings-tab, Feed Settings}
+//    -  Notifications {setting-tab-notifications-tab, Notifications}
+//    -  Emails {setting-tab-emails-tab, Emails}
+//

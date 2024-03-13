@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-function ImageUpload() {
+function ImageUpload({ id }) {
   const onDrop = useCallback((acceptedFiles) => {
     // Do something with the files
     console.log(acceptedFiles);
@@ -13,6 +13,7 @@ function ImageUpload() {
   return (
     <div
       {...getRootProps()}
+      id={id}
       className={`border-2 border-dashed border-gray-300 rounded-lg p-5 max-w-xs h-40 flex flex-col justify-center items-center text-center ${
         isDragActive ? "bg-reddit_greenyDark" : "bg-gray-700"
       } text-gray-600 font-plex text-sm font-bold mt-2`}
