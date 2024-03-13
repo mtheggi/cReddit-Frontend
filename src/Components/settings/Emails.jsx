@@ -46,7 +46,7 @@ function Emails() {
 
   return (
     <div className="flex flex-col w-full"> 
-      <h3 className="text-white text-xl font-bold font-plex">
+      <h3 className="text-white text-xl -mb-3 font-bold font-plex">
         Manage Emails
       </h3>
       {renderSection(emailSettings.messages, 'Messages')}

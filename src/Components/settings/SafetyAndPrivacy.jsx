@@ -9,7 +9,7 @@ function SafetyAndPrivacy() {
         Safety & Privacy
       </h3>
 
-      <h6 className="text-gray-600 text-xs font-bold font-plex mt-5 max-w-2xl">
+      <h6 className="text-gray-600 text-xs font-bold font-plex mt-3 max-w-2xl">
         Manage how we use data to personalize your Reddit experience, and
         control how other redditors interact with you. To learn more, visit our
         Privacy & Security FAQs .

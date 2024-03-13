@@ -10,7 +10,7 @@ function TextArea({ id, placeholder, rows = 4, cols = 100, maxLength }) {
     <div className="mt-2">
       <textarea
         id={id}
-        className="block rounded-md px-2.5 pb-2.5 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 focus:border-3 focus:border-gray-300"
+        className="block rounded-md md:w-172 xs:w-100 w-97% px-2.5 pb-2.5 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 focus:border-3 focus:border-gray-300"
         placeholder={placeholder}
         rows={rows}
         cols={cols}

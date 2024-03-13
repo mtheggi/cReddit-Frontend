@@ -52,7 +52,7 @@ function Notifications() {
 
   return (
     <div className="flex flex-col w-full"> 
-      <h3 className="text-white text-xl font-bold font-plex">
+      <h3 className="text-white -mb-3 text-xl font-bold font-plex">
         Notification settings
       </h3>
       {renderSection(notificationsSettings.activity, 'Activity')}

@@ -32,13 +32,13 @@ function Settings() {
 
 
 
-      <div className="flex flex-wrap w-full mt-4 max-w-6xl">
+      <div className="flex flex-wrap w-full mt-2 max-w-6xl">
         {Tabs.map((tab, i) => {
           return (
             <a
               key={tab}
               id={`setting-navbar-${tab.toLowerCase()}-tab`}
-              className={`text-white text-sm font-bold font-plex pl-5 pr-5 pb-3 ${
+              className={`text-white text-sm font-bold font-plex px-2 mx-2 pb-2 pt-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
               }`}
             >
