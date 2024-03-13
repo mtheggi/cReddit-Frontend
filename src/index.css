@@ -2,27 +2,55 @@
 @tailwind components;
 @tailwind utilities;
 
-/* #1A282D : hovre bg*/ 
+/* #1A282D : hovre bg*/
 /* #0B1416 : bg */
 
-
 ::-webkit-scrollbar {
-    width: 5px;
-    background-color: #0B1416;
-  }
-  
-  /* This will style the scrollbar thumb (the part you drag) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #757474; 
-    border-radius: 15px;
-  }
+  width: 5px;
+  background-color: #0b1416;
+}
+
+/* This will style the scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background-color: #757474;
+  border-radius: 15px;
+}
 html {
- 
-  background-color: #0B1416;
+  background-color: #0b1416;
 }
 .no-select {
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
+}
+
+/* Custom CSS for striping every n cards */
+@layer utilities {
+  /* Strip every 2 cards on medium screens and larger */
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .striped > div:nth-child(4n + 3),
+    .striped > div:nth-child(4n + 4) {
+      @apply bg-[#080808];
+    }
+  }
+
+  /* Strip every 3 cards on large screens and larger */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .striped > div:nth-child(6n + 4),
+    .striped > div:nth-child(6n + 5),
+    .striped > div:nth-child(6n + 6) {
+      @apply bg-[#080808];
+    }
+  }
+
+  /* Strip every 4 cards on x-large screens and larger */
+  @media (min-width: 1280px) {
+    .striped > div:nth-child(8n + 5),
+    .striped > div:nth-child(8n + 6),
+    .striped > div:nth-child(8n + 7),
+    .striped > div:nth-child(8n + 8) {
+      @apply bg-[#080808];
+    }
+  }
 }
