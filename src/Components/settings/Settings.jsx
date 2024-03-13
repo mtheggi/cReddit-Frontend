@@ -23,7 +23,7 @@ function Settings() {
   }
 
   return (
-    <div className="flex min-w-88 flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
+    <div className="flex min-w-88 mt-4 flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
       <div className="w-full mt-15 max-w-6xl">
         <h1 className="text-white text-lg font-bold font-plex">
           User Settings

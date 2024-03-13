@@ -13,9 +13,8 @@ const Mainfeed = () => {
     const [isOpenView, setIsOpenView] = useState(false);
 
     const menuRefCateg = useRef();
-    const menuRefCategExpanded = useRef();
     const menuRefView = useRef();
-    const menuRefViewExpanded = useRef();
+
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -61,7 +60,7 @@ const Mainfeed = () => {
                     </div>
 
                     {isOpenCateg && (
-                        <div ref={menuRefCategExpanded} className=' w-20 h-72 bg-reddit_lightGreen absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col'>
+                        <div className=' w-20 h-72 bg-reddit_lightGreen absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col'>
                             <div className='w-full pl-4 rounded-lg h-9 flex items-center font-normal'>
                                 <p className='no-select'>Sort by</p>
                             </div>
@@ -97,7 +96,7 @@ const Mainfeed = () => {
                     </div>
 
                     {isOpenView && (
-                        <div ref={menuRefViewExpanded} className=' w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col'>
+                        <div  className=' w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col'>
                             <div className='w-full pl-3  rounded-lg h-8 flex items-center font-medium'>
                                 <p className='no-select'>View</p>
                             </div>

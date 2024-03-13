@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 const DropDownMenu = ({ MenuHeader, id }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_"+str.toLowerCase().split(' ').join('_');
-    const [isDropped, setIsDropped] = useState(true);
+    const [isDropped, setIsDropped] = useState(false);
     const [isResources] = useState(MenuHeader === "RESOURCES");
     const [isCommunity] = useState(MenuHeader === "COMMUNITIES");
     const [isRecent] = useState(MenuHeader === "RECENT");

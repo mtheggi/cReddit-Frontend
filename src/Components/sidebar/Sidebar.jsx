@@ -9,7 +9,7 @@ const Sidebar = () => {
     return (
 
      
-            <div className="flex h-fit flex-col w-full">
+            <div className="flex h-fit mb-3 flex-col w-full">
                 <NavIcon href="#" text="Home" id="sidebar_home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon href="#" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon href="#" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
