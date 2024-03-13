@@ -3,9 +3,13 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "node_modules/flowbite-react/lib/esm/**/*.js"
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'plex': ['IBM Plex Sans', 'sans-serif'],
+      },
       colors: {
         reddit_dark: "#030303",
         reddit_search: "#1A282C",
@@ -16,6 +20,9 @@ export default {
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
+        reddit_downvote: "#6A5CFF",
+        reddit_upvote: "#D93A01",
+        red: "#FF585B",
       },
       gridTemplateColumns: {
         '24': 'repeat(24, minmax(0, 1fr))',
@@ -83,7 +90,7 @@ export default {
         '16%': '16%',
         '17%': '17%',
         '18%': '18%',
-        '19%': '19%',  
+        '19%': '19%',
         '20%': '20%',
         '21%': '21%',
         '22%': '22%',
@@ -137,9 +144,19 @@ export default {
         '70%': '70%',
         '80%': '80%',
         '90%': '90%',
+        '91%': '91%',
+        '92%' : '92%',
+        '93%': '93%',
+        '94%': '94%',
+        '95%': '95%',
+        '96%': '96%',
+        '97%': '97%',
+        '98%': '98%',
+        '99%': '99%',
         '100%': '100%',
-        
         '13': '52px',
+        '14': '56px',
+        '14.5': '58px',
         '15': '60px',
         '16': '64px',
         '17': '68px',
@@ -212,7 +229,7 @@ export default {
         '84': '336px',
         '85': '340px',
         '86': '344px',
-        '87': '348px',  
+        '87': '348px',
         '88': '352px',
         '89': '356px',
         '90': '360px',
@@ -226,6 +243,12 @@ export default {
         '98': '392px',
         '99': '396px',
         '100': '400px',
+        '101': '404px',
+        '102': '408px',
+        '103': '412px',
+        '104': '416px',
+        '148': '592px',
+        '149': '596px',
         '150': '600px',
         '151': '604px',
         '152': '608px',
@@ -248,7 +271,7 @@ export default {
         '177': '708px',
         '178': '712px',
         '179': '716px',
-        '180' : '720px',
+        '180': '720px',
         '181': '724px',
         '182': '728px',
         '183': '732px',
@@ -262,6 +285,13 @@ export default {
         '192': '768px',
         '198': '792px',
         '0.1px': '0.04px',
+        '1px': '1px',
+      },
+      borderWidth: {
+        '3': '3px',
+      },
+      borderWidth: {
+        '3': '3px',
       },
     },
     screens: {
@@ -287,6 +317,8 @@ export default {
       // => @media (min-width: 1536px) { ... }
     },
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+  ],
 }
 
