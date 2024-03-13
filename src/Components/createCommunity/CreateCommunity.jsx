@@ -43,6 +43,7 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                         value={communityName}
                         onChange={(e) => setCommunityName(e.target.value)}
                         maxLength="21"
+                        autoComplete="off"
                         required
                     />
                     <div className="flex flex-col">

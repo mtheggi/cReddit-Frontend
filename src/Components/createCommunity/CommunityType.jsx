@@ -13,7 +13,7 @@ const CommunityType = ({ type, typeDescription, children, handleRadioChange }) =
                 </span>
             </div>
 
-            <input type="radio" className="h-5 w-5" id={`${type}-community-type`} name="Type" onChange={handleRadioChange} />
+            <input type="radio" className="h-5 w-5 focus:ring-0 cursor-pointer" id={`${type}-community-type`} name="Type" onChange={handleRadioChange} />
 
         </div>
 

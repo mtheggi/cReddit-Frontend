@@ -8,9 +8,6 @@ import CreateCommunityIcon from './CreateCommunityIcon'
 
 import PropTypes from 'prop-types';
 
-
-import PropTypes from 'prop-types';
-
 const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_"+str.toLowerCase().split(' ').join('_');
