@@ -13,21 +13,25 @@ function Account() {
         title="Email Address"
         message="marwanabbas2909@gmail.com"
         regularButton="Change"
+        clickableID="settings-change-email-button"
       />
       <Setting
         title="Gender"
         message="This information may be used to improve your recommendations and ads."
         menuItems={[{ name: "Man" }, { name: "Woman" }]}
+        clickableID={"settings-simplemenu-gender"}
       />
       <Setting
         title="Password"
         message="Last update was yesterday"
         regularButton="Change"
+        clickableID="settings-change-password-button"
       />
       <Setting
         title="Country"
         message="Choose your country"
         menuItems={[{ name: "Egypt" }, { name: "USA" }, { name: "UK" }]}
+        clickableID={"settings-simplemenu-country"}
       />
 
       <Subtitle title="CONNECTED ACCOUNTS" />
@@ -37,6 +41,7 @@ function Account() {
       />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end">
         <button
+          id="settings-connect-twitter-button"
           style={{ backgroundColor: "#1da1f2" }}
           className="w-49 h-10 justify-center flex flex-row bg-red  rounded-3xl items-center"
         >
@@ -61,6 +66,7 @@ function Account() {
       />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end">
         <button
+          id="settings-connect-apple-button"
           style={{ backgroundColor: "#d7d9db" }}
           className="w-49 h-10 justify-center flex flex-row bg-red  rounded-3xl items-center"
         >
@@ -85,6 +91,7 @@ function Account() {
       />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end">
         <button
+          id="settings-connect-google-button"
           style={{ backgroundColor: "#45f57c" }}
           className="w-49 h-10 justify-center flex flex-row bg-red  rounded-3xl items-center"
         >
@@ -97,7 +104,10 @@ function Account() {
 
       <Subtitle title="DELETE ACCOUNTS" />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end mt-5">
-        <button className="w-49 h-10 justify-center flex flex-row items-center">
+        <button
+          id="settings-delete-account-button"
+          className="w-49 h-10 justify-center flex flex-row items-center"
+        >
           <i className="fa-solid fa-trash-can" style={{ color: "#ff585b" }}></i>
           <span className="text-red text-sm font-bold font-plex pl-3">
             DELETE ACCOUNT
@@ -107,5 +117,23 @@ function Account() {
     </div>
   );
 }
-
 export default Account;
+
+/* ID Documentation */
+
+// settings-change-email-button: Button to change email
+
+// settings-simplemenu-: simple menu dropdowns
+//        1) Gender:
+//            1- gender-man
+//            2- gender-woman
+//        2) Country:
+//            1- country-egypt
+//            2- country-usa
+//            3- country-uk
+
+// settings-connect-twitter-button
+// settings-connect-apple-button
+// settings-connect-google-button
+
+// settings-delete-account-button: Button to delete account

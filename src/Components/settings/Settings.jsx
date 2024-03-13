@@ -34,7 +34,7 @@ function Settings() {
         {Tabs.map((tab, i) => {
           return (
             <a
-              key={i}
+              key={tab}
               id={`setting-tab-${i}`}
               className={`text-white text-sm font-bold font-plex pl-5 pr-5 pb-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
@@ -60,3 +60,13 @@ function Settings() {
   );
 }
 export default Settings;
+
+/* ID Documentation */
+
+// Settings Navbar {id, key}
+//    -  Account {setting-tab-0, Account}
+//    -  Profile {setting-tab-1, Profile}
+//    -  Safety & Privacy {setting-tab-2, Safety & Privacy}
+//    -  Feed Settings {setting-tab-3, Feed Settings}
+//    -  Notifications {setting-tab-4, Notifications}
+//    -  Emails {setting-tab-5, Emails}

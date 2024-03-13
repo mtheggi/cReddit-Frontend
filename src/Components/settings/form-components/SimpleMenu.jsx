@@ -3,7 +3,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-function SimpleMenu({ title, menuItems, onSelect }) {
+function SimpleMenu({ title, menuItems, onSelect, id }) {
   return (
     <NavDropdown
       title={title}
@@ -13,7 +13,8 @@ function SimpleMenu({ title, menuItems, onSelect }) {
       {menuItems.map((item, i) => {
         return (
           <NavDropdown.Item
-            key={i}
+            id={`${id}-${item.name.toLowerCase()}`}
+            key={item.name}
             className="text-md hover:bg-reddit_hover"
             onClick={() => onSelect(item.name)}
           >
@@ -24,5 +25,4 @@ function SimpleMenu({ title, menuItems, onSelect }) {
     </NavDropdown>
   );
 }
-
 export default SimpleMenu;

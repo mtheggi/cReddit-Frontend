@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function TextArea({ placeholder, rows = 4, cols = 100, maxLength }) {
+function TextArea({ id, placeholder, rows = 4, cols = 100, maxLength }) {
   const [text, setText] = useState("");
 
   const handleTextChange = (event) => {
@@ -9,6 +9,7 @@ function TextArea({ placeholder, rows = 4, cols = 100, maxLength }) {
   return (
     <div className="mt-2">
       <textarea
+        id={id}
         className="block rounded-md px-2.5 pb-2.5 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 focus:border-3 focus:border-gray-300"
         placeholder={placeholder}
         rows={rows}
