@@ -10,6 +10,16 @@ export default {
       fontFamily: {
         'plex': ['IBM Plex Sans', 'sans-serif'],
       },
+      fontSize: {
+        "2xs": ["10px", "12px"],
+        xs: ["12px", "16px"],
+        sm: ["14px", "20px"],
+        base: ["16px", "24px"],
+        lg: ["18px", "28px"],
+        xl: ["20px", "28px"],
+        "2xl": ["24px", "32px"],
+        "3xl": ["30px", "36px"],
+      },
       colors: {
         reddit_dark: "#030303",
         reddit_search: "#1A282C",
@@ -25,48 +35,51 @@ export default {
         reddit_downvote: "#6A5CFF",
         reddit_upvote: "#D93A01",
         red: "#FF585B",
+        reddit_links: "#629FFF",
       },
       gridTemplateColumns: {
-        '24': 'repeat(24, minmax(0, 1fr))',
+        16: "repeat(16, minmax(0, 1fr))",
+        18: "repeat(18, minmax(0, 1fr))",
+        24: "repeat(24, minmax(0, 1fr))",
       },
       gridColumn: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
         // Add as many as you need
       },
       gridColumnEnd: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
-        '22': '22',
-        '23': '23',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
+        22: "22",
+        23: "23",
         // Add as many as you need
       },
       gridColumnStart: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
-        '22': '22',
-        '23': '23',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
+        22: "22",
+        23: "23",
         // Add as many as you need
       },
       spacing: {
@@ -299,27 +312,34 @@ export default {
       borderWidth: {
         '3': '3px',
       },
+
+      scale: {
+        85: ".85",
+        
+      },
     },
     screens: {
-      'xs': '470px',
+      xs: "470px",
       // => @media (min-width: 470px) { ... }
 
-      'sm': '640px',
+      msm: "530px",
+
+      sm: "640px",
       // => @media (min-width: 640px) { ... }
 
-      'md': '768px',
+      md: "768px",
       // => @media (min-width: 768px) { ... }
 
-      'lg': '956px',
+      lg: "956px",
       // => @media (min-width: 956px) { ... }
 
-      'xl': '1200px',
+      xl: "1200px",
       // => @media (min-width: 1200px) { ... }
 
-      'mxl': '1412px',
+      mxl: "1412px",
       // => @media (min-width: 1412px) { ... }
 
-      '2xl': '1536px',
+      "2xl": "1536px",
       // => @media (min-width: 1536px) { ... }
     },
   },

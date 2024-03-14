@@ -11,6 +11,7 @@ import Setting from '../settings/Setting';
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
+    const [isLogged, setIsLogged] = useState(true);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
     const profileMenuRef = useRef();
@@ -60,11 +61,28 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 
-                        <a id='navbar_chat' href='' className="flex justify-center items-center w-fit h-fit">
-                            <div className='hover:bg-reddit_search_light ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
-                                <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-7 text-gray-300" />
-                            </div>
-                        </a>
+
+                        {!isLogged && (<div className='flex items-center w-fit h-full mr-2'>
+                            <a className=" bg-reddit_upvote rounded-full w-18 mr-2 h-10 hover:no-underline  items-center justify-center  inline-flex" href="" id="navbar_login-button">
+                                <span class="flex items-center justify-center">
+                                    <span className="flex items-center font-medium text-white text-sm ">Log In</span>
+                                </span>
+                            </a>
+
+                            <a className=" bg-reddit_downvote rounded-full w-18 mr-2 h-10 hover:no-underline  items-center justify-center  inline-flex" href="" id="navbar_signup-button">
+                                <span class="flex items-center justify-center">
+                                    <span className="flex items-center font-medium text-white text-sm ">Sign Up</span>
+                                </span>
+                            </a>
+                        </div>)}
+
+
+                        {isLogged &&
+                           <a id='navbar_chat' href='' className="flex justify-center items-center w-fit h-fit">
+                           <div className='hover:bg-reddit_search_light ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
+                               <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-7 text-gray-300" />
+                           </div>
+                           </a>
 
                         <a id='navbar_create_post' href='' className="flex justify-center items-center w-fit h-fit">
                             <div className='hover:bg-reddit_search_light w-8 xs:w-24 h-10  rounded-full flex justify-center items-center cursor-pointer '>
@@ -151,6 +169,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     </div>
                 </div>
             </header>
+            <div className='mt-14 fixed w-full'>
+                <Separator />
             <div className='mt-14 px-4 fixed w-full'>
                 <Separator />
             </div>
