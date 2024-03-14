@@ -2,7 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import FloatingInput from "./FloatingInput";
 import { useEffect, useState } from 'react';
 
-const ResetUsername = () => {
+const ForgetUsername = () => {
 
     const[enrollme, setEnrollme] = useState(false);
 
@@ -62,4 +62,4 @@ const ResetUsername = () => {
     );
 }
 
-export default ResetUsername;
+export default ForgetUsername;

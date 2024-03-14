@@ -2,7 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import FloatingInput from "./FloatingInput";
 import { useEffect, useState } from 'react';
 
-const ResetPass = () => {
+const ForgetPass = () => {
 
   const [enrollme, setEnrollme] = useState(false);
 
@@ -12,7 +12,14 @@ const ResetPass = () => {
   }
 
   const validateUsername = (username) => {
-    return username != '';
+    const regex = /^[a-zA-Z0-9-_]+$/;
+    if(username != '' && username && username.length < 21 && regex.test(username)){
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   return (
@@ -74,4 +81,4 @@ const ResetPass = () => {
   );
 }
 
-export default ResetPass;
+export default ForgetPass;
