@@ -7,7 +7,7 @@ const CommunityType = ({ type, typeDescription, children, handleRadioChange }) =
         <div className="commuity-type flex flex-row px-3 py-3 items-center justify-between hover:bg-reddit_search rounded-xl">
             <div className="flex flex-row">
                 {children}
-                <span className="flex flex-col justify-center">
+                <span className="flex flex-col mr-3 justify-center">
                     <p className="text-sm">{type}</p>
                     <p className="text-xs">{typeDescription}</p>
                 </span>

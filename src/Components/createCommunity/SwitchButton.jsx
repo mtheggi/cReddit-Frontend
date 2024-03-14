@@ -57,7 +57,7 @@ const IOSSwitch = styled((props) => (
 const SwitchButton = ({ isSwtched, setIsSwitched }) => {
     return (<>
         <FormControlLabel
-            control={<IOSSwitch sx={{ m: 1 }} />}
+            control={<IOSSwitch sx={{ mt: 1, mb:0, mr:-2 }} />}
             label=""
             onClick={() => setIsSwitched(!isSwtched)}
         />

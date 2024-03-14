@@ -57,7 +57,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
-                    <Link id='navbar_reddit' className='w-fit h-fit flex items-center' to="">
+                    <Link id='navbar_reddit' className='w-fit h-fit flex mr-2 xs:mr-0 items-center' to="">
                         <img src={redditLogo} alt="Logo" className="w-8  h-8 min-w-8" />
                         <svg className="h-[22px] ml-2 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
                             <g className=' fill-white'>
@@ -78,7 +78,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 
 
-                        {!isLogged && (<div className=' flex items-center w-fit h-full mr-4'>
+                        {!isLogged && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
                             <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login-button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
@@ -89,7 +89,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
 
-                                    <div ref={loginMenuRef} className='z-20 flex w-132 h-160'>
+                                    <div ref={loginMenuRef} className='z-20 flex w-120 h-fit h-min-160'>
                                         <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
 
-                                    <div ref={signupMenuRef} className='z-20 flex w-132 h-160 '>
+                                    <div ref={signupMenuRef} className='z-20 flex w-120 h-fit '>
                                         <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                         {isLogged &&
                             <>
                                 <a id='navbar_chat' href='' className="flex justify-center items-center w-fit h-fit">
-                                    <div className='hover:bg-reddit_search_light ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
+                                    <div className='hover:bg-reddit_search_light ml-0 xs:ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
                                         <ChatBubbleOvalLeftEllipsisIcon className="h-8 w-7 text-gray-300" />
                                     </div>
                                 </a>

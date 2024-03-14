@@ -25,8 +25,8 @@ const validateUsername = (username) => {
   }
 
   return (
-    <div id="navbar_login_menu" className="flex bg-reddit_hover rounded-3xl h-fit">
-      <div className="flex flex-col w-132 h-160 bg-reddit rounded-2xl m-auto">
+    <div id="navbar_login_menu" className="flex bg-reddit_hover rounded-3xl h-fit h-min-160 xs:w-120 w-100%">
+      <div className="flex flex-col bg-reddit rounded-2xl w-120 m-auto">
         <div className="flex justify-end px-6 pt-6 pb-2 ">
           <div id="login_close" onClick={()=>setIsOpenedLoginMenu(false)} className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">
             <button className="h-8 w-8 rounded-2xl">
@@ -46,7 +46,7 @@ const validateUsername = (username) => {
             </button>
           </div>
         </div>
-        <div className="h-120 px-20 ">
+        <div className="h-120 px-16 ">
           <h1 className="text-2xl h-7 text-white font-bold mb-2 text-neutral">
             Log In
           </h1>
@@ -73,14 +73,14 @@ const validateUsername = (username) => {
             <GAButtons />
           </div>
 
-          <div className="flex flex-row w-[368px] h-[16px]">
-            <hr className="w-[160px] h-[1px] bg-[#D7DFE2] self-center"></hr>
-            <span className="text-[12px] px-[16px] w-[48px] h-[16px]">OR</span>
-            <hr className="w-[160px] h-[1px] bg-[#D7DFE2] self-center"></hr>
+          <div className="flex flex-row w-fit justify-center mb-2 mt-1 h-[16px]">
+            <hr className="w-[155px] h-[1px] bg-white text-gray-300 self-center"></hr>
+            <span className="text-[12px] px-[16px] text-gray-400 w-[48px] h-[16px]">OR</span>
+            <hr className="w-[155px] h-[1px] text-gray-300 self-center"></hr>
           </div>
 
-          <div>
-            <div className="mb-8">
+          <div className="mt-4">
+            <div className="mb-3">
               <FloatingInput
                 id={"LogIn_username"}
                 label="Username"
@@ -107,8 +107,8 @@ const validateUsername = (username) => {
           </div>
         </div>
 
-        <div className="w-[528px] h-[96px] px-[80px] py-[24px] flex items-center">
-          <div className={` ${usernameValidOnchange && passwordValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+        <div className="w-[480px] h-[96px] px-[63px] py-[24px] flex items-center">
+          <div className={` ${usernameValidOnchange && passwordValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
                 Log In

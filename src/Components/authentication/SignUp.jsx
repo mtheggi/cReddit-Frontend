@@ -13,8 +13,8 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
   };
 
   return (
-    <div id="navbar_signup_menu" className="flex h-158 bg-reddit_hover rounded-3xl">
-      <div className="flex flex-col w-132 h-160 rounded-2xl">
+    <div id="navbar_signup_menu" className="flex h-fit h-min-160 xs:w-120 w-100% bg-reddit_hover rounded-3xl">
+      <div className="flex flex-col w-120 h-160 rounded-2xl">
         <div className="flex justify-end px-6 pt-6 pb-2 rounded-2xl">
           <div onClick={()=>setIsOpenedSignupMenu(false)} className="flex h-8 w-8  hover:bg-reddit_search_light rounded-full ">
             <button className="h-8 w-8">
@@ -34,7 +34,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
             </button>
           </div>
         </div>
-        <div className="h-120 px-20">
+        <div className="h-120 px-12 w-full flex flex-col ">
           <h1 className="text-2xl h-7 text-white font-bold mb-2 text-neutral">
             Sign Up
           </h1>
@@ -57,18 +57,18 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
             </a>
             .
           </p>
-          <div className="w-[368px]  h-10 mt-15">
+          <div className="w-[368px] mx-auto h-10 mt-15">
             <GAButtons />
           </div>
 
-          <div className="flex flex-row my-6 w-[368px] h-[16px]">
-            <hr className="w-[160px] h-[1px] bg-[#D7DFE2] self-center"></hr>
-            <span className="text-[12px] px-[16px] w-[48px] h-[16px]">OR</span>
-            <hr className="w-[160px] h-[1px] bg-[#D7DFE2] self-center"></hr>
+          <div className="flex flex-row mt-4 mb-3 ml-2 w-[368px] h-[16px]">
+            <hr className="w-[160px] h-[1px] text-gray-400 self-center"></hr>
+            <span className="text-[12px] px-[16px] text-gray-400 w-[48px] h-[16px]">OR</span>
+            <hr className="w-[160px] h-[1px] text-gray-400 self-center"></hr>
           </div>
 
           <div>
-            <div className="min-h-[100px] mt-4">
+            <div className="min-h-[100px] px-2 mt-1">
               <FloatingInput
                 id={"signup_email"}
                 label="Email"
@@ -78,12 +78,12 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
             </div>
           </div>
 
-          <div className="text-[14px] mt-4 text-[#FFFFFF]">
+          <div className="text-[14px] mt-4 ml-4 text-[#FFFFFF]">
             Already a redditor? <a className="text-reddit_links cursor-pointer hover:text-blue-300">Log In</a>
           </div>
         </div>
 
-        <div className="w-[528px] h-[96px] mt-auto px-[80px] py-[24px] flex items-center">
+        <div className="w-[480px] h-[96px] mt-auto px-[60px] py-[24px] flex items-center">
           <div className={`  ${emailValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">

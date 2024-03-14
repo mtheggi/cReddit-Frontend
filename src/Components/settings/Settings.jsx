@@ -52,7 +52,7 @@ function Settings() {
 
       <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
 
-      <div className="flex flex-row w-full mt-10 mb-5 max-w-6xl">
+      <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
         {currTab == 0 && <Account />}
         {currTab == 1 && <Profile />}
         {currTab == 2 && <SafetyAndPrivacy />}
