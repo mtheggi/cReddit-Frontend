@@ -58,7 +58,7 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                         autoComplete="off"
                         required
                     /> */}
-                    <FloatingInput id="community-name" label="Name" validateInput={validateCommName}/>
+                    <FloatingInput id="community-name" label="Name" validateInput={validateCommName} setInputNameOnChange={setCommunityName}/>
                     <div className="flex flex-col">
                         <p className="text-sm mt-4 mb-2"><strong>Type</strong></p>
 
