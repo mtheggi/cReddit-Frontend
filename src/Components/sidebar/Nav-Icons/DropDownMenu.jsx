@@ -4,11 +4,11 @@ import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon,
 import CommunityIcon from './Community-icon';
 import NavIcon from './Nav-Icons';
 import Separator from './Separator';
-
+import CreateCommunityIcon from './CreateCommunityIcon'
 
 import PropTypes from 'prop-types';
 
-const DropDownMenu = ({ MenuHeader, id }) => {
+const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_"+str.toLowerCase().split(' ').join('_');
     const [isDropped, setIsDropped] = useState(false);
@@ -37,6 +37,7 @@ const DropDownMenu = ({ MenuHeader, id }) => {
 
 
             {isCommunity && isDropped && <div>
+                <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} />
                 <CommunityIcon text={"r/testcomminty"} divId="sidebar_community_icon1" bookmarkId="sidebar_community_bookmark1" />
                 <CommunityIcon text={"r/samirsaiid"} divId="sidebar_community_icon2" bookmarkId="sidebar_community_bookmark2" />
                 <CommunityIcon text={"r/Pizzalovers"} divId="sidebar_community_icon3" bookmarkId="sidebar_community_bookmark3" />
@@ -73,6 +74,7 @@ const DropDownMenu = ({ MenuHeader, id }) => {
 
     );
 }
+
 DropDownMenu.propTypes = {
     MenuHeader: PropTypes.string
 }

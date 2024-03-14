@@ -103,10 +103,10 @@ function Account() {
       </div>
 
       <Subtitle title="DELETE ACCOUNTS" />
-      <div className="max-w-3xl flex flex-row justify-end w-full items-end mt-5">
+      <div className="max-w-3xl flex flex-row justify-end w-full items-end mt-4">
         <button
           id="settings-delete-account-button"
-          className="w-49 h-10 justify-center flex flex-row items-center"
+          className="w-49 h-7 justify-center flex flex-row items-center"
         >
           <i className="fa-solid fa-trash-can" style={{ color: "#ff585b" }}></i>
           <span className="text-red text-sm font-bold font-plex pl-3">

@@ -38,7 +38,7 @@ function Settings() {
             <a
               key={tab}
               id={`setting-navbar-${tab.toLowerCase()}-tab`}
-              className={`text-white text-sm font-bold font-plex px-2 mx-2 pb-2 pt-3 ${
+              className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
               }`}
             >

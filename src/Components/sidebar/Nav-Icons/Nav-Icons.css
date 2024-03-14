@@ -3,4 +3,8 @@
 }
 .SideIcon-Container:hover{
     background-color: #141F23;    
+    cursor: pointer;
+}
+body {
+    font-family: apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
 }

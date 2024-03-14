@@ -10,6 +10,16 @@ export default {
       fontFamily: {
         'plex': ['IBM Plex Sans', 'sans-serif'],
       },
+      fontSize: {
+        "2xs": ["10px", "12px"],
+        xs: ["12px", "16px"],
+        sm: ["14px", "20px"],
+        base: ["16px", "24px"],
+        lg: ["18px", "28px"],
+        xl: ["20px", "28px"],
+        "2xl": ["24px", "32px"],
+        "3xl": ["30px", "36px"],
+      },
       colors: {
         reddit_dark: "#030303",
         reddit_search: "#1A282C",
@@ -17,54 +27,58 @@ export default {
         reddit_sky: "#50E9F4",
         reddit_search_light: "#213236",
         reddit_greenyDark: "#0B1416",
+        reddit_blue: "#1460d1",
+        reddit_light_blue: "#1870f4",
         reddit_lightGreen: "#0F1A1C",
         reddit_hover: "#141F23",
         reddit_darkRecent: "#04090A",
         reddit_downvote: "#6A5CFF",
         reddit_upvote: "#D93A01",
-        red: "#FF585B",
+        reddit_links: "#629FFF",
       },
       gridTemplateColumns: {
-        '24': 'repeat(24, minmax(0, 1fr))',
+        16: "repeat(16, minmax(0, 1fr))",
+        18: "repeat(18, minmax(0, 1fr))",
+        24: "repeat(24, minmax(0, 1fr))",
       },
       gridColumn: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
         // Add as many as you need
       },
       gridColumnEnd: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
-        '22': '22',
-        '23': '23',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
+        22: "22",
+        23: "23",
         // Add as many as you need
       },
       gridColumnStart: {
-        '13': '13',
-        '14': '14',
-        '15': '15',
-        '16': '16',
-        '17': '17',
-        '18': '18',
-        '19': '19',
-        '20': '20',
-        '21': '21',
-        '22': '22',
-        '23': '23',
+        13: "13",
+        14: "14",
+        15: "15",
+        16: "16",
+        17: "17",
+        18: "18",
+        19: "19",
+        20: "20",
+        21: "21",
+        22: "22",
+        23: "23",
         // Add as many as you need
       },
       spacing: {
@@ -142,6 +156,7 @@ export default {
         '68%': '68%',
         '69%': '69%',
         '70%': '70%',
+        '74%': '74%',
         '80%': '80%',
         '90%': '90%',
         '91%': '91%',
@@ -154,6 +169,8 @@ export default {
         '98%': '98%',
         '99%': '99%',
         '100%': '100%',
+
+        
         '13': '52px',
         '14': '56px',
         '14.5': '58px',
@@ -247,6 +264,7 @@ export default {
         '102': '408px',
         '103': '412px',
         '104': '416px',
+        '125': '500px',
         '148': '592px',
         '149': '596px',
         '150': '600px',
@@ -293,27 +311,34 @@ export default {
       borderWidth: {
         '3': '3px',
       },
+
+      scale: {
+        85: ".85",
+        
+      },
     },
     screens: {
-      'xs': '470px',
+      xs: "470px",
       // => @media (min-width: 470px) { ... }
 
-      'sm': '640px',
+      msm: "530px",
+
+      sm: "640px",
       // => @media (min-width: 640px) { ... }
 
-      'md': '768px',
+      md: "768px",
       // => @media (min-width: 768px) { ... }
 
-      'lg': '956px',
+      lg: "956px",
       // => @media (min-width: 956px) { ... }
 
-      'xl': '1200px',
+      xl: "1200px",
       // => @media (min-width: 1200px) { ... }
 
-      'mxl': '1412px',
+      mxl: "1412px",
       // => @media (min-width: 1412px) { ... }
 
-      '2xl': '1536px',
+      "2xl": "1536px",
       // => @media (min-width: 1536px) { ... }
     },
   },
