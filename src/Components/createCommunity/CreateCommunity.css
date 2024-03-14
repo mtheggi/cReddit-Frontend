@@ -9,10 +9,6 @@
     z-index: 10;
 }
 
-.overlay {
-    background: #000000;
-    opacity: 0.5;
-}
 
 .close-modal {
     position: absolute;

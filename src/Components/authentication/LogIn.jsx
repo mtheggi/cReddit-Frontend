@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import Input from "./FloatingInput";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 
-const LogIn = () => {
+const LogIn = ({setIsOpenedLoginMenu}) => {
 
 const[usernameValidOnchange, setUsernameValidOnchange] = useState(false);
 const[passwordValidOnchange, setPasswordValidOnchange] = useState(false);
 
-  const validateUsername = (username) => {
-    return username != "";
-  };
+const validateUsername = (username) => {
+  const regex = /^[a-zA-Z0-9-_]+$/;
+  if(username != '' && username && username.length < 21 && regex.test(username)){
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
 
   function validatePassword(password) {
     const regex =
@@ -22,7 +28,7 @@ const[passwordValidOnchange, setPasswordValidOnchange] = useState(false);
     <div className="flex bg-reddit_hover rounded-3xl h-fit">
       <div className="flex flex-col w-132 h-160 bg-reddit rounded-2xl m-auto">
         <div className="flex justify-end px-6 pt-6 pb-2 ">
-          <div className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">
+          <div id="login_close" onClick={()=>setIsOpenedLoginMenu(false)} className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">
             <button className="h-8 w-8 rounded-2xl">
               <span className="flex justify-center align-middle">
                 <svg

@@ -34,7 +34,6 @@ export default {
         reddit_darkRecent: "#04090A",
         reddit_downvote: "#6A5CFF",
         reddit_upvote: "#D93A01",
-        red: "#FF585B",
         reddit_links: "#629FFF",
       },
       gridTemplateColumns: {

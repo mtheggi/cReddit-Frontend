@@ -3,7 +3,7 @@ import Input from "./FloatingInput";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 
-const SignUp = () => {
+const SignUp = ({setIsOpenedSignupMenu}) => {
 
   const[emailValidOnchange, setEmailValidOnchange] = useState(false);
 
@@ -13,10 +13,10 @@ const SignUp = () => {
   };
 
   return (
-    <div className="flex h-fit bg-reddit_hover rounded-3xl">
-      <div className="flex flex-col w-132 h-160 rounded-2xl m-auto">
+    <div className="flex h-158 bg-reddit_hover rounded-3xl">
+      <div className="flex flex-col w-132 h-160 rounded-2xl">
         <div className="flex justify-end px-6 pt-6 pb-2 rounded-2xl">
-          <div className="flex h-8 w-8  hover:bg-reddit_search_light rounded-full ">
+          <div onClick={()=>setIsOpenedSignupMenu(false)} className="flex h-8 w-8  hover:bg-reddit_search_light rounded-full ">
             <button className="h-8 w-8">
               <span className="flex justify-center align-middle">
                 <svg
@@ -57,7 +57,7 @@ const SignUp = () => {
             </a>
             .
           </p>
-          <div className="w-[368px] h-10 mt-4">
+          <div className="w-[368px]  h-10 mt-15">
             <GAButtons />
           </div>
 
@@ -68,7 +68,7 @@ const SignUp = () => {
           </div>
 
           <div>
-            <div className="min-h-[100px]">
+            <div className="min-h-[100px] mt-4">
               <FloatingInput
                 id={"signup_email"}
                 label="Email"
@@ -78,12 +78,12 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="text-[14px] text-[#FFFFFF]">
+          <div className="text-[14px] mt-4 text-[#FFFFFF]">
             Already a redditor? <a className="text-reddit_links cursor-pointer hover:text-blue-300">Log In</a>
           </div>
         </div>
 
-        <div className="w-[528px] h-[96px] px-[80px] py-[24px] flex items-center">
+        <div className="w-[528px] h-[96px] mt-auto px-[80px] py-[24px] flex items-center">
           <div className={`  ${emailValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">

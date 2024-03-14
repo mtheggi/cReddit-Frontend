@@ -7,8 +7,20 @@ import { useState } from "react";
 import Separator from "../sidebar/Nav-Icons/Separator";
 import CommunityType from "./CommunityType";
 import SwitchButton from "./SwitchButton";
+import FloatingInput from "../authentication/FloatingInput";
 
 const CreateCommunity = ({ setIsCommunityOpen }) => {
+
+    const validateCommName = (commName) => {
+        const regex = /^[a-zA-Z0-9-_]+$/;
+        if(commName != '' && commName && commName.length < 21 && regex.test(commName)){
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+      }
 
     const [communityName, setCommunityName] = useState("");
     const [selectedRadio, setSelectedRadio] = useState(""); // ids= ${type}-community-type q
@@ -36,7 +48,7 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                 </div>
                 <div id="card-content" className="flex flex-col">
                     <p className="mb-3 text-sm text-gray-400 hidden sm:block">Build and grow a community about something you care about. We will help you set things up.</p>
-                    <input type="text"
+                    {/* <input type="text"
                         id="community-name"
                         className="bg-reddit_search h-13 px-3 rounded-3xl hover:bg-reddit_search_light"
                         placeholder="Name"
@@ -45,7 +57,8 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                         maxLength="21"
                         autoComplete="off"
                         required
-                    />
+                    /> */}
+                    <FloatingInput id="community-name" label="Name" validateInput={validateCommName}/>
                     <div className="flex flex-col">
                         <p className="text-sm mt-4 mb-2"><strong>Type</strong></p>
 
