@@ -3,7 +3,7 @@ import NavIcon from "./Nav-Icons/Nav-Icons";
 import { HomeIcon, EllipsisHorizontalCircleIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/solid";
 import Separator from "./Nav-Icons/Separator";
 import DropDownMenu from "./Nav-Icons/DropDownMenu";
-const Sidebar = ({ setIsCommunityOpen }) => {
+const Sidebar = ({ setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar }) => {
 
     // Todo: Make the dropdown action have some animation
     return (
@@ -16,7 +16,7 @@ const Sidebar = ({ setIsCommunityOpen }) => {
                 <Separator />
                 <DropDownMenu MenuHeader="RECENT" id="sidebar_recent" />
                 <Separator />
-                <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" setIsCommunityOpen={setIsCommunityOpen} />
+                <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                 <Separator />
                 <DropDownMenu MenuHeader="RESOURCES" id="sidebar_resources" />
             </div>

@@ -25,7 +25,7 @@ const validateUsername = (username) => {
   }
 
   return (
-    <div className="flex bg-reddit_hover rounded-3xl h-fit">
+    <div id="navbar_login_menu" className="flex bg-reddit_hover rounded-3xl h-fit">
       <div className="flex flex-col w-132 h-160 bg-reddit rounded-2xl m-auto">
         <div className="flex justify-end px-6 pt-6 pb-2 ">
           <div id="login_close" onClick={()=>setIsOpenedLoginMenu(false)} className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">

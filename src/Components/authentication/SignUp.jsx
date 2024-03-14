@@ -13,7 +13,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
   };
 
   return (
-    <div className="flex h-158 bg-reddit_hover rounded-3xl">
+    <div id="navbar_signup_menu" className="flex h-158 bg-reddit_hover rounded-3xl">
       <div className="flex flex-col w-132 h-160 rounded-2xl">
         <div className="flex justify-end px-6 pt-6 pb-2 rounded-2xl">
           <div onClick={()=>setIsOpenedSignupMenu(false)} className="flex h-8 w-8  hover:bg-reddit_search_light rounded-full ">

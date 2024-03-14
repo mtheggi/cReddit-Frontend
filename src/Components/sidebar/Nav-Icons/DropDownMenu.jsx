@@ -8,7 +8,7 @@ import CreateCommunityIcon from './CreateCommunityIcon'
 
 import PropTypes from 'prop-types';
 
-const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen }) => {
+const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_"+str.toLowerCase().split(' ').join('_');
     const [isDropped, setIsDropped] = useState(false);
@@ -37,7 +37,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen }) => {
 
 
             {isCommunity && isDropped && <div>
-                <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} />
+                <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                 <CommunityIcon text={"r/testcomminty"} divId="sidebar_community_icon1" bookmarkId="sidebar_community_bookmark1" />
                 <CommunityIcon text={"r/samirsaiid"} divId="sidebar_community_icon2" bookmarkId="sidebar_community_bookmark2" />
                 <CommunityIcon text={"r/Pizzalovers"} divId="sidebar_community_icon3" bookmarkId="sidebar_community_bookmark3" />

@@ -1,5 +1,5 @@
 import redditLogo from '../../assets/reddit_logo.png';
-import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, CursorArrowRippleIcon, PlusIcon, } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, PlusIcon, } from '@heroicons/react/24/outline'
 import { useState, useEffect, useRef } from 'react';
 import avatar from '../../assets/avatar.png';
 import Searchbar from '../searchbar/Searchbar';
@@ -15,16 +15,27 @@ import SignUp from '../authentication/SignUp';
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    const profileMenuRef = useRef();
-    const profileMenuRefExpanded = useRef();
-    const [isLogged, setIsLogged] = useState(false);
+    const [isLogged, setIsLogged] = useState(false); //will represent if i have a token or not
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
+    const profileMenuRef = useRef();
+    const profileMenuRefExpanded = useRef();
+    const loginMenuRef = useRef();
+    const loginButtonRef = useRef();
+    const signupMenuRef = useRef();
+    const signupButtonRef = useRef();
+    
 
     useEffect(() => {
         let closeDropdown = (e) => {
             if (profileMenuRef.current && !profileMenuRef.current.contains(e.target) && profileMenuRefExpanded.current && !profileMenuRefExpanded.current.contains(e.target)) {
                 setIsOpenProfileMenu(false);
+            }
+            if (loginMenuRef.current && !loginMenuRef.current.contains(e.target) && loginButtonRef.current && !loginButtonRef.current.contains(e.target)) {
+                setIsOpenedLoginMenu(false);
+            }
+            if (signupMenuRef.current && !signupMenuRef.current.contains(e.target) && signupButtonRef.current && !signupButtonRef.current.contains(e.target)) {
+                setIsOpenedSignupMenu(false);
             }
         };
         document.addEventListener('click', closeDropdown);
@@ -67,8 +78,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 
 
-                        {!isLogged && (<div className='relative flex items-center right-14 w-fit h-full mr-4'>
-                            <div onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login-button">
+                        {!isLogged && (<div className=' flex items-center w-fit h-full mr-4'>
+                            <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login-button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
                                 </span>
@@ -77,14 +88,14 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                             {isOpenedLoginMenu && (
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
-                                   
-                                    <div className='z-10 flex w-102 h-168 -ml-40'>
+
+                                    <div ref={loginMenuRef} className='z-20 flex w-132 h-160'>
                                         <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
                                     </div>
                                 </div>
                             )}
 
-                            <div onClick={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup-button">
+                            <div ref={signupButtonRef} onClick ={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup-button">
                                 <span className="flex items-center justify-center">
                                     <span className="flex items-center font-medium text-white text-sm ">Sign Up</span>
                                 </span>
@@ -93,8 +104,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                             {isOpenedSignupMenu && (
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
-                                   
-                                    <div className='z-10 flex w-102 h-168 -ml-40'>
+
+                                    <div ref={signupMenuRef} className='z-20 flex w-132 h-160 '>
                                         <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>

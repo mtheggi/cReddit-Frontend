@@ -20,7 +20,7 @@ const FloatingInput = ({ id, label, validateInput, setSubmitState, setInputNameO
                         e.target.style.marginTop = "20px";
                         e.target.style.width="85%";
                     }
-                }} type={label==='Password' ? 'password':'text'} autoComplete={label==='Name'?'off':''} onCopy={(e) => { if (label === 'Password') e.preventDefault(); }} id={id} className={`block focus:mt-5  focus:h-6 h-13 px-0 ml-3.5 w-full text-sm text-white bg-transparent border-0  appearance-none dark:text-white   focus:outline-none focus:ring-0  peer`} placeholder=" " />
+                }} type={label==='Password' ? 'password':'text'} autoComplete={label==='Name'?'off':'on'} onCopy={(e) => { if (label === 'Password') e.preventDefault(); }} id={id} className={`block focus:mt-5  focus:h-6 h-13 px-0 ml-3.5 w-full text-sm text-white bg-transparent border-0  appearance-none dark:text-white   focus:outline-none focus:ring-0  peer`} placeholder=" " />
                 <div className="flex absolute text-sm duration-300 transform -translate-y-3 scale-85 top-3 -z-10 origin-[0] peer-focus:start-0 peer-focus:text-reddit_upvote peer-focus:dark:text-reddit_upvote peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-85 peer-focus:-translate-y-3 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto ml-3.5 mt-1">
                     <label htmlFor={id} className="text-gray-400 dark:text-gray-300">{label}</label>
                     <span className="text-red-500 dark:text-red-400 ml-1">*</span>

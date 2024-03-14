@@ -9,7 +9,7 @@ import CommunityType from "./CommunityType";
 import SwitchButton from "./SwitchButton";
 import FloatingInput from "../authentication/FloatingInput";
 
-const CreateCommunity = ({ setIsCommunityOpen }) => {
+const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     const validateCommName = (commName) => {
         const regex = /^[a-zA-Z0-9-_]+$/;
@@ -38,7 +38,7 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
     return (
         <div className="community-modal flex flex-row items-center justify-center">
             <div className="overlay"></div>
-            <div id="community-card" className="bg-reddit_greenyDark fixed z-10 text-white rounded-xl w-70% min-w-93 sm:w-99 md:w-125 h-160 md:h-150 px-3 py-2">
+            <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark fixed z-20 text-white rounded-xl w-70% min-w-93 sm:w-99 md:w-125 h-160 md:h-150 px-3 py-2">
                 <div className="card-header flex flex-row justify-center sm:justify-between"  >
                     <span className="flex flex-col sm:flex-row justify-center sm:content-center">
                         <img src={redditCare} alt="redditCare" className="h-12 w-12  mx-auto" />
@@ -57,7 +57,10 @@ const CreateCommunity = ({ setIsCommunityOpen }) => {
                         maxLength="21"
                         autoComplete="off"
                         required
-                    /> */}
+                    /> */} 
+
+                    {/* Replaced the upper normal input with the FloatingInput component */}
+
                     <FloatingInput id="community-name" label="Name" validateInput={validateCommName} setInputNameOnChange={setCommunityName}/>
                     <div className="flex flex-col">
                         <p className="text-sm mt-4 mb-2"><strong>Type</strong></p>

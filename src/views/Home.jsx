@@ -14,6 +14,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const sidebarRef = useRef();
     const recentRef = useRef();
     const mainfeedRef = useRef();
+    const communiyCardRef = useRef();
+    const communityButtonRef = useRef();
 
     useEffect(() => {
         let handleClickOutside = (e) => {
@@ -21,6 +23,10 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 && navbarRef.current && !navbarRef.current.contains(e.target)) {
                 setIsVisibleLeftSidebar(false);
             }
+            if (communiyCardRef.current && !communiyCardRef.current.contains(e.target)
+            && communityButtonRef.current && !communityButtonRef.current.contains(e.target)) {
+             setIsCommunityOpen(false);
+        }
         };
         document.addEventListener('click', handleClickOutside);
 
@@ -44,7 +50,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         return () => mediaQuery.removeEventListener('change', handleResize);
     });
 
-    useEffect(() => {
+    useEffect(() => { //Todo: Optimize the code of handling the disappearing of scrolling
         let timer = null;
 
         const handleScroll = () => {
@@ -99,10 +105,10 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 <div className={`relative flex flex-row w-fit lg:mr-5 xl:mr-3% mxl:mr-10 h-full`}>
 
                     <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} />
+                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                     </div>
                     <div className="">
-                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} />}
+                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef}  />}
                     </div>
 
                     <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
