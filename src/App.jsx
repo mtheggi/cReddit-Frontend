@@ -2,18 +2,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Navbar from './Components/navbar/Navbar';
 import Home from './views/Home';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Settings from './Components/settings/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-
-
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const navbarRef = useRef();
-
-
   return (
 
     <Router>
