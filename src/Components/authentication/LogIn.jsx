@@ -4,8 +4,8 @@ import FloatingInput from "./FloatingInput";
 
 const LogIn = ({setIsOpenedLoginMenu}) => {
 
-const[usernameValidOnchange, setUsernameValidOnchange] = useState(false);
-const[passwordValidOnchange, setPasswordValidOnchange] = useState(false);
+const[username, setUsername] = useState('');
+const[password, setPassword] = useState('');
 
 const validateUsername = (username) => {
   const regex = /^[a-zA-Z0-9-_]+$/;
@@ -19,9 +19,9 @@ const validateUsername = (username) => {
 }
 
   function validatePassword(password) {
-    const regex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\[\]:;<>.,?\\\-]).{8,}$/;
-    return regex.test(password);
+    if (password != '' && password) {
+      return true;
+    }
   }
 
   return (
@@ -85,7 +85,7 @@ const validateUsername = (username) => {
                 id={"LogIn_username"}
                 label="Username"
                 validateInput={validateUsername}
-                setSubmitState={setUsernameValidOnchange}
+                setInputNameOnChange={setUsername}
               />
             </div>
             <div className="mb-14">
@@ -93,7 +93,7 @@ const validateUsername = (username) => {
                 id={"LogIn_password"}
                 label="Password"
                 validateInput={validatePassword}
-                setSubmitState={setPasswordValidOnchange}
+                setInputNameOnChange={setPassword}
               />
             </div>
           </div>
@@ -108,7 +108,7 @@ const validateUsername = (username) => {
         </div>
 
         <div className="w-[480px] h-[96px] px-[63px] py-[24px] flex items-center">
-          <div className={` ${usernameValidOnchange && passwordValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div id="login_submit" className={` ${ username && password && validateUsername(username) && validatePassword(password) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
                 Log In

@@ -5,7 +5,7 @@ import FloatingInput from "./FloatingInput";
 
 const SignUp = ({setIsOpenedSignupMenu}) => {
 
-  const[emailValidOnchange, setEmailValidOnchange] = useState(false);
+  const[email, setEmail] = useState('');
 
   const validateEmail = (email) => {
     var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
@@ -73,7 +73,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
                 id={"signup_email"}
                 label="Email"
                 validateInput={validateEmail}
-                setSubmitState={setEmailValidOnchange}
+                setInputNameOnChange={setEmail}
               />
             </div>
           </div>
@@ -84,7 +84,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
         </div>
 
         <div className="w-[480px] h-[96px] mt-auto px-[60px] py-[24px] flex items-center">
-          <div className={`  ${emailValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div id="signup" className={`  ${email && validateEmail(email) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                 Continue

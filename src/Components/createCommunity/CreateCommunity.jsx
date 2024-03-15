@@ -12,8 +12,7 @@ import FloatingInput from "../authentication/FloatingInput";
 const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     const validateCommName = (commName) => {
-        const regex = /^[a-zA-Z0-9-_]+$/;
-        if (commName != '' && commName && commName.length < 21 && regex.test(commName)) {
+        if (commName != '' && commName) {
             return true;
         }
         else {
@@ -64,7 +63,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
                     {/* Replaced the upper normal input with the FloatingInput component */}
                     <div className="w-full px-1.5">
-                    <FloatingInput id="community-name" label="Name" validateInput={validateCommName} setInputNameOnChange={setCommunityName} />
+                    <FloatingInput id="community-name" label="Community Name" validateInput={validateCommName} setInputNameOnChange={setCommunityName} />
                     </div>
                     <div className="flex flex-col space-y-1">
                         <p className="text-sm mt-4 mb-2"><strong>Type</strong></p>
