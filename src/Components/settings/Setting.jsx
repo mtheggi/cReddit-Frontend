@@ -6,16 +6,20 @@ import SimpleMenu from "./form-components/SimpleMenu";
 function Setting({
   title,
   message,
+  clickableID,
+  // Toggle Button,
   toggleButton,
-  regularButton,
-  menuItems,
-  regularButtonOnClick,
   toggleButtonOnClick,
   isToggled,
-  clickableID,
+  // Regular Button,
+  regularButton,
+  regularButtonOnClick,
+  // Menu,
+  menuItems,
+  selectedItem,
 }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(
-    menuItems ? menuItems[0].name : ""
+    menuItems?.find((item) => item.name === selectedItem)?.name || "SELECT"
   );
 
   return (
