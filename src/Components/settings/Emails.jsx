@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
-import Setting from './Setting';
-import Subtitle from './Subtitle'
+import React, { useState } from "react";
+import Setting from "./Setting";
+import Subtitle from "./components/Subtitle";
 
 const emailSettings = {
-  messages: [
-    { id: 'chatRequests', title: 'Chat requests' },
-  ],
-  activity: [
-    { id: 'newFollowers', title: 'New followers' },
-    ],
+  messages: [{ id: "chatRequests", title: "Chat requests" }],
+  activity: [{ id: "newFollowers", title: "New followers" }],
   finalEmail: [
-    { id: 'unsubscribeFromAllEmails', title: 'Unsubscribe from all emails', initialValue: false },
+    {
+      id: "unsubscribeFromAllEmails",
+      title: "Unsubscribe from all emails",
+      initialValue: false,
+    },
   ],
 };
 
 function Emails() {
-  
   const [toggles, setToggles] = useState({
     chatRequests: true,
     newFollowers: true,
@@ -45,13 +44,13 @@ function Emails() {
   );
 
   return (
-    <div className="flex flex-col w-full"> 
+    <div className="flex flex-col w-full">
       <h3 className="text-white text-xl -mb-3 font-bold font-plex">
         Manage Emails
       </h3>
-      {renderSection(emailSettings.messages, 'Messages')}
-      {renderSection(emailSettings.activity, 'Activity')}
-      {renderSection(emailSettings.finalEmail, '')}
+      {renderSection(emailSettings.messages, "Messages")}
+      {renderSection(emailSettings.activity, "Activity")}
+      {renderSection(emailSettings.finalEmail, "")}
     </div>
   );
 }

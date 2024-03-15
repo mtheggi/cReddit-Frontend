@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dropdown } from "flowbite-react";
 import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
-import SimpleMenu from "./form-components/SimpleMenu";
+import SimpleMenu from "./components/SimpleMenu";
 
 function Setting({
   title,

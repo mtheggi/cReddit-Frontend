@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import Subtitle from "./Subtitle";
+import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
-import DisconnectButton from "./form-components/DisconnectButton";
+import DisconnectButton from "./components/DisconnectButton";
 
 function Account({
   email,

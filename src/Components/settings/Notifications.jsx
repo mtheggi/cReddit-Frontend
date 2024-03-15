@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import Setting from './Setting';
-import Subtitle from './Subtitle'
+import React, { useState } from "react";
+import Setting from "./Setting";
+import Subtitle from "./components/Subtitle";
 
 const notificationsSettings = {
   activity: [
-    { id: 'mentionsOfUsername', title: 'Mentions of u/username' },
-    { id: 'commentsOnYourPosts', title: 'Comments on your posts' },
-    { id: 'upvotesOnYourPosts', title: 'Upvotes on your posts' },
-    { id: 'upvotesOnYourComments', title: 'Upvotes on your comments' },
-    { id: 'repliesToYourComments', title: 'Replies to your comments' },
-    { id: 'newFollowers', title: 'New followers' },
-    { id: 'postsYouFollow', title: 'Posts you follow' },
-    { id: 'commentsYouFollow', title: 'Comments you follow' },
-    ],
+    { id: "mentionsOfUsername", title: "Mentions of u/username" },
+    { id: "commentsOnYourPosts", title: "Comments on your posts" },
+    { id: "upvotesOnYourPosts", title: "Upvotes on your posts" },
+    { id: "upvotesOnYourComments", title: "Upvotes on your comments" },
+    { id: "repliesToYourComments", title: "Replies to your comments" },
+    { id: "newFollowers", title: "New followers" },
+    { id: "postsYouFollow", title: "Posts you follow" },
+    { id: "commentsYouFollow", title: "Comments you follow" },
+  ],
 };
 
 function Notifications() {
-  
   const [toggles, setToggles] = useState({
     mentionsOfUsername: true,
     commentsOnYourPosts: true,
@@ -51,11 +50,11 @@ function Notifications() {
   );
 
   return (
-    <div className="flex flex-col w-full"> 
+    <div className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
         Notification settings
       </h3>
-      {renderSection(notificationsSettings.activity, 'Activity')}
+      {renderSection(notificationsSettings.activity, "Activity")}
     </div>
   );
 }

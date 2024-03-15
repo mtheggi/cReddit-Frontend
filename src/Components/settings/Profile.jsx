@@ -1,10 +1,10 @@
 import { useState } from "react";
-import TextArea from "./form-components/TextArea";
-import Subtitle from "./Subtitle";
+import TextArea from "./components/TextArea";
+import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
-import SocialLinksModal from "./form-components/SocialLinksModal";
-import ImageUpload from "./form-components/ImageUpload";
-import SocialLink from "./form-components/SocialLink";
+import SocialLinksModal from "./components/SocialLinksModal";
+import ImageUpload from "./components/ImageUpload";
+import SocialLink from "./components/SocialLink";
 
 function Profile({ displayName, about, preferences }) {
   const [modalShow, setModalShow] = useState(false);
