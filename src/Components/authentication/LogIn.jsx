@@ -18,10 +18,12 @@ const validateUsername = (username) => {
   }
 }
 
-  function validatePassword(password) {
-    const regex =
-      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+={}\[\]:;<>.,?\\\-]).{8,}$/;
-    return regex.test(password);
+  function validateLoginPassword(password) {
+    if (password && password!='') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   return (
@@ -92,7 +94,7 @@ const validateUsername = (username) => {
               <FloatingInput
                 id={"LogIn_password"}
                 label="Password"
-                validateInput={validatePassword}
+                validateInput={validateLoginPassword}
                 setSubmitState={setPasswordValidOnchange}
               />
             </div>
