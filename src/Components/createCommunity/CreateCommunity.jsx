@@ -12,8 +12,7 @@ import FloatingInput from "../authentication/FloatingInput";
 const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     const validateCommName = (commName) => {
-        const regex = /^[a-zA-Z0-9-_]+$/;
-        if (commName != '' && commName && commName.length < 21 && regex.test(commName)) {
+        if (commName != '' && commName) {
             return true;
         }
         else {
@@ -22,7 +21,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     }
 
     const [communityName, setCommunityName] = useState("");
-    const [selectedRadio, setSelectedRadio] = useState(""); // ids= ${type}-community-type q
+    const [selectedRadio, setSelectedRadio] = useState(""); 
     const [isMature, setIsMature] = useState(false);
 
     const handleRadioChange = (e) => {
@@ -30,9 +29,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     }
 
 
-    // const handleCreateCommunity = () => {
-
-    // }
+ 
 
     return (
         <div className="community-modal flex flex-row items-center justify-center">
