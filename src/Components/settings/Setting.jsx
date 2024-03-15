@@ -19,7 +19,7 @@ function Setting({
   selectedItem,
 }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(
-    menuItems?.find((item) => item.name === selectedItem)?.name || "SELECT"
+    menuItems?.find((item) => item.name === selectedItem)?.name || "Select"
   );
 
   return (

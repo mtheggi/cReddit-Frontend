@@ -68,7 +68,7 @@ function Settings() {
       {userSettings && (
         <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
           {currTab == 0 && <Account {...userSettings} />}
-          {currTab == 1 && <Profile />}
+          {currTab == 1 && <Profile {...userSettings} />}
           {currTab == 2 && <SafetyAndPrivacy />}
           {currTab == 3 && <Feed />}
           {currTab == 4 && <Notifications />}

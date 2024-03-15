@@ -1,15 +1,31 @@
 import { useState } from "react";
-import FloatingInput from "./form-components/FloatingInput";
 import TextArea from "./form-components/TextArea";
-import SimpleMenu from "./form-components/SimpleMenu";
 import Subtitle from "./Subtitle";
 import Setting from "./Setting";
 import SocialLinksModal from "./form-components/SocialLinksModal";
-import Button from "react-bootstrap/Button";
 import ImageUpload from "./form-components/ImageUpload";
+import SocialLink from "./form-components/SocialLink";
 
-function Profile() {
+function Profile({ displayName, about, preferences }) {
   const [modalShow, setModalShow] = useState(false);
+
+  console.log(displayName, about, preferences);
+
+  const {
+    showAdultContent,
+    allowFollow,
+    isContentVisible,
+    isActiveCommunityVisible,
+    socialLinks,
+  } = preferences;
+
+  console.log(
+    showAdultContent,
+    allowFollow,
+    isContentVisible,
+    isActiveCommunityVisible
+  );
+
   return (
     <div className="flex flex-col w-full">
       <h3 className="text-white -mb-3 text-xl font-bold font-plex">
@@ -24,6 +40,7 @@ function Profile() {
       <TextArea
         id="profile-display-name-input"
         placeholder="Display Name (optional)"
+        initText={displayName}
         maxLength="30"
         rows="1"
       />
@@ -35,6 +52,7 @@ function Profile() {
       <TextArea
         id="profile-about-input"
         placeholder="About (optional)"
+        initText={about}
         maxLength="100"
       />
 
@@ -42,19 +60,37 @@ function Profile() {
         title="Social Links (5 max)"
         message="People who visit your profile will see your social links."
       />
-      <button
-        id="profile-social-links-button"
-        onClick={() => setModalShow(true)}
-        className="w-38 text-white bg-gray-800 text-sm font-bold font-plex bg-reddit_darkGray rounded-3xl mt-1.5"
-      >
-        <div className="flex flex-row justify-start w-full items-center p-3 pl-0 pr-0">
-          <i
-            className="fa-solid fa-plus fa-2xl "
-            style={{ color: "white" }}
-          ></i>
-          <span className="text-xs font-plex pl-3">Add social link</span>
-        </div>
-      </button>
+      <div className="flex flex-wrap justify-start w-full items-center pt-3 pb-3 max-w-3xl">
+        {socialLinks.map((link, i) => {
+          return (
+            <SocialLink
+              key={i}
+              id={`profile-added-social-link-${link.platform
+                .toLowerCase()
+                .split(" ")
+                .join("_")}`}
+              url={link.platform.toLowerCase().split(" ").join("_")}
+              platform={link.displayName}
+            />
+          );
+        })}
+        <button
+          id="profile-social-links-button"
+          onClick={() => setModalShow(true)}
+          className="flex flex-row justify-center items-center p-2.5 bg-gray-700 rounded-3xl m-0.5 mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={socialLinks.length == 5}
+        >
+          <div className="flex flex-row justify-start w-full items-center">
+            <i
+              className="fa-solid fa-plus fa-2xl pl-2"
+              style={{ color: "white" }}
+            ></i>
+            <span className="text-xs text-white font-bold font-plex pl-2">
+              Add social link
+            </span>
+          </div>
+        </button>
+      </div>
       <SocialLinksModal
         id="profile-social-links-modal"
         show={modalShow}
@@ -74,6 +110,7 @@ function Profile() {
         title="NSFW"
         message="This content is NSFW (may contain nudity, pornography, profanity or inappropriate content for those under 18)"
         toggleButton={true}
+        isToggled={showAdultContent}
       />
 
       <Subtitle title="PROFILE CATEGORY" />
@@ -82,18 +119,21 @@ function Profile() {
         title="Allow people to follow you"
         message="Followers will be notified about posts you make to your profile and see them in their home feed."
         toggleButton={true}
+        isToggled={allowFollow}
       />
       <Setting
         id="profile-category-visibility-toggle-button"
         title="Content visibility"
         message="Posts to this profile can appear in r/all and your profile can be discovered in /users"
         toggleButton={true}
+        isToggled={isContentVisible}
       />
       <Setting
         id="profile-category-active-communities-toggle-button"
         title="Active in communities visibility"
         message="Show which communities I am active in on my profile."
         toggleButton={true}
+        isToggled={isActiveCommunityVisible}
       />
       <Setting
         id="profile-category-clear-history-button"

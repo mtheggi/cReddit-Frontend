@@ -1,7 +1,14 @@
 import { useState } from "react";
 
-function TextArea({ id, placeholder, rows = 4, cols = 100, maxLength }) {
-  const [text, setText] = useState("");
+function TextArea({
+  id,
+  placeholder,
+  initText,
+  rows = 4,
+  cols = 100,
+  maxLength,
+}) {
+  const [text, setText] = useState(initText || "");
 
   const handleTextChange = (event) => {
     setText(event.target.value);
