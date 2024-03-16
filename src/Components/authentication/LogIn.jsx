@@ -1,26 +1,33 @@
 import React, { useState } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
+import { postRequest } from "../../services/Requests";
 
-const LogIn = ({setIsOpenedLoginMenu}) => {
+const LogIn = ({ setIsOpenedLoginMenu }) => {
 
-const[username, setUsername] = useState('');
-const[password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState(false);
 
-const validateUsername = (username) => {
-  const regex = /^[a-zA-Z0-9-_]+$/;
-  if(username != '' && username && username.length < 21 && regex.test(username)){
-    return true;
+  const validateUsername = (username) => {
+    const regex = /^[a-zA-Z0-9-_]+$/;
+    if (username != '' && username && username.length < 21 && regex.test(username))
+      return true;
+    else
+      return false;
   }
-  else
-  {
-    return false;
-  }
-}
-
-  function validatePassword(password) {
+  const validatePassword = (password) => {
     if (password != '' && password) {
       return true;
+    }
+  }
+ 
+  const handleLoginSubmit = async () => {
+    if (username && password && validateUsername(username) && validatePassword(password)) {
+       const response = await postRequest('/user/login', {username, password});
+        if (response.error) {
+          setLoginError(true);
+        }
     }
   }
 
@@ -28,12 +35,12 @@ const validateUsername = (username) => {
     <div id="navbar_login_menu" className="flex bg-reddit_hover rounded-3xl h-fit h-min-160 xs:w-120 w-100%">
       <div className="flex flex-col bg-reddit rounded-2xl w-120 m-auto">
         <div className="flex justify-end px-6 pt-6 pb-2 ">
-          <div id="login_close" onClick={()=>setIsOpenedLoginMenu(false)} className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">
+          <div id="login_close" onClick={() => setIsOpenedLoginMenu(false)} className="flex h-8 w-8 rounded-full hover:bg-reddit_search_light">
             <button className="h-8 w-8 rounded-2xl">
               <span className="flex justify-center align-middle">
                 <svg
                   rpl=""
-                  fill="white" //currentColor for the default one
+                  fill="white" 
                   height="16"
                   icon-name="close-outline"
                   viewBox="0 0 20 20"
@@ -86,29 +93,34 @@ const validateUsername = (username) => {
                 label="Username"
                 validateInput={validateUsername}
                 setInputNameOnChange={setUsername}
+                backendValidationError={loginError}
+                setBackendValidationError={setLoginError}
               />
             </div>
-            <div className="mb-14">
+            <div className="mb-2">
               <FloatingInput
                 id={"LogIn_password"}
                 label="Password"
                 validateInput={validatePassword}
                 setInputNameOnChange={setPassword}
+                backendValidationError={loginError}
+                setBackendValidationError={setLoginError}
               />
             </div>
+            {loginError && <div className="ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">Invalid username or password.</p> </div> }
           </div>
 
-          <div className="mt-[8px] text-[14px] text-[#FFFFFF]">
+          <div className={`mt-[8px] relative ${loginError? 'top-12' : 'top-14'} top-12 text-[14px] text-[#FFFFFF]`}>
             Forgot your <a className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
             <a className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
           </div>
-          <div className="mt-[16px] text-[14px] text-[#FFFFFF]">
+          <div className={`mt-[16px] relative ${loginError? 'top-10' : 'top-14'}  text-[14px] text-[#FFFFFF]`}>
             New to Reddit? <a className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
           </div>
         </div>
 
         <div className="w-[480px] h-[96px] px-[63px] py-[24px] flex items-center">
-          <div id="login_submit" className={` ${ username && password && validateUsername(username) && validatePassword(password) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateUsername(username) && validatePassword(password) && !loginError ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
                 Log In

@@ -2,18 +2,18 @@ import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { useState, useRef } from 'react';
 
 
-const FloatingInput = ({ id, label, validateInput, setInputNameOnChange }) => {
+const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backendValidationError, setBackendValidationError}) => {
 
     let onChangeEmail = null;
     const [input, setInput] = useState(null);
-    const isRed = !validateInput(input) && input != null;
-    const isGreen = validateInput(input) && input != null;
+    const isRed = !validateInput(input) && input != null || backendValidationError;
+    const isGreen = validateInput(input) && input != null && !backendValidationError;
 
 
 
     return (
         <div className='w-full flex-col h-16'>
-            <div onChange={(e) => { if(setInputNameOnChange){setInputNameOnChange(e.target.value)} }} onBlur={(e) => setInput(e.target.value)} className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
+            <div onChange={(e) => { setBackendValidationError(false); if(setInputNameOnChange){setInputNameOnChange(e.target.value)} }} onBlur={(e) => setInput(e.target.value)} className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
                 <input onFocus={() => setInput(null)} onChange={(e) => {
                     if (e.target.value !== "") {
                         e.target.style.height = "24px";

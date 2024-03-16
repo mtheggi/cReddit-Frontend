@@ -1,5 +1,6 @@
 import { http, HttpResponse } from "msw"
 
+
 export const userHandlers = [
     http.post('/user', async (resolver) => {
 
@@ -17,14 +18,20 @@ export const userHandlers = [
         )
     }),
     http.post('/user/login', async (resolver) => {
-        // console.log("bodyddd test")
-        // const body = await resolver.request.json();
-        // console.log(body)
-        return HttpResponse.json(
-            {
-                message: "User logged in successfully"
+        try {
+            const body = await resolver.request.json();
+            if (body.username === "Malek") {
+                throw new Error('Username and password are required');
             }
-        )
+            return HttpResponse.json({
+                message: "User logged in successfully"
+            });
+        } catch (error) {
+            return HttpResponse.json({
+                message: "Bad request",
+                error: error.message
+            }, {status: 400});
+        }
     }),
     http.get('/user/auth/google', async (resolver) => {
         return HttpResponse.json(

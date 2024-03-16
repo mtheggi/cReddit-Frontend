@@ -6,6 +6,8 @@ import FloatingInput from "./FloatingInput";
 const SignUp = ({setIsOpenedSignupMenu}) => {
 
   const[email, setEmail] = useState('');
+  const [signupError, setSignupError] = useState(false);
+
 
   const validateEmail = (email) => {
     var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
@@ -67,15 +69,18 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
             <hr className="w-[160px] h-[1px] text-gray-400 self-center"></hr>
           </div>
 
-          <div>
+          <div className="flex flex-col">
             <div className="min-h-[100px] px-2 mt-1">
               <FloatingInput
                 id={"signup_email"}
                 label="Email"
                 validateInput={validateEmail}
                 setInputNameOnChange={setEmail}
+                backendValidationError={signupError}
+                setBackendValidationError={setSignupError}
               />
             </div>
+            { signupError && <div className="mt-2 ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">Invalid username or password.</p> </div> }
           </div>
 
           <div className="text-[14px] mt-4 ml-4 text-[#FFFFFF]">
@@ -84,7 +89,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
         </div>
 
         <div className="w-[480px] h-[96px] mt-auto px-[60px] py-[24px] flex items-center">
-          <div id="signup" className={`  ${email && validateEmail(email) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div id="signup" className={`  ${email && validateEmail(email) && !signupError ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                 Continue
