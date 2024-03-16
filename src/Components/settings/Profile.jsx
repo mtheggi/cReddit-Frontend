@@ -82,7 +82,7 @@ function Profile({ displayName, about, preferences }) {
         >
           <div className="flex flex-row justify-start w-full items-center">
             <i
-              className="fa-solid fa-plus fa-2xl pl-2"
+              className="fa-solid fa-plus fa-sm pl-1"
               style={{ color: "white" }}
             ></i>
             <span className="text-xs text-white font-bold font-plex pl-2">
