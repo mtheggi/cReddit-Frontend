@@ -58,7 +58,7 @@ export const userHandlers = [
                     newFollowerNotif: false,
                     invitationNotif: true,
                     commentsNotif: true,
-                    autoPlayMedia: true,
+                    autoPlayMedia: false,
                     allowFollow: true,
                     darkMode: true,
                     chatEmail: true

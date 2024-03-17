@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Feed() {
+function Feed({showAdultContent, autoPlayMedia, communityThemes, openNewTab}) {
   const [toggles, setToggles] = useState({
-    showMatureContent: true,
-    autoplayMedia: true,
-    communityThemes: true,
-    openPostsInNewTab: true,
+    showMatureContent: showAdultContent,
+    autoplayMedia: autoPlayMedia,
+    communityThemes: communityThemes,
+    openPostsInNewTab: openNewTab,
   });
 
   const handleToggle = (id) => {
