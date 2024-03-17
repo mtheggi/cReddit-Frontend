@@ -55,7 +55,7 @@ export const userHandlers = [
                     isContentVisible: true,
                     google: "jondoe@gmail.com",
                     mentionsNotif: true,
-                    newFollowerNotif: true,
+                    newFollowerNotif: false,
                     invitationNotif: true,
                     commentsNotif: true,
                     autoPlayMedia: true,

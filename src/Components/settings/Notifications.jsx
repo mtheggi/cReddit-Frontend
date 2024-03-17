@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Notifications() {
+function Notifications({ mentionsNotif, commentsNotif, upvotesNotif, repliesNotif, newFollowerNotif, }) {
   const [toggles, setToggles] = useState({
-    mentionsOfUsername: true,
-    commentsOnYourPosts: true,
-    upvotesOnYourPosts: true,
+    mentionsOfUsername: mentionsNotif,
+    commentsOnYourPosts: commentsNotif,
+    upvotesOnYourPosts: upvotesNotif,
     upvotesOnYourComments: true,
-    repliesToYourComments: true,
-    newFollowers: true,
+    repliesToYourComments: repliesNotif,
+    newFollowers: newFollowerNotif,
     postsYouFollow: true,
     commentsYouFollow: true,
   });
