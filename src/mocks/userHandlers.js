@@ -54,7 +54,7 @@ export const userHandlers = [
                     showAdultContent: true,
                     isContentVisible: true,
                     google: "jondoe@gmail.com",
-                    mentionsNotif: true,
+                    mentionsNotif: false,
                     newFollowerNotif: false,
                     invitationNotif: true,
                     commentsNotif: true,

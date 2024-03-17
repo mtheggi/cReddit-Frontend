@@ -72,7 +72,7 @@ function Settings() {
           {currTab == 2 && <SafetyAndPrivacy />}
           {currTab == 3 && <Feed />}
           {currTab == 4 && <Notifications {...userSettings.preferences} />}
-          {currTab == 5 && <Emails />}
+          {currTab == 5 && <Emails {...userSettings.preferences}/>}
         </div>
       )}
     </div>
