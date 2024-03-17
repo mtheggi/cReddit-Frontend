@@ -7,11 +7,10 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   const validateUsername = (username) => {
-    const regex = /^[a-zA-Z0-9-_]+$/;
-    if (username != '' && username && username.length < 21 && regex.test(username))
+    if (username != '' && username)
       return true;
     else
       return false;
@@ -25,9 +24,8 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
   const handleLoginSubmit = async () => {
     if (username && password && validateUsername(username) && validatePassword(password)) {
        const response = await postRequest('/user/login', {username, password});
-        if (response.error) {
-          setLoginError(true);
-        }
+        if (response.error) 
+        setLoginError(response.message);
     }
   }
 
@@ -107,20 +105,20 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
                 setBackendValidationError={setLoginError}
               />
             </div>
-            {loginError && <div className="ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">Invalid username or password.</p> </div> }
+            {loginError!=null && <div className="ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">{loginError}</p> </div> }
           </div>
 
-          <div className={`mt-[8px] relative ${loginError? 'top-12' : 'top-14'} top-12 text-[14px] text-[#FFFFFF]`}>
+          <div className={`mt-[8px] relative ${loginError!=null? 'top-12' : 'top-14'} top-12 text-[14px] text-[#FFFFFF]`}>
             Forgot your <a className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
             <a className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
           </div>
-          <div className={`mt-[16px] relative ${loginError? 'top-10' : 'top-14'}  text-[14px] text-[#FFFFFF]`}>
+          <div className={`mt-[16px] relative ${loginError!=null? 'top-10' : 'top-14'}  text-[14px] text-[#FFFFFF]`}>
             New to Reddit? <a className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
           </div>
         </div>
 
         <div className="w-[480px] h-[96px] px-[63px] py-[24px] flex items-center">
-          <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateUsername(username) && validatePassword(password) && !loginError ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateUsername(username) && validatePassword(password) && loginError==null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
                 Log In
