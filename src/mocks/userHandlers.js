@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw"
 
 
+
 export const userHandlers = [
     http.post('/user', async (resolver) => {
         try {
@@ -8,21 +9,17 @@ export const userHandlers = [
             if (body.email === "malek13122002@gmail.com") {
                 throw new Error('Email Already taken');
             }
-            if (body.username === "Malek") {
-                throw new Error('Username Already taken');
-            }
-            if (body.password === "123456789") {
-                throw new Error('Weak Password');
-            }
             return HttpResponse.json({
                 message: "User logged in successfully"
             });
         } catch (error) {
             return HttpResponse.json({
                 message: error.message
-            }, {status: 400});
+            }, { status: 400 });
         }
     }),
+
+
     http.delete('/user', async (resolver) => {
         return HttpResponse.json(
             {
@@ -30,11 +27,13 @@ export const userHandlers = [
             }
         )
     }),
+
+
     http.post('/user/login', async (resolver) => {
         try {
             const body = await resolver.request.json();
-            if (body.username !== "Malek" || body.password !== "123456") {
-                throw new Error('Invalid zahar');
+            if (body.username !== "Malek" || body.password !== "123456789") {
+                throw new Error('Invalid username or password');
             }
             return HttpResponse.json({
                 message: "User logged in successfully"
@@ -42,9 +41,32 @@ export const userHandlers = [
         } catch (error) {
             return HttpResponse.json({
                 message: error.message
-            }, {status: 400});
+            }, { status: 400 });
         }
     }),
+
+
+    http.get('/user/is-available/:username', async (resolver) => {
+
+        try {
+            if ( resolver.params.username == "Malek") {
+                throw new Error('Username Already Taken');
+            }
+            return HttpResponse.json([
+                {
+                    message: "Username is available",
+                    available: true
+                }
+            ])
+        }
+        catch (error) {
+            return HttpResponse.json({
+                message: error.message
+            }, { status: 400 });
+        }
+    }),
+
+
     http.get('/user/auth/google', async (resolver) => {
         return HttpResponse.json(
             {
@@ -401,17 +423,6 @@ export const userHandlers = [
         ])
     }),
 
-
-    http.get('/user/is-available/:username', async (resolver) => {
-
-        return HttpResponse.json([
-            {
-                status: "OK",
-                message: "Username is available",
-                available: true
-            }
-        ])
-    }),
 
 
 

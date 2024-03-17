@@ -1,9 +1,9 @@
 export default function GAButtons() {
   return (
     <>
-      <div className="w-92 h-11 cursor-pointer flex items-center bg-white rounded-3xl">
-        <div className="w-[368px] h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
-          <div className="flex justify-center align-middle w-[342.400px] h-[38.400px]">
+      <div className="w-full h-11 cursor-pointer flex items-center justify-center bg-white rounded-3xl">
+        <div className="w-full h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
+          <div className="flex justify-center align-middle w-full h-[38.400px]">
             <div className="w-[18px] h-[18px] justify-self-center self-center">
               <svg
                 version="1.1"

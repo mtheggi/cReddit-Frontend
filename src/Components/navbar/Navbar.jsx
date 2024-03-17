@@ -79,7 +79,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
                         {!isLogged && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
-                            <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login-button">
+                            <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
                                 </span>
@@ -89,13 +89,13 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
 
-                                    <div ref={loginMenuRef} className='z-20 flex w-120 h-fit h-min-160'>
+                                    <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                         <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
                                     </div>
                                 </div>
                             )}
 
-                            <div ref={signupButtonRef} onClick ={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup-button">
+                            <div ref={signupButtonRef} onClick ={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup_button">
                                 <span className="flex items-center justify-center">
                                     <span className="flex items-center font-medium text-white text-sm ">Sign Up</span>
                                 </span>
@@ -105,7 +105,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
 
-                                    <div ref={signupMenuRef} className='z-20 flex w-120 h-fit '>
+                                    <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                         <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>
