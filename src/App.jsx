@@ -5,20 +5,11 @@ import Home from './views/Home';
 import { useState, useRef, useEffect } from 'react';
 import Settings from './Components/settings/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import { postRequest, getRequest, deleteRequest, putRequest } from './services/Requests';
+import { FormText } from 'react-bootstrap';
+
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const navbarRef = useRef();
-  useEffect(() => {
-    const login = async () => {
-      const res = await getRequest('/user/verify/sdfsdfdf');
-      console.log("response", res);
-    }
-    login();
-  }, [])
-
-
   return (
 
     <Router>

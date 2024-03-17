@@ -2,15 +2,47 @@ import React, { useState } from "react";
 import Input from "./FloatingInput";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
+import { postRequest } from "../../services/Requests";
 
 const SignUp = ({setIsOpenedSignupMenu}) => {
 
-  const[emailValidOnchange, setEmailValidOnchange] = useState(false);
+  const[email, setEmail] = useState('');
+  const[username, setUsername] = useState('');
+  const[password, setPassword] = useState('');
+  const[signupError, setSignupError] = useState(null);
+
 
   const validateEmail = (email) => {
     var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
     return re.test(email);
   };
+
+  const validateUsername = (username) => {
+    const regex = /^[a-zA-Z0-9-_]+$/;
+    if (username != '' && username && username.length < 21 && regex.test(username))
+      return true;
+    else
+      return false;
+  }
+
+  const validatePassword = (password) =>{
+    if (password != '' && password && password.length >= 8) {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  };
+
+  const handleSignupSubmit = async () => {
+    if ( email && validateEmail(email) && username && validateUsername(username) && password && validatePassword(password) ) {
+       const response = await postRequest('/user', {email, username, password});
+        if (response.error) {
+          setSignupError(response.message);
+        }
+    }
+  }
 
   return (
     <div id="navbar_signup_menu" className="flex h-fit h-min-160 xs:w-120 w-100% bg-reddit_hover rounded-3xl">
@@ -57,26 +89,58 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
             </a>
             .
           </p>
-          <div className="w-[368px] mx-auto h-10 mt-15">
+          <div className="w-[368px] mx-auto h-10 mt-3">
             <GAButtons />
           </div>
 
-          <div className="flex flex-row mt-4 mb-3 ml-2 w-[368px] h-[16px]">
+          <div className="flex flex-row mt-3 mb-3 ml-2 w-[368px] h-[16px]">
             <hr className="w-[160px] h-[1px] text-gray-400 self-center"></hr>
             <span className="text-[12px] px-[16px] text-gray-400 w-[48px] h-[16px]">OR</span>
             <hr className="w-[160px] h-[1px] text-gray-400 self-center"></hr>
           </div>
 
-          <div>
-            <div className="min-h-[100px] px-2 mt-1">
+          <div className="flex flex-col">
+            <div className="min-h-[70px] px-2 ">
               <FloatingInput
                 id={"signup_email"}
                 label="Email"
                 validateInput={validateEmail}
-                setSubmitState={setEmailValidOnchange}
+                setInputNameOnChange={setEmail}
+                backendValidationError={signupError}
+                setBackendValidationError={setSignupError}
               />
             </div>
           </div>
+
+          <div className="flex flex-col">
+            <div className="min-h-[70px] px-2 mt-3">
+              <FloatingInput
+                id={"signup_username"}
+                label="Username"
+                validateInput={validateUsername}
+                setInputNameOnChange={setUsername}
+                backendValidationError={signupError}
+                setBackendValidationError={setSignupError}
+              />
+            </div>
+          </div>
+
+
+          <div className="flex flex-col">
+            <div className="min-h-[70px] px-2 mt-3">
+              <FloatingInput
+                id={"signup_password"}
+                label="Password"
+                validateInput={validatePassword}
+                setInputNameOnChange={setPassword}
+                backendValidationError={signupError}
+                setBackendValidationError={setSignupError}
+              />
+            </div>
+            { signupError!=null && <div className="relative ml-3 h-3 text-xs font-light w-85"> <p className="text-red-400">{signupError}</p> </div> }
+          </div>
+      
+
 
           <div className="text-[14px] mt-4 ml-4 text-[#FFFFFF]">
             Already a redditor? <a className="text-reddit_links cursor-pointer hover:text-blue-300">Log In</a>
@@ -84,7 +148,7 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
         </div>
 
         <div className="w-[480px] h-[96px] mt-auto px-[60px] py-[24px] flex items-center">
-          <div className={`  ${emailValidOnchange ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div id="signup" onClick={handleSignupSubmit} className={`${email && validateEmail(email) && username && validateUsername(username) && password && validatePassword(password) && signupError==null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white':'text-gray-500'} w-[400px] h-[48px] px-[14px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                 Continue
@@ -93,6 +157,10 @@ const SignUp = ({setIsOpenedSignupMenu}) => {
           </div>
         </div>
       </div>
+
+
+
+
     </div>
   );
 };

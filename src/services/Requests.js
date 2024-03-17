@@ -40,8 +40,7 @@ export const postRequest = async (url, body) => {
         return response.data;
 
     } catch (error) {
-        console.error(error);
-        return { error: true, status: 500, message: error.message }
+        return { error: true, status: 500,  message: error.response ? error.response.data.message : error.message }
     }
 }
 
