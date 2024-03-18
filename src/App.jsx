@@ -6,6 +6,8 @@ import { useState, useRef, useEffect } from 'react';
 import Settings from './Components/settings/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { FormText } from 'react-bootstrap';
+import axiosInterceptor from './utils/axiosInterceptor';
+
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const navbarRef = useRef();
