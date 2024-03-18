@@ -44,10 +44,12 @@ export const userHandlers = [
             }, { status: 400 });
         }
     }),
-    http.get('/user/auth/google', async (resolver) => {
+    http.post('/user/auth/google', async (resolver) => {
+        const token = await resolver.request.json();
+
         return HttpResponse.json(
             {
-                token: "2342342l3j4l23kj4l23kj4lkj"
+                message: "User logged in successfully"
             }
         )
     }),

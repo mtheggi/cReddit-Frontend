@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
-
+import { useGoogleLogin } from '@react-oauth/google';
+import { Client_ID, baseUrl } from "../../constants";
 const LogIn = ({ setIsOpenedLoginMenu }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
-
+  const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
+  const [oauthLoginError, setOauthLoginError] = useState(null);
   const validateUsername = (username) => {
     if (username != '' && username)
       return true;
@@ -20,15 +22,33 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
       return true;
     }
   }
- 
+
   const handleLoginSubmit = async () => {
     if (username && password && validateUsername(username) && validatePassword(password)) {
-       const response = await postRequest('/user/login', {username, password});
-        if (response.error) 
+      const response = await postRequest('/user/login', { username, password });
+      if (response.error)
         setLoginError(response.message);
     }
   }
-
+  useEffect(() => {
+    async function sendToken() {
+      if (OAuthAccessToken) {
+        const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
+        console.log("Response ", response);
+        if (response.status !== 200 && response.status !== 201) {
+          setOauthLoginError(response.message);
+        }
+      }
+    }
+    sendToken();
+  },
+    [OAuthAccessToken]
+  );
+  const handleGoogleLogin = useGoogleLogin({
+    clientId: { Client_ID },
+    onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },
+    onError: (error) => console.log('Login Failed:', error)
+  });
   return (
     <div id="navbar_login_menu" className="flex bg-reddit_hover rounded-3xl h-fit h-min-160 xs:w-120 w-100%">
       <div className="flex flex-col bg-reddit rounded-2xl w-120 m-auto">
@@ -38,7 +58,7 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
               <span className="flex justify-center align-middle">
                 <svg
                   rpl=""
-                  fill="white" 
+                  fill="white"
                   height="16"
                   icon-name="close-outline"
                   viewBox="0 0 20 20"
@@ -74,7 +94,8 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
             </a>
             .
           </p>
-          <div className="w-[368px] h-fit mb-4 mt-4">
+
+          <div onClick={() => handleGoogleLogin()} className="w-[368px] h-fit mb-4 mt-4">
             <GAButtons />
           </div>
 
@@ -105,20 +126,20 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
                 setBackendValidationError={setLoginError}
               />
             </div>
-            {loginError!=null && <div className="ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">{loginError}</p> </div> }
+            {loginError != null && <div className="ml-1 h-5 text-xs font-light w-85"> <p className="text-red-400">{loginError}</p> </div>}
           </div>
 
-          <div className={`mt-[8px] relative ${loginError!=null? 'top-12' : 'top-14'} top-12 text-[14px] text-[#FFFFFF]`}>
+          <div className={`mt-[8px] relative ${loginError != null ? 'top-12' : 'top-14'} top-12 text-[14px] text-[#FFFFFF]`}>
             Forgot your <a className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
             <a className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
           </div>
-          <div className={`mt-[16px] relative ${loginError!=null? 'top-10' : 'top-14'}  text-[14px] text-[#FFFFFF]`}>
+          <div className={`mt-[16px] relative ${loginError != null ? 'top-10' : 'top-14'}  text-[14px] text-[#FFFFFF]`}>
             New to Reddit? <a className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
           </div>
         </div>
 
         <div className="w-[480px] h-[96px] px-[63px] py-[24px] flex items-center">
-          <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateUsername(username) && validatePassword(password) && loginError==null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
+          <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateUsername(username) && validatePassword(password) && loginError == null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
                 Log In
