@@ -1,20 +1,33 @@
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { useState, useRef } from 'react';
+import { getRequest } from '../../services/Requests';
 
 
 const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backendValidationError, setBackendValidationError }) => {
 
     let onChangeEmail = null;
     const [input, setInput] = useState(null);
-    const isRed = !validateInput(input) && input != null || backendValidationError != null && id!=="signup_password";
-    const isGreen = validateInput(input) && input != null && (backendValidationError == null || id==="signup_password");
+    const [backendUsernameError, setBackendUsernameError] = useState(null);
+    const isRed = (!validateInput(input) && input != null || backendValidationError != null && id!=="signup_password") || (backendUsernameError != null && id==="signup_username");
+    const isGreen = validateInput(input) && input != null && (backendValidationError == null || id==="signup_password") && backendUsernameError == null;
+ 
 
 
+    const isAvailableUsername = async (username) => {
+        if (validateInput(username)) {
+           const response = await getRequest(`/user/is-available/${username}`);
+            if (response.status!==200 && response.status!==201)
+            {
+                setBackendUsernameError(response.data.message);
+            }
+        }
+      }
+    
 
     return (
         <div className='w-full flex-col h-16'>
-            <div onChange={(e) => { setBackendValidationError(null); if (setInputNameOnChange) { setInputNameOnChange(e.target.value) } }} onBlur={(e) => setInput(e.target.value)} className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
-                <input onFocus={() => setInput(null)} onChange={(e) => {
+            <div onChange={(e) => { setBackendValidationError(null); if (setInputNameOnChange) { setInputNameOnChange(e.target.value) } }} onBlur={(e) => {setInput(e.target.value); if (id == 'signup_username'){isAvailableUsername(e.target.value)} } } className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
+                <input onFocus={() =>{ setInput(null); setBackendUsernameError(null)}} onChange={(e) => {
                     if (e.target.value !== "") {
                         e.target.style.height = "24px";
                         e.target.style.marginTop = "20px";
@@ -30,8 +43,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
             </div>
 
 
-
-            {(!validateInput(input) && input != null || input === '') &&
+            {(input != null || input === '') &&
                 (<div className="mt-1 ml-1 h-5 text-xs font-light w-85">
                     {
                         (input === '') && (<p className="text-red-400">Please fill out this field.</p>)
@@ -42,10 +54,18 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
                     {
                         (!validateInput(input) && !(input === '') && label == 'Password') && <p className="text-red-400">Please lengthen this {label} to 8 characters or more.</p>
                     }
+                    {
+                        (!validateInput(input) && input.length<3 && !(input === '') && id == 'signup_username') && <p className="text-red-400">Please lengthen this {label} to be 3 characters or more.</p>
+                    }
+                    {
+                        (!validateInput(input) && input.length>3 && !(input === '') && id == 'signup_username') && <p className="text-red-400">{label} can't contain any special characters except '-' & '_' .</p>
+                    }
+                    {
+                        (validateInput(input) && !(input === '') && id == 'signup_username') && <p className="text-red-400">{backendUsernameError}</p>
+                    }
+
                 </div>)
             }
-
-
         </div>
     );
 }

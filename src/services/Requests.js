@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-
-
 export const putRequest = async (url, body) => {
     try {
         const response = await axios.put(url, body, {
@@ -15,7 +13,6 @@ export const putRequest = async (url, body) => {
         return error.response;
     }
 }
-
 
 export const postRequest = async (url, body) => {
     try {
@@ -31,7 +28,6 @@ export const postRequest = async (url, body) => {
     }
 }
 
-
 export const patchRequest = async (url, body) => {
     try {
         const response = await axios.patch(url, body, {
@@ -45,8 +41,6 @@ export const patchRequest = async (url, body) => {
         return error.response;
     }
 }
-
-
 export const getRequest = async (url) => {
     try {
         const response = await axios.get(url);
