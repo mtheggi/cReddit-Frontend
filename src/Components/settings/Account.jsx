@@ -23,6 +23,9 @@ function Account({
         title="Email Address"
         message={email}
         regularButton="Change"
+        regularButtonOnClick={() => {
+          console.log("Change Email");
+        }}
         clickableID="settings-change-email-button"
       />
       <Setting
@@ -36,6 +39,9 @@ function Account({
         title="Password"
         message="Last update was yesterday" // replace
         regularButton="Change"
+        regularButtonOnClick={() => {
+          console.log("Change Password");
+        }}
         clickableID="settings-change-password-button"
       />
       <Setting

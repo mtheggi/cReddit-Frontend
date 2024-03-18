@@ -54,7 +54,6 @@ function Settings() {
           User Settings
         </h1>
       </div>
-
       <div className="flex flex-wrap w-full mt-2 max-w-6xl">
         {Tabs.map((tab, i) => {
           return (
@@ -73,9 +72,7 @@ function Settings() {
           );
         })}
       </div>
-
       <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
-
       {userSettings && (
         <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
           <Routes>

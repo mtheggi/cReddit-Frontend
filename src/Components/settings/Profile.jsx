@@ -43,6 +43,9 @@ function Profile({ displayName, about, preferences }) {
         initText={displayName}
         maxLength="30"
         rows="1"
+        onTextChange={() => {
+          console.log("Display Name Changed");
+        }}
       />
 
       <Setting
@@ -54,6 +57,9 @@ function Profile({ displayName, about, preferences }) {
         placeholder="About (optional)"
         initText={about}
         maxLength="100"
+        onTextChange={() => {
+          console.log("About Changed");
+        }}
       />
 
       <Setting
@@ -111,6 +117,9 @@ function Profile({ displayName, about, preferences }) {
         message="This content is NSFW (may contain nudity, pornography, profanity or inappropriate content for those under 18)"
         toggleButton={true}
         isToggled={showAdultContent}
+        toggleButtonOnClick={() => {
+          console.log("NSFW Toggled");
+        }}
       />
 
       <Subtitle title="PROFILE CATEGORY" />
@@ -120,6 +129,9 @@ function Profile({ displayName, about, preferences }) {
         message="Followers will be notified about posts you make to your profile and see them in their home feed."
         toggleButton={true}
         isToggled={allowFollow}
+        toggleButtonOnClick={() => {
+          console.log("Follow Toggled");
+        }}
       />
       <Setting
         id="profile-category-visibility-toggle-button"
@@ -127,6 +139,9 @@ function Profile({ displayName, about, preferences }) {
         message="Posts to this profile can appear in r/all and your profile can be discovered in /users"
         toggleButton={true}
         isToggled={isContentVisible}
+        toggleButtonOnClick={() => {
+          console.log("Visibility Toggled");
+        }}
       />
       <Setting
         id="profile-category-active-communities-toggle-button"
@@ -134,12 +149,18 @@ function Profile({ displayName, about, preferences }) {
         message="Show which communities I am active in on my profile."
         toggleButton={true}
         isToggled={isActiveCommunityVisible}
+        toggleButtonOnClick={() => {
+          console.log("Active Communities Toggled");
+        }}
       />
       <Setting
         id="profile-category-clear-history-button"
         title="Clear history"
         message="Delete your post views history."
         regularButton="Clear History"
+        regularButtonOnClick={() => {
+          console.log("Clear History");
+        }}
       />
     </div>
   );
