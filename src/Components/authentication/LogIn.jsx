@@ -11,7 +11,7 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
   const [loginError, setLoginError] = useState(null);
   const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
   const [oauthLoginError, setOauthLoginError] = useState(null);
-  const validateUsername = (username) => {
+  const validateLoginUsername = (username) => {
     if (username != '' && username)
       return true;
     else

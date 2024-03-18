@@ -66,7 +66,9 @@ export const userHandlers = [
     }),
 
 
-    http.get('/user/auth/google', async (resolver) => {
+    http.post('/user/auth/google', async (resolver) => {
+        const token = await resolver.request.json();
+
         return HttpResponse.json(
             {
                 message: "User logged in successfully"
