@@ -6,6 +6,7 @@ import Home from "./views/Home";
 import { useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Account from "./Components/settings/Account";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -36,7 +37,8 @@ function App() {
               />
             }
           />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/settings/*" element={<Settings />} />
+          {/* <Route path="/settings/account" element={<Account />} /> */}
         </Routes>
       </div>
     </Router>

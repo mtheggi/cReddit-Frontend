@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, Link, Router } from "react-router-dom";
 
 import Account from "./Account";
 import Profile from "./Profile";
@@ -18,13 +19,22 @@ const Tabs = [
   "Emails",
 ];
 
-function Settings() {
-  const [currTab, setCurrTab] = useState(0);
-  const [userSettings, setUserSettings] = useState(null);
+const TabsPath = [
+  "account",
+  "profile",
+  "privacy",
+  "feed",
+  "notifications",
+  "emails",
+];
 
-  function onSetTab(i) {
-    setCurrTab(i);
-  }
+function Settings() {
+  const [userSettings, setUserSettings] = useState(null);
+  const [currTab, setCurrTab] = useState(0);
+
+  const onSetTab = (index) => {
+    setCurrTab(index);
+  };
 
   useEffect(() => {
     getRequest("/user/settings")
@@ -48,8 +58,9 @@ function Settings() {
       <div className="flex flex-wrap w-full mt-2 max-w-6xl">
         {Tabs.map((tab, i) => {
           return (
-            <a
+            <Link
               key={tab}
+              to={TabsPath[i]}
               id={`setting-navbar-${tab.toLowerCase()}-tab`}
               className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
@@ -58,7 +69,7 @@ function Settings() {
               <div className="cursor-pointer" onClick={() => onSetTab(i)}>
                 {tab}
               </div>
-            </a>
+            </Link>
           );
         })}
       </div>
@@ -67,12 +78,24 @@ function Settings() {
 
       {userSettings && (
         <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
-          {currTab == 0 && <Account {...userSettings} />}
-          {currTab == 1 && <Profile {...userSettings} />}
-          {currTab == 2 && <SafetyAndPrivacy />}
-          {currTab == 3 && <Feed {...userSettings.preferences} />}
-          {currTab == 4 && <Notifications {...userSettings.preferences} />}
-          {currTab == 5 && <Emails {...userSettings.preferences}/>}
+          <Routes>
+            <Route path="/" element={<Account {...userSettings} />} />
+            <Route path="account" element={<Account {...userSettings} />} />
+            <Route path="profile" element={<Profile {...userSettings} />} />
+            <Route path="privacy" element={<SafetyAndPrivacy />} />
+            <Route
+              path="feed"
+              element={<Feed {...userSettings.preferences} />}
+            />
+            <Route
+              path="notifications"
+              element={<Notifications {...userSettings.preferences} />}
+            />
+            <Route
+              path="emails"
+              element={<Emails {...userSettings.preferences} />}
+            />
+          </Routes>
         </div>
       )}
     </div>
