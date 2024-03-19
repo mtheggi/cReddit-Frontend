@@ -6,13 +6,12 @@ import { useState, useRef, useEffect } from 'react';
 import Settings from './Components/settings/Settings';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { FormText } from 'react-bootstrap';
+import axiosInterceptor from './utils/axiosInterceptor';
 import EmailVerification from './Components/authentication/reset_components/EmailVerification';
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const navbarRef = useRef();
-
-
   return (
 
     <Router>

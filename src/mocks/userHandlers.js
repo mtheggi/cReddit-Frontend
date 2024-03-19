@@ -1,7 +1,6 @@
 import { http, HttpResponse } from "msw"
 
 
-
 export const userHandlers = [
     http.post('/user', async (resolver) => {
         try {
@@ -51,7 +50,7 @@ export const userHandlers = [
     http.get('/user/is-available/:username', async (resolver) => {
 
         try {
-            if ( resolver.params.username == "Malek") {
+            if (resolver.params.username == "Malek") {
                 throw new Error('Username Already Taken');
             }
             return HttpResponse.json([
@@ -103,10 +102,12 @@ export const userHandlers = [
 
 
 
-    http.get('/user/auth/google', async (resolver) => {
+    http.post('/user/auth/google', async (resolver) => {
+        const token = await resolver.request.json();
+
         return HttpResponse.json(
             {
-                token: "2342342l3j4l23kj4l23kj4lkj"
+                message: "User logged in successfully"
             }
         )
     }),

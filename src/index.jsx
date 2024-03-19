@@ -1,8 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
-const NODE_ENV = 'development'
-
+import { Client_ID, NODE_ENV } from './constants.js'
+import { GoogleOAuthProvider } from '@react-oauth/google'
 async function enableMocking() {
   if (NODE_ENV !== 'development') {
     return
@@ -13,10 +13,13 @@ async function enableMocking() {
   return worker.start()
 }
 enableMocking().then(() => {
+
   ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
+    <GoogleOAuthProvider clientId={Client_ID} >
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </GoogleOAuthProvider >,
   )
 })
 

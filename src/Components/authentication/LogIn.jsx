@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
-
+import { useGoogleLogin } from '@react-oauth/google';
+import { Client_ID, baseUrl } from "../../constants";
 const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
-
+  const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
+  const [oauthLoginError, setOauthLoginError] = useState(null);
   const validateLoginUsername = (username) => {
     if (username != '' && username)
       return true;
@@ -28,7 +30,25 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         setLoginError(response.data.message);
     }
   }
-
+  useEffect(() => {
+    async function sendToken() {
+      if (OAuthAccessToken) {
+        const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
+        console.log("Response ", response);
+        if (response.status !== 200 && response.status !== 201) {
+          setOauthLoginError(response.message);
+        }
+      }
+    }
+    sendToken();
+  },
+    [OAuthAccessToken]
+  );
+  const handleGoogleLogin = useGoogleLogin({
+    clientId: { Client_ID },
+    onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },
+    onError: (error) => console.log('Login Failed:', error)
+  });
   return (
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 
@@ -78,7 +98,8 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
             </a>
             .
           </p>
-          <div className="w-full h-fit mb-4 mt-4">
+
+          <div onClick={() => handleGoogleLogin()} className="w-full h-fit mb-4 mt-4">
             <GAButtons />
           </div>
 
@@ -114,7 +135,6 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
           </div>
           {loginError != null && <div className=" ml-1 h-2 text-xs font-light w-85"> <p className="text-red-400">{loginError}</p> </div>}
         </div>
-
 
         <div className="flex flex-col mt-auto">
 
