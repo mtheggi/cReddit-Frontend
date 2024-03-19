@@ -1,10 +1,10 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import FloatingInput from "./FloatingInput";
+import FloatingInput from "../FloatingInput";
 import { useEffect, useState, useRef } from 'react';
-import { postRequest } from "../../services/Requests";
+import { postRequest } from "../../../services/Requests";
 
 
-const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef}) => {
+const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef, setIsOpenedEmailVerification , setIsPrevForgotPassOrUsername}) => {
 
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
@@ -28,17 +28,24 @@ const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef}
       return false;
   }
 
-  const handleForgetPassSubmit = async () => {
+  const handleForgetPassSubmit = async (e) => {
+    e.stopPropagation();
     if (username && email && validateUsername(username) && validateEmail(email)) {
       const response = await postRequest('/user/forgot-password', { username, email });
       if (response.status !== 200 && response.status !== 201)
       {
          setResetPasswordError(response.data.message);
       }
-         setResetPasswordMessage(response.data.message);
+      else
+      {
+        setIsOpenedForgotPass(false);
+        setIsPrevForgotPassOrUsername(true);
+        setIsOpenedEmailVerification(true);
+      }
+        setResetPasswordMessage(response.data.message);
+         
     }
   }
-
 
 
   useEffect(() => {
@@ -59,7 +66,7 @@ const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef}
   return (
 
 
-    <div ref={forgotPassRef}  className='z-20 min-w-90 w-100% h-100% msm:w-132 msm:h-158  bg-reddit_lightGreen no-select text-white rounded-2xl items-center flex flex-col'>
+    <div ref={forgotPassRef}  className='z-20 min-w-90 w-100% h-100% msm:w-132 msm:h-158  bg-reddit_lightGreen no-select text-white msm:rounded-3xl items-center flex flex-col'>
 
       <div className='w-full px-3 pt-10 pb-4 h-12 flex items-center justify-between'>
 
@@ -99,11 +106,10 @@ const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef}
               setBackendMessage={setResetPasswordMessage} />
         </div>
 
-        {resetPasswordMessage != null && <div className=" -ml-3 mt-3  h-2 text-xs font-light w-85"> <p className={`${resetPasswordError?'text-red-400':'text-green-500'}`}>{resetPasswordMessage}</p> </div>}
+        {resetPasswordError != null && <div className=" -ml-3 mt-3  h-2 text-xs font-light w-85"> <p className={`text-red-400`}>{resetPasswordMessage}</p> </div>}
 
- 
 
-        <div onClick={handleForgetPassSubmit} id="reset_password_enrollme" className={`w-full h-13 msm:w-93 mt-auto mb-12  msm:mt-23 flex bg-reddit_search ${username && email && validateUsername(username) && validateEmail(email) && resetPasswordError==null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
+        <div onClick={(e)=>handleForgetPassSubmit(e)} id="reset_password_email_me" className={`w-full h-13 msm:w-93 mt-auto mb-12  msm:mt-23 flex bg-reddit_search ${username && email && validateUsername(username) && validateEmail(email) && resetPasswordError==null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
         <p className={`no-select font-medium text-sm ${ username && email && validateUsername(username) && validateEmail(email) && resetPasswordError==null  ? ' text-white' : ''} `}>Email Me</p>
         </div>
 

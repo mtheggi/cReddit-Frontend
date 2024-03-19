@@ -6,10 +6,11 @@ import Searchbar from '../searchbar/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
 import { Link } from 'react-router-dom';
 import Setting from '../settings/Setting';
-import ForgetPass from '../authentication/ForgetPass';
-import ForgetUsername from '../authentication/ForgetUsername';
+import ForgetPass from '../authentication/reset_components/ForgetPass';
+import ForgetUsername from '../authentication/reset_components/ForgetUsername';
 import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/SignUp';
+import EmailVerification from '../authentication/reset_components/EmailVerification';
 
 
 
@@ -22,6 +23,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
     const [isOpenedForgotPass, setIsOpenedForgotPass] = useState(false);
+    const [isOpenedEmailVerification, setIsOpenedEmailVerification] = useState(false);
+    const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -30,6 +33,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const signupButtonRef = useRef();
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
+    const emailVerificationRef = useRef();
 
 
 
@@ -53,7 +57,10 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             if (forgotUsernameRef.current && !forgotUsernameRef.current.contains(e.target)) {
                 setIsOpenedForgotUsername(false);
             }
-       
+            if (emailVerificationRef.current && !emailVerificationRef.current.contains(e.target)) {
+                setIsOpenedEmailVerification(false);
+            }
+
         };
         document.addEventListener('click', closeDropdown);
 
@@ -123,7 +130,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu}  />
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
                                     </div>
                                 </div>
                             )}
@@ -132,7 +139,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 <div className="community-modal flex flex-row items-center justify-center">
                                     <div className='overlay'></div>
                                     <div className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <ForgetPass setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedLoginMenu={setIsOpenedLoginMenu} forgotPassRef={forgotPassRef}  />
+                                        <ForgetPass setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedLoginMenu={setIsOpenedLoginMenu} forgotPassRef={forgotPassRef} setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsPrevForgotPassOrUsername={setIsPrevForgotPassOrUsername} />
                                     </div>
                                 </div>
                             )}
@@ -143,7 +150,18 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={forgotUsernameRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <ForgetUsername setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
+                                        <ForgetUsername setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsPrevForgotPassOrUsername={setIsPrevForgotPassOrUsername} />
+                                    </div>
+                                </div>
+                            )}
+
+
+                            {isOpenedEmailVerification && (
+                                <div className="community-modal flex flex-row items-center justify-center">
+                                    <div className='overlay'></div>
+
+                                    <div ref={emailVerificationRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <EmailVerification setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} isPrevForgotPassOrUsername={isPrevForgotPassOrUsername} />
                                     </div>
                                 </div>
                             )}

@@ -1,9 +1,9 @@
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import FloatingInput from "./FloatingInput";
+import FloatingInput from "../FloatingInput";
 import { useEffect, useState } from 'react';
-import { postRequest } from "../../services/Requests";
+import { postRequest } from "../../../services/Requests";
 
-const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu}) => {
+const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsOpenedEmailVerification, setIsPrevForgotPassOrUsername}) => {
 
     const[email, setEmail] = useState(null);
     const[resetUsernameError, setResetUsernameError] = useState(null);
@@ -16,14 +16,22 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu}) => {
         return re.test(email);
     }
 
-    const handleForgetUsernameSubmit = async () => {
+    const handleForgetUsernameSubmit = async (e) => {
+        e.stopPropagation();
         if (email && validateEmail(email)) {
           const response = await postRequest('/user/forgot-username', { email });
           if (response.status !== 200 && response.status !== 201)
           {
              setResetUsernameError(response.data.message);
           }
-             setResetUsernameMessage(response.data.message);
+          else
+          {
+            setIsOpenedForgotUsername(false);
+            setIsPrevForgotPassOrUsername(false);
+            setIsOpenedEmailVerification(true);
+          }
+          setResetUsernameMessage(response.data.message);
+            
         }
       }
 
@@ -80,9 +88,9 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu}) => {
               setBackendMessage={setResetUsernameMessage}  />
             </div>
 
-            {resetUsernameMessage != null && <div className=" -ml-3 mt-3  h-2 text-xs font-light w-85"> <p className={`${resetUsernameError?'text-red-400':'text-green-500'}`}>{resetUsernameMessage}</p> </div>}
+            {resetUsernameError != null && <div className=" -ml-3 mt-3  h-2 text-xs font-light w-85"> <p className={`text-red-400`}>{resetUsernameMessage}</p> </div>}
 
-            <div id="reset_username_email_me" onClick={handleForgetUsernameSubmit} className={`w-full h-13 msm:w-93 mt-auto mb-12 flex bg-reddit_search ${  email && validateEmail(email) && resetUsernameError==null  ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
+            <div id="reset_username_email_me" onClick={(e)=>handleForgetUsernameSubmit(e)} className={`w-full h-13 msm:w-93 mt-auto mb-12 flex bg-reddit_search ${  email && validateEmail(email) && resetUsernameError==null  ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
                 <p className={`no-select font-medium text-sm ${ email && validateEmail(email) && resetUsernameError==null ?' text-white' : ''} `}>Email Me</p>
             </div>
             </div>
