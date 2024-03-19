@@ -9,7 +9,8 @@ import Setting from '../settings/Setting';
 import ForgetPass from '../authentication/reset_components/ForgetPass';
 import ForgetUsername from '../authentication/reset_components/ForgetUsername';
 import LogIn from '../authentication/LogIn';
-import SignUp from '../authentication/SignUp';
+import SignUp from '../authentication/signup/SignUp';
+import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
 
 
@@ -25,11 +26,13 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isOpenedForgotPass, setIsOpenedForgotPass] = useState(false);
     const [isOpenedEmailVerification, setIsOpenedEmailVerification] = useState(false);
     const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
+    const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
     const loginButtonRef = useRef();
     const signupMenuRef = useRef();
+    const secondSignupMenuRef = useRef();
     const signupButtonRef = useRef();
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
@@ -59,6 +62,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             }
             if (emailVerificationRef.current && !emailVerificationRef.current.contains(e.target)) {
                 setIsOpenedEmailVerification(false);
+            }
+            if (secondSignupMenuRef.current && !secondSignupMenuRef.current.contains(e.target)) {
+                setIsOpenedSecondSignupMenu(false);
             }
 
         };
@@ -130,7 +136,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
+                                        <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} />
                                     </div>
                                 </div>
                             )}
@@ -165,6 +171,18 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </div>
                             )}
+
+
+                            {isOpenedSecondSignupMenu && (
+                                <div className="community-modal flex flex-row items-center justify-center">
+                                    <div className='overlay'></div>
+
+                                    <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} />
+                                    </div>
+                                </div>
+                            )}
+
 
 
 

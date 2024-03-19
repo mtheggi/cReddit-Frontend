@@ -40,7 +40,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
               Log In
             </h1>
             <div className="flex ">
-              <div id="login_close" onClick={() => setIsOpenedLoginMenu(false)} className="flex msm:-mr-8 -mt-0.5 items-center justify-center h-9 w-9 rounded-full bg-reddit_search hover:bg-reddit_search_light">
+              <div id="login_close" onClick={() => setIsOpenedLoginMenu(false)} className="flex msm:-mr-8 -mt-2 items-center justify-center h-9 w-9 rounded-full bg-reddit_search hover:bg-reddit_search_light">
                 <button className="h-8 w-8 rounded-2xl">
                   <span className="flex justify-center align-middle">
                     <svg
