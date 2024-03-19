@@ -6,6 +6,8 @@ import Searchbar from '../searchbar/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
 import { Link } from 'react-router-dom';
 import Setting from '../settings/Setting';
+import ForgetPass from '../authentication/ForgetPass';
+import ForgetUsername from '../authentication/ForgetUsername';
 import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/SignUp';
 
@@ -18,13 +20,18 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isLogged, setIsLogged] = useState(false); //will represent if i have a token or not
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
+    const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
+    const [isOpenedForgotPass, setIsOpenedForgotPass] = useState(false);
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
     const loginButtonRef = useRef();
     const signupMenuRef = useRef();
     const signupButtonRef = useRef();
-    
+    const forgotPassRef = useRef();
+    const forgotUsernameRef = useRef();
+
+
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -37,6 +44,16 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             if (signupMenuRef.current && !signupMenuRef.current.contains(e.target) && signupButtonRef.current && !signupButtonRef.current.contains(e.target)) {
                 setIsOpenedSignupMenu(false);
             }
+            if (forgotPassRef.current && !forgotPassRef.current.contains(e.target)) {
+                setIsOpenedForgotPass(false);
+            }
+            if (forgotPassRef.current && !forgotPassRef.current.contains(e.target)) {
+                setIsOpenedForgotPass(false);
+            }
+            if (forgotUsernameRef.current && !forgotUsernameRef.current.contains(e.target)) {
+                setIsOpenedForgotUsername(false);
+            }
+       
         };
         document.addEventListener('click', closeDropdown);
 
@@ -90,12 +107,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
+                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>
                             )}
 
-                            <div ref={signupButtonRef} onClick ={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup_button">
+                            <div ref={signupButtonRef} onClick={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup_button">
                                 <span className="flex items-center justify-center">
                                     <span className="flex items-center font-medium text-white text-sm ">Sign Up</span>
                                 </span>
@@ -106,11 +123,37 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu}  />
                                     </div>
                                 </div>
                             )}
-                        </div>)}
+
+                            {isOpenedForgotPass && (
+                                <div className="community-modal flex flex-row items-center justify-center">
+                                    <div className='overlay'></div>
+                                    <div className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <ForgetPass setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedLoginMenu={setIsOpenedLoginMenu} forgotPassRef={forgotPassRef}  />
+                                    </div>
+                                </div>
+                            )}
+
+
+                            {isOpenedForgotUsername && (
+                                <div className="community-modal flex flex-row items-center justify-center">
+                                    <div className='overlay'></div>
+
+                                    <div ref={forgotUsernameRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <ForgetUsername setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedLoginMenu={setIsOpenedLoginMenu} />
+                                    </div>
+                                </div>
+                            )}
+
+
+
+
+                        </div>)
+
+                        }
 
 
                         {isLogged &&

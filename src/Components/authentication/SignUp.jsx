@@ -4,7 +4,7 @@ import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
 
-const SignUp = ({ setIsOpenedSignupMenu }) => {
+const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu }) => {
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -19,7 +19,7 @@ const SignUp = ({ setIsOpenedSignupMenu }) => {
 
   const validateUsername = (username) => {
     const regex = /^[a-zA-Z0-9-_]+$/;
-    if (username != '' && username && username.length < 21 && regex.test(username))
+    if (username != '' && username && regex.test(username))
       return true;
     else
       return false;
@@ -34,15 +34,15 @@ const SignUp = ({ setIsOpenedSignupMenu }) => {
     }
   };
 
-  // const handleSignupSubmit = async () => {
-  //   if ( email && validateEmail(email) && username && validateUsername(username) && password && validatePassword(password) ) {
-  //      const response = await postRequest('/user', {email, username, password});
-  //       if (response.error) {
-  //         setSignupError(response.message);
-  //         console.log(response.status);
-  //       }
-  //   }
-  // }
+  const handleSignupSubmit = async () => {
+    if ( email && validateEmail(email) && username && validateUsername(username) && password && validatePassword(password) ) {
+       const response = await postRequest('/user', {email, username, password});
+        if (response.error) {
+          setSignupError(response.message);
+          console.log(response.status);
+        }
+    }
+  }
 
   return (
     <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-16 pl-4 pr-4 bg-reddit_menu msm:rounded-3xl">
@@ -150,7 +150,7 @@ const SignUp = ({ setIsOpenedSignupMenu }) => {
 
 
         <div className="mt-auto flex text-[14px] ml-4 text-[#FFFFFF]">
-          Already a redditor? <a className="text-reddit_links cursor-pointer hover:text-blue-300">Log In</a>
+          Already a redditor? <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedSignupMenu(false); setIsOpenedLoginMenu(true)}} className="text-reddit_links ml-1.5 cursor-pointer hover:text-blue-300"> Log In</a>
         </div>
       </div>
 
