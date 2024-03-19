@@ -28,9 +28,18 @@ const TabsPath = [
   "emails",
 ];
 
+const initCurrTab = () => {
+  const path = window.location.pathname;
+  console.log(path);
+  const tab = path.split("/")[2];
+  console.log(tab, TabsPath.indexOf(tab));
+  const index = TabsPath.indexOf(tab);
+  return index != -1 ? index : 0;
+};
+
 function Settings() {
   const [userSettings, setUserSettings] = useState(null);
-  const [currTab, setCurrTab] = useState(0);
+  const [currTab, setCurrTab] = useState(initCurrTab());
 
   const onSetTab = (index) => {
     setCurrTab(index);
@@ -64,10 +73,9 @@ function Settings() {
               className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
               }`}
+              onClick={() => onSetTab(i)}
             >
-              <div className="cursor-pointer" onClick={() => onSetTab(i)}>
-                {tab}
-              </div>
+              <div className="cursor-pointer">{tab}</div>
             </Link>
           );
         })}
