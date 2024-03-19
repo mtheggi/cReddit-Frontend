@@ -46,6 +46,8 @@ export const userHandlers = [
     }),
 
 
+
+
     http.get('/user/is-available/:username', async (resolver) => {
 
         try {
@@ -65,6 +67,40 @@ export const userHandlers = [
             }, { status: 400 });
         }
     }),
+
+    http.post('/user/forgot-password', async (resolver) => {
+        try {
+            const body = await resolver.request.json();
+            if (body.email !== "malek13122002@gmail.com") {
+                throw new Error('Email Does not Exist');
+            }
+            return HttpResponse.json({
+                message: "User logged in successfully"
+            });
+        } catch (error) {
+            return HttpResponse.json({
+                message: error.message
+            }, { status: 400 });
+        }
+    }),
+
+
+    http.post('/user/forgot-username', async (resolver) => {
+        try {
+            const body = await resolver.request.json();
+            if (body.email !== "malek13122002@gmail.com") {
+                throw new Error('Email Does not Exist');
+            }
+            return HttpResponse.json({
+                message: "User logged in successfully"
+            });
+        } catch (error) {
+            return HttpResponse.json({
+                message: error.message
+            }, { status: 400 });
+        }
+    }),
+
 
 
     http.get('/user/auth/google', async (resolver) => {
@@ -326,15 +362,7 @@ export const userHandlers = [
     }),
 
 
-    http.post('/user/forgot-password', async (resolver) => {
 
-        return HttpResponse.json([
-            {
-                username: "theUser",
-                email: "john@email.com"
-            }
-        ])
-    }),
 
 
     http.patch('/user/change-password', async (resolver) => {
@@ -358,15 +386,6 @@ export const userHandlers = [
         ])
     }),
 
-
-    http.post('/user/forgot-username', async (resolver) => {
-
-        return HttpResponse.json(
-            {
-                Email: "john@email.com"
-            }
-        )
-    }),
 
 
     http.patch('/user/change-email', async (resolver) => {
