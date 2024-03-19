@@ -67,7 +67,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
   // }
 
   return (
-    <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-12 pl-4 pr-4 bg-reddit_menu msm:rounded-3xl">
+    <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
 
 
       <div className="h-full w-full flex flex-col ">
@@ -102,7 +102,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
           </div>
         </div>
 
-        <div className="flex flex-col h-full px-4">
+        <div className="flex flex-col h-full px-10">
           <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2 text-neutral">
             Sign Up
           </h1>
