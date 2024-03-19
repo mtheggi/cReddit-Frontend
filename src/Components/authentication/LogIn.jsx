@@ -3,7 +3,7 @@ import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
 
-const LogIn = ({ setIsOpenedLoginMenu }) => {
+const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -94,7 +94,7 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
         <div className="mt-4">
           <div className="mb-3">
             <FloatingInput
-              id={"LogIn_username"}
+              id={"login_username"}
               label="Username"
               validateInput={validateLoginUsername}
               setInputNameOnChange={setUsername}
@@ -104,7 +104,7 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
           </div>
           <div className="mb-2">
             <FloatingInput
-              id={"LogIn_password"}
+              id={"login_password"}
               label="Password"
               validateInput={validateLoginPassword}
               setInputNameOnChange={setPassword}
@@ -120,11 +120,11 @@ const LogIn = ({ setIsOpenedLoginMenu }) => {
 
        
         <div className={`  mb-2  text-[14px] text-[#FFFFFF]`}>
-          Forgot your <a className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
-          <a className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
+          Forgot your <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotUsername(true)}} className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
+          <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotPass(true)}}  className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
         </div>
         <div className={` text-[14px] text-[#FFFFFF]`}>
-          New to Reddit? <a className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
+          New to Reddit?  <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedSignupMenu(true); setIsOpenedLoginMenu(false)}} className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
         </div>
       </div>
       </div>
