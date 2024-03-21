@@ -3,7 +3,7 @@ import GAButtons from "../GAButtons";
 import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
 
-const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
+const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSignupEmail }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -38,6 +38,10 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
   }, [internalReturnBack]);
 
 
+  const validateEmail = (NavbarSignupEmail) => {
+    var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
+    return re.test(NavbarSignupEmail);
+  };
 
   const validateUsername = (username) => {
     const regex = /^[a-zA-Z0-9-_]+$/;
@@ -56,15 +60,15 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
     }
   };
 
-  // const handleSignupSubmit = async () => {
-  //   if ( email && validateEmail(email) && username && validateUsername(username) && password && validatePassword(password) ) {
-  //      const response = await postRequest('/user', {email, username, password});
-  //       if (response.error) {
-  //         setSignupError(response.message);
-  //         console.log(response.status);
-  //       }
-  //   }
-  // }
+  const handleSignupSubmit = async () => {
+    if ( signupError==null && NavbarSignupEmail && validateEmail(NavbarSignupEmail) &&  username && validateUsername(username) && password && validatePassword(password) && gender!='Gender') {
+      const email=NavbarSignupEmail;
+      const response = await postRequest('/user', { email ,username, password, gender });
+      if (response.status!=200 && response.status!=201) {
+        setSignupError(response.data.message);
+      }
+    }
+  }
 
   return (
     <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
@@ -164,7 +168,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
 
             <div className="flex flex-row px-2 mt-3">
 
-              <div id="gender_dropdown_button" onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen) }} data-dropdown-toggle="gender_dropdown_menu" className="text-gray-400 pl-4 hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button">{gender}
+              <div id="gender_dropdown_button" onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen) }} data-dropdown-toggle="gender_dropdown_menu" className={`text-gray-400 cursor-pointer pl-4 border-1 ${signupError!=null? 'border-red-400':'border-transparent'} hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>{gender}
                 <div className="w-fit flex ml-auto mr-5 flex-row">
                   <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -188,15 +192,13 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu }) => {
 
             </div>
 
-            {signupError != null && <div className="relative ml-3 h-3 text-xs font-light w-85"> <p className="text-red-400">{signupError}</p> </div>}
+            {signupError != null && <div className="relative ml-3 mt-3 h-3 text-xs font-light w-85"> <p className="text-red-400">{signupError}</p> </div>}
           </div>
 
-
-
           <div className="mt-auto mb-2  w-full h-[96px] px-2 flex justify-center items-center">
-            <div id="signup" className={`${username && validateUsername(username) && password && validatePassword(password) && signupError == null && gender != 'Gender' ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
+            <div id="signup_submit" onClick={handleSignupSubmit} className={`${ NavbarSignupEmail && validateEmail(NavbarSignupEmail) &&   username && validateUsername(username) && password && validatePassword(password) && signupError == null && gender != 'Gender' ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">
-                Continue
+                Sign Up
               </span>
             </div>
           </div>

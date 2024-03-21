@@ -4,11 +4,11 @@ import GAButtons from "../GAButtons";
 import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
 
-const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedSecondSignupMenu }) => {
+const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedSecondSignupMenu, setNavbarSignupEmail }) => {
 
-    const [email, setEmail] = useState('');
-    const [signupError, setSignupError] = useState(null);
+   
     const [nextPage, setNextPage] = useState(false)
+    const [email, setEmail] = useState('');
 
 
 
@@ -29,10 +29,10 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
         return re.test(email);
     };
 
-
     const handleSignupEmailSubmit = async (e) => {
         if (email && validateEmail(email)) {
             e.stopPropagation();
+            setNavbarSignupEmail(email)
             setNextPage(true);
         }
     }
@@ -106,15 +106,12 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                             label="Email"
                             validateInput={validateEmail}
                             setInputNameOnChange={setEmail}
-                            backendValidationError={signupError}
-                            setBackendValidationError={setSignupError}
+                            backendValidationError={null}
                         />
                     </div>
                 </div>
 
-                <div className="flex flex-col">
-                    {signupError != null && <div className="relative ml-3 h-3 text-xs font-light w-85"> <p className="text-red-400">{signupError}</p> </div>}
-                </div>
+
 
 
                 <div className="mt-auto flex text-[14px] ml-4 text-[#FFFFFF]">
@@ -123,7 +120,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
             </div>
 
             <div className="mt-auto mb-4 w-full h-[96px] px-2 flex justify-center items-center">
-                <div id="signup_email_continue" onClick={(e) => handleSignupEmailSubmit(e)} className={`${email && validateEmail(email) && signupError == null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
+                <div id="signup_email_continue" onClick={(e) => handleSignupEmailSubmit(e)} className={`${email && validateEmail(email) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
                     <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                         Continue
                     </span>

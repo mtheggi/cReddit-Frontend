@@ -7,8 +7,8 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     const [input, setInput] = useState(null);
     const [backendUsernameError, setBackendUsernameError] = useState(null);
-    const isRed = (!validateInput(input) && input != null || backendValidationError != null && id!=="signup_password") || (backendUsernameError != null && id==="signup_username");
-    const isGreen = validateInput(input) && input != null && (backendValidationError == null || id==="signup_password") && backendUsernameError == null;
+    const isRed = (!validateInput(input) && input != null || backendValidationError != null) || (backendUsernameError != null && id==="signup_username");
+    const isGreen = validateInput(input) && input != null && (backendValidationError == null) && backendUsernameError == null;
  
 
 
@@ -25,7 +25,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     return (
         <div className='w-full flex-col h-16'>
-            <div onChange={(e) => { setBackendValidationError(null); if (setInputNameOnChange) { setInputNameOnChange(e.target.value) };  if (setBackendMessage) { setBackendMessage(null) } }} onBlur={(e) => {setInput(e.target.value); if (id == 'signup_username'){isAvailableUsername(e.target.value)} } } className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
+            <div onChange={(e) => { if(setBackendValidationError) {setBackendValidationError(null)}; if (setInputNameOnChange) { setInputNameOnChange(e.target.value) };  if (setBackendMessage) { setBackendMessage(null) } }} onBlur={(e) => {setInput(e.target.value); if (id == 'signup_username'){isAvailableUsername(e.target.value)} } } className={`relative flex flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
                 <input onFocus={() =>{ setInput(null); setBackendUsernameError(null)}} onChange={(e) => {
                     if (e.target.value !== "") {
                         e.target.style.height = "24px";

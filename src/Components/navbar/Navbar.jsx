@@ -27,6 +27,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isOpenedEmailVerification, setIsOpenedEmailVerification] = useState(false);
     const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
+    const [signupEmail, setSignupEmail] = useState('');
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -136,7 +137,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} />
+                                        <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} setNavbarSignupEmail={setSignupEmail}/>
                                     </div>
                                 </div>
                             )}
@@ -178,7 +179,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} />
+                                       
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail}  />
                                     </div>
                                 </div>
                             )}

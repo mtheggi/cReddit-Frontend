@@ -88,7 +88,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
               setBackendMessage={setResetUsernameMessage}  />
             </div>
 
-            {resetUsernameError != null && <div className=" -ml-3 mt-3  h-2 text-xs font-light w-85"> <p className={`text-red-400`}>{resetUsernameMessage}</p> </div>}
+            {resetUsernameError != null && <div className=" -ml-3 mt-1  h-2 text-xs font-light w-85"> <p className={`text-red-400`}>{resetUsernameMessage}</p> </div>}
 
             <div id="reset_username_email_me" onClick={(e)=>handleForgetUsernameSubmit(e)} className={`w-full h-13 msm:w-93 mt-auto mb-12 flex bg-reddit_search ${  email && validateEmail(email) && resetUsernameError==null  ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
                 <p className={`no-select font-semibold text-sm ${ email && validateEmail(email) && resetUsernameError==null ?' text-white' : 'text-gray-500'} `}>Email Me</p>

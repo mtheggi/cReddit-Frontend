@@ -2,31 +2,6 @@ import { http, HttpResponse } from "msw"
 
 
 export const userHandlers = [
-    http.post('/user', async (resolver) => {
-        try {
-            const body = await resolver.request.json();
-            if (body.email === "malek13122002@gmail.com") {
-                throw new Error('Email Already taken');
-            }
-            return HttpResponse.json({
-                message: "User logged in successfully"
-            });
-        } catch (error) {
-            return HttpResponse.json({
-                message: error.message
-            }, { status: 400 });
-        }
-    }),
-
-
-    http.delete('/user', async (resolver) => {
-        return HttpResponse.json(
-            {
-                message: "User deleted successfully"
-            }
-        )
-    }),
-
 
     http.post('/user/login', async (resolver) => {
         try {
@@ -44,14 +19,27 @@ export const userHandlers = [
         }
     }),
 
-
-
+    http.post('/user', async (resolver) => {
+        try {
+            const body = await resolver.request.json();
+            if (body.email === "malek13122002@gmail.com") {
+                throw new Error('Email already logged');
+            }
+            return HttpResponse.json({
+                message: "User created successfully"
+            });
+        } catch (error) {
+            return HttpResponse.json({
+                message: error.message
+            }, { status: 400 });
+        }
+    }),
 
     http.get('/user/is-available/:username', async (resolver) => {
 
         try {
             if (resolver.params.username == "Malek") {
-                throw new Error('Username Already Taken');
+                throw new Error('Username already taken');
             }
             return HttpResponse.json([
                 {
@@ -67,6 +55,7 @@ export const userHandlers = [
         }
     }),
 
+
     http.post('/user/forgot-password', async (resolver) => {
         try {
             const body = await resolver.request.json();
@@ -74,7 +63,7 @@ export const userHandlers = [
                 throw new Error('Email Does not Exist');
             }
             return HttpResponse.json({
-                message: "User logged in successfully"
+                message: "Verify email sent succesfully"
             });
         } catch (error) {
             return HttpResponse.json({
@@ -98,6 +87,14 @@ export const userHandlers = [
                 message: error.message
             }, { status: 400 });
         }
+    }),
+
+    http.delete('/user', async (resolver) => {
+        return HttpResponse.json(
+            {
+                message: "User deleted successfully"
+            }
+        )
     }),
 
 
