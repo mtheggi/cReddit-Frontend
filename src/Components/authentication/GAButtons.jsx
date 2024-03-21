@@ -1,9 +1,9 @@
 export default function GAButtons() {
   return (
-    <>
-      <div className="w-92 h-11 cursor-pointer flex items-center bg-white rounded-3xl">
-        <div className="w-[368px] h-[40px] px-[12px] border-[0.800px] bg-white rounded-3xl">
-          <div className="flex justify-center align-middle w-[342.400px] h-[38.400px]">
+
+      <div className="w-full h-11 cursor-pointer group flex items-center justify-center bg-gray-100  hover:bg-reddit_search_light rounded-3xl transition-colors duration-200">
+     
+          <div className="flex justify-between px-8 align-middle w-full h-[38.400px]">
             <div className="w-[18px] h-[18px] justify-self-center self-center">
               <svg
                 version="1.1"
@@ -32,14 +32,14 @@ export default function GAButtons() {
                 </g>
               </svg>
             </div>
-            <span className="w-[316.400px] h-[17.600px] text-[14px] text-center self-center">
-              Continue with Google
+            <span className="w-full group-hover:text-white  h-[17.600px] text-[14px] text-center self-center transition-colors duration-200">
+              <p>Continue with Google</p>
             </span>
           </div>
-        </div>
+  
       </div>
 
     
-    </>
+   
   );
 }
