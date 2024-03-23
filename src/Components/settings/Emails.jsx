@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Emails({chatRequests, newFollowerNotif, followEmail}) {
+function Emails({chatEmail, followEmail}) {
   const [toggles, setToggles] = useState({
-    chatRequests: chatRequests,
-    newFollowers: newFollowerNotif,
-    unsubscribeFromAllEmails: !followEmail,
+    chatRequests: chatEmail,
+    newFollowers: followEmail,
+    unsubscribeFromAllEmails: false,
   });
 
   const handleToggle = (id) => {

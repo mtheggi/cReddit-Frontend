@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Notifications({ mentionsNotif, commentsNotif, upvotesNotif, repliesNotif, newFollowerNotif, }) {
+function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, repliesNotifs, newFollowersNotifs, postNotifs}) {
   const [toggles, setToggles] = useState({
-    mentionsOfUsername: mentionsNotif,
-    commentsOnYourPosts: commentsNotif,
-    upvotesOnYourPosts: upvotesNotif,
-    upvotesOnYourComments: true,
-    repliesToYourComments: repliesNotif,
-    newFollowers: newFollowerNotif,
-    postsYouFollow: true,
-    commentsYouFollow: true,
+    mentionsOfUsername: mentionsNotifs,
+    commentsOnYourPosts: commentsNotifs,
+    upvotesOnYourPosts: postsUpvotesNotifs,
+    upvotesOnYourComments: false,
+    repliesToYourComments: repliesNotifs,
+    newFollowers: newFollowersNotifs,
+    postsYouFollow: postNotifs,
+    commentsYouFollow: false,
   });
 
   const handleToggle = (id) => {

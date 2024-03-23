@@ -92,21 +92,21 @@ function Settings() {
         {userSettings && (
           <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
             <Routes>
-              <Route path="/" element={<Account {...userSettings} />} />
-              <Route path="account" element={<Account {...userSettings} />} />
-              <Route path="profile" element={<Profile {...userSettings} />} />
+              <Route path="/" element={<Account {...userSettings.account} />} />
+              <Route path="account" element={<Account {...userSettings.account} />} />
+              <Route path="profile" element={<Profile {...userSettings.profile} />} />
               <Route path="privacy" element={<SafetyAndPrivacy />} />
               <Route
                 path="feed"
-                element={<Feed {...userSettings.preferences} />}
+                element={<Feed {...userSettings.feedSettings} />}
               />
               <Route
                 path="notifications"
-                element={<Notifications {...userSettings.preferences} />}
+                element={<Notifications {...userSettings.notifications} />}
               />
               <Route
                 path="emails"
-                element={<Emails {...userSettings.preferences} />}
+                element={<Emails {...userSettings.email} />}
               />
             </Routes>
           </div>

@@ -256,73 +256,83 @@ export const userHandlers = [
         )
     }),
     http.get('/user/settings', async (resolver) => {
-        return HttpResponse.json(
-            {
-                country: "Egypt",
-                gender: "Man",
-                displayName: "theUser",
-                about: "Hello world",
+        return HttpResponse.json({
+            account: {
                 email: "jondoe@gmail.com",
-                preferences: {
-                    socialLinks: [
-                        {
-                            displayName: "El Buy Me a Coffee bta3y",
-                            platform: "Buy Me a Coffee",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                        {
-                            displayName: "El twitter bta3y",
-                            platform: "Twitter",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                        {
-                            displayName: "El Reddit bta3y",
-                            platform: "Reddit",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                        {
-                            displayName: "El Discord bta3y",
-                            platform: "Discord",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                        {
-                            displayName: "El Facebook bta3y",
-                            platform: "Facebook",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                    ],
-                    inboxMessagesNotif: true,
-                    repliesNotif: true,
-                    communityContentSort: "top",
-                    apple: "apple id",
-                    openNewTab: true,
-                    twitter: "twitter handle",
-                    followEmail: true,
-                    modNotif: true,
-                    upvotesNotif: true,
-                    cakeDayNotif: true,
-                    isActiveCommunityVisible: false,
-                    communityThemes: true,
-                    chatMessagesNotif: true,
-                    globalContentView: "card",
-                    chatRequests: true,
-                    showAdultContent: true,
-                    isContentVisible: true,
-                    google: "jondoe@gmail.com",
-                    mentionsNotif: false,
-                    newFollowerNotif: false,
-                    invitationNotif: true,
-                    commentsNotif: true,
-                    autoPlayMedia: false,
-                    allowFollow: true,
-                    darkMode: true,
-                    chatEmail: true
-                },
+                gender: "Man",
+                google: true,
+
+                //EXTRA (NOT IN API DOCUMENTATION)
+                country: "Egypt",
                 connectedToTwitter: false,
-                connectedToApple: true,
-                connectedToGoogle: false
+                connectedToApple: false,
+                connectedToGoogle: true
+            },
+            profile: {
+                displayName: "John Doe", 
+                about: "I am a developer",
+                socialLinks: [
+                    {
+                        displayName: "El Buy Me a Coffee bta3y",
+                        platform: "Buy Me a Coffee",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El twitter bta3y",
+                        platform: "Twitter",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Reddit bta3y",
+                        platform: "Reddit",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Discord bta3y",
+                        platform: "Discord",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Facebook bta3y",
+                        platform: "Facebook",
+                        url: "https://twitter.com/faUwUsa"
+                    }
+                ],
+                avatar: "drive.creddit.com/test",
+                banner: "drive.creddit.com/test",
+                isNSFW: true,
+                allowFollow: true,
+                isContentVisible: true
+            },
+            safetyAndPrivacy: {
+                blockedUsers: ["user1"],
+                mutedCommunities: ["community1"]
+            },
+            feedSettings: {
+                showAdultContent: true,
+                autoPlayMedia: false,
+                communityThemes: true,
+                communityContentSort: "Top",
+                globalContentView: "Card",
+                openNewTab: true
+            },
+            notifications: {
+                mentionsNotifs: false,
+                commentsNotifs: true,
+                postsUpvotesNotifs: true,
+                repliesNotifs: true,
+                newFollowersNotifs: false,
+                postNotifs: true,
+                cakeDayNotifs: true,
+                modNotifs: false,
+                moderatorInCommunities: [],
+                invitationNotifs: true
+            },
+            email: {
+                followEmail: false,
+                chatEmail: true
             }
-        )
+        });
     }),
 
     http.put('/user/settings', async (resolver) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Feed({showAdultContent, autoPlayMedia, communityThemes, openNewTab}) {
+function Feed({showAdultContent, autoPlayMedia, communityThemes, communityContentSort, globalContentView, openNewTab}) {
   const [toggles, setToggles] = useState({
     showMatureContent: showAdultContent,
     autoplayMedia: autoPlayMedia,
@@ -64,6 +64,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, openNewTab}) {
           { name: "Top" },
           { name: "Rising" },
         ]}
+        selectedItem={communityContentSort}
       />
 
       <Setting
@@ -71,6 +72,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, openNewTab}) {
         title = "Global Content View"
         message = "Choose how you would like content displayed in feeds. This control is also found above your feed."
         menuItems = {[{ name: "Card" }, { name: "Classic" }, { name: "Compact" }]}
+        selectedItem={globalContentView}
       />
 
       <Setting
