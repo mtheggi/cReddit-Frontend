@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, Router } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import Account from "./Account";
 import Profile from "./Profile";
@@ -48,8 +49,8 @@ function Settings() {
   useEffect(() => {
     getRequest("/user/settings")
       .then((res) => {
-        console.log(res);
-        setUserSettings(res);
+        console.log(res.data);
+        setUserSettings(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -57,53 +58,61 @@ function Settings() {
   }, []);
 
   return (
-    <div className="flex min-w-88 mt-4 flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
-      <div className="w-full mt-15 max-w-6xl">
-        <h1 className="text-white text-lg font-bold font-plex">
-          User Settings
-        </h1>
-      </div>
-      <div className="flex flex-wrap w-full mt-2 max-w-6xl">
-        {Tabs.map((tab, i) => {
-          return (
-            <Link
-              key={tab}
-              to={TabsPath[i]}
-              id={`setting-navbar-${tab.toLowerCase()}-tab`}
-              className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
-                i == currTab ? "border-b-3 border-white" : ""
-              }`}
-              onClick={() => onSetTab(i)}
-            >
-              <div className="cursor-pointer">{tab}</div>
-            </Link>
-          );
-        })}
-      </div>
-      <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
-      {userSettings && (
-        <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
-          <Routes>
-            <Route path="/" element={<Account {...userSettings} />} />
-            <Route path="account" element={<Account {...userSettings} />} />
-            <Route path="profile" element={<Profile {...userSettings} />} />
-            <Route path="privacy" element={<SafetyAndPrivacy />} />
-            <Route
-              path="feed"
-              element={<Feed {...userSettings.preferences} />}
-            />
-            <Route
-              path="notifications"
-              element={<Notifications {...userSettings.preferences} />}
-            />
-            <Route
-              path="emails"
-              element={<Emails {...userSettings.preferences} />}
-            />
-          </Routes>
+    <>
+      <ToastContainer
+        autoClose={4000}
+        pauseOnHover={false}
+        position={"bottom-center"}
+        hideProgressBar={true}
+      />
+      <div className="flex min-w-88 mt-4 flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
+        <div className="w-full mt-15 max-w-6xl">
+          <h1 className="text-white text-lg font-bold font-plex">
+            User Settings
+          </h1>
         </div>
-      )}
-    </div>
+        <div className="flex flex-wrap w-full mt-2 max-w-6xl">
+          {Tabs.map((tab, i) => {
+            return (
+              <Link
+                key={tab}
+                to={TabsPath[i]}
+                id={`setting-navbar-${tab.toLowerCase()}-tab`}
+                className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
+                  i == currTab ? "border-b-3 border-white" : ""
+                }`}
+                onClick={() => onSetTab(i)}
+              >
+                <div className="cursor-pointer">{tab}</div>
+              </Link>
+            );
+          })}
+        </div>
+        <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
+        {userSettings && (
+          <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
+            <Routes>
+              <Route path="/" element={<Account {...userSettings} />} />
+              <Route path="account" element={<Account {...userSettings} />} />
+              <Route path="profile" element={<Profile {...userSettings} />} />
+              <Route path="privacy" element={<SafetyAndPrivacy />} />
+              <Route
+                path="feed"
+                element={<Feed {...userSettings.preferences} />}
+              />
+              <Route
+                path="notifications"
+                element={<Notifications {...userSettings.preferences} />}
+              />
+              <Route
+                path="emails"
+                element={<Emails {...userSettings.preferences} />}
+              />
+            </Routes>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 export default Settings;

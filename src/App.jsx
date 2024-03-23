@@ -7,22 +7,15 @@ import Home from "./views/Home";
 import { useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { FormText } from 'react-bootstrap';
-import axiosInterceptor from './utils/axiosInterceptor';
-import EmailVerification from './Components/authentication/reset_components/EmailVerification';
+import { FormText } from "react-bootstrap";
+import axiosInterceptor from "./utils/axiosInterceptor";
+import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const navbarRef = useRef();
   return (
     <Router>
-      <ToastContainer
-        autoClose={4000}
-        pauseOnHover={false}
-        position={"bottom-center"}
-        hideProgressBar={true}
-      />
       <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
         <Navbar
           setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
@@ -48,7 +41,6 @@ function App() {
             }
           />
           <Route path="/settings/*" element={<Settings />} />
-          {/* <Route path="/settings/account" element={<Account />} /> */}
         </Routes>
       </div>
     </Router>

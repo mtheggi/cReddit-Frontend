@@ -259,18 +259,37 @@ export const userHandlers = [
         return HttpResponse.json(
             {
                 country: "Egypt",
+                gender: "Man",
+                displayName: "theUser",
+                about: "Hello world",
+                email: "jondoe@gmail.com",
                 preferences: {
                     socialLinks: [
                         {
-                            displayName: "El twitter bta3y",
-                            platform: "twitter",
+                            displayName: "El Buy Me a Coffee bta3y",
+                            platform: "Buy Me a Coffee",
                             url: "https://twitter.com/faUwUsa"
                         },
                         {
                             displayName: "El twitter bta3y",
-                            platform: "twitter",
+                            platform: "Twitter",
                             url: "https://twitter.com/faUwUsa"
-                        }
+                        },
+                        {
+                            displayName: "El Reddit bta3y",
+                            platform: "Reddit",
+                            url: "https://twitter.com/faUwUsa"
+                        },
+                        {
+                            displayName: "El Discord bta3y",
+                            platform: "Discord",
+                            url: "https://twitter.com/faUwUsa"
+                        },
+                        {
+                            displayName: "El Facebook bta3y",
+                            platform: "Facebook",
+                            url: "https://twitter.com/faUwUsa"
+                        },
                     ],
                     inboxMessagesNotif: true,
                     repliesNotif: true,
@@ -282,7 +301,7 @@ export const userHandlers = [
                     modNotif: true,
                     upvotesNotif: true,
                     cakeDayNotif: true,
-                    isActiveCommunityVisible: true,
+                    isActiveCommunityVisible: false,
                     communityThemes: true,
                     chatMessagesNotif: true,
                     globalContentView: "card",
@@ -290,19 +309,18 @@ export const userHandlers = [
                     showAdultContent: true,
                     isContentVisible: true,
                     google: "jondoe@gmail.com",
-                    mentionsNotif: true,
-                    newFollowerNotif: true,
+                    mentionsNotif: false,
+                    newFollowerNotif: false,
                     invitationNotif: true,
                     commentsNotif: true,
-                    autoPlayMedia: true,
+                    autoPlayMedia: false,
                     allowFollow: true,
                     darkMode: true,
                     chatEmail: true
                 },
-                gender: "Man",
-                displayName: "theUser",
-                about: "Hello world",
-                email: "jondoe@gmail.com"
+                connectedToTwitter: false,
+                connectedToApple: true,
+                connectedToGoogle: false
             }
         )
     }),
