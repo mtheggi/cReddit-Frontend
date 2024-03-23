@@ -4,6 +4,7 @@ import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../constants";
+import { ToastContainer } from "react-toastify";
 const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
 
   const [username, setUsername] = useState('');
@@ -49,7 +50,13 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
     onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },
     onError: (error) => console.log('Login Failed:', error)
   });
-  return (
+  return (<>
+    <ToastContainer
+      autoClose={4000}
+      pauseOnHover={false}
+      position={"bottom-center"}
+      hideProgressBar={true}
+    />
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 
       <div className="h-full flex flex-col">
@@ -138,15 +145,15 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
 
         <div className="flex flex-col mt-auto">
 
-       
-        <div className={`  mb-2  text-[14px] text-[#FFFFFF]`}>
-          Forgot your <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotUsername(true)}} className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
-          <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotPass(true)}}  className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
+
+          <div className={`  mb-2  text-[14px] text-[#FFFFFF]`}>
+            Forgot your <a onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotUsername(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
+            <a onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotPass(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
+          </div>
+          <div className={` text-[14px] text-[#FFFFFF]`}>
+            New to Reddit?  <a onClick={(e) => { e.stopPropagation(); setIsOpenedSignupMenu(true); setIsOpenedLoginMenu(false) }} className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
+          </div>
         </div>
-        <div className={` text-[14px] text-[#FFFFFF]`}>
-          New to Reddit?  <a onClick={(e) =>{ e.stopPropagation(); setIsOpenedSignupMenu(true); setIsOpenedLoginMenu(false)}} className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
-        </div>
-      </div>
       </div>
 
       <div className="h-[96px] py-[24px] mt-auto mb-4 msm:mt-0 msm:mb-0 flex items-center">
@@ -160,6 +167,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
       </div>
 
     </div>
+  </>
   );
 };
 
