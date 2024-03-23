@@ -31,6 +31,7 @@ const CustomToast = ({ message }) => (
 export const LoginSuccessToast = (message) =>
   toast.success(<CustomToast message={message} />,
     {
+      toastId: "login-toast-success", 
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -47,6 +48,7 @@ export const LoginSuccessToast = (message) =>
 export const LoginFailedToast = (message) =>
   toast.error(<CustomToast message={message} />,
     {
+      toastId: "login-toast-error", 
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,

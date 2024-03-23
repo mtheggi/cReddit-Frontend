@@ -27,9 +27,10 @@ const CustomToast = ({ message }) => (
     <div className="text-white text-sm font-plex items-end mt-1">{message}</div>
   </div>
 );
-
+let id = 1;
 export const notify = (message) =>
   toast(<CustomToast message={message} />, {
+    toastId: `popup_${id++}`,
     className:
       "bg-reddit_greenyDark text-white font-plex max-w-xs max-h-3 border-1 border-gray-500 p-0",
   });
