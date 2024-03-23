@@ -12,7 +12,6 @@ input#reset_username_email:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #1a282c inset !important;
   -webkit-text-fill-color: #dcdcdc !important;
 }
-
 ::-webkit-scrollbar {
     width: 4px;
     background-color: #0B1416;

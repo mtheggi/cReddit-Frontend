@@ -4,7 +4,9 @@ import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../constants";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
+
 const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
 
   const [username, setUsername] = useState('');
@@ -27,8 +29,14 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   const handleLoginSubmit = async () => {
     if (username && password && validateLoginUsername(username) && validateLoginPassword(password)) {
       const response = await postRequest('/user/login', { username, password });
-      if (response.status !== 200 && response.status !== 201)
+      if (response.status !== 200 && response.status !== 201) {
         setLoginError(response.data.message);
+        LoginFailedToast(response.data.message);
+      }
+      else {
+        LoginSuccessToast("Logged in successfully");
+
+      }
     }
   }
   useEffect(() => {
@@ -37,7 +45,11 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
         console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
-          setOauthLoginError(response.message);
+          setOauthLoginError(response.data.message);
+          LoginFailedToast(response.data.message);
+
+        } else {
+          LoginSuccessToast("Logged in successfully");
         }
       }
     }
@@ -52,10 +64,16 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   });
   return (<>
     <ToastContainer
-      autoClose={4000}
-      pauseOnHover={false}
-      position={"bottom-center"}
-      hideProgressBar={true}
+      position="bottom-center"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
     />
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 

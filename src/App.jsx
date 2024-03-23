@@ -7,6 +7,7 @@ import Home from "./views/Home";
 import { useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.css';
 import { FormText } from "react-bootstrap";
 import axiosInterceptor from "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
@@ -22,9 +23,8 @@ function App() {
           navbarRef={navbarRef}
         />
         <div
-          className={`fixed inset-0 bg-black opacity-50 z-10 ${
-            isVisibleLeftSidebar ? "block" : "hidden"
-          }`}
+          className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
+            }`}
           onClick={() => setIsVisibleLeftSidebar(false)}
         >
           {" "}

@@ -61,10 +61,10 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
   };
 
   const handleSignupSubmit = async () => {
-    if ( signupError==null && NavbarSignupEmail && validateEmail(NavbarSignupEmail) &&  username && validateUsername(username) && password && validatePassword(password) && gender!='Gender') {
-      const email=NavbarSignupEmail;
-      const response = await postRequest('/user', { email ,username, password, gender });
-      if (response.status!=200 && response.status!=201) {
+    if (signupError == null && NavbarSignupEmail && validateEmail(NavbarSignupEmail) && username && validateUsername(username) && password && validatePassword(password) && gender != 'Gender') {
+      const email = NavbarSignupEmail;
+      const response = await postRequest('/user', { email, username, password, gender });
+      if (response.status != 200 && response.status != 201) {
         setSignupError(response.data.message);
       }
     }
@@ -131,7 +131,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
           </p>
 
 
-       
+
 
 
           <div className="flex mt-4 flex-col">
@@ -162,7 +162,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
 
             <div className="flex flex-row px-2 mt-3">
 
-              <div id="gender_dropdown_button" onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen) }} data-dropdown-toggle="gender_dropdown_menu" className={`text-gray-400 cursor-pointer pl-4 border-1 ${signupError!=null? 'border-red-400':'border-transparent'} hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>{gender}
+              <div id="gender_dropdown_button" onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen) }} data-dropdown-toggle="gender_dropdown_menu" className={`text-gray-400 cursor-pointer pl-4 border-1 ${signupError != null ? 'border-red-400' : 'border-transparent'} hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>{gender}
                 <div className="w-fit flex ml-auto mr-5 flex-row">
                   <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                     <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -190,7 +190,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
           </div>
 
           <div className="mt-auto mb-2  w-full h-[96px] px-2 flex justify-center items-center">
-            <div id="signup_submit" onClick={handleSignupSubmit} className={`${ NavbarSignupEmail && validateEmail(NavbarSignupEmail) &&   username && validateUsername(username) && password && validatePassword(password) && signupError == null && gender != 'Gender' ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
+            <div id="signup_submit" onClick={handleSignupSubmit} className={`${NavbarSignupEmail && validateEmail(NavbarSignupEmail) && username && validateUsername(username) && password && validatePassword(password) && signupError == null && gender != 'Gender' ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
               <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                 Sign Up
               </span>
