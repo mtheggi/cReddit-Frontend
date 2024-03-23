@@ -138,3 +138,8 @@ html {
   background: #000000;
   opacity: 0.5;
 }
+
+.Toastify__close-button {
+  color: white !important;
+  padding: 2px;
+}

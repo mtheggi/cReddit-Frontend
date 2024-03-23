@@ -22,6 +22,7 @@
     "deep-email-validator": "^0.1.21",
     "email-validator": "^2.0.4",
     "flowbite-react": "^0.7.2",
+    "moment": "^2.30.1",
     "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.1",
@@ -32,6 +33,7 @@
     "react-router-dom": "^6.22.3",
     "react-rte": "^0.16.5",
     "react-select": "^5.8.0",
+    "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "shadcn-ui": "^0.8.0"
   },

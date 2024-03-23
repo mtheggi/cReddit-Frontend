@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Routes, Route, Link, Router } from "react-router-dom";
+
 import Account from "./Account";
 import Profile from "./Profile";
 import SafetyAndPrivacy from "./SafetyAndPrivacy";
 import Emails from "./Emails";
 import Notifications from "./Notifications";
 import Feed from "./Feed";
+
+import { getRequest } from "../../services/Requests";
 
 const Tabs = [
   "Account",
@@ -15,12 +19,42 @@ const Tabs = [
   "Emails",
 ];
 
-function Settings() {
-  const [currTab, setCurrTab] = useState(0);
+const TabsPath = [
+  "account",
+  "profile",
+  "privacy",
+  "feed",
+  "notifications",
+  "emails",
+];
 
-  function onSetTab(i) {
-    setCurrTab(i);
-  }
+const initCurrTab = () => {
+  const path = window.location.pathname;
+  console.log(path);
+  const tab = path.split("/")[2];
+  console.log(tab, TabsPath.indexOf(tab));
+  const index = TabsPath.indexOf(tab);
+  return index != -1 ? index : 0;
+};
+
+function Settings() {
+  const [userSettings, setUserSettings] = useState(null);
+  const [currTab, setCurrTab] = useState(initCurrTab());
+
+  const onSetTab = (index) => {
+    setCurrTab(index);
+  };
+
+  useEffect(() => {
+    getRequest("/user/settings")
+      .then((res) => {
+        console.log(res);
+        setUserSettings(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="flex min-w-88 mt-4 flex-col w-full p-4 pb-0 pt-0 justify-center items-center">
@@ -29,37 +63,46 @@ function Settings() {
           User Settings
         </h1>
       </div>
-
-
-
       <div className="flex flex-wrap w-full mt-2 max-w-6xl">
         {Tabs.map((tab, i) => {
           return (
-            <a
+            <Link
               key={tab}
+              to={TabsPath[i]}
               id={`setting-navbar-${tab.toLowerCase()}-tab`}
               className={`text-white text-sm font-bold font-plex px-2 mx-4 pb-2 pt-3 ${
                 i == currTab ? "border-b-3 border-white" : ""
               }`}
+              onClick={() => onSetTab(i)}
             >
-              <div className="cursor-pointer" onClick={() => onSetTab(i)}>
-                {tab}
-              </div>
-            </a>
+              <div className="cursor-pointer">{tab}</div>
+            </Link>
           );
         })}
       </div>
-
       <hr className=" border-gray-500 mt-0 w-100% max-w-6xl " />
-
-      <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
-        {currTab == 0 && <Account />}
-        {currTab == 1 && <Profile />}
-        {currTab == 2 && <SafetyAndPrivacy />}
-        {currTab == 3 && <Feed />}
-        {currTab == 4 && <Notifications />}
-        {currTab == 5 && <Emails />}
-      </div>
+      {userSettings && (
+        <div className="flex flex-row w-full mt-10 mb-4 max-w-6xl">
+          <Routes>
+            <Route path="/" element={<Account {...userSettings} />} />
+            <Route path="account" element={<Account {...userSettings} />} />
+            <Route path="profile" element={<Profile {...userSettings} />} />
+            <Route path="privacy" element={<SafetyAndPrivacy />} />
+            <Route
+              path="feed"
+              element={<Feed {...userSettings.preferences} />}
+            />
+            <Route
+              path="notifications"
+              element={<Notifications {...userSettings.preferences} />}
+            />
+            <Route
+              path="emails"
+              element={<Emails {...userSettings.preferences} />}
+            />
+          </Routes>
+        </div>
+      )}
     </div>
   );
 }

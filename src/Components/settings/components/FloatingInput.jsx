@@ -5,7 +5,7 @@ function FloatingInput({ id, label, buttonText }) {
         type="text"
         id={id}
         aria-describedby={id + "_helper"}
-        className="block rounded-md px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 appearance-none dark:text-white dark:border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-300  peer"
+        className="pl-5 block rounded-md px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 appearance-none dark:text-white dark:border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-300  peer"
         placeholder=" "
       />
       <label

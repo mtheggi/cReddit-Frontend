@@ -1,6 +1,45 @@
 import Setting from "./Setting";
-import Subtitle from "./Subtitle";
-import FloatingInput from "./form-components/FloatingInput";
+import Subtitle from "./components/Subtitle";
+import FloatingInput from "./components/FloatingInput";
+import BlockedEntity from "./components/BlockedEntity";
+
+const blockedUsers = [
+  {
+    id: "1",
+    username: "user1",
+  },
+  {
+    id: "2",
+    username: "user2",
+  },
+  {
+    id: "3",
+    username: "user3",
+  },
+  {
+    id: "4",
+    username: "user4",
+  },
+];
+
+const blockedCommunities = [
+  {
+    id: "1",
+    communityName: "community1",
+  },
+  {
+    id: "2",
+    communityName: "community2",
+  },
+  {
+    id: "3",
+    communityName: "community3",
+  },
+  {
+    id: "4",
+    communityName: "community4",
+  },
+];
 
 function SafetyAndPrivacy() {
   return (
@@ -25,6 +64,13 @@ function SafetyAndPrivacy() {
         label="BLOCK NEW USER"
         buttonText="ADD"
       />
+      {blockedUsers.map((user) => (
+        <BlockedEntity
+          key={user.id}
+          entityName={user.username}
+          timestamp={Date.now() - 2 * 24 * 60 * 60 * 1000}
+        />
+      ))}
 
       <Setting
         title="Communities You've Muted"
@@ -35,6 +81,13 @@ function SafetyAndPrivacy() {
         label="MUTE NEW COMMUNITY"
         buttonText="ADD"
       />
+      {blockedCommunities.map((community) => (
+        <BlockedEntity
+          key={community.id}
+          entityName={community.communityName}
+          timestamp={Date.now() - 2 * 24 * 60 * 60 * 1000}
+        />
+      ))}
     </div>
   );
 }

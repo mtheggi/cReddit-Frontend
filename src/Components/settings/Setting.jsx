@@ -1,22 +1,44 @@
 import { useState } from "react";
 import { Dropdown } from "flowbite-react";
 import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
-import SimpleMenu from "./form-components/SimpleMenu";
+import SimpleMenu from "./components/SimpleMenu";
+import { notify } from "./components/CustomToast";
 
 function Setting({
   title,
   message,
+  clickableID,
+  // Toggle Button,
   toggleButton,
-  regularButton,
-  menuItems,
-  regularButtonOnClick,
   toggleButtonOnClick,
   isToggled,
-  clickableID,
+  // Regular Button,
+  regularButton,
+  regularButtonOnClick,
+  // Menu,
+  menuItems,
+  selectedItem,
 }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(
-    menuItems ? menuItems[0].name : ""
+    menuItems?.find((item) => item.name === selectedItem)?.name || "Select"
   );
+  const [isToggleOn, setIsToggleOn] = useState(isToggled);
+
+  function onRegularButtonOnClick() {
+    regularButtonOnClick();
+    notify("Changes saved");
+  }
+
+  function onToggleButtonOnClick() {
+    toggleButtonOnClick();
+    setIsToggleOn((prev) => !prev);
+    notify("Changes saved");
+  }
+
+  function onMenuItemSelect(item) {
+    setSelectedMenuItem(item);
+    notify("Changes saved");
+  }
 
   return (
     <>
@@ -34,8 +56,8 @@ function Setting({
               <input
                 id={clickableID?.toLowerCase()}
                 type="checkbox"
-                checked={isToggled}
-                onChange={toggleButtonOnClick}
+                checked={isToggleOn}
+                onChange={onToggleButtonOnClick}
                 className="sr-only peer"
                 style={{ position: "absolute", height: "0", width: "0" }}
               ></input>
@@ -49,7 +71,7 @@ function Setting({
             <button
               id={clickableID?.toLowerCase()}
               className="text-white text-sm font-bold font-plex bg-reddit_darkGray p-2 rounded-3xl border border-reddit_darkGray hover:bg-gray-800 hover:border-white"
-              onClick={regularButtonOnClick}
+              onClick={onRegularButtonOnClick}
             >
               <span className="pl-2 pr-2">{regularButton}</span>
             </button>
@@ -62,7 +84,7 @@ function Setting({
               id={clickableID?.toLowerCase()}
               title={selectedMenuItem}
               menuItems={menuItems}
-              onSelect={setSelectedMenuItem}
+              onSelect={onMenuItemSelect}
             />
           </div>
         )}

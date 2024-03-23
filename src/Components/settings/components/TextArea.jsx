@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { notify } from "./CustomToast";
 
-function TextArea({ id, placeholder, rows = 4, cols = 100, maxLength }) {
-  const [text, setText] = useState("");
+function TextArea({
+  id,
+  placeholder,
+  initText,
+  rows = 4,
+  cols = 100,
+  maxLength,
+  onTextChange,
+}) {
+  const [text, setText] = useState(initText || "");
+  const textBeforeFocus = useRef("");
 
   const handleTextChange = (event) => {
     setText(event.target.value);
   };
+
+  const handleOnBlur = () => {
+    if (textBeforeFocus.current !== text) {
+      onTextChange();
+      notify("Changes saved");
+    }
+  };
+
   return (
     <div className="mt-2">
       <textarea
@@ -16,6 +34,8 @@ function TextArea({ id, placeholder, rows = 4, cols = 100, maxLength }) {
         cols={cols}
         value={text}
         onChange={handleTextChange}
+        onBlur={() => handleOnBlur()}
+        onFocus={() => (textBeforeFocus.current = text)}
         maxLength={maxLength}
       ></textarea>
 
