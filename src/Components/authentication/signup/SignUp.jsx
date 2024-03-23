@@ -129,18 +129,12 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
             </a>
 
           </p>
-          <div className="w-full px-2 h-10 mt-4">
-            <GAButtons />
-          </div>
-
-          <div className="flex flex-row justify-center mt-4 px-2 msm:px-0 mb-1 w-full h-[16px]">
-            <hr className="w-5/12 h-[1px] text-gray-400 self-center"></hr>
-            <span className="text-[12px] px-[16px] text-gray-400 w-[48px] h-[16px]">OR</span>
-            <hr className="w-5/12 h-[1px] text-gray-400 self-center"></hr>
-          </div>
 
 
-          <div className="flex flex-col">
+       
+
+
+          <div className="flex mt-4 flex-col">
             <div className="min-h-[70px] px-2 mt-3">
               <FloatingInput
                 id={"signup_username"}
