@@ -1,7 +1,7 @@
 export default function GAButtons() {
   return (
 
-      <div className="w-full h-11 cursor-pointer group flex items-center justify-center bg-gray-100  hover:bg-reddit_search_light rounded-3xl transition-colors duration-200">
+      <div id="login_oauth" className="w-full h-11 cursor-pointer group flex items-center justify-center bg-gray-100  hover:bg-reddit_search_light rounded-3xl transition-colors duration-200">
      
           <div className="flex justify-between px-8 align-middle w-full h-[38.400px]">
             <div className="w-[18px] h-[18px] justify-self-center self-center">

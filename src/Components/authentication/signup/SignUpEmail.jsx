@@ -90,7 +90,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                         <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2 text-neutral">
                             Sign Up
                         </h1>
-                        <div className="flex justify-end pb-2 -mt-1 msm:-mr-3  rounded-2xl">
+                        <div id="signup1_close" className=" flex justify-end pb-2 -mt-1 msm:-mr-3  rounded-2xl">
                             <div onClick={() => setIsOpenedSignupMenu(false)} className="flex h-8 w-8 bg-reddit_search  hover:bg-reddit_search_light rounded-full ">
                                 <button className="h-8 w-8">
                                     <span className="flex justify-center align-middle">
@@ -115,7 +115,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
 
                     <p className="text-[14px] px-2.5 my-2 h-10 text-white">
                         By continuing, you agree to our{" "}
-                        <a
+                        <a id="signup_user_agreement"
                             className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
                             target="_blank"
                             href="https://www.redditinc.com/policies/user-agreement"
@@ -123,7 +123,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                             User Agreement
                         </a>{" "}
                         and acknowledge that you understand the{" "}
-                        <a
+                        <a id="signup_policy"
                             className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
                             target="_blank"
                             href="https://www.redditinc.com/policies/privacy-policy"
@@ -158,7 +158,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
 
 
                     <div className="mt-auto flex text-[14px] ml-4 text-[#FFFFFF]">
-                        Already a redditor? <a onClick={(e) => { e.stopPropagation(); setIsOpenedSignupMenu(false); setIsOpenedLoginMenu(true) }} className="text-reddit_links ml-1.5 cursor-pointer hover:text-blue-300"> Log In</a>
+                        Already a redditor? <a id="signup_login" onClick={(e) => { e.stopPropagation(); setIsOpenedSignupMenu(false); setIsOpenedLoginMenu(true) }} className="text-reddit_links ml-1.5 cursor-pointer hover:text-blue-300"> Log In</a>
                     </div>
                 </div>
 

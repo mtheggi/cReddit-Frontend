@@ -106,7 +106,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
           </div>
           <p className="text-[14px] my-2 h-10 text-white">
             By continuing, you agree to our{" "}
-            <a
+            <a id="login_user_agreement"
               className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
               target="_blank"
               href="https://www.redditinc.com/policies/user-agreement"
@@ -114,7 +114,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
               User Agreement
             </a>{" "}
             and acknowledge that you understand the{" "}
-            <a
+            <a id="login_policy"
               className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
               target="_blank"
               href="https://www.redditinc.com/policies/privacy-policy"
@@ -165,11 +165,11 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
 
 
           <div className={`  mb-2  text-[14px] text-[#FFFFFF]`}>
-            Forgot your <a onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotUsername(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
-            <a onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotPass(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
+            Forgot your <a id="forgot_username" onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotUsername(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">username</a> or{" "}
+            <a id="forgot_pass" onClick={(e) => { e.stopPropagation(); setIsOpenedLoginMenu(false); setIsOpenedForgotPass(true) }} className="text-reddit_links cursor-pointer hover:text-blue-300">password</a>?
           </div>
           <div className={` text-[14px] text-[#FFFFFF]`}>
-            New to Reddit?  <a onClick={(e) => { e.stopPropagation(); setIsOpenedSignupMenu(true); setIsOpenedLoginMenu(false) }} className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
+            New to Reddit?  <a id="login_signup" onClick={(e) => { e.stopPropagation(); setIsOpenedSignupMenu(true); setIsOpenedLoginMenu(false) }} className=" text-reddit_links cursor-pointer hover:text-blue-300">Sign Up</a>
           </div>
         </div>
       </div>

@@ -84,7 +84,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
             </svg>
           </div>
 
-          <div className="flex justify-end mt-1 msm:-mr-3  rounded-2xl">
+          <div id="close_signup2" className="flex justify-end mt-1 msm:-mr-3  rounded-2xl">
 
             <div onClick={() => setIsOpenedSecondSignupMenu(false)} className="flex h-8 w-8 bg-reddit_search  hover:bg-reddit_search_light rounded-full ">
               <button className="h-8 w-8">
@@ -112,7 +112,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
           </h1>
           <p className="text-[14px] px-2.5 my-2 h-10 text-white">
             By continuing, you agree to our{" "}
-            <a
+            <a id="signup2_user_agreement"
               className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
               target="_blank"
               href="https://www.redditinc.com/policies/user-agreement"
@@ -120,7 +120,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
               User Agreement
             </a>{" "}
             and acknowledge that you understand the{" "}
-            <a
+            <a id="signup2_policy"
               className="text-reddit_links cursor-pointer hover:text-blue-300 no-underline"
               target="_blank"
               href="https://www.redditinc.com/policies/privacy-policy"
@@ -175,10 +175,10 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
             <div id="gender_dropdown_menu" className={`z-10 absolute mt-24 ml-34  ${dropdownOpen ? '' : 'hidden'} bg-reddit_hover divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}>
 
               <ul className="py-2 text-sm" aria-labelledby="dropdownInformationButton">
-                <li className="cursor-pointer">
+                <li id="gender_man" className="cursor-pointer">
                   <p onClick={() => setGender('Man')} className="block px-4 py-2 text-gray-200 hover:bg-reddit_search_light ">Man</p>
                 </li>
-                <li className="cursor-pointer">
+                <li id="gender_woman" className="cursor-pointer">
                   <p onClick={() => setGender('Woman')} className="block px-4 py-2  text-gray-200 hover:bg-reddit_search_light  ">Woman</p>
                 </li>
 
