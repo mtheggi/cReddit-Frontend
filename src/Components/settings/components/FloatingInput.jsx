@@ -1,4 +1,4 @@
-function FloatingInput({ id, label, buttonText }) {
+function FloatingInput({ id, label, buttonText, onSubmit }) {
   return (
     <div className="relative w-90% max-w-3xl mt-2">
       <input
@@ -6,7 +6,7 @@ function FloatingInput({ id, label, buttonText }) {
         id={id}
         aria-describedby={id + "_helper"}
         className="pl-5 block rounded-md px-2.5 pb-2.5 pt-4 w-full text-sm text-white bg-reddit_greenyDark dark:bg-gray-700 border-1 border-gray-500 appearance-none dark:text-white dark:border-gray-600  focus:outline-none focus:ring-0 focus:border-gray-300  peer"
-        placeholder=" "
+        placeholder=""
       />
       <label
         htmlFor={id}
@@ -15,7 +15,10 @@ function FloatingInput({ id, label, buttonText }) {
         {label}
       </label>
 
-      <button className="absolute right-0 top-0 h-full w-12 bg-reddit_darkGray rounded-r-md text-gray-700 font-bold font-plex text-md mr-5 pb-1">
+      <button
+        className="absolute right-0 top-0 h-full w-12 bg-reddit_darkGray rounded-r-md text-gray-700 font-bold font-plex text-md mr-5 pb-1"
+        onClick={() => onSubmit(document.getElementById(id).value)}
+      >
         {buttonText}
       </button>
     </div>

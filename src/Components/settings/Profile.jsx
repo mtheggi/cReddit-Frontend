@@ -4,27 +4,22 @@ import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import SocialLinksModal from "./components/SocialLinksModal";
 import ImageUpload from "./components/ImageUpload";
-import SocialLink from "./components/SocialLink";
+import { changeSetting } from "./utils/ChangeSetting";
+import { notify } from "./components/CustomToast";
+import SocialLinks from "./components/SocialLinks";
+import { clearHistory } from "./utils/ClearHistory";
 
-function Profile({ displayName, about, preferences }) {
+function Profile({
+  displayName,
+  about,
+  socialLinks,
+  showAdultContent,
+  allowFollow,
+  isContentVisible,
+  isActiveCommunityVisible,
+  setUserSettings,
+}) {
   const [modalShow, setModalShow] = useState(false);
-
-  console.log(displayName, about, preferences);
-
-  const {
-    showAdultContent,
-    allowFollow,
-    isContentVisible,
-    isActiveCommunityVisible,
-    socialLinks,
-  } = preferences;
-
-  console.log(
-    showAdultContent,
-    allowFollow,
-    isContentVisible,
-    isActiveCommunityVisible
-  );
 
   return (
     <div className="flex flex-col w-full">
@@ -43,8 +38,18 @@ function Profile({ displayName, about, preferences }) {
         initText={displayName}
         maxLength="30"
         rows="1"
-        onTextChange={() => {
-          console.log("Display Name Changed");
+        onTextChange={async (newDispName) => {
+          const res = await changeSetting(
+            "profile",
+            "displayName",
+            newDispName
+          );
+          if (res) {
+            setUserSettings(res.data);
+            notify("Changes saved");
+          } else {
+            notify("Failed to save changes :(");
+          }
         }}
       />
 
@@ -57,8 +62,10 @@ function Profile({ displayName, about, preferences }) {
         placeholder="About (optional)"
         initText={about}
         maxLength="100"
-        onTextChange={() => {
-          console.log("About Changed");
+        onTextChange={async (newAbout) => {
+          (await changeSetting("profile", "about", newAbout))
+            ? notify("Changes Saved")
+            : notify("Failed to save changes :(");
         }}
       />
 
@@ -66,37 +73,9 @@ function Profile({ displayName, about, preferences }) {
         title="Social Links (5 max)"
         message="People who visit your profile will see your social links."
       />
-      <div className="flex flex-wrap justify-start w-full items-center pt-3 pb-3 max-w-3xl">
-        {socialLinks.map((link, i) => {
-          return (
-            <SocialLink
-              key={i}
-              id={`profile-added-social-link-${link.platform
-                .toLowerCase()
-                .split(" ")
-                .join("_")}`}
-              url={link.platform.toLowerCase().split(" ").join("_")}
-              platform={link.displayName}
-            />
-          );
-        })}
-        <button
-          id="profile-social-links-button"
-          onClick={() => setModalShow(true)}
-          className="flex flex-row justify-center items-center p-2.5 bg-gray-700 rounded-3xl m-0.5 mt-3 disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={socialLinks.length == 5}
-        >
-          <div className="flex flex-row justify-start w-full items-center">
-            <i
-              className="fa-solid fa-plus fa-sm pl-1"
-              style={{ color: "white" }}
-            ></i>
-            <span className="text-xs text-white font-bold font-plex pl-2">
-              Add social link
-            </span>
-          </div>
-        </button>
-      </div>
+
+      <SocialLinks socialLinks={socialLinks} setModalShow={setModalShow} />
+
       <SocialLinksModal
         id="profile-social-links-modal"
         show={modalShow}
@@ -117,9 +96,8 @@ function Profile({ displayName, about, preferences }) {
         message="This content is NSFW (may contain nudity, pornography, profanity or inappropriate content for those under 18)"
         toggleButton={true}
         isToggled={showAdultContent}
-        toggleButtonOnClick={() => {
-          console.log("NSFW Toggled");
-        }}
+        pageName={"profile"}
+        settingName={"isNSFW"}
       />
 
       <Subtitle title="PROFILE CATEGORY" />
@@ -129,9 +107,8 @@ function Profile({ displayName, about, preferences }) {
         message="Followers will be notified about posts you make to your profile and see them in their home feed."
         toggleButton={true}
         isToggled={allowFollow}
-        toggleButtonOnClick={() => {
-          console.log("Follow Toggled");
-        }}
+        pageName={"profile"}
+        settingName={"allowFollow"}
       />
       <Setting
         id="profile-category-visibility-toggle-button"
@@ -139,9 +116,8 @@ function Profile({ displayName, about, preferences }) {
         message="Posts to this profile can appear in r/all and your profile can be discovered in /users"
         toggleButton={true}
         isToggled={isContentVisible}
-        toggleButtonOnClick={() => {
-          console.log("Visibility Toggled");
-        }}
+        pageName={"profile"}
+        settingName={"isContentVisible"}
       />
       <Setting
         id="profile-category-active-communities-toggle-button"
@@ -149,18 +125,15 @@ function Profile({ displayName, about, preferences }) {
         message="Show which communities I am active in on my profile."
         toggleButton={true}
         isToggled={isActiveCommunityVisible}
-        toggleButtonOnClick={() => {
-          console.log("Active Communities Toggled");
-        }}
+        pageName={"profile"}
+        settingName={"isActiveCommunityVisible"}
       />
       <Setting
         id="profile-category-clear-history-button"
         title="Clear history"
         message="Delete your post views history."
         regularButton="Clear History"
-        regularButtonOnClick={() => {
-          console.log("Clear History");
-        }}
+        overrideOnClick={clearHistory}
       />
     </div>
   );
