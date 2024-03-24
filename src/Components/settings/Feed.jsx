@@ -3,19 +3,6 @@ import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
 function Feed({showAdultContent, autoPlayMedia, communityThemes, communityContentSort, globalContentView, openNewTab, setUserSettings}) {
-  const [toggles, setToggles] = useState({
-    showMatureContent: showAdultContent,
-    autoplayMedia: autoPlayMedia,
-    communityThemes: communityThemes,
-    openPostsInNewTab: openNewTab,
-  });
-
-  const handleToggle = (id) => {
-    setToggles((prevToggles) => ({
-      ...prevToggles,
-      [id]: !prevToggles[id],
-    }));
-  };
 
   return (
     <div className="flex flex-col w-full">
@@ -23,7 +10,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
         Feed Settings
       </h3>
       <Subtitle title = "Content Preferences" />
-      
+
       <Setting
           title = "Show mature (18+) content"
           message = "See NSFW (Not Safe for Work) mature and adult images, videos, written content, and other media in your Reddit feeds and search results."
@@ -32,7 +19,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
           pageName = "feedSettings"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["showMatureContent"]}
+          isToggled = {showAdultContent}
       />
 
       <Setting
@@ -43,7 +30,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
           pageName = "feedSettings"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["autoplayMedia"]}
+          isToggled = {autoPlayMedia}
       />
 
       <Setting
@@ -54,7 +41,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
           pageName = "feedSettings"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["communityThemes"]}
+          isToggled = {communityThemes}
       />
 
       <Setting
@@ -92,7 +79,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
         pageName = "feedSettings"
         setUserSettings = {setUserSettings}
         toggleButton = {true}
-        isToggled = {toggles["openPostsInNewTab"]}
+        isToggled = {openNewTab}
       />
     </div>
   );

@@ -3,18 +3,6 @@ import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
 function Emails({chatEmail, followEmail, setUserSettings}) {
-  const [toggles, setToggles] = useState({
-    chatRequests: chatEmail,
-    newFollowers: followEmail,
-    unsubscribeFromAllEmails: false,
-  });
-
-  const handleToggle = (id) => {
-    setToggles((prevToggles) => ({
-      ...prevToggles,
-      [id]: !prevToggles[id],
-    }));
-  };
 
   return (
     <div className="flex flex-col w-full">
@@ -29,7 +17,7 @@ function Emails({chatEmail, followEmail, setUserSettings}) {
           pageName = "email"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["chatRequests"]}
+          isToggled = {chatEmail}
       />
 
       <Subtitle title = "Activity" />
@@ -40,7 +28,7 @@ function Emails({chatEmail, followEmail, setUserSettings}) {
           pageName = "email"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["newFollowers"]}
+          isToggled = {followEmail}
       />
 
       <Subtitle title = "" />
@@ -51,7 +39,7 @@ function Emails({chatEmail, followEmail, setUserSettings}) {
           pageName = "email"
           setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["unsubscribeFromAllEmails"]}
+          isToggled = {false}
       />
     </div>
   );

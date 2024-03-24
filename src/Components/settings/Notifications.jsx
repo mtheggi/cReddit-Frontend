@@ -3,23 +3,6 @@ import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
 function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, repliesNotifs, newFollowersNotifs, postNotifs, setUserSettings}) {
-  const [toggles, setToggles] = useState({
-    mentionsOfUsername: mentionsNotifs,
-    commentsOnYourPosts: commentsNotifs,
-    upvotesOnYourPosts: postsUpvotesNotifs,
-    upvotesOnYourComments: false,
-    repliesToYourComments: repliesNotifs,
-    newFollowers: newFollowersNotifs,
-    postsYouFollow: postNotifs,
-    commentsYouFollow: false,
-  });
-
-  const handleToggle = (id) => {
-    setToggles((prevToggles) => ({
-      ...prevToggles,
-      [id]: !prevToggles[id],
-    }));
-  };
 
   return (
     <div className="flex flex-col w-full">
@@ -28,7 +11,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
       </h3>
 
       <Subtitle title = "Activity" />
-      
+
       <Setting
           title="Mentions of u/username"
           clickableID = "settings-notifications-mentions-of-username-toggle-button"
@@ -36,7 +19,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["mentionsOfUsername"]}
+          isToggled={mentionsNotifs}
       />
 
       <Setting
@@ -46,7 +29,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["commentsOnYourPosts"]}
+          isToggled={commentsNotifs}
       />
 
       <Setting
@@ -56,7 +39,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["upvotesOnYourPosts"]}
+          isToggled={postsUpvotesNotifs}
       />
 
       <Setting
@@ -66,7 +49,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["upvotesOnYourComments"]}
+          isToggled={true}
       />
 
       <Setting
@@ -76,7 +59,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["repliesToYourComments"]}
+          isToggled={repliesNotifs}
       />
 
       <Setting
@@ -86,7 +69,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["newFollowers"]}
+          isToggled={newFollowersNotifs}
       />
 
       <Setting
@@ -96,7 +79,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["postsYouFollow"]}
+          isToggled={postNotifs}
       />
 
       <Setting
@@ -106,7 +89,7 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           pageName = "notifications"
           setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["commentsYouFollow"]}
+          isToggled={true}
       />
     </div>
   );
