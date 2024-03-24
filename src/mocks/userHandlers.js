@@ -256,14 +256,134 @@ export const userHandlers = [
         )
     }),
     http.get('/user/settings', async (resolver) => {
+        return HttpResponse.json({
+            account: {
+                email: "jondoe@gmail.com",
+                gender: "Man",
+                google: true,
+
+                //EXTRA (NOT IN API DOCUMENTATION)
+                country: "Egypt",
+                connectedToTwitter: false,
+                connectedToApple: false,
+                connectedToGoogle: true
+            },
+            profile: {
+                displayName: "John Doe",
+                about: "I am a developer",
+                socialLinks: [
+                    {
+                        displayName: "El Buy Me a Coffee bta3y",
+                        platform: "Buy Me a Coffee",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El twitter bta3y",
+                        platform: "Twitter",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Reddit bta3y",
+                        platform: "Reddit",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Discord bta3y",
+                        platform: "Discord",
+                        url: "https://twitter.com/faUwUsa"
+                    },
+                    {
+                        displayName: "El Facebook bta3y",
+                        platform: "Facebook",
+                        url: "https://twitter.com/faUwUsa"
+                    }
+                ],
+                avatar: "drive.creddit.com/test",
+                banner: "drive.creddit.com/test",
+                isNSFW: true,
+                allowFollow: true,
+                isContentVisible: false,
+                showAdultContent: true,
+                isActiveCommunityVisible: true
+            },
+            safetyAndPrivacy: {
+                blockedUsers: [{
+                    username: "user1",
+                    blockTimestamp: 1711090917995
+                },
+                {
+                    username: "user2",
+                    blockTimestamp: 1711090917995
+                },
+                {
+                    username: "user3",
+                    blockTimestamp: 1711090917995
+                },
+                {
+                    username: "user4",
+                    blockTimestamp: 1711090917995
+                }],
+                mutedCommunities: [{
+                    communityName: "community1",
+                    muteTimestamp: 1711090917995
+                },
+                {
+                    communityName: "community2",
+                    muteTimestamp: 1711090917995
+                },
+                {
+                    communityName: "community3",
+                    muteTimestamp: 1711090917995
+                },
+                {
+                    communityName: "community4",
+                    muteTimestamp: 1711090917995
+                }],
+            },
+            feedSettings: {
+                showAdultContent: true,
+                autoPlayMedia: false,
+                communityThemes: true,
+                communityContentSort: "Top",
+                globalContentView: "Card",
+                openNewTab: true
+            },
+            notifications: {
+                mentionsNotifs: false,
+                commentsNotifs: true,
+                postsUpvotesNotifs: true,
+                repliesNotifs: true,
+                newFollowersNotifs: false,
+                postNotifs: true,
+                cakeDayNotifs: true,
+                modNotifs: false,
+                moderatorInCommunities: [],
+                invitationNotifs: true
+            },
+            email: {
+                followEmail: false,
+                chatEmail: true
+            }
+        });
+    }),
+
+    http.put('/user/settings', async (resolver) => {
         return HttpResponse.json(
             {
-                country: "Egypt",
-                gender: "Man",
-                displayName: "theUser",
-                about: "Hello world",
-                email: "jondoe@gmail.com",
-                preferences: {
+                account: {
+                    email: "jondoe22@gmail.com",
+                    gender: "Woman",
+                    google: true,
+
+                    //EXTRA (NOT IN API DOCUMENTATION)
+                    country: "USA",
+                    connectedToTwitter: true,
+                    connectedToApple: false,
+                    connectedToGoogle: false
+                },
+                profile: {
+                    displayName: "John Doe 2002",
+                    about: "I am a developer",
                     socialLinks: [
                         {
                             displayName: "El Buy Me a Coffee bta3y",
@@ -289,97 +409,115 @@ export const userHandlers = [
                             displayName: "El Facebook bta3y",
                             platform: "Facebook",
                             url: "https://twitter.com/faUwUsa"
-                        },
-                    ],
-                    inboxMessagesNotif: true,
-                    repliesNotif: true,
-                    communityContentSort: "top",
-                    apple: "apple id",
-                    openNewTab: true,
-                    twitter: "twitter handle",
-                    followEmail: true,
-                    modNotif: true,
-                    upvotesNotif: true,
-                    cakeDayNotif: true,
-                    isActiveCommunityVisible: false,
-                    communityThemes: true,
-                    chatMessagesNotif: true,
-                    globalContentView: "card",
-                    chatRequests: true,
-                    showAdultContent: true,
-                    isContentVisible: true,
-                    google: "jondoe@gmail.com",
-                    mentionsNotif: false,
-                    newFollowerNotif: false,
-                    invitationNotif: true,
-                    commentsNotif: true,
-                    autoPlayMedia: false,
-                    allowFollow: true,
-                    darkMode: true,
-                    chatEmail: true
-                },
-                connectedToTwitter: false,
-                connectedToApple: true,
-                connectedToGoogle: false
-            }
-        )
-    }),
-
-    http.put('/user/settings', async (resolver) => {
-        return HttpResponse.json(
-            {
-                country: "Egypt",
-                preferences: {
-                    socialLinks: [
-                        {
-                            displayName: "El twitter bta3y",
-                            platform: "twitter",
-                            url: "https://twitter.com/faUwUsa"
-                        },
-                        {
-                            displayName: "El twitter bta3y",
-                            platform: "twitter",
-                            url: "https://twitter.com/faUwUsa"
                         }
                     ],
-                    inboxMessagesNotif: true,
-                    repliesNotif: true,
-                    communityContentSort: "top",
-                    apple: "apple id",
-                    openNewTab: true,
-                    twitter: "twitter handle",
-                    followEmail: true,
-                    modNotif: true,
-                    upvotesNotif: true,
-                    cakeDayNotif: true,
-                    isActiveCommunityVisible: true,
-                    communityThemes: true,
-                    chatMessagesNotif: true,
-                    globalContentView: "card",
-                    chatRequests: true,
-                    showAdultContent: true,
-                    isContentVisible: true,
-                    google: "jondoe@gmail.com",
-                    mentionsNotif: true,
-                    newFollowerNotif: true,
-                    invitationNotif: true,
-                    commentsNotif: true,
-                    autoPlayMedia: true,
+                    avatar: "drive.creddit.com/test",
+                    banner: "drive.creddit.com/test",
+                    isNSFW: true,
                     allowFollow: true,
-                    darkMode: true,
-                    chatEmail: true
+                    isContentVisible: false,
+
+                    //EXTRA (NOT IN API DOCUMENTATION)
+                    showAdultContent: true,
+                    isActiveCommunityVisible: true
                 },
-                gender: "Man",
-                displayName: "theUser",
-                about: "Hello world",
-                email: "jondoe@gmail.com"
+                safetyAndPrivacy: {
+                    //EXTRA (NOT IN API DOCUMENTATION)
+                    blockedUsers: [{
+                        username: "user1",
+                        blockTimestamp: 1711090917995
+                    },
+                    {
+                        username: "user2",
+                        blockTimestamp: 1711090917995
+                    },
+                    {
+                        username: "user3",
+                        blockTimestamp: 1711090917995
+                    },
+                    {
+                        username: "user4",
+                        blockTimestamp: 1711090917995
+                    }],
+                    //EXTRA (NOT IN API DOCUMENTATION)
+                    mutedCommunities: [{
+                        communityName: "community1",
+                        muteTimestamp: 1711090917995
+                    },
+                    {
+                        communityName: "community2",
+                        muteTimestamp: 1711090917995
+                    },
+                    {
+                        communityName: "community3",
+                        muteTimestamp: 1711090917995
+                    },
+                    {
+                        communityName: "community4",
+                        muteTimestamp: 1711090917995
+                    }],
+                },
+                feedSettings: {
+                    showAdultContent: true,
+                    autoPlayMedia: false,
+                    communityThemes: true,
+                    communityContentSort: "Top",
+                    globalContentView: "Card",
+                    openNewTab: true
+                },
+                notifications: {
+                    mentionsNotifs: false,
+                    commentsNotifs: true,
+                    postsUpvotesNotifs: true,
+                    repliesNotifs: true,
+                    newFollowersNotifs: false,
+                    postNotifs: true,
+                    cakeDayNotifs: true,
+                    modNotifs: false,
+                    moderatorInCommunities: [],
+                    invitationNotifs: true
+                },
+                email: {
+                    followEmail: false,
+                    chatEmail: true
+                }
             }
         )
     }),
 
+    http.post('/user/block/:username', async (resolver) => {
 
+        return HttpResponse.json(
+            {
+                message: "User blocked"
+            }
+        )
+    }),
 
+    http.delete('/user/block/:username', async (resolver) => {
 
+        return HttpResponse.json(
+            {
+                message: "User unblocked"
+            }
+        )
+    }),
+
+    http.post('/user/block-community/:subreddit', async (resolver) => {
+        return HttpResponse.json(
+            {
+                message: "Community blocked"
+            }
+        )
+    }),
+
+    http.delete('/user/block-community/:subreddit', async (resolver) => {
+        return HttpResponse.json(
+            {
+                message: "Community unblocked"
+            }
+        )
+    }),
 
     http.patch('/user/change-password', async (resolver) => {
 

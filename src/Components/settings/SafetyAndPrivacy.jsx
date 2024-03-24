@@ -2,46 +2,58 @@ import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 import FloatingInput from "./components/FloatingInput";
 import BlockedEntity from "./components/BlockedEntity";
+import { useState } from "react";
+import { notify } from "./components/CustomToast";
+import { unblockCommunity, unblockUser } from "./utils/Unblock";
+import { blockCommunity, blockUser } from "./utils/Block";
 
-const blockedUsers = [
-  {
-    id: "1",
-    username: "user1",
-  },
-  {
-    id: "2",
-    username: "user2",
-  },
-  {
-    id: "3",
-    username: "user3",
-  },
-  {
-    id: "4",
-    username: "user4",
-  },
-];
+function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
+  const [currBlockedUsers, setCurrBlockedUsers] = useState(blockedUsers);
+  const [currBlockedCommunities, setCurrBlockedCommunities] =
+    useState(mutedCommunities);
 
-const blockedCommunities = [
-  {
-    id: "1",
-    communityName: "community1",
-  },
-  {
-    id: "2",
-    communityName: "community2",
-  },
-  {
-    id: "3",
-    communityName: "community3",
-  },
-  {
-    id: "4",
-    communityName: "community4",
-  },
-];
+  async function onUnBlockUser(username) {
+    const res = await unblockUser(username);
+    if (res) {
+      setCurrBlockedUsers((prev) => {
+        return prev.filter((blockedUser) => blockedUser.username !== username);
+      });
+      notify("Changes saved");
+    } else notify("Failed to save changes");
+  }
 
-function SafetyAndPrivacy() {
+  async function onBlockUser(username) {
+    const res = await blockUser(username);
+    if (res) {
+      setCurrBlockedUsers((prev) => {
+        return [{ username, blockTimestamp: Date.now() }, ...prev];
+      });
+      notify("Changes saved");
+    } else notify("Failed to save changes");
+  }
+
+  async function onUnMuteCommunity(communityName) {
+    const res = await unblockCommunity(communityName);
+    if (res) {
+      setCurrBlockedCommunities((prev) => {
+        return prev.filter(
+          (blockedCommunity) => blockedCommunity.communityName !== communityName
+        );
+      });
+      notify("Changes saved");
+    } else notify("Failed to save changes");
+  }
+
+  async function onMuteCommunity(communityName) {
+    const res = await blockCommunity(communityName);
+    if (res) {
+      setCurrBlockedCommunities((prev) => {
+        return [{ communityName, muteTimestamp: Date.now() }, ...prev];
+      });
+      notify("Changes saved");
+    } else notify("Failed to save changes");
+  }
+
   return (
     <div className="flex flex-col w-full">
       <h3 className="text-white text-xl font-bold font-plex">
@@ -63,14 +75,17 @@ function SafetyAndPrivacy() {
         id="safety-block-user-input"
         label="BLOCK NEW USER"
         buttonText="ADD"
+        onSubmit={onBlockUser}
       />
-      {blockedUsers.map((user) => (
-        <BlockedEntity
-          key={user.id}
-          entityName={user.username}
-          timestamp={Date.now() - 2 * 24 * 60 * 60 * 1000}
-        />
-      ))}
+      {currBlockedUsers &&
+        currBlockedUsers.map((user) => (
+          <BlockedEntity
+            key={user.username}
+            entityName={user.username}
+            timestamp={user.blockTimestamp}
+            onUnblock={() => onUnBlockUser(user.username)}
+          />
+        ))}
 
       <Setting
         title="Communities You've Muted"
@@ -80,14 +95,17 @@ function SafetyAndPrivacy() {
         id="safety-mute-community-input"
         label="MUTE NEW COMMUNITY"
         buttonText="ADD"
+        onSubmit={onMuteCommunity}
       />
-      {blockedCommunities.map((community) => (
-        <BlockedEntity
-          key={community.id}
-          entityName={community.communityName}
-          timestamp={Date.now() - 2 * 24 * 60 * 60 * 1000}
-        />
-      ))}
+      {currBlockedCommunities &&
+        currBlockedCommunities.map((community) => (
+          <BlockedEntity
+            key={community.communityName}
+            entityName={community.communityName}
+            timestamp={community.muteTimestamp}
+            onUnblock={() => onUnMuteCommunity(community.communityName)}
+          />
+        ))}
     </div>
   );
 }

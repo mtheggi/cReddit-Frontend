@@ -17,11 +17,8 @@ function TextArea({
     setText(event.target.value);
   };
 
-  const handleOnBlur = () => {
-    if (textBeforeFocus.current !== text) {
-      onTextChange();
-      notify("Changes saved");
-    }
+  const handleOnBlur = async () => {
+    if (textBeforeFocus.current !== text) await onTextChange(text);
   };
 
   return (

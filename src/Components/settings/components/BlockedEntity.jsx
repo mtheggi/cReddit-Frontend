@@ -2,7 +2,7 @@ import React from "react";
 import moment from "moment";
 
 // user profile picture is still to be added
-function BlockedEntity({ entityName, timestamp }) {
+function BlockedEntity({ entityName, timestamp, onUnblock }) {
   const timeAgo = moment(timestamp).fromNow();
 
   return (
@@ -13,7 +13,10 @@ function BlockedEntity({ entityName, timestamp }) {
       </div>
 
       <div className="w-full flex flex-row justify-end items-center">
-        <button className="bg-reddit_greenyDark rounded-r-md font-bold text-sm">
+        <button
+          className="bg-reddit_greenyDark rounded-r-md font-bold text-sm"
+          onClick={onUnblock}
+        >
           REMOVE
         </button>
       </div>

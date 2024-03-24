@@ -2,19 +2,7 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Emails({chatRequests, newFollowerNotif, followEmail}) {
-  const [toggles, setToggles] = useState({
-    chatRequests: chatRequests,
-    newFollowers: newFollowerNotif,
-    unsubscribeFromAllEmails: !followEmail,
-  });
-
-  const handleToggle = (id) => {
-    setToggles((prevToggles) => ({
-      ...prevToggles,
-      [id]: !prevToggles[id],
-    }));
-  };
+function Emails({chatEmail, followEmail, setUserSettings}) {
 
   return (
     <div className="flex flex-col w-full">
@@ -23,32 +11,35 @@ function Emails({chatRequests, newFollowerNotif, followEmail}) {
       </h3>
       <Subtitle title = "Messages" />
       <Setting
-          id = "settings-emails-category-chat-requests-toggle-button"
-          key = "chatRequests"
           title = "Chat requests"
+          clickableID = "settings-emails-chat-requests-toggle-button"
+          settingName = "chatEmail"
+          pageName = "email"
+          setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["chatRequests"]}
-          toggleButtonOnClick={() => handleToggle("chatRequests")}
+          isToggled = {chatEmail}
       />
 
       <Subtitle title = "Activity" />
       <Setting
-          id = "settings-emails-category-new-followers-toggle-button"
-          key = "newFollowers"
           title = "New followers"
+          clickableID = "settings-emails-new-followers-toggle-button"
+          settingName = "followEmail"
+          pageName = "email"
+          setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["newFollowers"]}
-          toggleButtonOnClick={() => handleToggle("newFollowers")}
+          isToggled = {followEmail}
       />
 
       <Subtitle title = "" />
       <Setting
-          id = "settings-emails-category-unsubscribe-from-all-emails-toggle-button"
-          key = "unsubscribeFromAllEmails"
           title = "Unsubscribe from all emails"
+          clickableID = "settings-emails-unsubscribe-from-all-emails-toggle-button"
+          settingName = "unsubEmails"
+          pageName = "email"
+          setUserSettings = {setUserSettings}
           toggleButton = {true}
-          isToggled = {toggles["unsubscribeFromAllEmails"]}
-          toggleButtonOnClick={() => handleToggle("unsubscribeFromAllEmails")}
+          isToggled = {false}
       />
     </div>
   );
@@ -57,6 +48,6 @@ function Emails({chatRequests, newFollowerNotif, followEmail}) {
 export default Emails;
 
 /* ID Documentation */
-// settings-emails-category-chat-requests-toggle-button: Toggle Button for chat requests
-// settings-emails-category-new-followers-toggle-button: Toggle Button for new followers
-// settings-emails-category-unsubscribe-from-all-emails-toggle-button: Toggle Button for unsubscribing from all emails
+// settings-emails-chat-requests-toggle-button: Toggle Button for chat requests
+// settings-emails-new-followers-toggle-button: Toggle Button for new followers
+// settings-emails-unsubscribe-from-all-emails-toggle-button: Toggle Button for unsubscribing from all emails

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import DisconnectButton from "./components/DisconnectButton";
@@ -11,6 +9,7 @@ function Account({
   connectedToTwitter,
   connectedToApple,
   connectedToGoogle,
+  setUserSettings,
 }) {
   return (
     <div className="flex flex-col w-full">
@@ -23,10 +22,10 @@ function Account({
         title="Email Address"
         message={email}
         regularButton="Change"
-        regularButtonOnClick={() => {
-          console.log("Change Email");
-        }}
         clickableID="settings-change-email-button"
+        pageName={"account"}
+        settingName={"email"}
+        setUserSettings={setUserSettings}
       />
       <Setting
         title="Gender"
@@ -34,15 +33,18 @@ function Account({
         menuItems={[{ name: "Man" }, { name: "Woman" }]}
         selectedItem={gender}
         clickableID={"settings-simplemenu-gender"}
+        pageName={"account"}
+        settingName={"gender"}
+        setUserSettings={setUserSettings}
       />
       <Setting
         title="Password"
         message="Last update was yesterday" // replace
         regularButton="Change"
-        regularButtonOnClick={() => {
-          console.log("Change Password");
-        }}
         clickableID="settings-change-password-button"
+        pageName={"account"}
+        settingName={"password"}
+        setUserSettings={setUserSettings}
       />
       <Setting
         title="Country"
@@ -50,6 +52,9 @@ function Account({
         menuItems={[{ name: "Egypt" }, { name: "USA" }, { name: "UK" }]}
         selectedItem={country}
         clickableID={"settings-simplemenu-country"}
+        pageName={"account"}
+        settingName={"country"}
+        setUserSettings={setUserSettings}
       />
 
       <Subtitle title="CONNECTED ACCOUNTS" />
@@ -115,22 +120,24 @@ function Account({
         title="Connect to Google"
         message="Connect account to log in to Reddit with Google."
       />
-      {connectedToGoogle ? (
-        <DisconnectButton />
-      ) : (
-        <div className="max-w-3xl flex flex-row justify-end w-full items-end">
-          <button
-            id="settings-connect-google-button"
-            style={{ backgroundColor: "#45f57c" }}
-            className="w-49 h-10 justify-center flex flex-row bg-red  rounded-3xl items-center"
-          >
-            <i className="fa-brands fa-google"></i>
-            <span className="text-black text-sm font-bold font-plex pl-3">
-              Connect to Google
-            </span>
-          </button>
-        </div>
-      )}
+      <div className="max-w-3xl flex flex-row justify-end w-full items-end">
+        {connectedToGoogle ? (
+          <DisconnectButton />
+        ) : (
+          <div className="max-w-3xl flex flex-row justify-end w-full items-end">
+            <button
+              id="settings-connect-google-button"
+              style={{ backgroundColor: "#45f57c" }}
+              className="w-49 h-10 justify-center flex flex-row bg-red  rounded-3xl items-center"
+            >
+              <i className="fa-brands fa-google"></i>
+              <span className="text-black text-sm font-bold font-plex pl-3">
+                Connect to Google
+              </span>
+            </button>
+          </div>
+        )}
+      </div>
 
       <Subtitle title="DELETE ACCOUNTS" />
       <div className="max-w-3xl flex flex-row justify-end w-full items-end mt-4">

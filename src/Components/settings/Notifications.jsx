@@ -2,24 +2,7 @@ import React, { useState } from "react";
 import Setting from "./Setting";
 import Subtitle from "./components/Subtitle";
 
-function Notifications({ mentionsNotif, commentsNotif, upvotesNotif, repliesNotif, newFollowerNotif, }) {
-  const [toggles, setToggles] = useState({
-    mentionsOfUsername: mentionsNotif,
-    commentsOnYourPosts: commentsNotif,
-    upvotesOnYourPosts: upvotesNotif,
-    upvotesOnYourComments: true,
-    repliesToYourComments: repliesNotif,
-    newFollowers: newFollowerNotif,
-    postsYouFollow: true,
-    commentsYouFollow: true,
-  });
-
-  const handleToggle = (id) => {
-    setToggles((prevToggles) => ({
-      ...prevToggles,
-      [id]: !prevToggles[id],
-    }));
-  };
+function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, repliesNotifs, newFollowersNotifs, postNotifs, setUserSettings}) {
 
   return (
     <div className="flex flex-col w-full">
@@ -28,77 +11,85 @@ function Notifications({ mentionsNotif, commentsNotif, upvotesNotif, repliesNoti
       </h3>
 
       <Subtitle title = "Activity" />
-      
+
       <Setting
-          id = "settings-notifications-category-mentions-of-username-toggle-button"
-          key="mentionsOfUsername"
           title="Mentions of u/username"
+          clickableID = "settings-notifications-mentions-of-username-toggle-button"
+          settingName = "mentionsNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["mentionsOfUsername"]}
-          toggleButtonOnClick={() => handleToggle("mentionsOfUsername")}
+          isToggled={mentionsNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-comments-on-your-posts-toggle-button"
-          key="commentsOnYourPosts"
           title="Comments on your posts"
+          clickableID = "settings-notifications-comments-on-your-posts-toggle-button"
+          settingName = "commentsNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["commentsOnYourPosts"]}
-          toggleButtonOnClick={() => handleToggle("commentsOnYourPosts")}
+          isToggled={commentsNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-upvotes-on-your-posts-toggle-button"
-          key="upvotesOnYourPosts"
           title="Upvotes on your posts"
+          clickableID = "settings-notifications-upvotes-on-your-posts-toggle-button"
+          settingName = "postsUpvotesNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["upvotesOnYourPosts"]}
-          toggleButtonOnClick={() => handleToggle("upvotesOnYourPosts")}
+          isToggled={postsUpvotesNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-upvotes-on-your-comments-toggle-button"
-          key="upvotesOnYourComments"
           title="Upvotes on your comments"
+          clickableID = "settings-notifications-upvotes-on-your-comments-toggle-button"
+          settingName = "commentsUpvotesNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["upvotesOnYourComments"]}
-          toggleButtonOnClick={() => handleToggle("upvotesOnYourComments")}
+          isToggled={true}
       />
 
       <Setting
-          id = "settings-notifications-category-replies-to-your-comments-toggle-button"
-          key="repliesToYourComments"
           title="Replies to your comments"
+          clickableID = "settings-notifications-replies-to-your-comments-toggle-button"
+          settingName = "repliesNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["repliesToYourComments"]}
-          toggleButtonOnClick={() => handleToggle("repliesToYourComments")}
+          isToggled={repliesNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-new-followers-toggle-button"
-          key="newFollowers"
           title="New followers"
+          clickableID = "settings-notifications-new-followers-toggle-button"
+          settingName = "newFollowersNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["newFollowers"]}
-          toggleButtonOnClick={() => handleToggle("newFollowers")}
+          isToggled={newFollowersNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-posts-you-follow-toggle-button"
-          key="postsYouFollow"
           title="Posts you follow"
+          clickableID = "settings-notifications-posts-you-follow-toggle-button"
+          settingName = "postNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["postsYouFollow"]}
-          toggleButtonOnClick={() => handleToggle("postsYouFollow")}
+          isToggled={postNotifs}
       />
 
       <Setting
-          id = "settings-notifications-category-comments-you-follow-toggle-button"
-          key="commentsYouFollow"
           title="Comments you follow"
+          clickableID = "settings-notifications-comments-you-follow-toggle-button"
+          settingName = "commentsYouFollowNotifs"
+          pageName = "notifications"
+          setUserSettings = {setUserSettings}
           toggleButton={true}
-          isToggled={toggles["commentsYouFollow"]}
-          toggleButtonOnClick={() => handleToggle("commentsYouFollow")}
+          isToggled={true}
       />
     </div>
   );
@@ -107,11 +98,11 @@ function Notifications({ mentionsNotif, commentsNotif, upvotesNotif, repliesNoti
 export default Notifications;
 
 /* ID Documentation */
-// settings-notifications-category-mentions-of-username-toggle-button: Toggle Button for mentions of username
-// settings-notifications-category-comments-on-your-posts-toggle-button: Toggle Button for comments on your posts
-// settings-notifications-category-upvotes-on-your-posts-toggle-button: Toggle Button for upvotes on your posts
-// settings-notifications-category-upvotes-on-your-comments-toggle-button: Toggle Button for upvotes on your comments
-// settings-notifications-category-replies-to-your-comments-toggle-button: Toggle Button for replies to your comments
-// settings-notifications-category-new-followers-toggle-button: Toggle Button for new followers
-// settings-notifications-category-posts-you-follow-toggle-button: Toggle Button for posts your follow
-// settings-notifications-category-comments-you-follow-toggle-button: Toggle Button for comments you follow
+// settings-notifications-mentions-of-username-toggle-button: Toggle Button for mentions of username
+// settings-notifications-comments-on-your-posts-toggle-button: Toggle Button for comments on your posts
+// settings-notifications-upvotes-on-your-posts-toggle-button: Toggle Button for upvotes on your posts
+// settings-notifications-upvotes-on-your-comments-toggle-button: Toggle Button for upvotes on your comments
+// settings-notifications-replies-to-your-comments-toggle-button: Toggle Button for replies to your comments
+// settings-notifications-new-followers-toggle-button: Toggle Button for new followers
+// settings-notifications-posts-you-follow-toggle-button: Toggle Button for posts your follow
+// settings-notifications-comments-you-follow-toggle-button: Toggle Button for comments you follow

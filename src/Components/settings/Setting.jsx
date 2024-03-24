@@ -1,43 +1,61 @@
 import { useState } from "react";
-import { Dropdown } from "flowbite-react";
-import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from "react-icons/hi";
 import SimpleMenu from "./components/SimpleMenu";
 import { notify } from "./components/CustomToast";
+import ToggleButton from "./components/ToggleButton";
+import RegularButton from "./components/RegularButton";
+import { changeSetting } from "./utils/ChangeSetting";
 
 function Setting({
   title,
   message,
   clickableID,
+  settingName,
+  pageName,
+  setUserSettings,
   // Toggle Button,
   toggleButton,
-  toggleButtonOnClick,
   isToggled,
   // Regular Button,
   regularButton,
-  regularButtonOnClick,
   // Menu,
   menuItems,
   selectedItem,
+  // Extra
+  overrideOnClick,
 }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState(
     menuItems?.find((item) => item.name === selectedItem)?.name || "Select"
   );
   const [isToggleOn, setIsToggleOn] = useState(isToggled);
 
-  function onRegularButtonOnClick() {
-    regularButtonOnClick();
-    notify("Changes saved");
+  async function onRegularButtonOnClick() {
+    if (!overrideOnClick) {
+      const res = await changeSetting(pageName, settingName);
+
+      if (res) {
+        console.log(res.data);
+        setUserSettings(res.data);
+        notify("Changes saved");
+      } else notify("Failed to save changes");
+    } else await overrideOnClick();
   }
 
-  function onToggleButtonOnClick() {
-    toggleButtonOnClick();
-    setIsToggleOn((prev) => !prev);
-    notify("Changes saved");
+  async function onToggleButtonOnClick() {
+    const res = await changeSetting(pageName, settingName, !isToggleOn);
+    if (res) {
+      setIsToggleOn(!isToggleOn);
+      setUserSettings(res.data);
+      notify("Changes saved");
+    } else notify("Failed to save changes");
   }
 
-  function onMenuItemSelect(item) {
-    setSelectedMenuItem(item);
-    notify("Changes saved");
+  async function onMenuItemSelect(item) {
+    const res = await changeSetting(pageName, settingName, item);
+    if (res) {
+      setSelectedMenuItem(item);
+      setUserSettings(res.data);
+      notify("Changes saved");
+    } else notify("Failed to save changes :(");
   }
 
   return (
@@ -51,31 +69,19 @@ function Setting({
         </div>
 
         {toggleButton && (
-          <div className="flex flex-row justify-end w-full items-center pb-1 pr-1">
-            <label className="inline-flex cursor-pointer items-center">
-              <input
-                id={clickableID?.toLowerCase()}
-                type="checkbox"
-                checked={isToggleOn}
-                onChange={onToggleButtonOnClick}
-                className="sr-only peer"
-                style={{ position: "absolute", height: "0", width: "0" }}
-              ></input>
-              <div className="relative w-10 h-6 bg-gray-800 focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-3/4 rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-400 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-            </label>
-          </div>
+          <ToggleButton
+            isToggleOn={isToggleOn}
+            onToggleButtonOnClick={onToggleButtonOnClick}
+            clickableID={clickableID}
+          />
         )}
 
         {regularButton && (
-          <div className="flex flex-row justify-end w-full items-center pb-1 pr-1">
-            <button
-              id={clickableID?.toLowerCase()}
-              className="text-white text-sm font-bold font-plex bg-reddit_darkGray p-2 rounded-3xl border border-reddit_darkGray hover:bg-gray-800 hover:border-white"
-              onClick={onRegularButtonOnClick}
-            >
-              <span className="pl-2 pr-2">{regularButton}</span>
-            </button>
-          </div>
+          <RegularButton
+            regularButton={regularButton}
+            onRegularButtonOnClick={onRegularButtonOnClick}
+            clickableID={clickableID}
+          />
         )}
 
         {menuItems && (
