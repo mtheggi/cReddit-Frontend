@@ -5,8 +5,7 @@ import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
 import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../../constants";
-import { ToastContainer, toast } from "react-toastify";
-import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
+
 
 const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedSecondSignupMenu, setNavbarSignupEmail }) => {
 
@@ -68,18 +67,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
 
     return (
         <>
-            <ToastContainer
-                position="bottom-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
+       
 
             <div id="navbar_signup_menu" className="flex min-w-88 pt-2 flex-col w-full h-full h-min-160 msm:px-13.5 pl-4 pr-4 bg-reddit_menu msm:rounded-3xl">
 

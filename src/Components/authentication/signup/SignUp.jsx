@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import GAButtons from "../GAButtons";
 import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
+import { ToastContainer, toast } from "react-toastify";
+import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
 
 const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSignupEmail }) => {
 
@@ -66,11 +67,29 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
       const response = await postRequest('/user', { email, username, password, gender });
       if (response.status != 200 && response.status != 201) {
         setSignupError(response.data.message);
+        LoginFailedToast(response.data.message);
+      }
+      else
+      {
+        LoginSuccessToast("Signed up successfully");
       }
     }
   }
 
   return (
+    <>
+    <ToastContainer
+    position="bottom-center"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="colored"
+/>
     <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
 
 
@@ -205,6 +224,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
 
 
     </div>
+    </>
   );
 };
 

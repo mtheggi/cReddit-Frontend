@@ -35,7 +35,6 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
       }
       else {
         LoginSuccessToast("Logged in successfully");
-
       }
     }
   }
