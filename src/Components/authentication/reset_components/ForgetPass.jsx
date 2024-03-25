@@ -31,7 +31,7 @@ const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef,
 
   const handleForgetPassSubmit = async (e) => {
     e.stopPropagation();
-    if (username && email && validateUsername(username) && validateEmail(email)) {
+    if (username && email && validateUsername(username) && validateEmail(email) && resetPasswordError==null) {
       const response = await postRequest(`${baseUrl}/user/forgot-password`, { username, email });
       if (response.status !== 200 && response.status !== 201)
       {

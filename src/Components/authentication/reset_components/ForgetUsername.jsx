@@ -19,7 +19,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
 
     const handleForgetUsernameSubmit = async (e) => {
         e.stopPropagation();
-        if (email && validateEmail(email)) {
+        if (email && validateEmail(email) && resetUsernameError==null) {
           const response = await postRequest(`${baseUrl}/user/forgot-username`, { email });
           if (response.status !== 200 && response.status !== 201)
           {

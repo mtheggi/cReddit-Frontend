@@ -27,7 +27,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   }
 
   const handleLoginSubmit = async () => {
-    if (username && password && validateLoginUsername(username) && validateLoginPassword(password)) {
+    if (username && password && validateLoginUsername(username) && validateLoginPassword(password) && loginError == null) {
       const response = await postRequest(`${baseUrl}/user/login`, { username, password });
       if (response.status !== 200 && response.status !== 201) {
         setLoginError(response.data.message);
