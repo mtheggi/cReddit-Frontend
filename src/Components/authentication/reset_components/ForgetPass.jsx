@@ -2,6 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import FloatingInput from "../FloatingInput";
 import { useEffect, useState, useRef } from 'react';
 import { postRequest } from "../../../services/Requests";
+import { baseUrl } from '../../../constants';
 
 
 const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef, setIsOpenedEmailVerification , setIsPrevForgotPassOrUsername}) => {
@@ -31,7 +32,7 @@ const ForgetPass = ({setIsOpenedForgotPass, setIsOpenedLoginMenu, forgotPassRef,
   const handleForgetPassSubmit = async (e) => {
     e.stopPropagation();
     if (username && email && validateUsername(username) && validateEmail(email)) {
-      const response = await postRequest('/user/forgot-password', { username, email });
+      const response = await postRequest(`${baseUrl}/user/forgot-password`, { username, email });
       if (response.status !== 200 && response.status !== 201)
       {
          setResetPasswordError(response.data.message);

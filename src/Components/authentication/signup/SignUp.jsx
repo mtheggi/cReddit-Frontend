@@ -3,6 +3,7 @@ import FloatingInput from "../FloatingInput";
 import { postRequest } from "../../../services/Requests";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
+import { baseUrl } from "../../../constants";
 
 const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSignupEmail }) => {
 
@@ -64,7 +65,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
   const handleSignupSubmit = async () => {
     if (signupError == null && NavbarSignupEmail && validateEmail(NavbarSignupEmail) && username && validateUsername(username) && password && validatePassword(password) && gender != 'Gender') {
       const email = NavbarSignupEmail;
-      const response = await postRequest('/user', { email, username, password, gender });
+      const response = await postRequest(`${baseUrl}/user`, { email, username, password, gender });
       if (response.status != 200 && response.status != 201) {
         setSignupError(response.data.message);
         LoginFailedToast(response.data.message);

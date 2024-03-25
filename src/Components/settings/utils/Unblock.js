@@ -1,13 +1,14 @@
 import { deleteRequest } from "../../../services/Requests";
+import { baseUrl } from "../../../constants";
 
 export async function unblockUser(username) {
     console.log(`Unblocking user ${username}`)
-    const res = await deleteRequest(`/user/block/${username}`);
+    const res = await deleteRequest(`${baseUrl}/user/block/${username}`);
     return res;
 }
 
 export async function unblockCommunity(communityName) {
     console.log(`Unblocking community ${communityName}`)
-    const res = await deleteRequest(`/user/block-community/${communityName}`);
+    const res = await deleteRequest(`${baseUrl}/user/block-community/${communityName}`);
     return res;
 }

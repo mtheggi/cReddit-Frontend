@@ -2,6 +2,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import FloatingInput from "../FloatingInput";
 import { useEffect, useState } from 'react';
 import { postRequest } from "../../../services/Requests";
+import { baseUrl } from '../../../constants';
 
 const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsOpenedEmailVerification, setIsPrevForgotPassOrUsername}) => {
 
@@ -19,7 +20,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
     const handleForgetUsernameSubmit = async (e) => {
         e.stopPropagation();
         if (email && validateEmail(email)) {
-          const response = await postRequest('/user/forgot-username', { email });
+          const response = await postRequest(`${baseUrl}/user/forgot-username`, { email });
           if (response.status !== 200 && response.status !== 201)
           {
              setResetUsernameError(response.data.message);

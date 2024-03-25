@@ -1,6 +1,7 @@
 import { CheckIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { useState, useRef } from 'react';
 import { getRequest } from '../../services/Requests';
+import { baseUrl } from '../../constants';
 
 
 const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backendValidationError, setBackendValidationError, setBackendMessage }) => {
@@ -14,7 +15,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     const isAvailableUsername = async (username) => {
         if (validateInput(username)) {
-           const response = await getRequest(`/user/is-available/${username}`);
+           const response = await getRequest(`${baseUrl}/user/is-available/${username}`);
             if (response.status!==200 && response.status!==201)
             {
                 setBackendUsernameError(response.data.message);

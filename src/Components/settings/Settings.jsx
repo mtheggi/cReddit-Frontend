@@ -12,6 +12,7 @@ import Feed from "./Feed";
 import { getRequest } from "../../services/Requests";
 import SimpleNavbar from "./components/SimpleNavbar";
 import { getF } from "./utils/ChangeSetting";
+import { baseUrl } from "../../constants";
 
 const Tabs = [
   "Account",
@@ -51,7 +52,7 @@ function Settings() {
   getF(setUserSettings);
 
   useEffect(() => {
-    getRequest("/user/settings")
+    getRequest(`${baseUrl}/user/settings`)
       .then((res) => {
         console.log(res.data);
         setUserSettings(res.data);
