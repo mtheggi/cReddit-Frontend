@@ -19,7 +19,10 @@ import EmailVerification from '../authentication/reset_components/EmailVerificat
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    const [isLogged, setIsLogged] = useState(false); //will represent if i have a token or not
+    const [isLogged, setIsLogged] = useState(() => {
+        const savedIsLogged = localStorage.getItem('isLogged');
+        return savedIsLogged !== null ? JSON.parse(savedIsLogged) : false;
+    });
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
@@ -39,6 +42,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
 
+    useEffect(() => {
+        localStorage.setItem('isLogged', JSON.stringify(isLogged));
+    }, [isLogged]);
 
 
     useEffect(() => {
@@ -121,7 +127,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
+                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsLogged={setIsLogged} />
                                     </div>
                                 </div>
                             )}
@@ -137,7 +143,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} setNavbarSignupEmail={setSignupEmail}/>
+                                        <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} setNavbarSignupEmail={setSignupEmail} />
                                     </div>
                                 </div>
                             )}
@@ -179,8 +185,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                       
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail}  />
+
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} setIsLogged={setIsLogged} />
                                     </div>
                                 </div>
                             )}
@@ -275,12 +281,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
 
-                                        <a id="profile_logout" href="" className='w-full pl-7  hover:bg-reddit_hover h-14 flex items-center cursor-pointer rounded-b-lg'>
+                                        <div onClick={()=>{setIsLogged(false); setIsOpenProfileMenu(false)}} id="profile_logout" href="" className='w-full pl-7  hover:bg-reddit_hover h-14 flex items-center cursor-pointer rounded-b-lg'>
                                             <svg rpl="" fill="currentColor" height="20" icon-name="logout-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11.991 10.625H1v-1.25h10.991l-1.933-1.933.884-.884 3 3a.624.624 0 0 1 0 .884l-3 3-.884-.884 1.933-1.933ZM15.375 1h-9.75A2.629 2.629 0 0 0 3 3.625v.792h1.25v-.792A1.377 1.377 0 0 1 5.625 2.25h9.75a1.377 1.377 0 0 1 1.375 1.375v12.75a1.377 1.377 0 0 1-1.375 1.375h-9.75a1.377 1.377 0 0 1-1.375-1.375v-.792H3v.792A2.63 2.63 0 0 0 5.625 19h9.75A2.63 2.63 0 0 0 18 16.375V3.625A2.63 2.63 0 0 0 15.375 1Z"></path>
                                             </svg>
                                             <p className='no-select ml-3'>Log Out</p>
-                                        </a>
+                                        </div>
                                     </div>)}
                                 </div>
                             </>

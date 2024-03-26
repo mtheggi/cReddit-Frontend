@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
 import { baseUrl } from "../../../constants";
 
-const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSignupEmail }) => {
+const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSignupEmail, setIsLogged }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -73,6 +73,10 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
       else
       {
         LoginSuccessToast("Signed up successfully");
+        setTimeout(() => {
+          setIsOpenedSecondSignupMenu(false);
+          setIsLogged(true);
+        }, 3000);
       }
     }
   }
@@ -81,7 +85,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
     <>
     <ToastContainer
     position="bottom-center"
-    autoClose={5000}
+    autoClose={3000}
     hideProgressBar={false}
     newestOnTop={false}
     closeOnClick
@@ -149,9 +153,6 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
             </a>
 
           </p>
-
-
-
 
 
           <div className="flex mt-4 flex-col">

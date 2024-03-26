@@ -25,11 +25,11 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     const handleGenerateUsername = async () => {
         const response = await getRequest(`${baseUrl}/user/generate-username`);
-        console.log(response);
         if (response.status == 200 || response.status == 201) {
             if (inputRef.current) {
                 inputRef.current.value = response.data.username;
                 setInput(response.data.username);
+                setInputNameOnChange(response.data.username);
                 setBackendUsernameError(null);
                 setBackendValidationError(null);
                 inputRef.current.style.height = "24px";

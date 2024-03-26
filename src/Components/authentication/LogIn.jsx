@@ -7,7 +7,7 @@ import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 
-const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
+const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu, setIsLogged }) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -35,6 +35,10 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
       }
       else {
         LoginSuccessToast("Logged in successfully");
+        setTimeout(() => {
+          setIsOpenedLoginMenu(false);
+          setIsLogged(true);
+        }, 3000);
       }
     }
   }
@@ -49,6 +53,10 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
 
         } else {
           LoginSuccessToast("Logged in successfully");
+          setTimeout(() => {
+            setIsOpenedLoginMenu(false);
+            setIsLogged(true);
+          }, 3000);
         }
       }
     }
@@ -64,7 +72,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   return (<>
     <ToastContainer
       position="bottom-center"
-      autoClose={5000}
+      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

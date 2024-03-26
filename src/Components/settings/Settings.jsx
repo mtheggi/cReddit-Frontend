@@ -65,7 +65,7 @@ function Settings() {
   return (
     <>
       <ToastContainer
-        autoClose={4000}
+        autoClose={3000}
         pauseOnHover={false}
         position={"bottom-center"}
         hideProgressBar={true}
