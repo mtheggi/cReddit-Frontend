@@ -97,6 +97,18 @@ export const userHandlers = [
         )
     }),
 
+    http.get('/user/generate-username', async (resolver) => {
+        
+            return HttpResponse.json(
+                {
+                    message: "Username generated successfully",
+                    username: "FicklePickle123"
+                   
+                }
+            )
+        
+
+    }),
 
 
     http.post('/user/auth/google', async (resolver) => {

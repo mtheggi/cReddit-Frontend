@@ -169,7 +169,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
 
 
           <div className="flex flex-col">
-            <div className="min-h-[70px] px-2 mt-3">
+            <div className="min-h-[70px] px-2 mt-4">
               <FloatingInput
                 id={"signup_password"}
                 label="Password"
@@ -180,7 +180,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
               />
             </div>
 
-            <div className="flex flex-row px-2 mt-3">
+            <div className="flex flex-row px-2 mt-4">
 
               <div id="gender_dropdown_button" onClick={(e) => { e.stopPropagation(); setDropdownOpen(!dropdownOpen) }} data-dropdown-toggle="gender_dropdown_menu" className={`text-gray-400 cursor-pointer pl-4 border-1 ${signupError != null ? 'border-red-400' : 'border-transparent'} hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>{gender}
                 <div className="w-fit flex ml-auto mr-5 flex-row">
