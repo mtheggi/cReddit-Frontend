@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { FormText } from "react-bootstrap";
 import axiosInterceptor from "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
+import CreatePost from "./Components/create_post/CreatePost";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -30,17 +31,9 @@ function App() {
           {" "}
         </div>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                isVisibleLeftSidebar={isVisibleLeftSidebar}
-                setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                navbarRef={navbarRef}
-              />
-            }
-          />
+          <Route path="/" element={<Home isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
           <Route path="/settings/*" element={<Settings />} />
+          <Route path="/submit" element={ <CreatePost/>}/>
         </Routes>
       </div>
     </Router>

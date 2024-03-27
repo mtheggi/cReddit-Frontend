@@ -208,12 +208,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </a>
 
-                                <a id='navbar_create_post' href='' className="flex justify-center items-center w-fit h-fit">
+                                <Link id='navbar_create_post' to={"/submit"} className="flex justify-center items-center w-fit h-fit">
                                     <div className='hover:bg-reddit_search_light w-8 xs:w-24 h-10  rounded-full flex justify-center items-center cursor-pointer '>
                                         <PlusIcon className="h-6.5 w-7  text-gray-300" />
                                         <p className=' ml-1 mr-0.5 text-gray-300 hidden xs:block text-sm'>Create </p>
                                     </div>
-                                </a>
+                                </Link>
 
                                 <a id='navbar_bell' href='' className="flex justify-center items-center w-fit h-fit">
                                     <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer '>
