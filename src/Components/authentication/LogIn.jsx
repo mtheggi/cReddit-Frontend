@@ -46,6 +46,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
     async function sendToken() {
       if (OAuthAccessToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
+        console.log("accessToken", OAuthAccessToken);
         console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
@@ -66,7 +67,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   );
   const handleGoogleLogin = useGoogleLogin({
     clientId: { Client_ID },
-    onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },
+    onSuccess: (codeResponse) => { console.log(codeResponse); setOAuthAccessToken(codeResponse.access_token); },
     onError: (error) => console.log('Login Failed:', error)
   });
   return (<>
