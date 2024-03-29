@@ -72,7 +72,7 @@ const CreatePost = () => {
                     <h1 className='text-lg text-white font-base'>Create a post</h1>
                 </div>
 
-                <div className='w-full h-[40px] ml-[0.2px] mt-3'>
+                <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
                     <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev) }} id="create_post_community_dropdown_button" className={`text-gray-300 cursor-pointer pl-3 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>Choose a community
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
