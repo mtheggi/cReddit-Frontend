@@ -103,25 +103,25 @@ const CreatePost = () => {
                 <div className='mt-2.5 bg-reddit_search w-full h-fit flex flex-col rounded-lg'>
                     <div className={`flex flex-row w-full h-[60px] min-h-[60px] text-gray-200  font-medium text-[11px] xs:text-[14px] `}>
 
-                        <div onClick={() => setMenuState('post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${menuState == "post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_post' onClick={() => setMenuState('post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${menuState == "post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <div className='-mt-1'>
                                 <PostAddOutlined />
                             </div>
                             <h1 className='ml-1' >Post</h1>
                         </div>
 
-                        <div onClick={() => setMenuState('image')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "image" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_image' onClick={() => setMenuState('image')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "image" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <PhotoOutlined />
                             <h1 className='ml-1' >Image</h1>
                         </div>
 
-                        <div onClick={() => setMenuState('link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_link' onClick={() => setMenuState('link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <Link />
                             <h1 className='ml-1'>Link</h1>
                         </div>
 
 
-                        <div onClick={() => setMenuState('poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${menuState == "poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
+                        <div id='type_poll' onClick={() => setMenuState('poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${menuState == "poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
                             <PollOutlined />
                             <h1 className='ml-1' >Poll</h1>
                         </div>
@@ -129,7 +129,7 @@ const CreatePost = () => {
                     </div>
 
                     <div className='w-full flex flex-col h-fit px-3 '>
-                        <div className={`mb-2.5 pl-2.5 border-[1px] ${isFocused ? ' border-white ' : ' border-gray-500'}   min-h-[39px] flex flex-row w-full mt-3 `} >
+                        <div id='post_title' className={`mb-2.5 pl-2.5 border-[1px] ${isFocused ? ' border-white ' : ' border-gray-500'}   min-h-[39px] flex flex-row w-full mt-3 `} >
                             <textarea maxLength={300}
                                 onInput={handleInput}
                                 placeholder='Title'
@@ -157,16 +157,15 @@ const CreatePost = () => {
                             </div>
                         )}
 
-
                         {menuState == 'poll' && (
                             <div className='mb-3 h-fit w-full border-[0.5px] flex flex-row border-gray-400'>
                                 <div className='h-full w-full sm:w-10/12 sm:mr-0 flex flex-col  text-gray-200 space-y-2 pt-2.5 pl-2 pr-2'>
                                     {inputFields.map((field, index) => (
-                                        <div className='mr-5'>
-                                            <div key={field.id} className="input-field relative">
-                                                <input maxLength={200} type="text" placeholder={`Option ${index + 1}`} className='h-[39px] w-full pr-9 ml-2.5 bg-transparent text-sm focus:outline-none focus:ring-0 focus:border-white' />
+                                        <div key={field.id} className='mr-5'>
+                                            <div className="input-field relative">
+                                                <input id={`input_option_${index + 1}`} maxLength={200} type="text" placeholder={`Option ${index + 1}`} className='h-[39px] w-full pr-9 ml-2.5 bg-transparent text-sm focus:outline-none focus:ring-0 focus:border-white' />
                                                 {index > 1 && (
-                                                    <button className='w-6 h-6 absolute right-[0px]  top-1/2 transform -translate-y-1/2' onClick={() => removeInputField(field.id)}>
+                                                    <button id={`delete_option_${index + 1}`} className='w-6 h-6 absolute right-[0px]  top-1/2 transform -translate-y-1/2' onClick={() => removeInputField(field.id)}>
                                                         <TrashIcon className=' text-gray-400' />
                                                     </button>
                                                 )}
@@ -174,7 +173,7 @@ const CreatePost = () => {
                                         </div>
                                     ))}
                                     <div className='flex flex-row w-full justify-between h-fit mt-3 mb-1 items-center'>
-                                        <div onClick={addInputField} className={` w-16 h-7 rounded-full flex justify-center items-center ${inputFields.length >= 6 ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-reddit_search_light'}`}>
+                                        <div id='add_option' onClick={addInputField} className={` w-16 h-7 rounded-full flex justify-center items-center ${inputFields.length >= 6 ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-reddit_search_light'}`}>
                                             <PlusIcon className="h-6 w-6  text-gray-300" />
                                             <p className=' ml-0.5 mr-0.5 text-gray-300 text-sm'>ADD</p>
                                         </div>
@@ -237,25 +236,25 @@ const CreatePost = () => {
 
 
                         <div className='flex flex-row items-center w-full space-x-3 border-b-[0.5px] pb-3 border-gray-400 font-semibold'>
-                            <div onClick={() => setIsSpoiler(prev => !prev)} className={`${isSpoiler ? ' bg-black border-black' : 'hover:bg-reddit_search_light'} border-[0.5px] w-24 h-8  rounded-full flex justify-center items-center cursor-pointer `}>
+                            <div id='spoiler' onClick={() => setIsSpoiler(prev => !prev)} className={`${isSpoiler ? ' bg-black border-black' : 'hover:bg-reddit_search_light'} border-[0.5px] w-24 h-8  rounded-full flex justify-center items-center cursor-pointer `}>
                                 {!isSpoiler ? (<PlusIcon className="h-6.5 w-7  text-gray-300" />) : (<CheckIcon className="h-6.5 w-7  text-white" />)}
                                 <p className={`no-select ml-1 mr-0.5 ${isSpoiler ? 'text-white' : 'text-gray-300'} text-sm`}>Spoiler</p>
                             </div>
-                            <div onClick={() => setIsNSFW(prev => !prev)} className={`${isNSFW ? 'bg-red-500 border-black' : 'hover:bg-reddit_search_light '}  border-[0.5px] w-24 h-8  rounded-full flex justify-center items-center cursor-pointer `}>
+                            <div id='nsfw' onClick={() => setIsNSFW(prev => !prev)} className={`${isNSFW ? 'bg-red-500 border-black' : 'hover:bg-reddit_search_light '}  border-[0.5px] w-24 h-8  rounded-full flex justify-center items-center cursor-pointer `}>
                                 {!isNSFW ? (<PlusIcon className="h-6.5 w-7  text-gray-300" />) : (<CheckIcon className="h-6.5 w-7  text-black" />)}
                                 <p className={`ml-1 no-select mr-0.5 ${isNSFW ? 'text-black' : 'text-gray-300'}  text-sm`}>NSFW</p>
                             </div>
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div className=' hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center cursor-pointer '>
+                        <div id='submit_post' className=' hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center cursor-pointer '>
                             <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className='bg-reddit_search rounded-lg hidden  h-[312px] mt-6 lg:flex py-2 px-2 flex-col w-[418px]'>
+            <div id='posting_to_reddit' className='bg-reddit_search rounded-lg hidden  h-[312px] mt-6 lg:flex py-2 px-2 flex-col w-[418px]'>
                 <div className='w-full flex flex-row border-b-[0.5px] items-center border-gray-400 h-[74px]'>
 
                     <div className='w-[44px] mb-1 h-[44px]'>
