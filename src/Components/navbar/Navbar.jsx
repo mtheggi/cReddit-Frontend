@@ -31,6 +31,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const [signupEmail, setSignupEmail] = useState('');
+    const [showInboxText, setShowInboxText] = useState(false);
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -215,13 +216,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </Link>
 
-                                <a id='navbar_bell' href='' className="flex justify-center items-center w-fit h-fit">
-                                    <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer '>
+                                <a id='navbar_bell' href='#' className="flex justify-center items-center w-fit h-fit relative" onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
+                                    <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
                                         <BellIcon className="h-7 w-6 text-gray-300" />
                                     </div>
+                                    {showInboxText && (<span className="absolute text-sm whitespace-nowrap bg-black text-white rounded py-1 px-2 left-1/2 transform -translate-x-1/2 -bottom-10">Open inbox</span>)}
                                 </a>
-
-
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
