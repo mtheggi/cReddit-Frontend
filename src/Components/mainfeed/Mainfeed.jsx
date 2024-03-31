@@ -26,9 +26,9 @@ const Mainfeed = () => {
             }
         };
         document.addEventListener('click', closeDropdown);
-    
+
         const mainfeedElement = document.getElementById('mainfeed');
-    
+
         const handleScroll = () => {
             const scrollThreshold = 58;
             if (mainfeedElement.scrollTop > scrollThreshold) {
@@ -36,11 +36,11 @@ const Mainfeed = () => {
                 setIsOpenView(false);
             }
         };
-    
+
         if (mainfeedElement) {
             mainfeedElement.addEventListener('scroll', handleScroll);
         }
-    
+
         return () => {
             document.removeEventListener('click', closeDropdown);
             if (mainfeedElement) {
@@ -96,7 +96,7 @@ const Mainfeed = () => {
                     </div>
 
                     {isOpenView && (
-                        <div  className=' w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col'>
+                        <div className=' w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col'>
                             <div className='w-full pl-3  rounded-lg h-8 flex items-center font-medium'>
                                 <p className='no-select'>View</p>
                             </div>

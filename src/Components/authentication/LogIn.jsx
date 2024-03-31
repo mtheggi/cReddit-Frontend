@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
 import { postRequest } from "../../services/Requests";
