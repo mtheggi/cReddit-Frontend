@@ -31,9 +31,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const [signupEmail, setSignupEmail] = useState('');
-    const [showInboxText, setShowInboxText] = useState(false);
     const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
     const [activeTab, setActiveTab] = useState('Notifications');
+    const [showInboxTooltip, setShowInboxTooltip] = useState(false);
+    const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
+    
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -111,6 +113,22 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             document.removeEventListener('click', closeDropdown);
         };
     });
+
+    const handleMouseEnter = () => {
+        setShowInboxTextTransition(true); 
+        
+        setTimeout(() => {
+          setShowInboxTooltip(true); 
+        }, 100); 
+    };
+      
+    const handleMouseLeave = () => {
+        setShowInboxTooltip(false);
+        
+        setTimeout(() => {
+          setShowInboxTextTransition(false);
+        }, 100); 
+    };
 
 
     return (
@@ -246,26 +264,32 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 </Link>
 
                                 <div className="flex justify-center items-center w-fit h-fit">
-                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }} onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
+                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" 
+                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }} 
+                                        onMouseEnter={handleMouseEnter}
+                                        onMouseLeave={handleMouseLeave}
+                                    >
                                         <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
                                             <BellIcon className="h-7 w-6 text-gray-300" />
                                         </div>
-                                        {showInboxText && (
+                                        {showInboxTextTransition  && (
                                             <span 
-                                                className="absolute whitespace-nowrap rounded py-1 px-2 left-1/2 transform -translate-x-1/2 -bottom-10" 
                                                 style={{ 
-                                                    zIndex: 100, 
-                                                    position: 'absolute',
-                                                    backgroundColor: '#e0e0e0',
-                                                    color: '#333',
-                                                    fontSize: '0.75rem',
-                                                    fontWeight: 'bold', 
-                                                    transitionDelay: '1s',
-                                                    transitionProperty: 'opacity, visibility',
-                                                    // transitionDuration: '10s',
-                                                    visibility: showInboxText ? 'visible' : 'hidden',
-                                                    opacity: showInboxText ? 1 : 0,
-                                                }} 
+                                                position: 'absolute',
+                                                zIndex: 100,
+                                                bottom: '-35px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                backgroundColor: '#e0e0e0',
+                                                color: '#333',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 'bold',
+                                                padding: '0.25rem 0.5rem',
+                                                borderRadius: '4px',
+                                                whiteSpace: 'nowrap',
+                                                opacity: showInboxTooltip ? 1 : 0,
+                                                transition: 'opacity 1s linear',
+                                                }}
                                             >
                                                 Open inbox
                                             </span>
