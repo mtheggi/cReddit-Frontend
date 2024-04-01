@@ -36,7 +36,7 @@ export const userHandlers = [
     }),
     http.get('/user', async (resolver) => {
         return HttpResponse.json({
-            username: "theUser",
+            username: "ficklepickle",
             displayName: "theUser",
             about: "I love pizza and coding",
             email: "malek@email.com",

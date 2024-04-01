@@ -3,6 +3,7 @@ import { CheckIcon, ExclamationCircleIcon, PlusIcon, TrashIcon } from '@heroicon
 import { postRequest } from "../../services/Requests";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import redditLogo from "../../assets/reddit_logo.png"
 import Post from './Post';
 import { v4 as uuidv4 } from 'uuid';
 import RedditRuleIcon from './RedditRuleIcon';
@@ -14,35 +15,57 @@ const CreatePost = () => {
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
     const [charCount, setCharCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
+
     const [type, setType] = useState('post');
+    const [communityName, setCommunityName] = useState("");
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
+    const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isNSFW, setIsNSFW] = useState(false);
 
-    const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
-    const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
-    const [title, setTitle] = useState("");
-    const [communityName, setCommunityName] = useState("");
     const communityMenuRef = useRef();
     const voteMenuRef = useRef();
-
+    const navigate = useNavigate();
     let initialHeight = '38px';
-    const history = useNavigate();
-    const handleSubmitPost = async () => {
+
+
+    const getExpirationDate = (voteDurationValue) => {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + parseInt(voteDurationValue));
+        return expirationDate.toLocaleString('en-GB').replace(',', '');
+    }
+
+    const handleSubmitOtherTypes = async () => {
         const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, isSpoiler, isNSFW });
         if (response.status === 200 || response.status === 201) {
             if (communityName == null)
-                history.push(`/u/${user}/comments/${title}`);
+                navigate(`/u/${user}/comments/${title}`);
             else
-                history.push(`/r/${communityName}/comments/${title}`);
+                navigate(`/r/${communityName}/comments/${title}`);
         }
     }
+
     const handleSubmitPoll = async () => {
+        const expirationDate = getExpirationDate(voteDurationValue);
         const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, pollOptions, expirationDate, isSpoiler, isNSFW });
         if (response.status === 200 || response.status === 201) {
-            history.push(`/${username}/comments/${postId}`);
+            if (communityName == null)
+                navigate(`/u/${user}/comments/${title}`);
+            else
+                navigate(`/r/${communityName}/comments/${title}`);
         }
-        return response.status;
     }
+
+    const handleSubmitPost = async () => {
+        if (type === "poll") {
+            await handleSubmitPoll();
+        } else {
+            await handleSubmitOtherTypes();
+        }
+    }
+
     const handleInput = (e) => {
         if (!initialHeight) {
             initialHeight = `${e.target.clientHeight}px`;
@@ -108,16 +131,101 @@ const CreatePost = () => {
                     <div ref={communityMenuRef} id="create_post_community_dropdown_menu" className={`z-20 absolute  ${CommunityDropdownOpen ? '' : 'hidden'} bg-reddit_search divide-y divide-gray-100 rounded-b-sm  border-r-[1px] border-l-[1px] border-b-[1px] border-gray-500 shadow w-[248px] dark:bg-gray-700 dark:divide-gray-600`}>
 
 
-                        <ul className="py-1 text-sm" aria-labelledby="dropdownInformationButton">
-
-                            <div className='flex flex-row'>
-                                <h1 className='text-gray-400 text-[9px] font-semibold ml-3 mt-1.5 '>YOUR COMMUNITIES</h1>
-                                <div className='flex flex-row justify-center items-center rounded-2xl ml-15 w-18 h-6 cursor-pointer
-                                 hover:bg-reddit_search_light '>
-                                    <h1 className='text-gray-200 text-[10.5px]  font-semibold '>Create New</h1>
+                        <ul className="pt-1 text-sm" aria-labelledby="dropdownInformationButton">
+                            <li className='flex pt-2 border-b-[0.5px] mb-2  border-gray-400 flex-col w-full h-20'>
+                                <h1 className='text-gray-400 text-[9px]  mb-[4px]  ml-3.5 font-semibold'>YOUR PROFILE</h1>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[38px] w-[38px]' src={redditLogo} alt="" />
+                                    <h1 className='text-gray-200 text-[14px] ml-2 font-medium'>u/{user}</h1>
                                 </div>
-                            </div>
+                            </li>
+                        </ul>
 
+                        <li className='flex h-fi border-0 flex-row pt-1 items-center mb-2'>
+                            <h1 className='text-gray-400 text-[9px] font-semibold ml-3  '>YOUR COMMUNITIES</h1>
+                            <div className='flex flex-row justify-center items-center rounded-2xl ml-15 w-18 cursor-pointer
+                                 hover:bg-reddit_search_light '>
+                                <h1 className='text-gray-200 text-[10.5px] font-semibold '>Create New</h1>
+                            </div>
+                        </li>
+
+                        <ul className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
+
+
+                            <li className='flex border-gray-400 flex-col w-full h-13'>
+                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
+                                    <div className='flex flex-col space-y-1'>
+                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
+                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                                    </div>
+
+                                </div>
+                            </li>
                         </ul>
 
                     </div>
@@ -159,6 +267,7 @@ const CreatePost = () => {
                                 placeholder='Title'
                                 onFocus={() => setIsFocused(true)}
                                 onBlur={() => setIsFocused(false)}
+                                onChange={(e) => setTitle(e.target.value)}
                                 className='w-full pr-0 overflow-hidden border-none focus:border-none text-gray-300 font-normal text-[14px] rounded-sm focus:outline-none focus:ring-0  bg-reddit_search resize-none h-[38px]'>
                             </textarea>
                             <div className='text-gray-400 no-select mr-1 text-[9px] flex flex-row justify-center items-center w-14 h-10'>{charCount}/300</div>
@@ -276,7 +385,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div id='submit_post' className=' hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center cursor-pointer '>
+                        <div onClick={handleSubmitPost} id='submit_post' className=' hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center cursor-pointer '>
                             <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
                         </div>
                     </div>
