@@ -328,10 +328,24 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                         <NotificationItem
                                                                 key={"1"}
                                                                 title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
-                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues"}
+                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
                                                                 date={"4/1/2024"}
                                                                 image={avatar}
-                                                            />
+                                                        />
+                                                        <NotificationItem
+                                                                key={"1"}
+                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
+                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
+                                                                date={"4/1/2024"}
+                                                                image={avatar}
+                                                        />
+                                                        <NotificationItem
+                                                                key={"1"}
+                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
+                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
+                                                                date={"4/1/2024"}
+                                                                image={avatar}
+                                                        />
                                                     </div>
                                                 )}
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const NotificationItem = ({ title, date, description, image }) => {
-
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
     const dropdownRef = useRef(null);
@@ -22,6 +21,15 @@ const NotificationItem = ({ title, date, description, image }) => {
         };
     }, [dropdownOpen]);
 
+    const truncateDescription = (desc) => {
+        if (desc.length <= 100) return desc;
+
+        const truncateAt = desc.indexOf(' ', 100);
+        if (truncateAt === -1) return desc;
+
+        return desc.substring(0, truncateAt) + "...";
+    };
+
     return (
         <div className="flex items-start justify-between p-2 cursor-pointer hover:bg-reddit_dark-brighter rounded-md">
             <div className="flex space-x-3 w-full">
@@ -36,7 +44,7 @@ const NotificationItem = ({ title, date, description, image }) => {
                             <time className="text-xs text-gray-400" dateTime={date}>{date}</time>
                         </p>
                     </div>
-                    <p className="text-xs text-gray-400" style={{overflowWrap: 'break-word'}}>{description}</p>
+                    <p className="text-xs text-gray-400" style={{overflowWrap: 'break-word'}}>{truncateDescription(description)}</p>
                 </div>
             </div>
             <button onClick={toggleDropdown} className="ml-3 text-white hover:text-reddit_text hover:bg-gray-600 p-2 rounded-full">
