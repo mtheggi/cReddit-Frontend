@@ -32,6 +32,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const [signupEmail, setSignupEmail] = useState('');
     const [showInboxText, setShowInboxText] = useState(false);
+    const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -42,6 +43,29 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
+    const bellMenuRef = useRef(null);
+
+
+
+    // Inside your Navbar component, add new state variables:
+    const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
+    const [selectedTab, setSelectedTab] = useState('Notifications');
+
+    // Function to toggle the notifications menu
+    const toggleNotificationsMenu = () => {
+    setIsNotificationsMenuOpen(prev => !prev);
+    };
+
+    // Define the structure of a dummy notification list
+    const notifications = [
+    {
+        id: 1,
+        img: 'path_to_image',
+        title: 'Notification Title',
+        description: 'Notification Description',
+    },
+    // ...more notifications
+    ];
 
     useEffect(() => {
         localStorage.setItem('isLogged', JSON.stringify(isLogged));
@@ -73,6 +97,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             }
             if (secondSignupMenuRef.current && !secondSignupMenuRef.current.contains(e.target)) {
                 setIsOpenedSecondSignupMenu(false);
+            }
+            if (bellMenuRef.current && !bellMenuRef.current.contains(e.target)) {
+                setIsOpenBellMenu(false);
             }
 
         };
@@ -216,15 +243,21 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </Link>
 
-                                <a id='navbar_bell' href='#' className="flex justify-center items-center w-fit h-fit relative" onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
+                                <a id='navbar_bell' ref={bellMenuRef} href='#' className="flex justify-center items-center w-fit h-fit relative" onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }} onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
                                     <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
                                         <BellIcon className="h-7 w-6 text-gray-300" />
                                     </div>
                                     {showInboxText && (<span className="absolute text-sm whitespace-nowrap bg-black text-white rounded py-1 px-2 left-1/2 transform -translate-x-1/2 -bottom-10">Open inbox</span>)}
                                 </a>
 
+                                {isOpenBellMenu && (
+                                    <div className='absolute w-62 right-0 mt-12 bg-reddit_lightGreen text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col justify-center items-center' style={{ transform: 'translateX(-100%)' }}>
+                                        To Be Implemented
+                                    </div>
+                                )}
+
                                 <div className="flex justify-center items-center w-fit h-fit">
-                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
+                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu(prev => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
                                         <div className=' bg-reddit_sky w-8 h-8 rounded-full'>
                                             <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
                                         </div>
