@@ -12,7 +12,7 @@ import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
-
+import NotificationItem from '../notifications/NotificationItem';
 
 
 
@@ -313,7 +313,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                             <div className='w-full px-4 py-2 flex justify-between items-center'>
                                                 {activeTab === 'Notifications' && (
-                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginLeft: '-12px'}}>
                                                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem' }}>
                                                             <span className='font-bold' style={{ fontSize: '0.75rem', color: '#777777', flexShrink: 0 }}>TODAY</span>
                                                             <span className='cursor-pointer font-bold' style={{ marginLeft: '140px', flexShrink: 0 }} onClick={() => {/* Functionality will go here*/}}>Mark all as read</span>
@@ -325,6 +325,13 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                         <div style={{ flexShrink: 0 }}>
                                                             <span className='font-bold' style={{ fontSize: '0.75rem', color: '#777777' }}>EARLIER</span>
                                                         </div>
+                                                        <NotificationItem
+                                                                key={"1"}
+                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
+                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues"}
+                                                                date={"4/1/2024"}
+                                                                image={avatar}
+                                                            />
                                                     </div>
                                                 )}
 
