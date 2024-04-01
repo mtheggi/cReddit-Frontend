@@ -33,6 +33,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [signupEmail, setSignupEmail] = useState('');
     const [showInboxText, setShowInboxText] = useState(false);
     const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
+    const [activeTab, setActiveTab] = useState('Notifications');
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -43,7 +44,8 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
-    const bellMenuRef = useRef(null);
+    const bellMenuRef = useRef();
+    const bellMenuRefExpanded = useRef();
 
 
 
@@ -98,7 +100,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             if (secondSignupMenuRef.current && !secondSignupMenuRef.current.contains(e.target)) {
                 setIsOpenedSecondSignupMenu(false);
             }
-            if (bellMenuRef.current && !bellMenuRef.current.contains(e.target)) {
+            if (bellMenuRef.current && !bellMenuRef.current.contains(e.target) && bellMenuRefExpanded.current && !bellMenuRefExpanded.current.contains(e.target)) {
                 setIsOpenBellMenu(false);
             }
 
@@ -243,18 +245,69 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </Link>
 
-                                <a id='navbar_bell' ref={bellMenuRef} href='#' className="flex justify-center items-center w-fit h-fit relative" onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }} onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
-                                    <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
-                                        <BellIcon className="h-7 w-6 text-gray-300" />
+                                <div className="flex justify-center items-center w-fit h-fit">
+                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }} onMouseEnter={() => setShowInboxText(true)} onMouseLeave={() => setShowInboxText(false)}>
+                                        <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
+                                            <BellIcon className="h-7 w-6 text-gray-300" />
+                                        </div>
+                                        {showInboxText && (
+                                            <span 
+                                                className="absolute whitespace-nowrap rounded py-1 px-2 left-1/2 transform -translate-x-1/2 -bottom-10" 
+                                                style={{ 
+                                                    zIndex: 100, 
+                                                    position: 'absolute',
+                                                    backgroundColor: '#e0e0e0',
+                                                    color: '#333',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 'bold', 
+                                                    transitionDelay: '1s',
+                                                    transitionProperty: 'opacity, visibility',
+                                                    // transitionDuration: '10s',
+                                                    visibility: showInboxText ? 'visible' : 'hidden',
+                                                    opacity: showInboxText ? 1 : 0,
+                                                }} 
+                                            >
+                                                Open inbox
+                                            </span>
+                                        )}
                                     </div>
-                                    {showInboxText && (<span className="absolute text-sm whitespace-nowrap bg-black text-white rounded py-1 px-2 left-1/2 transform -translate-x-1/2 -bottom-10">Open inbox</span>)}
-                                </a>
 
-                                {isOpenBellMenu && (
-                                    <div className='absolute w-62 right-0 mt-12 bg-reddit_lightGreen text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col justify-center items-center' style={{ transform: 'translateX(-100%)' }}>
-                                        To Be Implemented
-                                    </div>
-                                )}
+                                    {isOpenBellMenu && (
+                                        <div ref={bellMenuRefExpanded} className='absolute w-62 right-0 bg-reddit_lightGreen text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col justify-center items-center' style={{ right: '70px', top: '4rem' }}>
+                                            <div className='flex justify-between'>
+                                                <div 
+                                                    className={`cursor-pointer px-4 py-2 ${activeTab === 'Notifications' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-white'}`}
+                                                    onClick={() => setActiveTab('Notifications')}
+                                                >
+                                                    Notifications
+                                                </div>
+
+                                                <div 
+                                                    className={`cursor-pointer px-4 py-2 ${activeTab === 'Messages' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-white'}`}
+                                                    onClick={() => setActiveTab('Messages')}
+                                                >
+                                                    Messages
+                                                </div>
+                                            </div>
+
+                                            <div className='flex-1 p-4'>
+                                                {activeTab === 'Notifications' && (
+                                                    <div>
+                                                        Notifications Opened!
+                                                    </div>
+                                                )}
+
+                                                {activeTab === 'Messages' && (
+                                                    <div>
+                                                        Messages Opened!
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu(prev => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
