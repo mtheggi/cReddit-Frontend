@@ -2,24 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const NotificationItem = ({ title, date, description, image }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+    const toggleDropdown = (event) => {
+        event.stopPropagation();
+        setDropdownOpen(!dropdownOpen);
+    };
     const dropdownRef = useRef(null);
+    const buttonRef = useRef(null);
 
     useEffect(() => {
         function handleClickOutside(event) {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target) && !buttonRef.current.contains(event.target)) {
                 setDropdownOpen(false);
             }
         }
 
-        if (dropdownOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
-        }
+        document.addEventListener('mousedown', handleClickOutside);
 
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [dropdownOpen]);
+    }, [dropdownOpen]); 
 
     const truncateDescription = (desc) => {
         if (desc.length <= 100) return desc;
@@ -47,7 +49,7 @@ const NotificationItem = ({ title, date, description, image }) => {
                     <p className="text-xs text-gray-400" style={{overflowWrap: 'break-word'}}>{truncateDescription(description)}</p>
                 </div>
             </div>
-            <button onClick={toggleDropdown} className="ml-3 text-white hover:text-reddit_text hover:bg-gray-600 p-2 rounded-full">
+            <button ref={buttonRef} onClick={toggleDropdown} className="ml-3 text-white hover:text-reddit_text hover:bg-gray-600 p-2 rounded-full">
                 <svg width="20" height="5" fill="currentColor" viewBox="0 0 18 6" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'scale(0.83)' }}> 
                     <circle cx="3" cy="3" r="1.5" />
                     <circle cx="9" cy="3" r="1.5" />
