@@ -22,7 +22,7 @@ const Recent = () => {
     }, [])
 
     if (!isLoggedIn) {
-        return null;
+        return  (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-90 xl:w-80 ml-3 mt-9 mr-auto'></div>)
     }
 
     return (
