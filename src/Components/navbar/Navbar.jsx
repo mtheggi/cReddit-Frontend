@@ -1,6 +1,6 @@
 import redditLogo from '../../assets/reddit_logo.png';
 import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, PlusIcon, } from '@heroicons/react/24/outline'
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import avatar from '../../assets/avatar.png';
 import Searchbar from '../searchbar/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
@@ -13,18 +13,20 @@ import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
 import { getRequest } from '../../services/Requests';
-import {baseUrl} from "../../constants";
+import { baseUrl } from "../../constants";
+import { UserContext } from '@/context/UserContext';
 
 
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
+    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    const [isLogged, setIsLogged] = useState(() => {
-        const savedIsLogged = localStorage.getItem('isLogged');
-        return savedIsLogged !== null ? JSON.parse(savedIsLogged) : false;
-    });
+    // const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    //     const savedisLoggedIn = localStorage.getItem('isLoggedIn');
+    //     return savedisLoggedIn !== null ? JSON.parse(savedisLoggedIn) : false;
+    // });
 
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
@@ -47,15 +49,15 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const handleLogout = async () => {
         const response = await getRequest(`${baseUrl}/user/logout`);
-        if(response.status==200||response.status==201){
-            setIsLogged(false); 
+        if (response.status == 200 || response.status == 201) {
+            setIsLoggedIn(false);
             setIsOpenProfileMenu(false);
         }
     }
 
-    useEffect(() => {
-        localStorage.setItem('isLogged', JSON.stringify(isLogged));
-    }, [isLogged]);
+    // useEffect(() => {
+    //     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    // }, [isLoggedIn]);
 
 
     useEffect(() => {
@@ -126,7 +128,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
 
 
-                        {!isLogged && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
+                        {!isLoggedIn && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
                             <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
@@ -138,7 +140,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     <div className='overlay'></div>
 
                                     <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsLogged={setIsLogged} />
+                                        <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                     </div>
                                 </div>
                             )}
@@ -197,7 +199,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                     <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
 
-                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} setIsLogged={setIsLogged} />
+                                        <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} />
                                     </div>
                                 </div>
                             )}
@@ -211,7 +213,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                         }
 
 
-                        {isLogged &&
+                        {isLoggedIn &&
                             <>
                                 <a id='navbar_chat' href='' className="flex justify-center items-center w-fit h-fit">
                                     <div className='hover:bg-reddit_search_light ml-0 xs:ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>

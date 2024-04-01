@@ -1,24 +1,48 @@
 import { Link, PhotoOutlined, Poll, PollOutlined, PostAddOutlined } from '@mui/icons-material';
 import { CheckIcon, ExclamationCircleIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { useState, useEffect, useRef } from 'react';
+import { postRequest } from "../../services/Requests";
+import { useState, useEffect, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Post from './Post';
 import { v4 as uuidv4 } from 'uuid';
 import RedditRuleIcon from './RedditRuleIcon';
 import DropImage from './DropImage';
+import { UserContext } from '@/context/UserContext';
 const CreatePost = () => {
-    const [menuState, setMenuState] = useState('post');
+    const { user, setUser } = useContext(UserContext);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
-    const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
     const [charCount, setCharCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
+    const [type, setType] = useState('post');
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isNSFW, setIsNSFW] = useState(false);
+
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
+    const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
+    const [title, setTitle] = useState("");
+    const [communityName, setCommunityName] = useState("");
     const communityMenuRef = useRef();
     const voteMenuRef = useRef();
 
     let initialHeight = '38px';
+    const history = useNavigate();
+    const handleSubmitPost = async () => {
+        const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, isSpoiler, isNSFW });
+        if (response.status === 200 || response.status === 201) {
+            if (communityName == null)
+                history.push(`/u/${user}/comments/${title}`);
+            else
+                history.push(`/r/${communityName}/comments/${title}`);
+        }
+    }
+    const handleSubmitPoll = async () => {
+        const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, pollOptions, expirationDate, isSpoiler, isNSFW });
+        if (response.status === 200 || response.status === 201) {
+            history.push(`/${username}/comments/${postId}`);
+        }
+        return response.status;
+    }
     const handleInput = (e) => {
         if (!initialHeight) {
             initialHeight = `${e.target.clientHeight}px`;
@@ -103,25 +127,25 @@ const CreatePost = () => {
                 <div className='mt-2.5 bg-reddit_search w-full h-fit flex flex-col rounded-lg'>
                     <div className={`flex flex-row w-full h-[60px] min-h-[60px] text-gray-200  font-medium text-[11px] xs:text-[14px] `}>
 
-                        <div id='type_post' onClick={() => setMenuState('post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${menuState == "post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_post' onClick={() => setType('post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${type == "post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <div className='-mt-1'>
                                 <PostAddOutlined />
                             </div>
                             <h1 className='ml-1' >Post</h1>
                         </div>
 
-                        <div id='type_image' onClick={() => setMenuState('image')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "image" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_image' onClick={() => setType('image')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "image" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <PhotoOutlined />
                             <h1 className='ml-1' >Image</h1>
                         </div>
 
-                        <div id='type_link' onClick={() => setMenuState('link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${menuState == "link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_link' onClick={() => setType('link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <Link />
                             <h1 className='ml-1'>Link</h1>
                         </div>
 
 
-                        <div id='type_poll' onClick={() => setMenuState('poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${menuState == "poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
+                        <div id='type_poll' onClick={() => setType('poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${type == "poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
                             <PollOutlined />
                             <h1 className='ml-1' >Poll</h1>
                         </div>
@@ -139,25 +163,30 @@ const CreatePost = () => {
                             </textarea>
                             <div className='text-gray-400 no-select mr-1 text-[9px] flex flex-row justify-center items-center w-14 h-10'>{charCount}/300</div>
                         </div>
-                        {menuState == 'post' && (
+                        {type == 'post' && (
                             <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
                                 <Post />
                             </div>)}
 
-                        {menuState == 'image' && (
+                        {type == 'image' && (
                             <div className='w-full h-[251px] mb-3 '>
                                 <DropImage />
                             </div>)}
 
-                        {menuState == 'link' && (
+                        {type == 'link' && (
                             <div className='mb-3 h-[110px] w-full'>
-                                <textarea onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                <textarea id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='URL' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
                                 </textarea>
                             </div>
                         )}
 
-                        {menuState == 'poll' && (
+                        {type == 'poll' && (<>
+                            <div className='mb-2.5 h-[110px] w-full'>
+                                <textarea id='poll_content' onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                    onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='Text(optional)' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
+                                </textarea>
+                            </div>
                             <div className='mb-3 h-fit w-full border-[0.5px] flex flex-row border-gray-400'>
                                 <div className='h-full w-full sm:w-10/12 sm:mr-0 flex flex-col  text-gray-200 space-y-2 pt-2.5 pl-2 pr-2'>
                                     {inputFields.map((field, index) => (
@@ -232,7 +261,7 @@ const CreatePost = () => {
                                 </div>
 
                             </div>
-                        )}
+                        </>)}
 
 
                         <div className='flex flex-row items-center w-full space-x-3 border-b-[0.5px] pb-3 border-gray-400 font-semibold'>

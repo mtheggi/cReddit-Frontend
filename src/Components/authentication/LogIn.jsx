@@ -6,9 +6,12 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
+import { UserContext } from '@/context/UserContext';
 
-const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu, setIsLogged }) => {
 
+const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotUsername, setIsOpenedSignupMenu }) => {
+
+  const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState(null);
@@ -37,7 +40,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         LoginSuccessToast("Logged in successfully");
         setTimeout(() => {
           setIsOpenedLoginMenu(false);
-          setIsLogged(true);
+          setIsLoggedIn(true);
         }, 3000);
       }
     }
@@ -56,7 +59,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
           LoginSuccessToast("Logged in successfully");
           setTimeout(() => {
             setIsOpenedLoginMenu(false);
-            setIsLogged(true);
+            setIsLoggedIn(true);
           }, 3000);
         }
       }

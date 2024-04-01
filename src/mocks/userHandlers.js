@@ -34,6 +34,19 @@ export const userHandlers = [
             }, { status: 400 });
         }
     }),
+    http.get('/user', async (resolver) => {
+        return HttpResponse.json({
+            username: "theUser",
+            displayName: "theUser",
+            about: "I love pizza and coding",
+            email: "malek@email.com",
+            profilePicture: "drive.creddit.com/pfp",
+            banner: "drive.creddit.com/pfp",
+            followers: 100,
+            cakeDay: "2024-03-25T15:37:33.339+00:00"
+
+        });
+    }),
 
     http.get('/user/is-available/:username', async (resolver) => {
 
@@ -98,15 +111,15 @@ export const userHandlers = [
     }),
 
     http.get('/user/generate-username', async (resolver) => {
-        
-            return HttpResponse.json(
-                {
-                    message: "Username generated successfully",
-                    username: "FicklePickle123"
-                   
-                }
-            )
-        
+
+        return HttpResponse.json(
+            {
+                message: "Username generated successfully",
+                username: "FicklePickle123"
+
+            }
+        )
+
 
     }),
 
@@ -128,11 +141,15 @@ export const userHandlers = [
         )
     }),
     http.get('/user/refreshToken', async (resolver) => {
-        return HttpResponse.json(
-            {
-                message: "Token refreshed successfully"
-            }
-        )
+
+        return HttpResponse.json({
+            message: "Unauthorized"
+        }, { status: 400 });
+        // return HttpResponse.json(
+        //     {
+        //         message: "Token refreshed successfully"
+        //     }
+        // )
     }),
     http.get('/user/verify/:verificationToken', async (resolver) => {
 
@@ -643,34 +660,163 @@ export const userHandlers = [
     http.get('/user/history', async (resolver) => {
         return HttpResponse.json([
             {
-                comments: 50,
-                upvotes: 1500,
-                pollVotes: {
-                    option3: 40,
-                    option1: 10,
-                    option2: 20
-                },
-                isDownvoted: false,
+                postId: "3150651awd651awd",
+                type: "Images & Video",
+                username: "Sayed",
+                communityName: "Watermelon",
+                title: "How to make a watermelon cake",
+                content: "https://random.imagecdn.app/500/150",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 23,
+                commentCount: 50,
                 isNSFW: false,
-                isUpvoted: true,
-                postId: "350651awd651awd",
-                ownerId: "350651awd651awd",
-                title: "Hello World",
-                downvotes: 100,
-                content: "This is my content",
-                isFollowed: true,
                 isSpoiler: false,
-                ownerProfilePicture: "drive.creddit.com/test",
-                uploadDate: "06/03/2024 22:10:03",
-                children: [
-                    "",
-                    ""
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
                 ],
-                isSaved: true,
-                isLocked: true,
-                communityProfilePicture: "drive.creddit.com / test",
-                communityId: "350651awd651awd"
-            }
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "3513023wd651awd",
+                type: "Normal",
+                username: "Samirshahin",
+                communityName: "null",
+                title: "how to test flutter object kill my students ??? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 203,
+                commentCount: 10,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "3506422323d651awd",
+                type: "Images & Video",
+                username: "Dr.Bayomme",
+                communityName: "null",
+                title: "how to samir location middle flow a machine  middle flow a machine  middle flow a machine on eating cornflex",
+                content: "https://random.imagecdn.app/600/150",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            }, {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            },
+            {
+                postId: "35023w32d651awd",
+                type: "Normal",
+                username: "Sayed",
+                communityName: "reactJs",
+                title: "how to center a div ? ",
+                content: "This is my content",
+                profilePicture: "https://random.imagecdn.app/500/150",
+                netVote: 1500,
+                commentCount: 50,
+                isNSFW: false,
+                isSpoiler: false,
+                isApproved: false,
+                isUpvoted: false,
+                isDownvoted: false,
+                isHidden: false,
+                isSaved: false,
+                uploadDate: "2024-03-25T15:37:33.339+00:00",
+                pollOptions: [
+                    {
+                        option: "Option 1",
+                        isVoted: false,
+                        votes: 10
+                    }
+                ],
+                expirationDate: "2024-03-25T15:37:33.339+00:00"
+            },
         ])
     }),
 
