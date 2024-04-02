@@ -36,7 +36,7 @@ const NotificationItem = ({ title, date, description, image }) => {
         <div className="flex items-start justify-between p-2 cursor-pointer hover:bg-reddit_dark-brighter rounded-md">
             <div className="flex space-x-3 w-full">
                 <div className="flex-shrink-0">
-                    <img src={image} alt="Profile" className="h-8 w-8 rounded-full" />
+                    <img src={image} alt="Notification Image" className="h-8 w-8 rounded-full" />
                 </div>
                 <div className="flex-1">
                     <div className="flex flex-wrap items-center space-x-1">

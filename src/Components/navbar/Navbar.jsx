@@ -59,13 +59,42 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     };
 
     const notifications = [
-    {
-        id: 1,
-        img: 'path_to_image',
-        title: 'Notification Title',
-        description: 'Notification Description',
-    },
-    ];
+        {
+          key: "1",
+          title: "u/Abdelaal replied to your comment in r/cReddit",
+          description: "Notification Description 1",
+          date: "4/2/2024",
+          image: avatar,
+        },
+        {
+          key: "2",
+          title: "u/Malek replied to your post in r/CCE",
+          description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
+          date: "4/3/2024",
+          image: avatar,
+        },
+        {
+          key: "3",
+          title: "u/Maro replied to your post in r/APT",
+          description: "Notification Description 3",
+          date: "4/4/2024",
+          image: avatar,
+        },
+        {
+          key: "4",
+          title: "u/Bassel replied to your comment in r/Front",
+          description: "Notification Description 4",
+          date: "4/5/2024",
+          image: avatar,
+        },
+        {
+          key: "5",
+          title: "u/Heggi replied to your comment in r/Pattern",
+          description: "Notification Description 5",
+          date: "4/6/2024",
+          image: avatar,
+        },
+      ];
 
     useEffect(() => {
         localStorage.setItem('isLogged', JSON.stringify(isLogged));
@@ -296,14 +325,14 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                         <div ref={bellMenuRefExpanded} className='absolute right-0 bg-reddit_lightGreen text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center' style={{ right: '70px', top: '4rem', width: '360px' }}>
                                             <div className='flex justify-between w-full px-4'>
                                                 <div 
-                                                    className={`cursor-pointer px-4 py-2 ${activeTab === 'Notifications' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-white'}`}
+                                                    style={{ cursor: 'pointer', padding: '16px', fontSize: '14px', fontWeight: 'bold', color: activeTab === 'Notifications' ? '#ffffff' : '#888888', borderBottom: activeTab === 'Notifications' ? '3px solid #3b82f6' : '' }}
                                                     onClick={() => setActiveTab('Notifications')}
                                                 >
                                                     Notifications
                                                 </div>
 
                                                 <div 
-                                                    className={`cursor-pointer px-4 py-2 ${activeTab === 'Messages' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-white'}`}
+                                                    style={{ cursor: 'pointer', padding: '16px', fontSize: '14px', fontWeight: 'bold', color: activeTab === 'Messages' ? '#ffffff' : '#888888', borderBottom: activeTab === 'Messages' ? '3px solid #3b82f6' : '' }}
                                                     onClick={() => setActiveTab('Messages')}
                                                 >
                                                     Messages
@@ -325,27 +354,17 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                         <div style={{ flexShrink: 0 }}>
                                                             <span className='font-bold' style={{ fontSize: '0.75rem', color: '#777777' }}>EARLIER</span>
                                                         </div>
-                                                        <NotificationItem
-                                                                key={"1"}
-                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
-                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
-                                                                date={"4/1/2024"}
-                                                                image={avatar}
-                                                        />
-                                                        <NotificationItem
-                                                                key={"1"}
-                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
-                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
-                                                                date={"4/1/2024"}
-                                                                image={avatar}
-                                                        />
-                                                        <NotificationItem
-                                                                key={"1"}
-                                                                title={"u/ahmedAbdelaal replied to your comment in r/cReddit"}
-                                                                description={"This is a test notification to ensure that everything is displayed correctly and without any issues and I am trying to type in redundant stuff to ensure that the 3 dots are displayed and rendered"}
-                                                                date={"4/1/2024"}
-                                                                image={avatar}
-                                                        />
+                                                            {
+                                                                notifications.slice(0, 3).map(({ key, title, description, date, image }) => (
+                                                                    <NotificationItem
+                                                                    key={key}
+                                                                    title={title}
+                                                                    description={description}
+                                                                    date={date}
+                                                                    image={image}
+                                                                    />
+                                                                ))
+                                                            }
                                                     </div>
                                                 )}
 
