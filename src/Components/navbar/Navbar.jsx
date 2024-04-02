@@ -365,10 +365,26 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                                     />
                                                                 ))
                                                             }
+                                                            <div style={{ width: '100%', height: '1px', backgroundColor: '#555555' }}></div>
+                                                            <div style={{ width: '100%', textAlign: 'center', padding: '12px 0' }}>
+                                                                <button style={{
+                                                                    backgroundColor: '#1a282d',
+                                                                    color: 'white',
+                                                                    padding: '8px 0',
+                                                                    fontWeight: 'bold',
+                                                                    borderRadius: '20px',
+                                                                    border: 'none',
+                                                                    cursor: 'pointer',
+                                                                    outline: 'none',
+                                                                    width: 'calc(100% - 32px)', 
+                                                                    maxWidth: '100%', 
+                                                                    boxSizing: 'border-box'
+                                                                }}>
+                                                                    See All
+                                                                </button>
+                                                            </div>
                                                     </div>
                                                 )}
-
-
 
                                                 {activeTab === 'Messages' && (
                                                     <div>
