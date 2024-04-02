@@ -19,7 +19,7 @@ enableMocking().then(() => {
 
     <GoogleOAuthProvider clientId={Client_ID} >
       <UserContextProvider>
-        <App />
+          <App />
       </UserContextProvider>
     </GoogleOAuthProvider >,
   )

@@ -4,7 +4,9 @@ import RichTextEditor from 'react-rte';
 
 class Post extends Component {
     static propTypes = {
-        onChange: PropTypes.func
+        onChange: PropTypes.func,
+        setContent: PropTypes.func,
+        type: PropTypes.string
     };
 
     state = {
@@ -15,8 +17,11 @@ class Post extends Component {
         this.setState({ value });
         if (this.props.onChange) {
             this.props.onChange(
-                value.toString('html')
+                value.toString('markdown')
             );
+        }
+        if (this.props.type === 'post') {
+            this.props.setContent(value.toString('markdown'));
         }
     };
 

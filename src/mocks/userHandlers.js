@@ -1,6 +1,5 @@
 import { http, HttpResponse } from "msw"
 
-
 export const userHandlers = [
 
     http.post('/user/login', async (resolver) => {
@@ -140,7 +139,7 @@ export const userHandlers = [
             }
         )
     }),
-    http.get('/user/refreshToken', async (resolver) => {
+    http.get('/user/refresh-token', async (resolver) => {
 
         return HttpResponse.json({
             message: "Unauthorized"
@@ -159,6 +158,96 @@ export const userHandlers = [
                 message: "User verified successfully"
             }
         )
+    }),
+    http.get('/user/joined-communities', async (resolver) => {
+
+        return HttpResponse.json([
+            {
+                name: "AskReddit",
+                icon: "drive.creddit.com/pfp1",
+                banner: "drive.creddit.com/banner1",
+                members: 100,
+                rules: [
+                    "No spamming",
+                    "No harassment"
+                ],
+                moderators: [
+                    "Mod1",
+                    "Mod2"
+                ]
+            },
+            {
+                name: "worldnews",
+                icon: "drive.creddit.com/pfp2",
+                banner: "drive.creddit.com/banner2",
+                members: 200,
+                rules: [
+                    "No spamming",
+                    "Be respectful"
+                ],
+                moderators: [
+                    "Mod3",
+                    "Mod4"
+                ]
+            },
+            {
+                name: "funny",
+                icon: "drive.creddit.com/pfp3",
+                banner: "drive.creddit.com/banner3",
+                members: 300,
+                rules: [
+                    "No spamming",
+                    "No trolling"
+                ],
+                moderators: [
+                    "Mod5",
+                    "Mod6"
+                ]
+            },
+            {
+                name: "pics",
+                icon: "drive.creddit.com/pfp4",
+                banner: "drive.creddit.com/banner4",
+                members: 400,
+                rules: [
+                    "No spamming",
+                    "No hate speech"
+                ],
+                moderators: [
+                    "Mod7",
+                    "Mod8"
+                ]
+            },
+            {
+                name: "science",
+                icon: "drive.creddit.com/pfp5",
+                banner: "drive.creddit.com/banner5",
+                members: 500,
+                rules: [
+                    "No spamming",
+                    "No personal attacks"
+                ],
+                moderators: [
+                    "Mod9",
+                    "Mod10"
+                ]
+            },
+            {
+                name: "science",
+                icon: "drive.creddit.com/pfp5",
+                banner: "drive.creddit.com/banner5",
+                members: 500,
+                rules: [
+                    "No spamming",
+                    "No personal attacks"
+                ],
+                moderators: [
+                    "Mod9",
+                    "Mod10"
+                ]
+            }
+        ])
+
     }),
     http.get('/user/u/:username', async (resolver) => {
 

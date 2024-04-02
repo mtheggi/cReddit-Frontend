@@ -1,35 +1,65 @@
 import { Link, PhotoOutlined, Poll, PollOutlined, PostAddOutlined } from '@mui/icons-material';
 import { CheckIcon, ExclamationCircleIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
-import { postRequest } from "../../services/Requests";
+import CreateCommunity from '../createCommunity/CreateCommunity';
+import { postRequest, getRequest } from "../../services/Requests";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
 import Post from './Post';
+import { baseUrl } from "../../constants";
 import { v4 as uuidv4 } from 'uuid';
 import RedditRuleIcon from './RedditRuleIcon';
 import DropImage from './DropImage';
 import { UserContext } from '@/context/UserContext';
+
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
+    const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
     const [charCount, setCharCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
+    const [joinedSubreddits, setJoinedSubreddits] = useState([]);
 
     const [type, setType] = useState('post');
-    const [communityName, setCommunityName] = useState("");
+    const [commName, setCommName] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
     const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isNSFW, setIsNSFW] = useState(false);
+    const [yourOrAllCommunities, setYourOrAllCommunities] = useState("YOUR COMMUNITIES");
 
     const communityMenuRef = useRef();
+    const communityCardRef = useRef();
     const voteMenuRef = useRef();
+    const commNameInputRef = useRef();
     const navigate = useNavigate();
     let initialHeight = '38px';
+    let communityName = null;
 
+    useEffect(() => {
+        getJoinedSubreddits();
+
+    }, []);
+
+    useEffect(() => {
+        let handleClickOutside = (e) => {
+            if (communityCardRef.current && !communityCardRef.current.contains(e.target)) {
+                setIsCommunityOpenLocal(false);
+            }
+        };
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    });
+
+    const isCommunityJoined = (communityName) => {
+        return joinedSubreddits.some(subreddit => subreddit.name === communityName);
+    }
 
     const getExpirationDate = (voteDurationValue) => {
         const expirationDate = new Date();
@@ -38,31 +68,68 @@ const CreatePost = () => {
     }
 
     const handleSubmitOtherTypes = async () => {
+
+        if (commNameInputRef.current.value.substring(2) != user)
+            communityName = commNameInputRef.current.value.substring(2);
+
+
         const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, isSpoiler, isNSFW });
-        if (response.status === 200 || response.status === 201) {
-            if (communityName == null)
-                navigate(`/u/${user}/comments/${title}`);
-            else
-                navigate(`/r/${communityName}/comments/${title}`);
-        }
+        return response
     }
 
     const handleSubmitPoll = async () => {
+
+        if (commNameInputRef.current.value.substring(2) != user)
+            communityName = commNameInputRef.current.value.substring(2);
+
+        const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
+        const pollOptions = nonEmptyInputFields.map(field => field.value).join(', ');
         const expirationDate = getExpirationDate(voteDurationValue);
         const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, pollOptions, expirationDate, isSpoiler, isNSFW });
-        if (response.status === 200 || response.status === 201) {
-            if (communityName == null)
-                navigate(`/u/${user}/comments/${title}`);
-            else
-                navigate(`/r/${communityName}/comments/${title}`);
+        return response
+    }
+
+    const searchSubreddits = async () => {
+
+    }
+
+    const getJoinedSubreddits = async () => {
+        const response = await getRequest(`${baseUrl}/user/joined-communities`);
+        if (response.status == 200 || response.status == 201) {
+            const subredditData = response.data.map(subreddit => ({
+                name: subreddit.name,
+                members: subreddit.members,
+                icon: subreddit.icon
+            }));
+            setJoinedSubreddits(subredditData);
         }
     }
 
     const handleSubmitPost = async () => {
-        if (type === "poll") {
-            await handleSubmitPoll();
-        } else {
-            await handleSubmitOtherTypes();
+        //Todo add a check that the communityName exists inside the returned array from database: 
+        if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2)==user ) {
+            if (title.trim() !== "") {
+                let res = null;
+                if (type === "poll") {
+                    if (checkInputFieldsNotEmpty()) {
+                        res = await handleSubmitPoll();
+                    }
+                }
+                else {
+                    res = await handleSubmitOtherTypes();
+                }
+
+                if (res != null && (res.status === 200 || res.status === 201)) {
+                    if (communityName == null)
+                        navigate(`/u/${user}/comments/${res.data.postId}}`);
+                    else
+                        navigate(`/r/${communityName}/comments/${res.data.postId}}`);
+                }
+
+                if (res.status != 200 && res.status != 201) {
+                    //Todo: either toast or 404 page for failure creating post -> server error 
+                }
+            }
         }
     }
 
@@ -75,6 +142,11 @@ const CreatePost = () => {
             e.target.style.height = `${e.target.scrollHeight}px`;
         }
         setCharCount(e.target.value.length);
+    };
+
+    const checkInputFieldsNotEmpty = () => {
+        const nonEmptyFields = inputFields.filter(field => field.value.trim() !== "");
+        return nonEmptyFields.length >= 2;
     };
 
 
@@ -120,7 +192,8 @@ const CreatePost = () => {
                 </div>
 
                 <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
-                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev) }} id="create_post_community_dropdown_button" className={`text-gray-300 cursor-pointer pl-3 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>Choose a community
+                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
+                        <input autoComplete='off' onChange={() => { !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("YOUR COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -128,13 +201,15 @@ const CreatePost = () => {
                         </div>
                     </div>
 
-                    <div ref={communityMenuRef} id="create_post_community_dropdown_menu" className={`z-20 absolute  ${CommunityDropdownOpen ? '' : 'hidden'} bg-reddit_search divide-y divide-gray-100 rounded-b-sm  border-r-[1px] border-l-[1px] border-b-[1px] border-gray-500 shadow w-[248px] dark:bg-gray-700 dark:divide-gray-600`}>
+                    <div className="">
+                        {isCommunityOpenLocal && <CreateCommunity setIsCommunityOpen={setIsCommunityOpenLocal} communityCardRef={communityCardRef} />}
+                    </div>
 
-
+                    <div ref={communityMenuRef} id="create_post_community_dropdown_menu" className={`z-[15] absolute  ${CommunityDropdownOpen ? '' : 'hidden'} bg-reddit_search divide-y divide-gray-100 rounded-b-sm  border-r-[1px] border-l-[1px] border-b-[1px] border-gray-500 shadow w-[248px] dark:bg-gray-700 dark:divide-gray-600`}>
                         <ul className="pt-1 text-sm" aria-labelledby="dropdownInformationButton">
                             <li className='flex pt-2 border-b-[0.5px] mb-2  border-gray-400 flex-col w-full h-20'>
                                 <h1 className='text-gray-400 text-[9px]  mb-[4px]  ml-3.5 font-semibold'>YOUR PROFILE</h1>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
+                                <div onClick={() => { setCommName(`u/${user}`); setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
                                     <img className=' h-[38px] w-[38px]' src={redditLogo} alt="" />
                                     <h1 className='text-gray-200 text-[14px] ml-2 font-medium'>u/{user}</h1>
                                 </div>
@@ -142,90 +217,25 @@ const CreatePost = () => {
                         </ul>
 
                         <li className='flex h-fi border-0 flex-row pt-1 items-center mb-2'>
-                            <h1 className='text-gray-400 text-[9px] font-semibold ml-3  '>YOUR COMMUNITIES</h1>
-                            <div className='flex flex-row justify-center items-center rounded-2xl ml-15 w-18 cursor-pointer
+                            <h1 className='text-gray-400 text-[9px] font-semibold ml-3  '>{yourOrAllCommunities}</h1>
+                            <div onClick={(e) => { e.stopPropagation(); setIsCommunityOpenLocal(true); setCommunityDropdownOpen(false); }} className='flex flex-row justify-center items-center rounded-2xl ml-auto mr-3 w-18 cursor-pointer
                                  hover:bg-reddit_search_light '>
                                 <h1 className='text-gray-200 text-[10.5px] font-semibold '>Create New</h1>
                             </div>
                         </li>
 
                         <ul className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
+                            {joinedSubreddits.map((subreddit, index) => (
+                                <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
+                                    <div onClick={() => { setCommName(`r/${subreddit.name}`); setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                        <img className=' h-[34px] w-[34px]' src={subreddit.icon} alt="" />
+                                        <div className='flex flex-col space-y-1'>
+                                            <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{subreddit.name}</h1>
+                                            <h1 className='text-gray-400 text-[11px] ml-2 font-light'>{subreddit.members.toLocaleString()} members</h1>
+                                        </div>
                                     </div>
-
-                                </div>
-                            </li>
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
-
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
-
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
-
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
-
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
-
-
-                            <li className='flex border-gray-400 flex-col w-full h-13'>
-                                <div className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[34px] w-[34px]' src={redditLogo} alt="" />
-                                    <div className='flex flex-col space-y-1'>
-                                        <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{user}</h1>
-                                        <h1 className='text-gray-400 text-[11px] ml-2 font-light'>2,789,000 members</h1>
-                                    </div>
-
-                                </div>
-                            </li>
+                                </li>
+                            ))}
                         </ul>
 
                     </div>
@@ -274,7 +284,7 @@ const CreatePost = () => {
                         </div>
                         {type == 'post' && (
                             <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
-                                <Post />
+                                <Post setContent={setContent} />
                             </div>)}
 
                         {type == 'image' && (
@@ -284,7 +294,7 @@ const CreatePost = () => {
 
                         {type == 'link' && (
                             <div className='mb-3 h-[110px] w-full'>
-                                <textarea id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                <textarea onChange={(e)=>setContent(e.target.value)} id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='URL' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
                                 </textarea>
                             </div>
@@ -292,7 +302,7 @@ const CreatePost = () => {
 
                         {type == 'poll' && (<>
                             <div className='mb-2.5 h-[110px] w-full'>
-                                <textarea id='poll_content' onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                <textarea id='poll_content'  onChange={(e)=>setContent(e.target.value)} onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='Text(optional)' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
                                 </textarea>
                             </div>
@@ -301,7 +311,11 @@ const CreatePost = () => {
                                     {inputFields.map((field, index) => (
                                         <div key={field.id} className='mr-5'>
                                             <div className="input-field relative">
-                                                <input id={`input_option_${index + 1}`} maxLength={200} type="text" placeholder={`Option ${index + 1}`} className='h-[39px] w-full pr-9 ml-2.5 bg-transparent text-sm focus:outline-none focus:ring-0 focus:border-white' />
+                                                <input onChange={(e) => {
+                                                    const newInputFields = [...inputFields];
+                                                    newInputFields[index].value = e.target.value;
+                                                    setInputFields(newInputFields);
+                                                }} id={`input_option_${index + 1}`} maxLength={200} type="text" placeholder={`Option ${index + 1}`} className='h-[39px] w-full pr-9 ml-2.5 bg-transparent text-sm focus:outline-none focus:ring-0 focus:border-white' />
                                                 {index > 1 && (
                                                     <button id={`delete_option_${index + 1}`} className='w-6 h-6 absolute right-[0px]  top-1/2 transform -translate-y-1/2' onClick={() => removeInputField(field.id)}>
                                                         <TrashIcon className=' text-gray-400' />
@@ -385,7 +399,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className=' hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center cursor-pointer '>
+                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "poll" && !(checkInputFieldsNotEmpty())) ? "cursor-not-allowed" : " cursor-pointer"} `}>
                             <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
                         </div>
                     </div>

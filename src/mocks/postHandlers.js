@@ -1,10 +1,14 @@
 import { http, HttpResponse } from "msw"
 export const postHandlers = [
+
+
     http.post('/post', async (resolver) => {
-        const body = await resolver.request.json();
         return HttpResponse.json({
-            message: "User logged in successfully"
+            message: "User logged in successfully",
+            postId: "3432ff4t23524"
         });
     }),
+
+
 
 ]

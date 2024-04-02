@@ -8,7 +8,7 @@ const axiosInterceptor = axios.interceptors.response.use(async (response) => {
     if (error.response.status === 403 && !originalRequest._retry) {
         originalRequest._retry = true;
 
-        const refreshTokenResponse = await getRequest(`${baseUrl}/user/refreshToken`);
+        const refreshTokenResponse = await getRequest(`${baseUrl}/user/refresh-token`);
         if (refreshTokenResponse.status === 200) {
             const res = await axios(originalRequest);
             return res;

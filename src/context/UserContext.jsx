@@ -8,10 +8,9 @@ export const UserContextProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
-
     useEffect(() => {
         async function checkIfLoggedIn() {
-            const response = await getRequest(`${baseUrl}/user/refreshToken`);
+            const response = await getRequest(`${baseUrl}/user/refresh-token`);
             console.log("refresh token context ")
             console.log(response);
             if (response.status === 200) {
