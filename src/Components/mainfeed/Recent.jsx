@@ -55,7 +55,7 @@ const Recent = () => {
                     <RecentRow id='recent_posts_row7' /> */}
                 </div>
             </div>
-            <Usercard />
+            {/* <Usercard /> */}
 
         </>
     );

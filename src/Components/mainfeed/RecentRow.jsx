@@ -7,7 +7,7 @@ import Separator from '../sidebar/Nav-Icons/Separator';
 const RecentRow = ({ id, post }) => {
     // const [postType, setPostType] = useState(post.type);
     const [containsImage, setContainsImage] = useState(post.type === 'Images & Video' ? true : false);
-    const [isCommunity, setIscommunity] = useState(post.communityName === 'null' ? false : true);
+    const [isCommunity, setIscommunity] = useState(post.communityName === null ? false : true);
     const [title, setTitle] = useState(null);
     const navigate = useNavigate();
     const handleSubmitPost = () => {

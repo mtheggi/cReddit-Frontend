@@ -114,7 +114,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         <Mainfeed />
                     </div>
 
-
                     <div className='w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
                         <Recent />
                     </div>
