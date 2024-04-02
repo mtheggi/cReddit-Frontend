@@ -28,6 +28,15 @@ export const postRequest = async (url, body) => {
     }
 }
 
+export const postRequestImg = async (url, formData) => {
+    return axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  };
+
+  
 export const patchRequest = async (url, body) => {
     try {
         const response = await axios.patch(url, body, {

@@ -1,7 +1,7 @@
 import { Link, PhotoOutlined, Poll, PollOutlined, PostAddOutlined } from '@mui/icons-material';
 import { CheckIcon, ExclamationCircleIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import CreateCommunity from '../createCommunity/CreateCommunity';
-import { postRequest, getRequest } from "../../services/Requests";
+import { postRequest, getRequest,postRequestImg } from "../../services/Requests";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
@@ -20,9 +20,8 @@ const CreatePost = () => {
     const [charCount, setCharCount] = useState(0);
     const [isFocused, setIsFocused] = useState(false);
     const [joinedSubreddits, setJoinedSubreddits] = useState([]);
-
+    const [file, setFile] = useState(null);
     const [type, setType] = useState('post');
-    const [commName, setCommName] = useState("");
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
@@ -30,7 +29,6 @@ const CreatePost = () => {
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isNSFW, setIsNSFW] = useState(false);
     const [yourOrAllCommunities, setYourOrAllCommunities] = useState("YOUR COMMUNITIES");
-
     const communityMenuRef = useRef();
     const communityCardRef = useRef();
     const voteMenuRef = useRef();
@@ -73,7 +71,23 @@ const CreatePost = () => {
             communityName = commNameInputRef.current.value.substring(2);
 
 
-        const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, isSpoiler, isNSFW });
+        const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, isSpoiler:isSpoiler, isNSFW:isNSFW });
+        return response
+    }
+
+    const handleSubmitImg = async () => {
+
+        if (commNameInputRef.current.value.substring(2) != user)
+            communityName = commNameInputRef.current.value.substring(2);
+
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('type', type);
+            formData.append('communityName', communityName);
+            formData.append('title', title);
+            formData.append('isSpoiler', isSpoiler);
+            formData.append('isNSFW', isNSFW);
+        const response = await postRequestImg(`${baseUrl}/post`, formData);
         return response
     }
 
@@ -85,7 +99,7 @@ const CreatePost = () => {
         const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
         const pollOptions = nonEmptyInputFields.map(field => field.value).join(', ');
         const expirationDate = getExpirationDate(voteDurationValue);
-        const response = await postRequest(`${baseUrl}/post`, { type, communityName, title, content, pollOptions, expirationDate, isSpoiler, isNSFW });
+        const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, pollOptions:pollOptions, expirationDate:expirationDate, isSpoiler:isSpoiler, isNSFW:isNSFW });
         return response
     }
 
@@ -115,7 +129,12 @@ const CreatePost = () => {
                         res = await handleSubmitPoll();
                     }
                 }
-                else {
+                else if(type==="image") {
+                    if(file!=null)
+                    res = await handleSubmitImg();
+                }
+                else
+                {
                     res = await handleSubmitOtherTypes();
                 }
 
@@ -126,7 +145,7 @@ const CreatePost = () => {
                         navigate(`/r/${communityName}/comments/${res.data.postId}}`);
                 }
 
-                if (res.status != 200 && res.status != 201) {
+                if (res != null && res.status != 200 && res.status != 201) {
                     //Todo: either toast or 404 page for failure creating post -> server error 
                 }
             }
@@ -209,7 +228,7 @@ const CreatePost = () => {
                         <ul className="pt-1 text-sm" aria-labelledby="dropdownInformationButton">
                             <li className='flex pt-2 border-b-[0.5px] mb-2  border-gray-400 flex-col w-full h-20'>
                                 <h1 className='text-gray-400 text-[9px]  mb-[4px]  ml-3.5 font-semibold'>YOUR PROFILE</h1>
-                                <div onClick={() => { setCommName(`u/${user}`); setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
+                                <div onClick={() => {  setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
                                     <img className=' h-[38px] w-[38px]' src={redditLogo} alt="" />
                                     <h1 className='text-gray-200 text-[14px] ml-2 font-medium'>u/{user}</h1>
                                 </div>
@@ -227,7 +246,7 @@ const CreatePost = () => {
                         <ul className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
                             {joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
-                                    <div onClick={() => { setCommName(`r/${subreddit.name}`); setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                    <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[34px] w-[34px]' src={subreddit.icon} alt="" />
                                         <div className='flex flex-col space-y-1'>
                                             <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{subreddit.name}</h1>
@@ -289,7 +308,7 @@ const CreatePost = () => {
 
                         {type == 'image' && (
                             <div className='w-full h-[251px] mb-3 '>
-                                <DropImage />
+                                <DropImage id="post_drop_image" setFile={setFile} />
                             </div>)}
 
                         {type == 'link' && (
@@ -399,7 +418,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "poll" && !(checkInputFieldsNotEmpty())) ? "cursor-not-allowed" : " cursor-pointer"} `}>
+                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "poll" && !(checkInputFieldsNotEmpty())) || file==null ? "cursor-not-allowed" : " cursor-pointer"} `}>
                             <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
                         </div>
                     </div>
