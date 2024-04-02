@@ -1,3 +1,4 @@
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -30,11 +31,13 @@ function DropImage({ id, setFile }) {
       {!previewSrc && <p className="text-white font-plex text-sm font-bold w-full">
         Drag and Drop or Upload
       </p>}
-      {previewSrc && <div className="w-full px-2 py-2 h-full justify-center flex flex-row ">
+      {previewSrc && <div className="w-full px-2 py-2 h-full relative justify-center flex flex-row ">
         <div className="w-96 h-full py-1 flex flex-row justify-center bg-black rounded-md ">
           <img className="h-full" src={previewSrc} alt="preview" />
         </div>
-        <button onClick={removeImage}>Remove Image</button>
+        <div className="absolute hover:bg-reddit_search_light rounded-full w-9 h-9 flex flex-row justify-center items-center right-2 top-1" onClick={removeImage}>
+          <XMarkIcon className="w-7 text-gray-200 h-7"/>
+        </div>
       </div>}
     </div>
   );
