@@ -2,13 +2,17 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
-function DropImage({ id, setFile }) {
+function DropImage({ id, handleFileChange }) {
   const [previewSrc, setPreviewSrc] = useState(null);
 
   const onDrop = useCallback((acceptedFiles) => {
-    setFile(acceptedFiles);
+    handleFileChange({
+      target: {
+        files: acceptedFiles,
+      },
+    });
     setPreviewSrc(URL.createObjectURL(acceptedFiles[0]));
-  }, [setFile]);
+  }, [handleFileChange]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -17,7 +21,11 @@ function DropImage({ id, setFile }) {
   const removeImage = (event) => {
     event.stopPropagation();
     setPreviewSrc(null);
-    setFile(null);
+    handleFileChange({
+      target: {
+        files: [null],
+      },
+    });
   };
 
   return (

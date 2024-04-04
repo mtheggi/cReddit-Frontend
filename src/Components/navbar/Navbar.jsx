@@ -15,6 +15,8 @@ import EmailVerification from '../authentication/reset_components/EmailVerificat
 import { getRequest } from '../../services/Requests';
 import { baseUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 
 
@@ -46,12 +48,14 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         const response = await getRequest(`${baseUrl}/user/logout`);
         if (response.status == 200 || response.status == 201) {
             setIsLoggedIn(false);
             setIsOpenProfileMenu(false);
+            navigate('');
         }
     }
 
@@ -94,16 +98,21 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             document.removeEventListener('click', closeDropdown);
         };
     });
+    const location = useLocation();
+    const words = ['/submit', '/settings']; 
 
+    const urlContainsWord = words.some(word => location.pathname.includes(word));
 
     return (
         <div ref={navbarRef} className="flex z-20 fixed flex-col w-full no-select">
 
 
             <header className="flex w-full bg-reddit_navbar p-2 items-center">
-                <div className='ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex xl:hidden justify-center items-center'>
-                    <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
-                </div>
+                {!urlContainsWord && (
+                    <div className='ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex xl:hidden justify-center items-center'>
+                        <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
+                    </div>
+                )}
 
 
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">

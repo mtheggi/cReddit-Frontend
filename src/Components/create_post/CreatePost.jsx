@@ -73,7 +73,9 @@ const CreatePost = () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
             communityName = commNameInputRef.current.value.substring(2);
-
+        
+        if (type=="Link" && content.trim()=="")
+        return null
 
         const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, isSpoiler:isSpoiler, isNSFW:isNSFW });
         return response
@@ -151,7 +153,7 @@ const CreatePost = () => {
                 }
 
                 if (res != null && res.status != 200 && res.status != 201) {
-                    //Todo: either toast or 404 page for failure creating post -> server error 
+                //Todo: either toast or 404 page for failure creating post -> server error 
                 }
             }
         }
@@ -295,7 +297,7 @@ const CreatePost = () => {
                     </div>
 
                     <div className='w-full flex flex-col h-fit px-3 '>
-                        <div id='post_title' className={`mb-2.5 pl-2.5 border-[1px] ${isFocused ? ' border-white ' : ' border-gray-500'}   min-h-[39px] flex flex-row w-full mt-3 `} >
+                        <div id='post_title' className={`mb-2.5  border-[1px] ${isFocused ? ' border-white ' : ' border-gray-500'}   min-h-[39px] flex flex-row w-full mt-3 `} >
                             <textarea maxLength={300}
                                 onInput={handleInput}
                                 placeholder='Title'
@@ -314,9 +316,7 @@ const CreatePost = () => {
 
                         {type == 'Images & Video' && (
                             <div className='w-full h-[251px] mb-3 '>
-                                {/* <DropImage id="post_drop_image" setFile={setFile} /> */}
-                                <input type="file" onChange={handleFileChange} className='w-full h-full bg-white'
-                                 />
+                                <DropImage id="post_drop_image" handleFileChange={handleFileChange} />
                             </div>)}
 
                         {type == 'Link' && (
@@ -426,8 +426,8 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file==null && type=="Images & Video") ? "cursor-not-allowed" : " cursor-pointer"} `}>
-                            <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
+                        <div onClick={handleSubmitPost} id='submit_post' className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file==null && type=="Images & Video") || (type=="Link" && content.trim()=="") ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
+                            <p className=' ml-1 mr-0.5   text-sm'>Post</p>
                         </div>
                     </div>
                 </div>
