@@ -16,7 +16,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     const isAvailableUsername = async (username) => {
         if (validateInput(username)) {
-            const response = await getRequest(`${baseUrl}/user/is-available/${username}`);
+            const response = await getRequest(`${baseUrl}/user/is-username-available/${username}`);
             if (response.status !== 200 && response.status !== 201) {
                 setBackendUsernameError(response.data.message);
             }

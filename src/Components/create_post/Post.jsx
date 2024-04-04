@@ -20,8 +20,9 @@ class Post extends Component {
                 value.toString('markdown')
             );
         }
-        if (this.props.type === 'post') {
+        if (this.props.type === 'Post') {
             this.props.setContent(value.toString('markdown'));
+            
         }
     };
 

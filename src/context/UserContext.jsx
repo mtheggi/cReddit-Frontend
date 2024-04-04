@@ -23,6 +23,7 @@ export const UserContextProvider = ({ children }) => {
             const response = await getRequest(`${baseUrl}/user`);
             console.log("respibse from get User name ", response);
             if (response.status === 200) {
+                console.log(response.data.username);
                 setUser(response.data.username);
             } else {
                 setUser(null);

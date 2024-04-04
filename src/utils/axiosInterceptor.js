@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { baseUrl } from '../constants';
 import { getRequest } from '../services/Requests';
+
 const axiosInterceptor = axios.interceptors.response.use(async (response) => {
     return response;
 }, async (error) => {

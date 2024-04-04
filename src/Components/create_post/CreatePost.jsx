@@ -21,7 +21,7 @@ const CreatePost = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [joinedSubreddits, setJoinedSubreddits] = useState([]);
     const [file, setFile] = useState(null);
-    const [type, setType] = useState('post');
+    const [type, setType] = useState('Post');
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
@@ -35,7 +35,7 @@ const CreatePost = () => {
     const commNameInputRef = useRef();
     const navigate = useNavigate();
     let initialHeight = '38px';
-    let communityName = null;
+    let communityName = "";
 
     useEffect(() => {
         getJoinedSubreddits();
@@ -54,6 +54,10 @@ const CreatePost = () => {
             document.removeEventListener('click', handleClickOutside);
         };
     });
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    }
 
     const isCommunityJoined = (communityName) => {
         return joinedSubreddits.some(subreddit => subreddit.name === communityName);
@@ -81,7 +85,8 @@ const CreatePost = () => {
             communityName = commNameInputRef.current.value.substring(2);
 
             const formData = new FormData();
-            formData.append('file', file);
+            console.log(file);
+            formData.append('images', file);
             formData.append('type', type);
             formData.append('communityName', communityName);
             formData.append('title', title);
@@ -97,7 +102,7 @@ const CreatePost = () => {
             communityName = commNameInputRef.current.value.substring(2);
 
         const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
-        const pollOptions = nonEmptyInputFields.map(field => field.value).join(', ');
+        const pollOptions = nonEmptyInputFields.map(field => field.value);
         const expirationDate = getExpirationDate(voteDurationValue);
         const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, pollOptions:pollOptions, expirationDate:expirationDate, isSpoiler:isSpoiler, isNSFW:isNSFW });
         return response
@@ -124,12 +129,12 @@ const CreatePost = () => {
         if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2)==user ) {
             if (title.trim() !== "") {
                 let res = null;
-                if (type === "poll") {
+                if (type === "Poll") {
                     if (checkInputFieldsNotEmpty()) {
                         res = await handleSubmitPoll();
                     }
                 }
-                else if(type==="image") {
+                else if(type==="Images & Video") {
                     if(file!=null)
                     res = await handleSubmitImg();
                 }
@@ -139,7 +144,7 @@ const CreatePost = () => {
                 }
 
                 if (res != null && (res.status === 200 || res.status === 201)) {
-                    if (communityName == null)
+                    if (communityName == "")
                         navigate(`/u/${user}/comments/${res.data.postId}}`);
                     else
                         navigate(`/r/${communityName}/comments/${res.data.postId}}`);
@@ -264,25 +269,25 @@ const CreatePost = () => {
                 <div className='mt-2.5 bg-reddit_search w-full h-fit flex flex-col rounded-lg'>
                     <div className={`flex flex-row w-full h-[60px] min-h-[60px] text-gray-200  font-medium text-[11px] xs:text-[14px] `}>
 
-                        <div id='type_post' onClick={() => setType('post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${type == "post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_post' onClick={() => setType('Post')} className={`h-full w-1/4 flex  hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center rounded-tl-lg ${type == "Post" ? ' border-b-[2px] border-b-white bg-reddit_search_light' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <div className='-mt-1'>
                                 <PostAddOutlined />
                             </div>
                             <h1 className='ml-1' >Post</h1>
                         </div>
 
-                        <div id='type_image' onClick={() => setType('image')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "image" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_image' onClick={() => setType('Images & Video')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "Images & Video" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <PhotoOutlined />
                             <h1 className='ml-1' >Image</h1>
                         </div>
 
-                        <div id='type_link' onClick={() => setType('link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
+                        <div id='type_link' onClick={() => setType('Link')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer flex-row justify-center items-center ${type == "Link" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'} border-r-[0.5px] border-gray-500`}>
                             <Link />
                             <h1 className='ml-1'>Link</h1>
                         </div>
 
 
-                        <div id='type_poll' onClick={() => setType('poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${type == "poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
+                        <div id='type_poll' onClick={() => setType('Poll')} className={`h-full w-1/4 flex hover:bg-reddit_search_light cursor-pointer  flex-row justify-center items-center rounded-tr-lg ${type == "Poll" ? ' border-b-[2px] bg-reddit_search_light border-b-white' : ' border-b-[2px] border-gray-500'}`}>
                             <PollOutlined />
                             <h1 className='ml-1' >Poll</h1>
                         </div>
@@ -301,17 +306,20 @@ const CreatePost = () => {
                             </textarea>
                             <div className='text-gray-400 no-select mr-1 text-[9px] flex flex-row justify-center items-center w-14 h-10'>{charCount}/300</div>
                         </div>
-                        {type == 'post' && (
+                        {type == 'Post' && (
                             <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
-                                <Post setContent={setContent} />
+                                <Post setContent={setContent} type={type} />
+                            
                             </div>)}
 
-                        {type == 'image' && (
+                        {type == 'Images & Video' && (
                             <div className='w-full h-[251px] mb-3 '>
-                                <DropImage id="post_drop_image" setFile={setFile} />
+                                {/* <DropImage id="post_drop_image" setFile={setFile} /> */}
+                                <input type="file" onChange={handleFileChange} className='w-full h-full bg-white'
+                                 />
                             </div>)}
 
-                        {type == 'link' && (
+                        {type == 'Link' && (
                             <div className='mb-3 h-[110px] w-full'>
                                 <textarea onChange={(e)=>setContent(e.target.value)} id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='URL' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
@@ -319,7 +327,7 @@ const CreatePost = () => {
                             </div>
                         )}
 
-                        {type == 'poll' && (<>
+                        {type == 'Poll' && (<>
                             <div className='mb-2.5 h-[110px] w-full'>
                                 <textarea id='poll_content'  onChange={(e)=>setContent(e.target.value)} onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='Text(optional)' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
@@ -418,7 +426,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "poll" && !(checkInputFieldsNotEmpty())) || file==null ? "cursor-not-allowed" : " cursor-pointer"} `}>
+                        <div onClick={handleSubmitPost} id='submit_post' className={` hover:bg-gray-400 group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file==null && type=="Images & Video") ? "cursor-not-allowed" : " cursor-pointer"} `}>
                             <p className=' ml-1 mr-0.5 group-hover:text-white text-gray-600  text-sm'>Post</p>
                         </div>
                     </div>
