@@ -5,6 +5,7 @@ import { getRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
 import { baseUrl } from '@/constants';
 import { UserContext } from '@/context/UserContext';
+import Loading from '../Loading/Loading';
 
 const Recent = () => {
     const [recentPosts, setRecentPosts] = useState([]);
@@ -22,15 +23,15 @@ const Recent = () => {
     }, [])
 
     if (!isLoggedIn) {
-        return  (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+        return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
     }
 
     return (
 
-        recentPosts.length!==0?(
+        recentPosts.length !== 0 ? (
 
             <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'>
-               
+
                 <div className=' h-6 w-full mb-2 flex items-center px-3 flex-row'>
                     <p className=' text-xs text-gray-400 font-medium lette tracking-widest '>RECENT POSTS</p>
                     <p onClick={() => { setRecentPosts([]) }} id="recent_posts_clear" className=' text-sm text-blue-400 font-normal cursor-pointer hover:underline lette no-select ml-auto '>Clear</p>
@@ -45,21 +46,12 @@ const Recent = () => {
                         );
                     })}
 
-                    {/* <RecentRow id='recent_posts_row2' />
-                    <Separator />
-                    <RecentRow id='recent_posts_row3' />
-                    <Separator />
-                    <RecentRow id='recent_posts_row4' />
-                    <Separator />
-                    <RecentRow id='recent_posts_row5' />
-                    <Separator />
-                    <RecentRow id='recent_posts_row6' />
-                    <Separator />
-                    <RecentRow id='recent_posts_row7' /> */}
+
+
                 </div>
-            </div>) : 
-            ( <div className='hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
-        
+            </div>) :
+            (<div className='hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+
     );
 }
 

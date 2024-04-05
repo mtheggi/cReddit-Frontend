@@ -15,8 +15,8 @@ const NotFound = ({ isNotFound, setIsNotFound }) => {
         document.title = "404 Not Found";
         setIsNotFound(true);
         return () => {
-            setIsNotFound(false);
             document.title = originalTitle;
+            setIsNotFound(false);
         }
     })
 
