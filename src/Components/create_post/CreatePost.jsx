@@ -1,7 +1,7 @@
 import { Link, PhotoOutlined, Poll, PollOutlined, PostAddOutlined } from '@mui/icons-material';
 import { CheckIcon, ExclamationCircleIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 import CreateCommunity from '../createCommunity/CreateCommunity';
-import { postRequest, getRequest,postRequestImg } from "../../services/Requests";
+import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
@@ -73,11 +73,11 @@ const CreatePost = () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
             communityName = commNameInputRef.current.value.substring(2);
-        
-        if (type=="Link" && content.trim()=="")
-        return null
 
-        const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, isSpoiler:isSpoiler, isNSFW:isNSFW });
+        if (type == "Link" && content.trim() == "")
+            return null
+
+        const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW });
         return response
     }
 
@@ -86,14 +86,14 @@ const CreatePost = () => {
         if (commNameInputRef.current.value.substring(2) != user)
             communityName = commNameInputRef.current.value.substring(2);
 
-            const formData = new FormData();
-            console.log(file);
-            formData.append('images', file);
-            formData.append('type', type);
-            formData.append('communityName', communityName);
-            formData.append('title', title);
-            formData.append('isSpoiler', isSpoiler);
-            formData.append('isNSFW', isNSFW);
+        const formData = new FormData();
+        console.log(file);
+        formData.append('images', file);
+        formData.append('type', type);
+        formData.append('communityName', communityName);
+        formData.append('title', title);
+        formData.append('isSpoiler', isSpoiler);
+        formData.append('isNSFW', isNSFW);
         const response = await postRequestImg(`${baseUrl}/post`, formData);
         return response
     }
@@ -106,7 +106,7 @@ const CreatePost = () => {
         const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
         const pollOptions = nonEmptyInputFields.map(field => field.value);
         const expirationDate = getExpirationDate(voteDurationValue);
-        const response = await postRequest(`${baseUrl}/post`, { type:type, communityName:communityName, title:title, content:content, pollOptions:pollOptions, expirationDate:expirationDate, isSpoiler:isSpoiler, isNSFW:isNSFW });
+        const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, pollOptions: pollOptions, expirationDate: expirationDate, isSpoiler: isSpoiler, isNSFW: isNSFW });
         return response
     }
 
@@ -128,7 +128,7 @@ const CreatePost = () => {
 
     const handleSubmitPost = async () => {
         //Todo add a check that the communityName exists inside the returned array from database: 
-        if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2)==user ) {
+        if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2) == user) {
             if (title.trim() !== "") {
                 let res = null;
                 if (type === "Poll") {
@@ -136,12 +136,11 @@ const CreatePost = () => {
                         res = await handleSubmitPoll();
                     }
                 }
-                else if(type==="Images & Video") {
-                    if(file!=null)
-                    res = await handleSubmitImg();
+                else if (type === "Images & Video") {
+                    if (file != null)
+                        res = await handleSubmitImg();
                 }
-                else
-                {
+                else {
                     res = await handleSubmitOtherTypes();
                 }
 
@@ -153,7 +152,7 @@ const CreatePost = () => {
                 }
 
                 if (res != null && res.status != 200 && res.status != 201) {
-                //Todo: either toast or 404 page for failure creating post -> server error 
+                    //Todo: either toast or 404 page for failure creating post -> server error 
                 }
             }
         }
@@ -235,7 +234,7 @@ const CreatePost = () => {
                         <ul className="pt-1 text-sm" aria-labelledby="dropdownInformationButton">
                             <li className='flex pt-2 border-b-[0.5px] mb-2  border-gray-400 flex-col w-full h-20'>
                                 <h1 className='text-gray-400 text-[9px]  mb-[4px]  ml-3.5 font-semibold'>YOUR PROFILE</h1>
-                                <div onClick={() => {  setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
+                                <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
                                     <img className=' h-[38px] w-[38px]' src={redditLogo} alt="" />
                                     <h1 className='text-gray-200 text-[14px] ml-2 font-medium'>u/{user}</h1>
                                 </div>
@@ -254,7 +253,7 @@ const CreatePost = () => {
                             {joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                        <img className=' h-[34px] w-[34px]' src={subreddit.icon} alt="" />
+                                        <img className=' h-[34px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
                                         <div className='flex flex-col space-y-1'>
                                             <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{subreddit.name}</h1>
                                             <h1 className='text-gray-400 text-[11px] ml-2 font-light'>{subreddit.members.toLocaleString()} members</h1>
@@ -311,7 +310,7 @@ const CreatePost = () => {
                         {type == 'Post' && (
                             <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
                                 <Post setContent={setContent} type={type} />
-                            
+
                             </div>)}
 
                         {type == 'Images & Video' && (
@@ -321,7 +320,7 @@ const CreatePost = () => {
 
                         {type == 'Link' && (
                             <div className='mb-3 h-[110px] w-full'>
-                                <textarea onChange={(e)=>setContent(e.target.value)} id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                <textarea onChange={(e) => setContent(e.target.value)} id="url_content" onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='URL' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
                                 </textarea>
                             </div>
@@ -329,7 +328,7 @@ const CreatePost = () => {
 
                         {type == 'Poll' && (<>
                             <div className='mb-2.5 h-[110px] w-full'>
-                                <textarea id='poll_content'  onChange={(e)=>setContent(e.target.value)} onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
+                                <textarea id='poll_content' onChange={(e) => setContent(e.target.value)} onFocus={(e) => e.target.style.border = "1px solid #ffffff"}
                                     onBlur={(e) => e.target.style.border = "0.5px solid #9CA3AF"} placeholder='Text(optional)' className='w-full h-full text-gray-300 font-normal text-[14px]  rounded-sm focus:outline-none focus:ring-0 border-[0.5px] resize-none  px-2.5 border-gray-400 bg-reddit_search '>
                                 </textarea>
                             </div>
@@ -426,7 +425,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2)!=user ) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file==null && type=="Images & Video") || (type=="Link" && content.trim()=="") ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
+                        <div onClick={handleSubmitPost} id='submit_post' className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2) != user) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file == null && type == "Images & Video") || (type == "Link" && content.trim() == "") ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
                             <p className=' ml-1 mr-0.5   text-sm'>Post</p>
                         </div>
                     </div>

@@ -141,14 +141,14 @@ export const userHandlers = [
     }),
     http.get('/user/refresh-token', async (resolver) => {
 
-        return HttpResponse.json({
-            message: "Unauthorized"
-        }, { status: 400 });
-        // return HttpResponse.json(
-        //     {
-        //         message: "Token refreshed successfully"
-        //     }
-        // )
+        // return HttpResponse.json({
+        //     message: "Unauthorized"
+        // }, { status: 400 });
+        return HttpResponse.json(
+            {
+                message: "Token refreshed successfully"
+            }
+        )
     }),
     http.get('/user/verify/:verificationToken', async (resolver) => {
 
@@ -164,8 +164,8 @@ export const userHandlers = [
         return HttpResponse.json([
             {
                 name: "AskReddit",
-                icon: "drive.creddit.com/pfp1",
-                banner: "drive.creddit.com/banner1",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 100,
                 rules: [
                     "No spamming",
@@ -178,8 +178,8 @@ export const userHandlers = [
             },
             {
                 name: "worldnews",
-                icon: "drive.creddit.com/pfp2",
-                banner: "drive.creddit.com/banner2",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 200,
                 rules: [
                     "No spamming",
@@ -192,8 +192,8 @@ export const userHandlers = [
             },
             {
                 name: "funny",
-                icon: "drive.creddit.com/pfp3",
-                banner: "drive.creddit.com/banner3",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 300,
                 rules: [
                     "No spamming",
@@ -206,8 +206,8 @@ export const userHandlers = [
             },
             {
                 name: "pics",
-                icon: "drive.creddit.com/pfp4",
-                banner: "drive.creddit.com/banner4",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 400,
                 rules: [
                     "No spamming",
@@ -220,8 +220,8 @@ export const userHandlers = [
             },
             {
                 name: "science",
-                icon: "drive.creddit.com/pfp5",
-                banner: "drive.creddit.com/banner5",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 500,
                 rules: [
                     "No spamming",
@@ -233,9 +233,9 @@ export const userHandlers = [
                 ]
             },
             {
-                name: "science",
-                icon: "drive.creddit.com/pfp5",
-                banner: "drive.creddit.com/banner5",
+                name: "physics",
+                icon: "https://random.imagecdn.app/500/150",
+                banner: "https://random.imagecdn.app/500/150",
                 members: 500,
                 rules: [
                     "No spamming",

@@ -33,6 +33,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
     if (username && password && validateLoginUsername(username) && validateLoginPassword(password) && loginError == null) {
       const response = await postRequest(`${baseUrl}/user/login`, { username, password });
       if (response.status !== 200 && response.status !== 201) {
+        console.log(response);
         setLoginError(response.data.message);
         LoginFailedToast(response.data.message);
       }
