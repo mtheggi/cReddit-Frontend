@@ -21,9 +21,7 @@ export const UserContextProvider = ({ children }) => {
         }
         async function getUserName() {
             const response = await getRequest(`${baseUrl}/user`);
-            console.log("respibse from get User name ", response);
             if (response.status === 200) {
-                console.log(response.data.username);
                 setUser(response.data.username);
             } else {
                 setUser(null);
@@ -31,9 +29,19 @@ export const UserContextProvider = ({ children }) => {
         }
         checkIfLoggedIn();
         getUserName();
-
-
     }, [])
+
+    useEffect(() => {
+        async function getUserName() {
+            const response = await getRequest(`${baseUrl}/user`);
+            if (response.status === 200) {
+                setUser(response.data.username);
+            } else {
+                setUser(null);
+            }
+        }
+        getUserName();
+    }, [isLoggedIn])
 
     return <UserContext.Provider value={{
         user,
