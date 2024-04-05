@@ -1,22 +1,54 @@
 /*eslint-disable */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon, DocumentTextIcon, MicrophoneIcon, ChevronDownIcon, WrenchIcon, BookOpenIcon, ScaleIcon, NewspaperIcon, ChatBubbleOvalLeftIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
 import CommunityIcon from './Community-icon';
 import NavIcon from './Nav-Icons';
 import Separator from './Separator';
 import CreateCommunityIcon from './CreateCommunityIcon'
-
+import { getRequest } from '@/services/Requests';
+import { baseUrl } from '@/constants.js';
 import PropTypes from 'prop-types';
 
 const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar }) => {
 
-    const toSnakeCase = (str) => "sidebar_resources_"+str.toLowerCase().split(' ').join('_');
+    const toSnakeCase = (str) => "sidebar_resources_" + str.toLowerCase().split(' ').join('_');
     const [isDropped, setIsDropped] = useState(false);
     const [isResources] = useState(MenuHeader === "RESOURCES");
     const [isCommunity] = useState(MenuHeader === "COMMUNITIES");
     const [isRecent] = useState(MenuHeader === "RECENT");
+    const [joinedSubreddits, setJoinedSubreddits] = useState(null);
+    const [recentSubreddits, setRecentSubreddits] = useState(null);
 
+    const getJoinedSubreddits = async () => {
+        const response = await getRequest(`${baseUrl}/user/joined-communities`);
+        if (response.status == 200 || response.status == 201) {
+            const subredditData = response.data.map(subreddit => ({
+                name: subreddit.name,
+                icon: subreddit.icon
+            }));
+            setJoinedSubreddits(subredditData);
+        }
+    }
+    const getRecentsubreddits = async () => {
+        const response = await getRequest(`${baseUrl}/user/history`);
+        if (response.status == 200 || response.status == 201) {
+            const recentSubreddits = response.data.filter(post => (post?.communityName !== null)).map(post => {
+                return (
+                    {
+                        name: post.communityName,
+                        icon: post.profilePicture
+                    }
+                )
+            });
 
+            setRecentSubreddits(recentSubreddits);
+        }
+    }
+
+    useEffect(() => {
+        getRecentsubreddits();
+        getJoinedSubreddits();
+    }, [])
     return (
         <>
             <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg py-2 ">
@@ -31,6 +63,11 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
             </div >
             {isRecent && isDropped && <div>
 
+                {recentSubreddits && recentSubreddits.map((subreddit, index) => {
+                    return (
+                        <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} ><img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-6 w-6 rounded-lg' /> </NavIcon>
+                    );
+                })}
                 <NavIcon href="#" text="r/testIcoons" id="sidebar_recent_icon1" ><ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
             </div>
             }
@@ -38,7 +75,14 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
             {isCommunity && isDropped && <div>
                 <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
-                <CommunityIcon text={"r/testcomminty"} divId="sidebar_community_icon1" bookmarkId="sidebar_community_bookmark1" />
+
+                {joinedSubreddits && joinedSubreddits.map((subreddit, index) => {
+                    return (
+                        <CommunityIcon key={index} text={`r/${subreddit.name}`} divId={`sidebar_community_icon${index}`} bookmarkId={`sidebar_community_bookmark${index}`} />
+                    );
+                })}
+
+                {/* <CommunityIcon text={"r/testcomminty"} divId="sidebar_community_icon1" bookmarkId="sidebar_community_bookmark1" />
                 <CommunityIcon text={"r/samirsaiid"} divId="sidebar_community_icon2" bookmarkId="sidebar_community_bookmark2" />
                 <CommunityIcon text={"r/Pizzalovers"} divId="sidebar_community_icon3" bookmarkId="sidebar_community_bookmark3" />
                 <CommunityIcon text={"r/getsomeshit"} divId="sidebar_community_icon4" bookmarkId="sidebar_community_bookmark4" />
@@ -47,7 +91,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                 <CommunityIcon text={"r/itestCsdlkj"} divId="sidebar_community_icon7" bookmarkId="sidebar_community_bookmark7" />
                 <CommunityIcon text={"r/programmming"} divId="sidebar_community_icon8" bookmarkId="sidebar_community_bookmark8" />
                 <CommunityIcon text={"r/Pythooon"} divId="sidebar_community_icon9" bookmarkId="sidebar_community_bookmark9" />
-                <CommunityIcon text={"r/cppTESTT"} divId="sidebar_community_icon10" bookmarkId="sidebar_community_bookmark10" />
+                <CommunityIcon text={"r/cppTESTT"} divId="sidebar_community_icon10" bookmarkId="sidebar_community_bookmark10" /> */}
 
             </div>
             }

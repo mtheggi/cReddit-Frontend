@@ -164,8 +164,8 @@ export const userHandlers = [
         return HttpResponse.json([
             {
                 name: "AskReddit",
-                icon: "https://random.imagecdn.app/500/150",
-                banner: "https://random.imagecdn.app/500/150",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
                 members: 100,
                 rules: [
                     "No spamming",
@@ -178,8 +178,8 @@ export const userHandlers = [
             },
             {
                 name: "worldnews",
-                icon: "https://random.imagecdn.app/500/150",
-                banner: "https://random.imagecdn.app/500/150",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+                banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
                 members: 200,
                 rules: [
                     "No spamming",
@@ -192,7 +192,7 @@ export const userHandlers = [
             },
             {
                 name: "funny",
-                icon: "https://random.imagecdn.app/500/150",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
                 banner: "https://random.imagecdn.app/500/150",
                 members: 300,
                 rules: [
@@ -206,7 +206,7 @@ export const userHandlers = [
             },
             {
                 name: "pics",
-                icon: "https://random.imagecdn.app/500/150",
+                icon: "https://xsgames.co/randomusers/avatar.php?g=pixel",
                 banner: "https://random.imagecdn.app/500/150",
                 members: 400,
                 rules: [
