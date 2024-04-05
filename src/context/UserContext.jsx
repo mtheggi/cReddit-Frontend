@@ -19,21 +19,14 @@ export const UserContextProvider = ({ children }) => {
                 setIsLoggedIn(false);
             }
         }
-        async function getUserName() {
-            const response = await getRequest(`${baseUrl}/user`);
-            if (response.status === 200) {
-                setUser(response.data.username);
-            } else {
-                setUser(null);
-            }
-        }
         checkIfLoggedIn();
-        getUserName();
     }, [])
 
     useEffect(() => {
         async function getUserName() {
+            console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
+            console.log("response in context", response);
             if (response.status === 200) {
                 setUser(response.data.username);
             } else {
