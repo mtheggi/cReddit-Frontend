@@ -39,8 +39,8 @@ export const userHandlers = [
             displayName: "theUser",
             about: "I love pizza and coding",
             email: "malek@email.com",
-            profilePicture: "drive.creddit.com/pfp",
-            banner: "drive.creddit.com/pfp",
+            profilePicture: "https://xsgames.co/randomusers/avatar.php?g=pixel",
+            banner: "https://xsgames.co/randomusers/avatar.php?g=pixel",
             followers: 100,
             cakeDay: "2024-03-25T15:37:33.339+00:00"
 

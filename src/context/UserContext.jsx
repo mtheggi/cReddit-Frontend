@@ -20,15 +20,16 @@ export const UserContextProvider = ({ children }) => {
             } else {
                 setIsLoggedIn(false);
             }
-            setIsLoading(false);
+            // setIsLoading(false);
         }
 
         checkIfLoggedIn();
     }, [])
 
     useEffect(() => {
+        console.log("runned")
         async function getUserData() {
-            setIsLoading(true);
+            // setIsLoading(true);
 
             console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
