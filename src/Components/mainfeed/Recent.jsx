@@ -20,7 +20,7 @@ const Recent = () => {
             }
         }
         getRecentPosts();
-    }, [])
+    }, [isLoggedIn])
 
     if (!isLoggedIn) {
         return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)

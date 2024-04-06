@@ -51,9 +51,9 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
     }, [])
     return (
         <>
-            <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg py-2 ">
+            <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg  ">
 
-                <div onClick={(event) => { event.stopPropagation(); setIsDropped(!isDropped); }} className='flex justify-between h-10 rounded-xl items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
+                <div onClick={(event) => { event.stopPropagation(); setIsDropped(!isDropped); }} className='flex justify-between h-13 items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
                     <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
                     <span className='items-center'>
                         {isDropped ? <ChevronUpIcon className="h-5 w-5 mr-2  text-gray-300" /> : <ChevronDownIcon className="h-5 w-5 mr-2 text-gray-300" />}
@@ -65,10 +65,9 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
                 {recentSubreddits && recentSubreddits.map((subreddit, index) => {
                     return (
-                        <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} ><img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-6 w-6 rounded-lg' /> </NavIcon>
+                        <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} ><img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[32px] w-[34px] rounded-full' /> </NavIcon>
                     );
                 })}
-                <NavIcon href="#" text="r/testIcoons" id="sidebar_recent_icon1" ><ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
             </div>
             }
 
