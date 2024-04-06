@@ -23,8 +23,8 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
         const response = await getRequest(`${baseUrl}/user/joined-communities`);
         if (response.status == 200 || response.status == 201) {
             const subredditData = response.data.map(subreddit => ({
-                name: subreddit.name,
-                icon: subreddit.icon
+                name: subreddit.communityName,
+                icon: subreddit.profilePicture
             }));
             setJoinedSubreddits(subredditData);
         }
