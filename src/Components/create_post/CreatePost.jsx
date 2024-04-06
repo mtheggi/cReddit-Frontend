@@ -14,6 +14,7 @@ import { UserContext } from '@/context/UserContext';
 
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
+    const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
     const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
@@ -235,7 +236,7 @@ const CreatePost = () => {
                             <li className='flex pt-2 border-b-[0.5px] mb-2  border-gray-400 flex-col w-full h-20'>
                                 <h1 className='text-gray-400 text-[9px]  mb-[4px]  ml-3.5 font-semibold'>YOUR PROFILE</h1>
                                 <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `u/${user}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-2 pl-3 h-full w-full items-center flex'>
-                                    <img className=' h-[38px] w-[38px]' src={redditLogo} alt="" />
+                                    <img className=' h-[38px] rounded-full w-[38px]' src={userProfilePicture} alt="" />
                                     <h1 className='text-gray-200 text-[14px] ml-2 font-medium'>u/{user}</h1>
                                 </div>
                             </li>

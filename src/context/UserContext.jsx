@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userProfilePicture, setUserProfilePicture] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
@@ -15,6 +16,7 @@ export const UserContextProvider = ({ children }) => {
             console.log(response);
             if (response.status === 200) {
                 setIsLoggedIn(true);
+                
             } else {
                 setIsLoggedIn(false);
             }
@@ -23,24 +25,28 @@ export const UserContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        async function getUserName() {
+        async function getUserData() {
             console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
             console.log("response in context", response);
             if (response.status === 200) {
                 setUser(response.data.username);
+                setUserProfilePicture(response.data.profilePicture);
+              
             } else {
                 setUser(null);
             }
         }
-        getUserName();
+        getUserData();
     }, [isLoggedIn])
 
     return <UserContext.Provider value={{
         user,
         setUser,
         isLoggedIn,
-        setIsLoggedIn
+        setIsLoggedIn,
+        userProfilePicture,
+        setUserProfilePicture
     }}>
         {children}
     </UserContext.Provider>

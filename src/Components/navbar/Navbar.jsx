@@ -22,7 +22,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
-    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+    const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
+    const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
+    const {user, setUser} = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
     // const [isLoggedIn, setIsLoggedIn] = useState(() => {
@@ -247,23 +249,23 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { e.stopPropagation(); setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
-                                        <div className=' bg-reddit_sky w-8 h-8 rounded-full'>
-                                            <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
+                                        <div className='  w-8 h-8 rounded-full'>
+                                            <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
                                         </div>
                                     </div>
 
                                     {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-52 mt-104 h-88 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
 
-                                        <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 ml-2 pl-4 hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
+                                        <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
                                             <div className='flex flex-row w-full'>
 
-                                                <div className=' bg-reddit_sky w-9 h-9 rounded-full'>
-                                                    <img src={avatar} alt="Open profile menu" style={{ filter: '', transform: 'scaleX(-1)' }} className="block" />
+                                                <div className='  w-9 h-9 rounded-full'>
+                                                    <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
                                                 </div>
 
                                                 <div className='ml-2.5 text-sm '>
                                                     <p className='text-gray-200'>View Profile</p>
-                                                    <p className='text-xs -ml-1 text-gray-400'>u/MalekFickleElsaka</p>
+                                                    <p className='text-xs  text-gray-400'>u/{user}</p>
                                                 </div>
 
                                             </div>
