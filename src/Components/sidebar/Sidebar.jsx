@@ -14,11 +14,11 @@ const Sidebar = ({ setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSideb
                 <NavIcon href="popular" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon href="all" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <Separator />
-                <DropDownMenu MenuHeader="RECENT" id="sidebar_recent"  userHistoryRes={userHistoryRes}  />
+                <DropDownMenu MenuHeader="RECENT" id="sidebar_recent" code='dd_recents' userHistoryRes={userHistoryRes}  />
                 <Separator />
-                <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
+                <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" code='dd_communities' setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                 <Separator />
-                <DropDownMenu MenuHeader="RESOURCES" id="sidebar_resources" />
+                <DropDownMenu MenuHeader="RESOURCES" id="sidebar_resources" code='dd_resources' />
             </div>
     );
 }

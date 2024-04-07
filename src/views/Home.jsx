@@ -24,6 +24,10 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         async function getHistory() {
             const response = await getRequest(`${baseUrl}/user/history`);
             setUserHistoryRes(response);
+            if (response.status == 200 || response.status == 201)
+                localStorage.setItem('userHistory', JSON.stringify(response.data));
+            else
+                localStorage.setItem('userHistory',(null));
         }
         getHistory();
     }, [isLoggedIn])
@@ -35,9 +39,9 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 setIsVisibleLeftSidebar(false);
             }
             if (communiyCardRef.current && !communiyCardRef.current.contains(e.target)
-            && communityButtonRef.current && !communityButtonRef.current.contains(e.target)) {
-             setIsCommunityOpen(false);
-        }
+                && communityButtonRef.current && !communityButtonRef.current.contains(e.target)) {
+                setIsCommunityOpen(false);
+            }
         };
         document.addEventListener('click', handleClickOutside);
 
@@ -119,7 +123,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
                     </div>
                     <div className="">
-                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef}  />}
+                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
                     </div>
 
                     <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mr-2 ml-1 lg:ml-2 lg:mr-2 ' ref={mainfeedRef}>

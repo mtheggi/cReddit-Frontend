@@ -6,17 +6,20 @@ import { useEffect, useState, useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
 import Loading from '../Loading/Loading';
 
-const Recent = ({userHistoryRes}) => {
+const Recent = ({ userHistoryRes }) => {
     const [recentPosts, setRecentPosts] = useState([]);
     const { isLoggedIn } = useContext(UserContext);
-    
+
     useEffect(() => {
-        if (userHistoryRes!=null && (userHistoryRes.status === 200 || userHistoryRes.status === 201)) {
+        let response = localStorage.getItem('userHistory');
+        if (response != null) {
+            let recent = JSON.parse(response);
+            setRecentPosts(recent);
+        }else if(userHistoryRes!=null && (userHistoryRes.status==200||userHistoryRes.status==201))
+        {
             setRecentPosts(userHistoryRes.data);
-        } else {
-            setRecentPosts([]);
         }
-    }, [isLoggedIn, userHistoryRes])
+    }, [isLoggedIn, userHistoryRes]);
 
     if (!isLoggedIn) {
         return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
