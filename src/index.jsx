@@ -5,7 +5,7 @@ import App from './App.jsx'
 import { Client_ID, NODE_ENV } from './constants.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { UserContextProvider } from './context/UserContext.jsx'
-
+import { ServerContextProvider } from './context/ServerContext.jsx'
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
   return config;
@@ -25,9 +25,11 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
 
     <GoogleOAuthProvider clientId={Client_ID} >
-      <UserContextProvider>
+      <ServerContextProvider>
+        <UserContextProvider>
           <App />
-      </UserContextProvider>
+        </UserContextProvider>
+      </ServerContextProvider>
     </GoogleOAuthProvider >,
   )
 })
