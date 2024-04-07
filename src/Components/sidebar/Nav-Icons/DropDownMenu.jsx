@@ -61,7 +61,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                 </div>
 
             </div >
-            {isRecent && isDropped && <div>
+            {isRecent && isDropped && <div className='mb-1'>
 
                 {recentSubreddits && recentSubreddits.map((subreddit, index) => {
                     return (
@@ -72,12 +72,12 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
             }
 
 
-            {isCommunity && isDropped && <div>
+            {isCommunity && isDropped && <div className='mb-1 space-y-1.5'>
                 <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
 
                 {joinedSubreddits && joinedSubreddits.map((subreddit, index) => {
                     return (
-                        <CommunityIcon key={index} text={`r/${subreddit.name}`} divId={`sidebar_community_icon${index}`} bookmarkId={`sidebar_community_bookmark${index}`} />
+                        <CommunityIcon icon={subreddit.icon} key={index} text={`r/${subreddit.name}`} divId={`sidebar_community_icon${index}`} bookmarkId={`sidebar_community_bookmark${index}`} />
                     );
                 })}
 

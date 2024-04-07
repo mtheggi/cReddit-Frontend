@@ -8,7 +8,7 @@ const CreateCommunityIcon = ({ setIsCommunityOpen, communityButtonRef, setIsVisi
     return (
         <>
             <div ref={communityButtonRef}
-                className="h-10 w-full SideIcon-Container text-sm font-light items-center flex flex-row my-2 relative justify-start content-center rounded-lg px-4 py-2"
+                className="h-11 w-full SideIcon-Container text-sm font-light items-center flex flex-row mb-1.5 relative justify-start content-center rounded-lg pl-[16px] pr-4 py-2"
                 onClick={() => {setIsCommunityOpen(true); setIsVisibleLeftSidebar(false)} }
             >
                 <span className="items-center">
