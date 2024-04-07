@@ -49,7 +49,7 @@ const Recent = ({ userHistoryRes }) => {
                     {recentPosts.length !== 0 && recentPosts.map((post, index) => {
                         if (post.type === 'Poll') { return null; }
                         return (
-                            <RecentRow key={index} id={post.postId} post={post} />
+                            <RecentRow key={index} id={post._id} post={post} />
                         );
                     })}
 

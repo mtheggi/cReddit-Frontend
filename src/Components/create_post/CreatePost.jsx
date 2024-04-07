@@ -147,9 +147,9 @@ const CreatePost = () => {
 
                 if (res != null && (res.status === 200 || res.status === 201)) {
                     if (communityName == "")
-                        navigate(`/u/${user}/comments/${res.data.postId}}`);
+                        navigate(`/u/${user}/comments/${res.data.postId}`);
                     else
-                        navigate(`/r/${communityName}/comments/${res.data.postId}}`);
+                        navigate(`/r/${communityName}/comments/${res.data.postId}`);
                 }
 
                 if (res != null && res.status != 200 && res.status != 201) {

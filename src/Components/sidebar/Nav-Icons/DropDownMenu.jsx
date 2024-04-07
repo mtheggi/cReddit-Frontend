@@ -60,7 +60,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
         <>
             <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg  ">
 
-                <div onClick={(event) => { event.stopPropagation(); setIsDropped(!isDropped); }} className='flex justify-between h-13 items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
+                <div onClick={(event) => { setIsDropped(!isDropped); }} className='flex justify-between h-13 items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
                     <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
                     <span className='items-center'>
                         {isDropped ? <ChevronUpIcon className="h-5 w-5 mr-2  text-gray-300" /> : <ChevronDownIcon className="h-5 w-5 mr-2 text-gray-300" />}
@@ -78,7 +78,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
             }
 
 
-            {isCommunity && isDropped && <div className='mb-1 space-y-1.5'>
+            {isCommunity && isDropped && <div className='mb-1'>
                 <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
 
                 {joinedSubreddits && joinedSubreddits.map((subreddit, index) => {

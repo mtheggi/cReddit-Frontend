@@ -11,8 +11,8 @@ const RecentRow = ({ id, post }) => {
     const [title, setTitle] = useState(null);
     const navigate = useNavigate();
     const handleSubmitPost = () => {
-        if (post.communityName == null) { navigate(`/u/${post.username}/comments/${post.postId}`); }
-        else { navigate(`/r/${post.communityName}/comments/${post.postId}`); }
+        if (post.communityName == null) { navigate(`/u/${post.username}/comments/${id}`); }
+        else { navigate(`/r/${post.communityName}/comments/${id}`); }
     }
 
 
