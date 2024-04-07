@@ -3,18 +3,30 @@ import Navbar from '../Components/navbar/Navbar';
 import Sidebar from '../Components/sidebar/Sidebar';
 import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
+import { getRequest } from '@/services/Requests';
+import { baseUrl } from '@/constants';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
+import { UserContext } from '@/context/UserContext';
 import { useState, useEffect, useRef, useContext } from 'react';
-
 
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const [isCommunityOpen, setIsCommunityOpen] = useState(false);
+    const [userHistoryRes, setUserHistoryRes] = useState(null);
+    const { isLoggedIn } = useContext(UserContext);
     const sidebarRef = useRef();
     const recentRef = useRef();
     const mainfeedRef = useRef();
     const communiyCardRef = useRef();
     const communityButtonRef = useRef();
+
+    useEffect(() => {
+        async function getHistory() {
+            const response = await getRequest(`${baseUrl}/user/history`);
+            setUserHistoryRes(response);
+        }
+        getHistory();
+    }, [isLoggedIn])
 
     useEffect(() => {
         let handleClickOutside = (e) => {
@@ -110,12 +122,12 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef}  />}
                     </div>
 
-                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
+                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mr-2 ml-1 lg:ml-2 lg:mr-2 ' ref={mainfeedRef}>
                         <Mainfeed />
                     </div>
 
-                    <div className='w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
-                        <Recent />
+                    <div className='w-fit min-w-fit -mr-2 ml-2 h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
+                        <Recent userHistoryRes={userHistoryRes} />
                     </div>
 
                 </div>

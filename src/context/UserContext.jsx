@@ -13,8 +13,8 @@ export const UserContextProvider = ({ children }) => {
         async function checkIfLoggedIn() {
             setIsLoading(true);
             const response = await getRequest(`${baseUrl}/user/refresh-token`);
-            console.log("refresh token context ")
-            console.log(response);
+            // console.log("refresh token context ")
+            // console.log(response);
             if (response.status === 200) {
                 setIsLoggedIn(true);
             } else {
@@ -27,13 +27,13 @@ export const UserContextProvider = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        console.log("runned")
+        // console.log("runned")
         async function getUserData() {
             // setIsLoading(true);
 
-            console.log("islogged", isLoggedIn);
+            // console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
-            console.log("response in context", response);
+            // console.log("response in context", response);
             if (response.status === 200) {
                 setUser(response.data.username);
                 setUserProfilePicture(response.data.profilePicture);

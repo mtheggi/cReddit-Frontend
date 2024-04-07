@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import redditLogo from '../../assets/reddit_logo.png';
 import Separator from '../sidebar/Nav-Icons/Separator';
-// 58 pic, 64 
+// 50 pic, 70
 
 const RecentRow = ({ id, post }) => {
     // const [postType, setPostType] = useState(post.type);
@@ -18,16 +18,16 @@ const RecentRow = ({ id, post }) => {
 
     useEffect(() => {
         if (containsImage) {
-            if (post.title.length < 58) {
+            if (post.title.length < 50) {
                 setTitle(post.title);
             } else {
-                setTitle(post.title.slice(0, 58) + '...');
+                setTitle(post.title.slice(0, 50) + '...');
             }
         } else {
-            if (post.title.length < 64) {
+            if (post.title.length < 70) {
                 setTitle(post.title);
             } else {
-                setTitle(post.title.slice(0, 64) + '...');
+                setTitle(post.title.slice(0, 70) + '...');
             }
         }
     }, [])

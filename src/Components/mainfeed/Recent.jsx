@@ -1,36 +1,32 @@
 import Separator from '../sidebar/Nav-Icons/Separator';
 import RecentRow from './RecentRow';
 import Usercard from '../usercard/Usercard';
-import { getRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
-import { baseUrl } from '@/constants';
+
 import { UserContext } from '@/context/UserContext';
 import Loading from '../Loading/Loading';
 
-const Recent = () => {
+const Recent = ({userHistoryRes}) => {
     const [recentPosts, setRecentPosts] = useState([]);
     const { isLoggedIn } = useContext(UserContext);
+    
     useEffect(() => {
-        async function getRecentPosts() {
-            const response = await getRequest(`${baseUrl}/user/history`);
-            if (response.status === 200 || response.status === 201) {
-                setRecentPosts(response.data);
-            } else {
-                setRecentPosts([]);
-            }
+        if (userHistoryRes!=null && (userHistoryRes.status === 200 || userHistoryRes.status === 201)) {
+            setRecentPosts(userHistoryRes.data);
+        } else {
+            setRecentPosts([]);
         }
-        getRecentPosts();
-    }, [isLoggedIn])
+    }, [isLoggedIn, userHistoryRes])
 
     if (!isLoggedIn) {
-        return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+        return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
     }
 
     return (
 
         recentPosts.length !== 0 ? (
 
-            <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'>
+            <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'>
 
                 <div className=' h-6 w-full mb-2 flex items-center px-3 flex-row'>
                     <p className=' text-xs text-gray-400 font-medium lette tracking-widest '>RECENT POSTS</p>
@@ -50,7 +46,7 @@ const Recent = () => {
 
                 </div>
             </div>) :
-            (<div className='hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+            (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
 
     );
 }
