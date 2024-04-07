@@ -11,7 +11,7 @@ const NavIcon = ({ href, children, text, id }) => {
             <span className="items-center ">
                 {children}
             </span>
-            <span className={`text-gray-100 tracking-wider letter text-[13.5px] ml-3 `}>{text}</span>
+            <span className={`text-gray-100 tracking-wider letter ${isSidebarRecent ? 'text-[12.5px]' : 'text-[13.5px]'}  ml-3 `}>{text}</span>
         </Link>
     );
 }
