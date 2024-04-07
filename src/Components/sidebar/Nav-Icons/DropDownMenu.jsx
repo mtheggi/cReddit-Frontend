@@ -9,7 +9,7 @@ import { getRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants.js';
 import PropTypes from 'prop-types';
 
-const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar }) => {
+const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar, userHistoryRes }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_" + str.toLowerCase().split(' ').join('_');
     const [isDropped, setIsDropped] = useState(false);
@@ -29,10 +29,9 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
             setJoinedSubreddits(subredditData);
         }
     }
-    const getRecentsubreddits = async () => {
-        const response = await getRequest(`${baseUrl}/user/history`);
-        if (response.status == 200 || response.status == 201) {
-            const recentSubreddits = response.data.filter(post => (post?.communityName !== null)).map(post => {
+    const getRecentsubreddits = () => {
+        if (userHistoryRes!=null && (userHistoryRes.status === 200 || userHistoryRes.status === 201)) {
+            const recentSubreddits = userHistoryRes.data.filter(post => (post?.communityName !== null)).map(post => {
                 return (
                     {
                         name: post.communityName,
@@ -46,9 +45,12 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
     }
 
     useEffect(() => {
-        getRecentsubreddits();
         getJoinedSubreddits();
     }, [])
+ 
+    useEffect(() => {
+        getRecentsubreddits();
+    }, [userHistoryRes])
     return (
         <>
             <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg  ">
