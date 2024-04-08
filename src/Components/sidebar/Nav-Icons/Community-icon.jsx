@@ -36,14 +36,14 @@ function EmptyStart({ color, isBookmarked }) {
     );
 }
 
-const CommunityIcon = ({ text, divId, bookmarkId }) => {
+const CommunityIcon = ({ text, divId, bookmarkId, icon }) => {
 
     const [isBookmarked, setIsHisBookmarkedover] = useState(false)
     return (
-        <div id={divId} className="flex flex-row justify-between pl-3 pr-4 py-1.5 hover:bg-reddit_hover SideIcon-Container rounded-xl items-center cursor-pointer">
-            <div className="flex flex-row justify-start">
-                <img src="https://xsgames.co/randomusers/avatar.php?g=pixel" className="h-6 w-6 rounded-xl" alt="randomImgs" />
-                <span className="text-gray-300 text-sm font-light ml-3">{text}</span>
+        <div id={divId} className="flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
+            <div className="flex flex-row items-center justify-start">
+                <img src={icon} className="h-[30px] w-[32px] rounded-xl" alt="randomImgs" />
+                <span className="text-gray-200 text-[13px] tracking-wider letter font-normal ml-3">{text}</span>
             </div>
 
             <div onClick={() => setIsHisBookmarkedover((prev) => !prev)} id={bookmarkId} className="flex justify-center items-center w-8 h-8 rounded-full  hover:bg-reddit_search_light">

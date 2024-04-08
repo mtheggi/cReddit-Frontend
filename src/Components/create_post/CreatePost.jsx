@@ -147,9 +147,9 @@ const CreatePost = () => {
 
                 if (res != null && (res.status === 200 || res.status === 201)) {
                     if (communityName == "")
-                        navigate(`/u/${user}/comments/${res.data.postId}}`);
+                        navigate(`/u/${user}/comments/${res.data.postId}`);
                     else
-                        navigate(`/r/${communityName}/comments/${res.data.postId}}`);
+                        navigate(`/r/${communityName}/comments/${res.data.postId}`);
                 }
 
                 if (res != null && res.status != 200 && res.status != 201) {
@@ -254,7 +254,7 @@ const CreatePost = () => {
                             {joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
-                                        <img className=' h-[34px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
+                                        <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
                                         <div className='flex flex-col space-y-1'>
                                             <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{subreddit.name}</h1>
                                             <h1 className='text-gray-400 text-[11px] ml-2 font-light'>{subreddit.members.toLocaleString()} members</h1>

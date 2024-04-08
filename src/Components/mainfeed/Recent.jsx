@@ -3,26 +3,23 @@ import RecentRow from './RecentRow';
 import Usercard from '../usercard/Usercard';
 import { getRequest, deleteRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
-import { baseUrl } from '@/constants';
+
 import { UserContext } from '@/context/UserContext';
 import { ServerContext } from '@/context/ServerContext';
 import Loading from '../Loading/Loading';
 
-const Recent = () => {
+const Recent = ({ userHistoryRes }) => {
     const [recentPosts, setRecentPosts] = useState([]);
     const { isLoggedIn } = useContext(UserContext);
     const { setServerError } = useContext(ServerContext);
     useEffect(() => {
-        async function getRecentPosts() {
-            const response = await getRequest(`${baseUrl}/user/history`);
-            if (response.status === 200 || response.status === 201) {
-                setRecentPosts(response.data);
-            } else {
-                setRecentPosts([]);
-            }
+        let response = localStorage.getItem('userHistory');
+        if (response != null) {
+            let recent = JSON.parse(response);
+            setRecentPosts(recent);
         }
-        getRecentPosts();
-    }, [isLoggedIn])
+    }, [isLoggedIn, userHistoryRes]);
+
 
     async function handleClearRecentPosts() {
         const response = await deleteRequest(`${baseUrl}/user/clear-history`);
@@ -33,16 +30,14 @@ const Recent = () => {
             setServerError(true);
         }
     }
-
+    
     if (!isLoggedIn) {
-        return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+        return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
     }
-
     return (
+        recentPosts!=null && recentPosts.length !== 0 ? (
 
-        recentPosts.length !== 0 ? (
-
-            <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'>
+            <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'>
 
                 <div className=' h-6 w-full mb-2 flex items-center px-3 flex-row'>
                     <p className=' text-xs text-gray-400 font-medium lette tracking-widest '>RECENT POSTS</p>
@@ -54,7 +49,7 @@ const Recent = () => {
                     {recentPosts.length !== 0 && recentPosts.map((post, index) => {
                         if (post.type === 'Poll') { return null; }
                         return (
-                            <RecentRow key={index} id={post.postId} post={post} />
+                            <RecentRow key={index} id={post._id} post={post} />
                         );
                     })}
 
@@ -62,7 +57,7 @@ const Recent = () => {
 
                 </div>
             </div>) :
-            (<div className='hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 ml-3 mt-9 mr-auto'></div>)
+            (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
 
     );
 }

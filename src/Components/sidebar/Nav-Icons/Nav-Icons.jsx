@@ -6,12 +6,12 @@ const NavIcon = ({ href, children, text, id }) => {
   
     return (
         <Link id={id}
-            className={`w-full SideIcon-Container text-sm font-extralight  items-center flex flex-row my-1 relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10'}`}
+            className={`w-full SideIcon-Container text-sm font-extralight  items-center flex flex-row relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10 my-1'}`}
             to={href}>
             <span className="items-center ">
                 {children}
             </span>
-            <span className={`text-gray-100 tracking-wider letter text-[13.5px] ml-3 `}>{text}</span>
+            <span className={`text-gray-200 tracking-wider font-normal letter ${isSidebarRecent ? 'text-[12.5px]' : 'text-[13.5px]'}  ml-3 `}>{text}</span>
         </Link>
     );
 }
