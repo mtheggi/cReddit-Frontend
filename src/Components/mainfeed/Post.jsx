@@ -5,7 +5,7 @@ import Vote from './Vote';
 import redditLogo from '../../assets/reddit_logo.png';
 import postImg from '../../assets/post_img.png';
 import { useState, useEffect, useRef } from "react";
-import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, EyeIcon } from '@heroicons/react/24/outline';
 
 
 import moment from "moment";
@@ -152,7 +152,7 @@ const Post = ({
                 <div className="text-white mt-1.5 font-medium text-lg">
                     <h1>{title}</h1>
                 </div>
-                <div className="relative w-fit">
+                <div className="relative w-full">
                     <div onClick={(e) => { setBlured(false) }} className={`text-gray-400 mb-2 text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
                         <p>{content}</p>
                     </div>
@@ -167,7 +167,8 @@ const Post = ({
                         </div>
 
                     </div>}
-                    {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] hover:bg-black text-[13px] text-white  text-medium flex-row flex items-center justify-center  absolute ${type == "Images & Video" ? 'top-[46%]  ' : 'top-[30%]  '} left-[40%]   rounded-full bg-[#1B1A1A]`} >
+                    {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+                        <EyeIcon className='w-5 mr-1.5 h-5'/>
                         View
                     </div>}
                 </div>
