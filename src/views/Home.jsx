@@ -117,7 +117,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
             <div className="w-full mt-14 inline-flex flex-row justify-center overflow-hidden">
 
-                <div className={`relative  flex flex-row w-fit xl:ml-4 lg:mr-5 xl:mr-1% mxl:mr-4 h-full`}>
+                <div className={`relative flex flex-row w-fit xl:ml-2 lg:mr-5 xl:mr-2% mxl:mr-4 h-full`}>
 
                     <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 mt-2 w-68 min-w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
                         <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
@@ -126,11 +126,11 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
                     </div>
 
-                    <div className='mxl:w-192 mt-2  flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mr-2 ml-1 lg:ml-2 lg:mr-2 ' ref={mainfeedRef}>
+                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mr-2 ml-1 lg:ml-2 lg:mr-2 ' ref={mainfeedRef}>
                         <Mainfeed />
                     </div>
 
-                    <div className='w-fit min-w-fit -mr-2 ml-2 h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
+                    <div className='w-fit min-w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
                         <Recent userHistoryRes={userHistoryRes} />
                     </div>
 
