@@ -181,7 +181,7 @@ const Mainfeed = () => {
       <Post id="post5" /> */}
 
       {posts.map((post, i) => (
-        <Post id={`post${i}`} key={i} {...post} />
+        <Post id={post._id} key={i} {...post} />
       ))}
     </div>
   );
