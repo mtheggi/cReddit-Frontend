@@ -85,7 +85,6 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
 };
 
 const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
-  console.log(netVotes, isUpvoted, isDownvoted);
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
