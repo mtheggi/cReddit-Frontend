@@ -3,9 +3,10 @@ import RecentRow from './RecentRow';
 import Usercard from '../usercard/Usercard';
 import { getRequest, deleteRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
-
+import { baseUrl } from '@/constants';
 import { UserContext } from '@/context/UserContext';
 import { ServerContext } from '@/context/ServerContext';
+
 import Loading from '../Loading/Loading';
 
 const Recent = ({ userHistoryRes }) => {
@@ -22,9 +23,10 @@ const Recent = ({ userHistoryRes }) => {
 
 
     async function handleClearRecentPosts() {
-        const response = await deleteRequest(`${baseUrl}/user/clear-history`);
+        const response = await deleteRequest(`${baseUrl}/user/history`);
         if (response.status === 200 || response.status === 201) {
             setRecentPosts([]);
+            localStorage.removeItem('userHistory');
         } else {
             console.log("serverError is set");
             setServerError(true);
