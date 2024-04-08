@@ -5,7 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'node:18-alpine'
-                    args '-v /home/ubuntu/:/usr/src/app/:rw'
+                    args '-v /home/jenkins/:/usr/src/app/:rw'
                 }
             }
             stages{
@@ -31,10 +31,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sshagent(credentials: ['server-deploy']) {
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@creddit.tech uptime'
-                    sh 'scp -r /home/ubuntu/dist ubuntu@cReddit.tech:/home/ubuntu/vscode/creddit'
-                }
+                sh '/home/jenkins/deploy.sh'
                 // echo 'help'
             }
         }
