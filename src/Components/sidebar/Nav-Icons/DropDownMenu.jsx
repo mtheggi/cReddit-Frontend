@@ -70,6 +70,9 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
             </div >
             {isRecent && isDropped && <div className='mb-1 '>
                 {recentSubreddits && recentSubreddits.map((subreddit, index) => {
+                    if (!subreddit.name) {
+                        return null;
+                    }
                     return (
                         <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} ><img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' /> </NavIcon>
                     );

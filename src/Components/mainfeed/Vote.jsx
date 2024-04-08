@@ -89,7 +89,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote =  () => {
+  const handleUpvote =  async() => {
     let oldVoters = voters;
     let oldIsUpvote = isUpvote;
     let oldIsDownvote = isDownvote;
@@ -107,12 +107,12 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       setIsUpvote(true);
     }
 
-    // const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
-    // if (response.status!=200 && response.status!=201) {
-    //   setVoters(oldVoters);
-    //   setIsUpvote(oldIsUpvote);
-    //   setIsDownvote(oldIsDownvote);
-    // }
+    const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
+    if (response.status!=200 && response.status!=201) {
+      setVoters(oldVoters);
+      setIsUpvote(oldIsUpvote);
+      setIsDownvote(oldIsDownvote);
+    }
   };
 
 
@@ -134,12 +134,12 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       setIsDownvote(true);
     }
 
-    // const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
-    // if (response.status!=200 && response.status!=201) {
-    //   setVoters(oldVoters);
-    //   setIsUpvote(oldIsUpvote);
-    //   setIsDownvote(oldIsDownvote);
-    // }
+    const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
+    if (response.status!=200 && response.status!=201) {
+      setVoters(oldVoters);
+      setIsUpvote(oldIsUpvote);
+      setIsDownvote(oldIsDownvote);
+    }
   };
 
 

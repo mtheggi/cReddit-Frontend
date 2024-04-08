@@ -7,11 +7,11 @@ import Separator from '../sidebar/Nav-Icons/Separator';
 const RecentRow = ({ id, post }) => {
     // const [postType, setPostType] = useState(post.type);
     const [containsImage, setContainsImage] = useState(post.type === 'Images & Video' ? true : false);
-    const [isCommunity, setIscommunity] = useState(post.communityName === null ? false : true);
+    const [isCommunity, setIscommunity] = useState(!post.communityName ? false : true);
     const [title, setTitle] = useState(null);
     const navigate = useNavigate();
     const handleSubmitPost = () => {
-        if (post.communityName == null) { navigate(`/u/${post.username}/comments/${id}`); }
+        if (!post.communityName) { navigate(`/u/${post.username}/comments/${id}`); }
         else { navigate(`/r/${post.communityName}/comments/${id}`); }
     }
 
