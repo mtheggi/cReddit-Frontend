@@ -107,7 +107,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       setIsUpvote(true);
     }
 
-    const response = await patchRequest(`${baseUrl}/post/1/upvote`);
+    const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
     if (response.status!=200 && response.status!=201) {
       setVoters(oldVoters);
       setIsUpvote(oldIsUpvote);
