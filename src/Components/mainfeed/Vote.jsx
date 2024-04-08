@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { patchRequest } from '@/services/Requests';
+import { baseUrl } from '@/constants';
 
 const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
   return isUpvote ? (
@@ -15,11 +17,9 @@ const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
     </svg>
   ) : (
     <svg
-      className={`${
-        isHoverUpvote && !(isUpvote || isDownvote) ? "fill-reddit_upvote" : ""
-      } ${
-        !isUpvote ? (isDownvote ? "hover:fill-white" : "") : "hover:fill-white"
-      }`}
+      className={`${isHoverUpvote && !(isUpvote || isDownvote) ? "fill-reddit_upvote" : ""
+        } ${!isUpvote ? (isDownvote ? "hover:fill-white" : "") : "hover:fill-white"
+        }`}
       fill="#ffffff"
       width="19px"
       height="22px"
@@ -55,13 +55,11 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
     </svg>
   ) : (
     <svg
-      className={`${
-        isHoverDownvote && !(isUpvote || isDownvote)
-          ? "fill-reddit_downvote"
-          : ""
-      }  ${
-        !isDownvote ? (isUpvote ? "hover:fill-white" : "") : "hover:fill-white"
-      }`}
+      className={`${isHoverDownvote && !(isUpvote || isDownvote)
+        ? "fill-reddit_downvote"
+        : ""
+        }  ${!isDownvote ? (isUpvote ? "hover:fill-white" : "") : "hover:fill-white"
+        }`}
       fill="#ffffff"
       width="19px"
       height="22px"
@@ -91,7 +89,11 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote = () => {
+  const handleUpvote = async () => {
+    let oldVoters = voters;
+    let oldIsUpvote = isUpvote;
+    let oldIsDownvote = isDownvote;
+
     if (isUpvote) {
       setVoters(voters - 1);
       setIsUpvote(false);
@@ -104,9 +106,21 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       }
       setIsUpvote(true);
     }
+
+    const response = await patchRequest(`${baseUrl}/post/1/upvote`);
+    if (response.status!=200 && response.status!=201) {
+      setVoters(oldVoters);
+      setIsUpvote(oldIsUpvote);
+      setIsDownvote(oldIsDownvote);
+    }
   };
 
-  const handleDownvote = () => {
+
+  const handleDownvote = async () => {
+    let oldVoters = voters;
+    let oldIsUpvote = isUpvote;
+    let oldIsDownvote = isDownvote;
+
     if (isDownvote) {
       setVoters(voters + 1);
       setIsDownvote(false);
@@ -119,26 +133,31 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       }
       setIsDownvote(true);
     }
+
+    const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
+    if (response.status!=200 && response.status!=201) {
+      setVoters(oldVoters);
+      setIsUpvote(oldIsUpvote);
+      setIsDownvote(oldIsDownvote);
+    }
   };
 
   return (
     <div
-      className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${
-        isDownvote
-          ? "bg-reddit_downvote"
-          : isUpvote
+      className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${isDownvote
+        ? "bg-reddit_downvote"
+        : isUpvote
           ? "bg-reddit_upvote"
           : "bg-reddit_search"
-      }  rounded-3xl`}
+        }  rounded-3xl`}
     >
       <span
         id={"mainfeed_" + id + "_upvote"}
         onMouseEnter={() => setIsHoverUpvote(true)}
         onMouseLeave={() => setIsHoverUpvote(false)}
         role="button"
-        className={`hover:bg-reddit_search_light ${
-          isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
-        } rounded-full w-7 h-8 flex justify-center items-center`}
+        className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
+          } rounded-full w-7 h-8 flex justify-center items-center`}
         onClick={handleUpvote}
       >
         <UpVote
@@ -153,9 +172,8 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
         onMouseEnter={() => setIsHoverDownvote(true)}
         onMouseLeave={() => setIsHoverDownvote(false)}
         role="button"
-        className={`hover:bg-reddit_search_light ${
-          isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
-        } w-7 h-8 rounded-full flex justify-center items-center`}
+        className={`hover:bg-reddit_search_light ${isUpvote || isDownvote ? "hover:bg-opacity-30" : ""
+          } w-7 h-8 rounded-full flex justify-center items-center`}
         onClick={handleDownvote}
       >
         <DownVote
