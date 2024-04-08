@@ -25,7 +25,7 @@ const Post = ({
     type,
     profilePicture,
     isNSFW,
-    isSpoiler
+    isSpoiler,
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -50,8 +50,6 @@ const Post = ({
             }
         };
 
-
-
         if (scrollingElement) {
             scrollingElement.addEventListener("scroll", handleScroll);
         }
@@ -68,9 +66,8 @@ const Post = ({
     return (
         <div
             id={"mainfeed_" + id + "_full"}
-            href="L"
             className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${isOpenDots ? "bg-reddit_hover" : ""
-                } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full cursor-pointer h-fit`}
+                } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
         >
             <div className="flex flex-row items-center w-full h-6 ">
                 <a
@@ -150,28 +147,67 @@ const Post = ({
                     </div>}
 
                 </div>}
-                <div className="text-white mt-1.5 font-medium text-lg">
+                <div id={"mainfeed_" + id + "_title"} className="text-white mt-1.5 font-medium text-lg">
                     <h1>{title}</h1>
                 </div>
-                <div className="relative w-full">
-                    <div onClick={(e) => { setBlured(false) }} className={`text-gray-400 mb-2 text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
+                <div className="relative w-full h-full">
+                    <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400 mb-[13px] text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
                         <p>{content}</p>
                     </div>
-                    {type == "Images & Video" && <div
-                        id={"mainfeed_" + id + "_img"}
-                        href="img"
-                        className="w-full h-full mt-2"
-                    >
-                        <div className={`relative ${Blured ? 'filter blur-[10px]' : ''}`}>
-                            <img src={postImg} alt="Post" className={`rounded-2xl`} />
-                            {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
-                        </div>
 
-                    </div>}
-                    {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-                        <EyeIcon className='w-5 mr-1.5 h-5'/>
-                        View
-                    </div>}
+                    <div className='w-full h-full'>
+                        {
+                            type == "Images & Video" &&
+                            <div
+                                id={"mainfeed_" + id + "_" + type}
+                                className="w-full h-full mt-2">
+                                <div className={`relative ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                    <img src={postImg} alt="Post" className={`rounded-2xl`} />
+                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
+                                </div>
+
+                            </div>
+                        }
+
+                        {
+                            type == "Poll" &&
+                            <div
+                                id={"mainfeed_" + id + "_" + type}
+                                className="w-full h-full mt-2">
+                                <div className={`relative h-fit w-full ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                    <div className='w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col'>
+                                        <div className='w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row '>
+                                            <h1 className='mr-1 text-gray-300 font-light'>Open .</h1>
+                                            <h1 className='text-gray-300 font-light'>1K total votes</h1>
+                                        </div>
+                                        <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-18 text-[11px] px-2 space-y-3 mt-3'>
+                                            <div className='flex items-center flex-row w-full'>
+                                                <input type="radio" name="" id="" />
+                                                <label className='text-gray-200 text-[14px] font-light ml-2'>Football</label>
+                                            </div>
+                                            <div className='flex items-center flex-row w-full'>
+                                                <input type="radio" name="" id="" />
+                                                <label className='text-gray-200 text-[14px] font-light ml-2'>Basketball</label>
+                                            </div>
+                                        </div>
+
+                                        <div className='flex flex-row w-full items-center'>
+                                            <div className='flex items-center justify-center w-12 h-8 bg-black hover:bg-white rounded-full text-[13px] text-white'>
+                                                <h1>Vote</h1>
+                                            </div>
+                                            <h1 className='text-[11px] ml-2.5 font-light text-gray-300'>Closes in 7 days</h1>
+                                        </div>
+                                    </div>
+                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
+                                </div>
+
+                            </div>
+                        }
+                        {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+                            <EyeIcon className='w-5 mr-1.5 h-5' />
+                            View
+                        </div>}
+                    </div>
                 </div>
             </div>
 

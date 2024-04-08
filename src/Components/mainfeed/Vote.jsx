@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { patchRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants';
 
@@ -89,7 +89,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote = async () => {
+  const handleUpvote =  () => {
     let oldVoters = voters;
     let oldIsUpvote = isUpvote;
     let oldIsDownvote = isDownvote;
@@ -107,12 +107,12 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       setIsUpvote(true);
     }
 
-    const response = await patchRequest(`${baseUrl}/post/1/upvote`);
-    if (response.status!=200 && response.status!=201) {
-      setVoters(oldVoters);
-      setIsUpvote(oldIsUpvote);
-      setIsDownvote(oldIsDownvote);
-    }
+    // const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
+    // if (response.status!=200 && response.status!=201) {
+    //   setVoters(oldVoters);
+    //   setIsUpvote(oldIsUpvote);
+    //   setIsDownvote(oldIsDownvote);
+    // }
   };
 
 
@@ -134,13 +134,14 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
       setIsDownvote(true);
     }
 
-    const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
-    if (response.status!=200 && response.status!=201) {
-      setVoters(oldVoters);
-      setIsUpvote(oldIsUpvote);
-      setIsDownvote(oldIsDownvote);
-    }
+    // const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
+    // if (response.status!=200 && response.status!=201) {
+    //   setVoters(oldVoters);
+    //   setIsUpvote(oldIsUpvote);
+    //   setIsDownvote(oldIsDownvote);
+    // }
   };
+
 
   return (
     <div
@@ -164,7 +165,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
           isUpvote={isUpvote}
           isDownvote={isDownvote}
           isHoverUpvote={isHoverUpvote}
-        />{" "}
+        />
       </span>
       <span className="text-gray-300 text-sm">{voters}</span>
       <span
