@@ -51,7 +51,6 @@ const Post = ({
         }
     }
 
-
     useEffect(() => {
         let closeDropdown = (e) => {
             if (menuRefDots.current && !menuRefDots.current.contains(e.target)) {
@@ -98,7 +97,6 @@ const Post = ({
     };
     const getVoteWidth = (votes) => {
         let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
-        console.log(voteWidth);
         return voteWidth;
     };
 
@@ -119,7 +117,6 @@ const Post = ({
         });
 
         setEditedPollOptions(newPollOptions);
-        console.log(newPollOptions);
         setIsOptionSelected(true);
     };
 
@@ -140,13 +137,9 @@ const Post = ({
         }
     };
 
-
-
     const joinBtnStyle = {
         backgroundColor: hoverJoin ? '#196FF4' : '#0045AC',
     };
-
-
 
     return (
         <div
@@ -303,8 +296,6 @@ const Post = ({
                                                         </div>
                                                     )
                                                 }
-
-                                                {/* <span>{option.votes}</span> */}
                                             </div>
 
                                         ))}
