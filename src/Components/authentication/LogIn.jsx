@@ -92,7 +92,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         <div className="flex flex-col">
 
           <div className="flex flex-row justify-between">
-            <h1 className="text-2xl h-7 text-white font-bold mb-2 text-neutral">
+            <h1 className="text-2xl h-7 text-white font-bold mb-2">
               Log In
             </h1>
             <div className="flex ">
