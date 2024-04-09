@@ -2,7 +2,6 @@
 import { describe, it, expect } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import Usercard from '../src/Components/usercard/Usercard.jsx'; // Assuming the React component is in a file named Usercard.js
-import React from 'react';
 import '@testing-library/jest-dom/vitest';
 
 describe('Usercard Component', () => {
