@@ -23,7 +23,7 @@ const Recent = ({ userHistoryRes }) => {
 
 
     async function handleClearRecentPosts() {
-        const response = await deleteRequest(`${baseUrl}/user/history`);
+        const response = await deleteRequest(`${baseUrl}/user/clear-history`);
         if (response.status === 200 || response.status === 201) {
             setRecentPosts([]);
             localStorage.removeItem('userHistory');
@@ -32,12 +32,12 @@ const Recent = ({ userHistoryRes }) => {
             setServerError(true);
         }
     }
-    
+
     if (!isLoggedIn) {
         return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
     }
     return (
-        recentPosts!=null && recentPosts.length !== 0 ? (
+        recentPosts != null && recentPosts.length !== 0 ? (
 
             <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'>
 
