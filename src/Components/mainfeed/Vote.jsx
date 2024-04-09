@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { patchRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants';
 
@@ -89,7 +89,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote = async () => {
+  const handleUpvote =  async() => {
     let oldVoters = voters;
     let oldIsUpvote = isUpvote;
     let oldIsDownvote = isDownvote;
@@ -142,6 +142,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     }
   };
 
+
   return (
     <div
       className={`flex flex-row justify-evenly items-center min-w-22 px-1 h-8  ${isDownvote
@@ -164,7 +165,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
           isUpvote={isUpvote}
           isDownvote={isDownvote}
           isHoverUpvote={isHoverUpvote}
-        />{" "}
+        />
       </span>
       <span className="text-gray-300 text-sm">{voters}</span>
       <span

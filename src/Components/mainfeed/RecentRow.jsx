@@ -7,11 +7,11 @@ import Separator from '../sidebar/Nav-Icons/Separator';
 const RecentRow = ({ id, post }) => {
     // const [postType, setPostType] = useState(post.type);
     const [containsImage, setContainsImage] = useState(post.type === 'Images & Video' ? true : false);
-    const [isCommunity, setIscommunity] = useState(post.communityName === null ? false : true);
+    const [isCommunity, setIscommunity] = useState(!post.communityName ? false : true);
     const [title, setTitle] = useState(null);
     const navigate = useNavigate();
     const handleSubmitPost = () => {
-        if (post.communityName == null) { navigate(`/u/${post.username}/comments/${id}`); }
+        if (!post.communityName) { navigate(`/u/${post.username}/comments/${id}`); }
         else { navigate(`/r/${post.communityName}/comments/${id}`); }
     }
 
@@ -52,11 +52,9 @@ const RecentRow = ({ id, post }) => {
 
                 </div>
 
-                {/* Todo: (already done, DONT DELETE) when the img div doesnt exist, then this div will dissapear, and text take all place */}
                 {
                     containsImage && <div id={id + "_post_img"} onClick={handleSubmitPost} className='min-w-21 w-21 h-full no-select cursor-pointer'>
                         <img src={post.content} alt="" className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} />
-
                     </div>
                 }
             </div >

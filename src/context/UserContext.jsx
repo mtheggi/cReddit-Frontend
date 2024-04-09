@@ -33,8 +33,7 @@ export const UserContextProvider = ({ children }) => {
 
             // console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
-            // console.log("response in context", response);
-            if (response.status === 200) {
+            if (response && response.status === 200) {
                 setUser(response.data.username);
                 setUserProfilePicture(response.data.profilePicture);
 
