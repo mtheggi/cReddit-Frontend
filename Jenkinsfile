@@ -2,6 +2,13 @@ pipeline {
     agent none
     stages {
         stage('Build & test') {
+            when {
+                anyOf {
+                    changeRequest target: 'main'
+                    branch 'main'
+                }
+                beforeAgent true
+            }
             agent {
                 docker {
                     image 'node:18-alpine'
