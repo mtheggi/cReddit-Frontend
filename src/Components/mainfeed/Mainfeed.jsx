@@ -19,7 +19,8 @@ const Mainfeed = () => {
 
   useEffect(() => {
     const getHomeFeed = async () => {
-      const response = await getRequest(`${baseUrl}/post/home-feed`);
+      const response = await getRequest(`${baseUrl}/post/home-feed/?page=1&limit=100&sort=best`);
+      console.log("fetchedPosts", response.data);
       if (response.status == 200 || response.status == 201) {
         setPosts(response.data);
       }

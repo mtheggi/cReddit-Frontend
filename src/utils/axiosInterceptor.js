@@ -17,6 +17,7 @@ const axiosInterceptor = axios.interceptors.response.use(async (response) => {
             return Promise.reject(refreshTokenResponse.data)
         }
     }
+
     return Promise.reject(error);
 });
 
