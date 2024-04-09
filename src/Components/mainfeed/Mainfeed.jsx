@@ -170,7 +170,7 @@ const Mainfeed = () => {
           )}
         </div>
       </div>
-      <div className=" h-1 flex w-full">
+      <div className=" h-1 px-2.5 flex w-full">
         <Separator />
       </div>
 
