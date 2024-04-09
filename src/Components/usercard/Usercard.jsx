@@ -33,11 +33,11 @@ const Usercard = () => {
                 <div className="relative ml-auto">
 
                     <div className='h-8 w-8 ml-auto text-white rounded-full flex justify-center items-center bg-reddit_search hover:bg-reddit_search_light hover:cursor-pointer'>
-                        <EllipsisHorizontalIcon onClick={() => setIsOpenDots((prev) => !prev)} className='h-6 w-6 outline-none' />
+                        <EllipsisHorizontalIcon onClick={() => setIsOpenDots((prev) => !prev)} id="user-profile-menu" data-testid="user-profile-menu" className='h-6 w-6 outline-none' />
                     </div>
                     {isOpenDots &&
                         (
-                            <div className='z-4 w-49 h-47 bg-reddit_lightGreen absolute -ml-43 mt-1    text-white text-sm py-2 rounded-xl font-extralight flex flex-col '>
+                            <div data-testid="user-profile-menu-dropped" className='z-4 w-49 h-47 bg-reddit_lightGreen absolute -ml-43 mt-1    text-white text-sm py-2 rounded-xl font-extralight flex flex-col '>
 
                                 <div className='w-full px-4 py-2 hover:bg-reddit_hover h-12 flex justify-start items-center cursor-pointer'>
                                     <ShareIcon className='h-5 w-5 text-white ' />
@@ -66,9 +66,9 @@ const Usercard = () => {
 
             </div>
             <div className="flex flex-row justify-start text-white">
-                <button id="follow-btn-usercard" onClick={() => { setIsFollow((prev) => !prev) }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 ${isFollow ? `bg-reddit_blue hover:bg-reddit_light_blue` : `bg-black border-1 border-white`}`}>
+                <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={() => { setIsFollow((prev) => !prev) }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 ${isFollow ? `bg-reddit_blue hover:bg-reddit_light_blue` : `bg-black border-1 border-white`}`}>
                     {isFollow ? <FollowIcon /> : <UnfollowIcon />}
-                    <p className="ml-2 font-bold">{isFollow ? "Follow" : "Unfollow "}</p>
+                    <p className="ml-2 font-bold" data-testid="follow-btn-text" >{isFollow ? "Follow" : "Unfollow "}</p>
                 </button>
                 <button id="chat-btn-usercard" className="flex flex-row bg-reddit_search hover:bg-reddit_search_light px-3 py-2 h-8 justify-start rounded-full text-sm items-center">
                     <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 text-gray-300" />

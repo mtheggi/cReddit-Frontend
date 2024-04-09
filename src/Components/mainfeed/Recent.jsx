@@ -3,9 +3,10 @@ import RecentRow from './RecentRow';
 import Usercard from '../usercard/Usercard';
 import { getRequest, deleteRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
-
+import { baseUrl } from '@/constants';
 import { UserContext } from '@/context/UserContext';
 import { ServerContext } from '@/context/ServerContext';
+
 import Loading from '../Loading/Loading';
 
 const Recent = ({ userHistoryRes }) => {
@@ -25,17 +26,18 @@ const Recent = ({ userHistoryRes }) => {
         const response = await deleteRequest(`${baseUrl}/user/clear-history`);
         if (response.status === 200 || response.status === 201) {
             setRecentPosts([]);
+            localStorage.removeItem('userHistory');
         } else {
             console.log("serverError is set");
             setServerError(true);
         }
     }
-    
+
     if (!isLoggedIn) {
         return (<div className='  hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'></div>)
     }
     return (
-        recentPosts!=null && recentPosts.length !== 0 ? (
+        recentPosts != null && recentPosts.length !== 0 ? (
 
             <div className=' bg-reddit_darkRecent hidden lg:flex flex-col h-fit pt-3 pb-1 mb-10 rounded-2xl w-88 xl:w-82 xl:min-w-82 mt-9 mr-auto'>
 
