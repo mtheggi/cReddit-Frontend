@@ -209,7 +209,7 @@ const Post = ({
                                     <BookmarkIcon className="h-4.5 w-5 text-white " />
                                     <p className="ml-2 no-select">Save</p>
                                 </div>
-                                <div
+                                <div onClick={handleHidePost}
                                     id={"mainfeed_" + id + "_menu_hide"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                                 >
