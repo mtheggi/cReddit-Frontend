@@ -144,17 +144,19 @@ const Post = ({
         backgroundColor: hoverJoin ? '#196FF4' : '#0045AC',
     };
 
-
     const handleHidePost = async () => {
-        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: !isHidden });
+        setCurrentIsHidden(prev=>!prev);
+        setIsOpenDots(false);
+        console.log(currentIsHidden);
+        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: !currentIsHidden });
         if (response.status == 200 || response.status == 201) {
-            setCurrentIsHidden(!currentIsHidden);
             setIsHiddenMsg(response.data.message);
-            setIsOpenDots(false);
         }
         else {
             console.log("post couldn't be hidden");
             setIsHiddenMsg(response.data.message);
+            setCurrentIsHidden(prev=>!prev);
+            console.log(currentIsHidden);
         }
     }
     return (
