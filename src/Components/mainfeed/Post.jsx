@@ -2,11 +2,10 @@
 import Share from './Share';
 import Comment from './Comment';
 import Vote from './Vote';
-import redditLogo from '../../assets/reddit_logo.png';
-import postImg from '../../assets/post_img.png';
 import { useState, useEffect, useRef } from "react";
-import { getRequest } from '@/services/Requests';
-import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, EyeIcon } from '@heroicons/react/24/outline';
+import { getRequest, patchRequest } from '@/services/Requests';
+import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { baseUrl } from "../../constants";
 
 
 import moment from "moment";
@@ -27,14 +26,21 @@ const Post = ({
     isNSFW,
     isSpoiler,
     isJoined,
-    pollOptions
+    pollOptions,
+    expirationDate
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
     const [hoverJoin, setHoverJoin] = useState(false);
+    const [editedPollOptions, setEditedPollOptions] = useState(pollOptions);
     const [enableVote, setEnableVote] = useState(false);
     const uploadedFrom = moment(createdAt).fromNow();
+    const durationRemaining = moment(expirationDate).fromNow();
     const [Blured, setBlured] = useState(isSpoiler || isNSFW);
+    const [isOptionSelected, setIsOptionSelected] = useState(false);
+    const [hasVoted, setHasVoted] = useState(pollOptions?.find(option => option.isVoted === true) ? true : false);
+    const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
+
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -71,12 +77,59 @@ const Post = ({
         return pollOptions.reduce((total, option) => total + option.votes, 0);
     }
 
+    const getMaxVotes = (pollOptions) => {
+        let maxVotes = 0;
+        for (let option of pollOptions) {
+            if (option.votes > maxVotes) {
+                maxVotes = option.votes;
+            }
+        }
+        return maxVotes;
+    };
+    const getVoteWidth = (votes) => {
+        let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
+        console.log(voteWidth);
+        return voteWidth;
+    };
+
+    const handleOptionChange = (index) => {
+        const newPollOptions = editedPollOptions.map((option, i) => {
+            if (i === index) {
+                return {
+                    ...option,
+                    isVoted: true,
+                    votes: option.votes + 1,
+                };
+            } else {
+                return {
+                    ...option,
+                    isVoted: false,
+                };
+            }
+        });
+
+        setEditedPollOptions(newPollOptions);
+        setIsOptionSelected(true);
+    };
+
+    const handleVote = async () => {
+        if (!isOptionSelected) {
+            return;
+        }
+
+        const votedOption = editedPollOptions.find(option => option.isVoted === true);
+        const votedOptionText = votedOption ? votedOption.text : null;
+        const response = await patchRequest(`${baseUrl}/post/${id}/vote-poll`, { pollOption: votedOptionText });
+        if (response.status == 200 || response.status == 201) {
+            console.log("poll edited succesfully");
+            setHasVoted(true);
+        }
+        else {
+            console.log("poll couldn't be edited");
+        }
+    };
 
 
-
-    // const pollVoteStyle = {
-    //     backgroundColor: hover ? 'white' : '#1C1E20',
-    // };
 
     const joinBtnStyle = {
         backgroundColor: hoverJoin ? '#196FF4' : '#0045AC',
@@ -91,7 +144,7 @@ const Post = ({
                 } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
         >
             <div className="flex flex-row items-center w-full h-6 ">
-                <a
+                <div
                     id={"mainfeed_" + id + "_community"}
                     href=""
                     className="flex items-center w-fit"
@@ -100,12 +153,14 @@ const Post = ({
                     <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                         r/{communityName}
                     </p>
-                </a>
+                </div>
 
-                <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
-                <p className="text-gray-400 font-extralight text-xs ml-1.5">
-                    {uploadedFrom}
-                </p>
+                <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
+                    <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
+                    <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
+                        {uploadedFrom}
+                    </p>
+                </div>
 
                 <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
                     {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
@@ -125,7 +180,7 @@ const Post = ({
                     </div>
 
                     {isOpenDots && (
-                        <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-20 mt-1 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
+                        <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-[24px] mt-47 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
                             <div
                                 id={"mainfeed_" + id + "_menu_save"}
                                 className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -175,66 +230,92 @@ const Post = ({
                     <h1>{title}</h1>
                 </div>
                 <div className="relative w-full h-full">
-                    {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400 mb-[13px] text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
-                        <p>{content}</p>
+
+                    {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
+                        <>
+                            {type != "Link" ? (<p style={{ wordBreak: 'break-all' }}>{content}</p>) :
+                                (<a href={content} style={{ wordBreak: 'break-all' }}>{content}</a>)}
+                        </>
                     </div>}
 
-                    <div className='w-full'>
-                        {
-                            type == "Images & Video" &&
-                            <div
-                                id={"mainfeed_" + id + "_" + type}
-                                className="w-full h-full mt-2">
-                                <div className={`relative ${Blured ? 'filter blur-[10px]' : ''}`}>
-                                    {
-                                        content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`rounded-2xl`} controls /> :
-                                            <img src={content} alt="Post" className={`rounded-2xl`} />
-                                    }
+                    {
+                        type == "Images & Video" &&
+                        <div
+                            id={"mainfeed_" + id + "_" + type}
+                            className="w-full h-full mt-2">
+                            <div className={`relative ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                {
+                                    content.endsWith('.mp4') ?
+                                        <video src={content} alt="Post" className={`rounded-2xl`} controls /> :
+                                        <img src={content} alt="Post" className={`rounded-2xl`} />
+                                }
 
-                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
-                                </div>
+                                {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
                             </div>
-                        }
+                        </div>
+                    }
 
-                        {
-                            type == "Poll" &&
-                            <div
-                                id={"mainfeed_" + id + "_" + type}
-                                className="w-full mt-2">
-                                <div className={`relative h-fit w-full ${Blured ? 'filter blur-[10px]' : ''}`}>
-                                    <div className='w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col'>
-                                        <div className='w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row '>
-                                            <h1 className='mr-1 text-gray-300 font-light'>Open .</h1>
-                                            <h1 className='text-gray-300 font-light'>{getTotalVotes(pollOptions)} total votes</h1>
-                                        </div>
-                                        <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-18 text-[11px] px-2 space-y-3 mt-3'>
-                                            {pollOptions.map((option, index) => (
-                                                <div key={index} className='flex items-center flex-row w-full'>
-                                                    <input type="radio" name="" id="" checked={option.isVoted} />
-                                                    <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
-                                                    <span>{option.votes}</span>
-                                                </div>
-                                            ))}
-                                        </div>
-
-                                        <div className='flex flex-row w-full items-center'>
-                                            <div className='flex items-center justify-center w-12 h-8 cursor-not-allowed rounded-full bg-[#1C1E20] text-[13px] text-white'>
-                                                <h1>Vote</h1>
-                                            </div>
-                                            <h1 className='text-[11px] ml-2.5 font-light text-gray-300'>Closes in 7 days</h1>
-                                        </div>
+                    {
+                        type == "Poll" &&
+                        <div
+                            id={"mainfeed_" + id + "_" + type}
+                            className="w-full mt-2">
+                            <div className={`relative h-fit w-full ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div className='w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col'>
+                                    <div className='w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row '>
+                                        <h1 className='mr-1 text-gray-300 font-light'>{hasExpired?"Closed":"Open"} .</h1>
+                                        <h1 className='text-gray-300 font-light'>{getTotalVotes(pollOptions)} total votes</h1>
                                     </div>
-                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
-                                </div>
+                                    <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3'>
+                                        {editedPollOptions.map((option, index) => (
 
+                                            <div key={index} className='flex items-center flex-row w-full'>
+                                                {
+                                                    !hasVoted && !hasExpired ? (
+                                                        <div className='w-fit hit flex-row'>
+                                                            <input
+                                                                type="radio"
+                                                                name={id + "PollOption" + index}
+                                                                className="radio bg-inherit focus:outline-none"
+                                                                checked={option.isVoted}
+                                                                onChange={() => handleOptionChange(index)}
+                                                            />
+                                                            <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
+                                                        </div>
+                                                    ) : (
+                                                        <div className='w-7/12'>
+                                                            <div style={{ width: `${getVoteWidth(option.votes)}` }} className={` ${option.votes==getMaxVotes(editedPollOptions)?'bg-[#33464C]':'bg-reddit_search_light'}  items-center h-8 rounded-[5px] flex flex-row`}>
+                                                                <h1 className='text-gray-100 text-[14px] font-semibold ml-5 mr-4'>{option.votes}</h1>
+                                                                <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
+                                                                {option.isVoted?<CheckIcon className='w-[24px] h-[24px] ml-4 text-white'/>:null}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                {/* <span>{option.votes}</span> */}
+                                            </div>
+
+                                        ))}
+                                    </div>
+
+                                    <div className='flex flex-row w-full mt-3 items-center'>
+                                        {!hasVoted && !hasExpired && <div onClick={handleVote} className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected ? 'bg-black cursor-pointer' : 'bg-[#1C1E20] cursor-not-allowed'} text-[13px] text-white`}>
+                                            <h1>Vote</h1>
+                                        </div>}
+                                        {!hasExpired?<h1 className='text-[11px] ml-2.5 font-light text-gray-300'>Closes {durationRemaining}</h1>:null}
+                                    </div>
+                                </div>
+                                {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
                             </div>
-                        }
-                        {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-                            <EyeIcon className='w-5 mr-1.5 h-5' />
-                            View
-                        </div>}
-                    </div>
+
+                        </div>
+                    }
+                    {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+                        <EyeIcon className='w-5 mr-1.5 h-5' />
+                        View
+                    </div>}
+
                 </div>
             </div>
 

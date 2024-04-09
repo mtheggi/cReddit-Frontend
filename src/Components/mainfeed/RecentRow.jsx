@@ -52,11 +52,9 @@ const RecentRow = ({ id, post }) => {
 
                 </div>
 
-                {/* Todo: (already done, DONT DELETE) when the img div doesnt exist, then this div will dissapear, and text take all place */}
                 {
                     containsImage && <div id={id + "_post_img"} onClick={handleSubmitPost} className='min-w-21 w-21 h-full no-select cursor-pointer'>
                         <img src={post.content} alt="" className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} />
-
                     </div>
                 }
             </div >

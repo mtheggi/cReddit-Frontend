@@ -47,7 +47,6 @@ const Recent = ({ userHistoryRes }) => {
 
                 <div className=' space-y-4'>
                     {recentPosts.length !== 0 && recentPosts.map((post, index) => {
-                        if (post.type === 'Poll') { return null; }
                         return (
                             <RecentRow key={index} id={post._id} post={post} />
                         );
