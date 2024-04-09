@@ -1,11 +1,11 @@
 import Separator from "../sidebar/Nav-Icons/Separator";
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { ChevronDownIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
 import Post from "./Post";
 import { UserContext } from '@/context/UserContext';
 import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { baseUrl } from "../../constants";
-
+import Loading from "../Loading/Loading";
 
 
 const Mainfeed = () => {
@@ -13,23 +13,60 @@ const Mainfeed = () => {
   const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
   const { isLoggedIn } = useContext(UserContext);
+  const [page, setPage] = useState(1);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
 
+
   useEffect(() => {
     const getHomeFeed = async () => {
-      const response = await getRequest(`${baseUrl}/post/home-feed/?page=1&limit=100&sort=best`);
-      console.log("fetchedPosts", response.data);
-      if (response.status == 200 || response.status == 201) {
-        setPosts(response.data);
+      setLoading(true);
+      setError(false);
+      try {
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=8&sort=all`);
+        if (response.status == 200 || response.status == 201) {
+          setPosts(prevPosts => [...prevPosts, ...response.data]);
+          setHasMore(response.data.length > 0);
+        } else {
+          setError(true);
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
       }
     }
+    getHomeFeed();
+  }, [isLoggedIn, page]);
 
-    if (isLoggedIn) {
-      getHomeFeed();
+
+  const handleScroll = useCallback(() => {
+    const mainfeedElement = document.getElementById("mainfeed");
+    const threshold = 10;
+    if (mainfeedElement.scrollTop + mainfeedElement.clientHeight >= mainfeedElement.scrollHeight - threshold) {
+      setPage(prevPage => prevPage + 1);
     }
-  }, [isLoggedIn]);
+  }, []);
+
+  useEffect(() => {
+    const mainfeedElement = document.getElementById("mainfeed");
+
+    if (mainfeedElement) {
+      mainfeedElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (mainfeedElement) {
+        mainfeedElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [handleScroll]);
+
+
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -175,15 +212,23 @@ const Mainfeed = () => {
         <Separator />
       </div>
 
-      {/* <Post id="post1" />
-      <Post id="post2" />
-      <Post id="post3" />
-      <Post id="post4" />
-      <Post id="post5" /> */}
-
       {posts.map((post, i) => (
         <Post id={post._id} key={i} {...post} />
       ))}
+
+      {
+        <div className="w-full max-h-20 mt-10">
+          <Loading />
+          <div className="relative w-full h-full">
+            <div className="text-gray-400 text-sm mt-1.5">
+              <p className=" text-transparent">
+                Tabgo corpus texo. Cicuta dsdsdsddsdsdsds dsdsdsddsdsdsds in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+
     </div>
   );
 };

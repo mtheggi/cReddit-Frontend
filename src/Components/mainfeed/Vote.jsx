@@ -89,7 +89,20 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
-  const handleUpvote =  async() => {
+  function formatVotes(num) {
+    let absoluteNum = Math.abs(num);
+    let sign = num < 0 ? '-' : '';
+
+    if (absoluteNum >= 1000000) {
+      return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
+    } else if (absoluteNum >= 1000) {
+      return sign + (absoluteNum / 1000).toFixed(1) + 'K';
+    } else {
+      return num.toString();
+    }
+  }
+
+  const handleUpvote = async () => {
     let oldVoters = voters;
     let oldIsUpvote = isUpvote;
     let oldIsDownvote = isDownvote;
@@ -108,7 +121,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     }
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
-    if (response.status!=200 && response.status!=201) {
+    if (response.status != 200 && response.status != 201) {
       setVoters(oldVoters);
       setIsUpvote(oldIsUpvote);
       setIsDownvote(oldIsDownvote);
@@ -135,7 +148,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     }
 
     const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
-    if (response.status!=200 && response.status!=201) {
+    if (response.status != 200 && response.status != 201) {
       setVoters(oldVoters);
       setIsUpvote(oldIsUpvote);
       setIsDownvote(oldIsDownvote);
@@ -167,7 +180,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
           isHoverUpvote={isHoverUpvote}
         />
       </span>
-      <span className="text-gray-300 text-sm">{voters}</span>
+      <span className="text-gray-300 text-sm">{formatVotes(voters)}</span>
       <span
         id={"mainfeed_" + id + "_downvote"}
         onMouseEnter={() => setIsHoverDownvote(true)}

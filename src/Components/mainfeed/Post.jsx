@@ -44,6 +44,15 @@ const Post = ({
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
+    function formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        } else {
+            return num;
+        }
+    }
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -91,7 +100,6 @@ const Post = ({
     };
     const getVoteWidth = (votes) => {
         let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
-        console.log(voteWidth);
         return voteWidth;
     };
 
@@ -119,24 +127,23 @@ const Post = ({
         if (!isOptionSelected) {
             return;
         }
-
+        setHasVoted(true);
         const votedOption = editedPollOptions.find(option => option.isVoted === true);
         const votedOptionText = votedOption ? votedOption.text : null;
         const response = await patchRequest(`${baseUrl}/post/${id}/vote-poll`, { pollOption: votedOptionText });
         if (response.status == 200 || response.status == 201) {
-            console.log("poll edited succesfully");
-            setHasVoted(true);
+
         }
         else {
-            console.log("poll couldn't be edited");
+            setEditedPollOptions(pollOptions);
+            setHasVoted(false);
         }
     };
-
-
 
     const joinBtnStyle = {
         backgroundColor: hoverJoin ? '#196FF4' : '#0045AC',
     };
+
 
     const handleHidePost = async () => {
         const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: !isHidden });
@@ -203,7 +210,6 @@ const Post = ({
                                     <p className="ml-2 no-select">Save</p>
                                 </div>
                                 <div
-                                    onClick={handleHidePost}
                                     id={"mainfeed_" + id + "_menu_hide"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                                 >
@@ -212,7 +218,6 @@ const Post = ({
                                 </div>
 
                                 <div
-
                                     id={"mainfeed_" + id + "_menu_report"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                                 >
@@ -279,7 +284,7 @@ const Post = ({
                                     <div className='w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col'>
                                         <div className='w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row '>
                                             <h1 className='mr-1 text-gray-300 font-light'>{hasExpired ? "Closed" : "Open"} .</h1>
-                                            <h1 className='text-gray-300 font-light'>{getTotalVotes(pollOptions)} total votes</h1>
+                                            <h1 className='text-gray-300 font-light'>{!hasVoted ? formatNumber(getTotalVotes(pollOptions)) : formatNumber(getTotalVotes(editedPollOptions))} total votes</h1>
                                         </div>
                                         <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3'>
                                             {editedPollOptions.map((option, index) => (
@@ -302,13 +307,11 @@ const Post = ({
                                                                 <div style={{ width: `${getVoteWidth(option.votes)}` }} className={` ${option.votes == getMaxVotes(editedPollOptions) ? 'bg-[#33464C]' : 'bg-reddit_search_light'}  items-center h-8 rounded-[5px] flex flex-row`}>
                                                                     <h1 className='text-gray-100 text-[14px] font-semibold ml-5 mr-4'>{option.votes}</h1>
                                                                     <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
-                                                                    {option.isVoted ? <CheckIcon className='w-[24px] h-[24px] ml-4 text-white' /> : null}
+                                                                    {option.isVoted ? <CheckIcon className='w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white' /> : null}
                                                                 </div>
                                                             </div>
                                                         )
                                                     }
-
-                                                    {/* <span>{option.votes}</span> */}
                                                 </div>
 
                                             ))}
