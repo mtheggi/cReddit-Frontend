@@ -41,6 +41,16 @@ const Post = ({
     const [hasVoted, setHasVoted] = useState(pollOptions?.find(option => option.isVoted === true) ? true : false);
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
 
+    function formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M';
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K';
+        } else {
+            return num;
+        }
+    }
+
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -109,6 +119,7 @@ const Post = ({
         });
 
         setEditedPollOptions(newPollOptions);
+        console.log(newPollOptions);
         setIsOptionSelected(true);
     };
 
@@ -116,16 +127,16 @@ const Post = ({
         if (!isOptionSelected) {
             return;
         }
-
+        setHasVoted(true);
         const votedOption = editedPollOptions.find(option => option.isVoted === true);
         const votedOptionText = votedOption ? votedOption.text : null;
         const response = await patchRequest(`${baseUrl}/post/${id}/vote-poll`, { pollOption: votedOptionText });
         if (response.status == 200 || response.status == 201) {
-            console.log("poll edited succesfully");
-            setHasVoted(true);
+
         }
         else {
-            console.log("poll couldn't be edited");
+            setEditedPollOptions(pollOptions);
+            setHasVoted(false);
         }
     };
 
@@ -263,8 +274,8 @@ const Post = ({
                             <div className={`relative h-fit w-full ${Blured ? 'filter blur-[10px]' : ''}`}>
                                 <div className='w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col'>
                                     <div className='w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row '>
-                                        <h1 className='mr-1 text-gray-300 font-light'>{hasExpired?"Closed":"Open"} .</h1>
-                                        <h1 className='text-gray-300 font-light'>{getTotalVotes(pollOptions)} total votes</h1>
+                                        <h1 className='mr-1 text-gray-300 font-light'>{hasExpired ? "Closed" : "Open"} .</h1>
+                                        <h1 className='text-gray-300 font-light'>{!hasVoted ? formatNumber(getTotalVotes(pollOptions)) : formatNumber(getTotalVotes(editedPollOptions))} total votes</h1>
                                     </div>
                                     <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3'>
                                         {editedPollOptions.map((option, index) => (
@@ -284,10 +295,10 @@ const Post = ({
                                                         </div>
                                                     ) : (
                                                         <div className='w-7/12'>
-                                                            <div style={{ width: `${getVoteWidth(option.votes)}` }} className={` ${option.votes==getMaxVotes(editedPollOptions)?'bg-[#33464C]':'bg-reddit_search_light'}  items-center h-8 rounded-[5px] flex flex-row`}>
+                                                            <div style={{ width: `${getVoteWidth(option.votes)}` }} className={` ${option.votes == getMaxVotes(editedPollOptions) ? 'bg-[#33464C]' : 'bg-reddit_search_light'}  items-center h-8 rounded-[5px] flex flex-row`}>
                                                                 <h1 className='text-gray-100 text-[14px] font-semibold ml-5 mr-4'>{option.votes}</h1>
                                                                 <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
-                                                                {option.isVoted?<CheckIcon className='w-[24px] h-[24px] ml-4 text-white'/>:null}
+                                                                {option.isVoted ? <CheckIcon className='w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white' /> : null}
                                                             </div>
                                                         </div>
                                                     )
@@ -303,7 +314,7 @@ const Post = ({
                                         {!hasVoted && !hasExpired && <div onClick={handleVote} className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected ? 'bg-black cursor-pointer' : 'bg-[#1C1E20] cursor-not-allowed'} text-[13px] text-white`}>
                                             <h1>Vote</h1>
                                         </div>}
-                                        {!hasExpired?<h1 className='text-[11px] ml-2.5 font-light text-gray-300'>Closes {durationRemaining}</h1>:null}
+                                        {!hasExpired ? <h1 className='text-[11px] ml-2.5 font-light text-gray-300'>Closes {durationRemaining}</h1> : null}
                                     </div>
                                 </div>
                                 {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
