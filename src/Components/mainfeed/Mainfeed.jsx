@@ -217,7 +217,7 @@ const Mainfeed = () => {
       ))}
 
       {
-        <div className="w-full max-h-20 mt-10">
+        <div className="w-full max-h-15 mt-10">
           <Loading />
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">

@@ -148,17 +148,16 @@ const Post = ({
     };
 
     const handleHidePost = async () => {
-        setCurrentIsHidden(prev=>!prev);
+        setCurrentIsHidden(prev => !prev);
         setIsOpenDots(false);
-        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: currentIsHidden });
+        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: !currentIsHidden });
         if (response.status == 200 || response.status == 201) {
             setIsHiddenMsg(response.data.message);
         }
-        else 
-        {
+        else {
             console.log("post couldn't be hidden");
             setIsHiddenMsg(response.data.message);
-            setCurrentIsHidden(prev=>!prev);
+            setCurrentIsHidden(prev => !prev);
         }
     }
     return (
@@ -176,7 +175,7 @@ const Post = ({
                     >
                         <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
-                          {communityName && communityName.trim()!=""? `r/${communityName}` : `u/${username}`}
+                            {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
                         </p>
                     </div>
 
@@ -235,7 +234,7 @@ const Post = ({
                     </div>
                 </div>
 
-                <div className="mt-1 w-full h-fit flex  flex-col">
+                <div className="mt-1 w-full h-fit flex flex-col">
                     {(isSpoiler || isNSFW) && <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
 
                         {isSpoiler && <div onClick={(e) => { setBlured(true) }} className='flex cursor-pointer flex-row items-center'>
@@ -253,11 +252,17 @@ const Post = ({
                     <div id={"mainfeed_" + id + "_title"} className="text-white mt-1.5 font-medium text-lg">
                         <h1>{title}</h1>
                     </div>
+
                     <div className="relative w-full h-full">
+
+                        {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-20 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+                            <EyeIcon className='w-5 mr-1.5 h-5' />
+                            View
+                        </div>}
 
                         {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
                             <>
-                                {type != "Link" ? (<p  style={{ wordBreak: 'break-all' }}>{content}</p>) :
+                                {type != "Link" ? (<p style={{ wordBreak: 'break-all' }}>{content}</p>) :
                                     (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
                             </>
                         </div>}
@@ -267,7 +272,7 @@ const Post = ({
                             <div
                                 id={"mainfeed_" + id + "_" + type}
                                 className="w-full h-full mt-2">
-                                <div className={`relative ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div className={`relative flex-row rounded-lg py-3 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
                                     {
                                         content.endsWith('.mp4') ?
                                             <video src={content} alt="Post" className={`rounded-2xl`} controls /> :
@@ -300,7 +305,7 @@ const Post = ({
                                                                 <input
                                                                     type="radio"
                                                                     name={id + "PollOption" + index}
-                                                                    className="radio bg-inherit focus:outline-none"
+                                                                    className="radio bg-inherit outline-gray-200 focus:outline-none"
                                                                     checked={option.isVoted}
                                                                     onChange={() => handleOptionChange(index)}
                                                                 />
@@ -333,11 +338,6 @@ const Post = ({
 
                             </div>
                         }
-                        {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer  absolute ${type == "Images & Video" ? 'top-[46%]' : 'top-[30%]  '} left-[44%]  text-white  rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-                            <EyeIcon className='w-5 mr-1.5 h-5' />
-                            View
-                        </div>}
-
                     </div>
                 </div>
 

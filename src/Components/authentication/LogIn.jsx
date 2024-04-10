@@ -76,16 +76,13 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
   return (<>
     <ToastContainer
       position="bottom-center"
-      autoClose={3000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
       rtl={false}
-      pauseOnFocusLoss
       draggable
-      pauseOnHover
-      theme="colored"
-    />
+      theme="colored"/>
+      
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 
       <div className="h-full flex flex-col">
@@ -185,7 +182,7 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
         </div>
       </div>
 
-      <div className="h-[96px] py-[24px] mt-auto mb-4 msm:mt-0 msm:mb-0 flex items-center">
+      <div className="h-[96px] py-[24px] mt-auto mb-10 msm:mt-0 msm:mb-0 flex items-center">
         <div onClick={handleLoginSubmit} id="login_submit" className={` ${username && password && validateLoginUsername(username) && validateLoginPassword(password) && loginError == null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}>
           <span className="flex items-center justify-center">
             <span className="flex items-center gap-[8px] text-[14px] font-[600] ">

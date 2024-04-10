@@ -85,14 +85,11 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
     <>
       <ToastContainer
         position="bottom-center"
-        autoClose={3000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
         draggable
-        pauseOnHover
         theme="colored"
       />
       <div id="navbar_signup_menu" className="flex min-w-88 flex-col w-full h-full h-min-160 msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
@@ -131,7 +128,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
           </div>
 
           <div className="flex flex-col h-full px-10">
-            <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2 text-neutral">
+            <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2">
               Sign Up
             </h1>
             <p className="text-[14px] px-2.5 my-2 h-10 text-white">
@@ -210,7 +207,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
               {signupError != null && <div className="relative ml-3 mt-3 h-3 text-xs font-light w-85"> <p className="text-red-400">{signupError}</p> </div>}
             </div>
 
-            <div className="mt-auto mb-2  w-full h-[96px] px-2 flex justify-center items-center">
+            <div className="mt-auto mb-10  w-full h-[96px] px-2 flex justify-center items-center">
               <div id="signup_submit" onClick={handleSignupSubmit} className={`${NavbarSignupEmail && validateEmail(NavbarSignupEmail) && username && validateUsername(username) && password && validatePassword(password) && signupError == null && gender != 'Gender' ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
                 <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                   Sign Up

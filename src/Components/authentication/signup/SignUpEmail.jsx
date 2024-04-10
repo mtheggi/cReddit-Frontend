@@ -74,7 +74,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                 <div className="h-full w-full flex flex-col ">
 
                     <div className="flex pt-8 flex-row justify-between">
-                        <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2 text-neutral">
+                        <h1 className="text-2xl h-7 px-2.5 text-white font-bold mb-2">
                             Sign Up
                         </h1>
                         <div id="signup1_close" className=" flex justify-end pb-2 -mt-1 msm:-mr-3  rounded-2xl">
@@ -149,7 +149,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
                     </div>
                 </div>
 
-                <div className="mt-auto mb-4 w-full h-[96px] px-2 flex justify-center items-center">
+                <div className="mt-auto mb-10 w-full h-[96px] px-2 flex justify-center items-center">
                     <div id="signup_email_continue" onClick={(e) => handleSignupEmailSubmit(e)} className={`${email && validateEmail(email) ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}>
                         <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                             Continue

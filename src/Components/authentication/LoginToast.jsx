@@ -33,10 +33,8 @@ export const LoginSuccessToast = (message) =>
     {
       toastId: "login-toast-success", 
       position: "bottom-center",
-      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "colored",
@@ -50,10 +48,8 @@ export const LoginFailedToast = (message) =>
     {
       toastId: "login-toast-error", 
       position: "bottom-center",
-      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
-      pauseOnHover: true,
       draggable: true,
       progress: undefined,
       theme: "colored",
