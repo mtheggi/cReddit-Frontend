@@ -15,6 +15,19 @@ const RecentRow = ({ id, post }) => {
         else { navigate(`/r/${post.communityName}/comments/${id}`); }
     }
 
+    function formatVotes(num) {
+        let absoluteNum = Math.abs(num);
+        let sign = num < 0 ? '-' : '';
+    
+        if (absoluteNum >= 1000000) {
+          return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
+        } else if (absoluteNum >= 1000) {
+          return sign + (absoluteNum / 1000).toFixed(1) + 'K';
+        } else {
+          return num.toString();
+        }
+      }
+
 
     useEffect(() => {
         if (containsImage) {
@@ -60,9 +73,9 @@ const RecentRow = ({ id, post }) => {
             </div >
 
             <div className='w-full flex h-6  mb-2.5 px-3 items-center text-gray-500 no-select'>
-                <p className='text-xs mr-2 cursor-text'>{post.netVote} votes </p>
+                <p className='text-xs mr-2 cursor-text'>{formatVotes(post.netVote)} votes </p>
                 <p className='mb-2'>.</p>
-                <p className='text-xs ml-2 cursor-text'>{post.commentCount} Comments</p>
+                <p className='text-xs ml-2 cursor-text'>{formatVotes(post.commentCount)} Comments</p>
             </div>
 
         </div >

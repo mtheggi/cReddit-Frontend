@@ -65,6 +65,9 @@ const Post = ({
         const scrollingElement = document.getElementById("mainfeed");
         const handleScroll = () => {
             const scrollThreshold = 30;
+            if (!menuRefDots.current) {
+                return;
+            }
             const rect = menuRefDots.current.getBoundingClientRect();
             const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
             if (rect.top < scrollThreshold || rect.bottom > viewportHeight - scrollThreshold) {
