@@ -13,7 +13,8 @@ import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
 import NotificationItem from '../notifications/NotificationItem';
-
+import Notifications from '../settings/Notifications';
+import { useNotifications } from '../notifications/NotificationContext';
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
@@ -49,6 +50,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const emailVerificationRef = useRef();
     const bellMenuRef = useRef();
     const bellMenuRefExpanded = useRef();
+    const { showNotificationList, setNotifications } = useNotifications();
 
 
 
@@ -154,6 +156,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
         setTimeout(() => {
           setShowInboxTextTransition(false);
         }, 100); 
+    };
+
+    const handleSeeAllClick = () => {
+        setNotifications(notifications);
+        showNotificationList();
     };
 
     const seeAllBaseStyle = {
@@ -393,7 +400,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                                 ))
                                                             }
                                                             <div style={{ width: '100%', height: '1px', backgroundColor: '#555555' }}></div>
-                                                            <div style={{ width: '100%', textAlign: 'center', padding: '12px 0' }}>
+                                                            <div onClick={handleSeeAllClick} style={{ width: '100%', textAlign: 'center', padding: '12px 0' }}>
                                                                 <button
                                                                     style={seeAllHovered ? seeAllHoverStyle : seeAllBaseStyle}
                                                                     onMouseEnter={() => setSeeAllHovered(true)}

@@ -5,10 +5,12 @@ import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
 import { useState, useEffect, useRef } from 'react';
-
+import { useNotifications } from '../Components/notifications/NotificationContext';
+import NotificationList from '../Components/notifications/NotificationList';
 
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+    const { isNotificationListVisible, notifications } = useNotifications();
     const [isCommunityOpen, setIsCommunityOpen] = useState(false);
 
     const sidebarRef = useRef();
@@ -112,7 +114,11 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                     </div>
 
                     <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                        <Mainfeed />
+                        {!isNotificationListVisible ? (
+                            <Mainfeed />
+                        ) : (
+                            <NotificationList notifications={notifications} />
+                        )}
                     </div>
 
 
