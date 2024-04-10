@@ -35,6 +35,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [activeTab, setActiveTab] = useState('Notifications');
     const [showInboxTooltip, setShowInboxTooltip] = useState(false);
     const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
+    const [seeAllHovered, setSeeAllHovered] = useState(false);
     
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
@@ -154,6 +155,27 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
           setShowInboxTextTransition(false);
         }, 100); 
     };
+
+    const seeAllBaseStyle = {
+        backgroundColor: '#1a282d',
+        color: 'white',
+        padding: '8px 0',
+        fontWeight: 'bold',
+        borderRadius: '20px',
+        border: 'none',
+        cursor: 'pointer',
+        outline: 'none',
+        width: 'calc(100% - 32px)',
+        maxWidth: '100%',
+        boxSizing: 'border-box',
+        textDecoration: 'none'
+    };
+
+    const seeAllHoverStyle = {
+        ...seeAllBaseStyle,
+        backgroundColor: '#2e3d42',
+        textDecoration: 'underline'
+      };
 
 
     return (
@@ -367,19 +389,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                             }
                                                             <div style={{ width: '100%', height: '1px', backgroundColor: '#555555' }}></div>
                                                             <div style={{ width: '100%', textAlign: 'center', padding: '12px 0' }}>
-                                                                <button style={{
-                                                                    backgroundColor: '#1a282d',
-                                                                    color: 'white',
-                                                                    padding: '8px 0',
-                                                                    fontWeight: 'bold',
-                                                                    borderRadius: '20px',
-                                                                    border: 'none',
-                                                                    cursor: 'pointer',
-                                                                    outline: 'none',
-                                                                    width: 'calc(100% - 32px)', 
-                                                                    maxWidth: '100%', 
-                                                                    boxSizing: 'border-box'
-                                                                }}>
+                                                                <button
+                                                                    style={seeAllHovered ? seeAllHoverStyle : seeAllBaseStyle}
+                                                                    onMouseEnter={() => setSeeAllHovered(true)}
+                                                                    onMouseLeave={() => setSeeAllHovered(false)}
+                                                                >
                                                                     See All
                                                                 </button>
                                                             </div>
