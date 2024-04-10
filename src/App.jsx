@@ -10,7 +10,7 @@ import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import { FormText } from "react-bootstrap";
-import axiosInterceptor from "./utils/axiosInterceptor";
+import "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
 import CreatePost from "./Components/create_post/CreatePost";
 import { UserContext } from "./context/UserContext";
