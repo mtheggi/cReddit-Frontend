@@ -258,7 +258,7 @@ const Post = ({
 
                         {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
                             <>
-                                {type != "Link" ? (<p style={{ wordBreak: 'break-all' }}>{content}</p>) :
+                                {type != "Link" ? (<p className=' underline text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</p>) :
                                     (<a href={content} style={{ wordBreak: 'break-all' }}>{content}</a>)}
                             </>
                         </div>}
