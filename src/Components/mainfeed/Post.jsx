@@ -174,7 +174,7 @@ const Post = ({
                     >
                         <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
-                            r/{communityName}
+                          {communityName && communityName.trim()!=""? `r/${communityName}` : `u/${username}`}
                         </p>
                     </div>
 
@@ -302,13 +302,13 @@ const Post = ({
                                                                     checked={option.isVoted}
                                                                     onChange={() => handleOptionChange(index)}
                                                                 />
-                                                                <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
+                                                                <label className='text-gray-200 text-[14px] whitespace-nowrap font-light ml-2'>{option.text}</label>
                                                             </div>
                                                         ) : (
                                                             <div className='w-7/12'>
                                                                 <div style={{ width: `${getVoteWidth(option.votes)}` }} className={` ${option.votes == getMaxVotes(editedPollOptions) ? 'bg-[#33464C]' : 'bg-reddit_search_light'}  items-center h-8 rounded-[5px] flex flex-row`}>
                                                                     <h1 className='text-gray-100 text-[14px] font-semibold ml-5 mr-4'>{option.votes}</h1>
-                                                                    <label className='text-gray-200 text-[14px] font-light ml-2'>{option.text}</label>
+                                                                    <label className='text-gray-200 text-[14px] whitespace-nowrap font-light ml-2'>{option.text}</label>
                                                                     {option.isVoted ? <CheckIcon className='w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white' /> : null}
                                                                 </div>
                                                             </div>
