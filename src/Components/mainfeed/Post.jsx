@@ -150,16 +150,15 @@ const Post = ({
     const handleHidePost = async () => {
         setCurrentIsHidden(prev=>!prev);
         setIsOpenDots(false);
-        console.log(currentIsHidden);
-        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: !currentIsHidden });
+        const response = await patchRequest(`${baseUrl}/post/${id}/hidden`, { isHidden: currentIsHidden });
         if (response.status == 200 || response.status == 201) {
             setIsHiddenMsg(response.data.message);
         }
-        else {
+        else 
+        {
             console.log("post couldn't be hidden");
             setIsHiddenMsg(response.data.message);
             setCurrentIsHidden(prev=>!prev);
-            console.log(currentIsHidden);
         }
     }
     return (
