@@ -745,9 +745,9 @@ export const userHandlers = [
             }
         )
     }),
-   
 
-      http.get('/user/joined-communities', async (resolver) => {
+
+    http.get('/user/joined-communities', async (resolver) => {
         return HttpResponse.json([
             {
                 "communityName": "cReddit_SW_Project",
