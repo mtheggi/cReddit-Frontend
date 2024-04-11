@@ -93,6 +93,9 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     let absoluteNum = Math.abs(num);
     let sign = num < 0 ? '-' : '';
 
+    if(!num)
+    return num;
+
     if (absoluteNum >= 1000000) {
       return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
     } else if (absoluteNum >= 1000) {
