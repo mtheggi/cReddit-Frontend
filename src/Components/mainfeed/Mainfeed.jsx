@@ -156,8 +156,7 @@ const Mainfeed = () => {
           <div
             onClick={() => setIsOpenCateg((prev) => !prev)}
             className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
-          >
+              } justify-center items-center cursor-pointer`} >
             <p className="text-gray-500 font-semibold text-xs no-select ">
               Best
             </p>

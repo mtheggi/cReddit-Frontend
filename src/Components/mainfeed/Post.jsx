@@ -178,7 +178,7 @@ const Post = ({
                         className="flex items-center w-fit"
                     >
                         {isSinglePostSelected && 
-                        <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                        <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
                             <ArrowLeftIcon className='text-white w-6 h-6'/>
                         </div>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected?'w-8 h-8':'w-6 h-6'} rounded-full `} />
@@ -188,7 +188,7 @@ const Post = ({
                     </div>
 
                     <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
-                        <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
+                        <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
                         <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
                             {uploadedFrom}
                         </p>
