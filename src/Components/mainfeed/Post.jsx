@@ -4,9 +4,10 @@ import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
 import { getRequest, patchRequest } from '@/services/Requests';
-import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon,ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-
+// import {useHistory} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 
@@ -46,6 +47,7 @@ const Post = ({
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
+    const navigate = useNavigate();
     function formatNumber(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -55,7 +57,6 @@ const Post = ({
             return num;
         }
     }
-
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -176,7 +177,11 @@ const Post = ({
                         href=""
                         className="flex items-center w-fit"
                     >
-                        <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
+                        {isSinglePostSelected && 
+                        <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <ArrowLeftIcon className='text-white w-6 h-6'/>
+                        </div>}
+                        <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected?'w-8 h-8':'w-6 h-6'} rounded-full `} />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                             {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
                         </p>
