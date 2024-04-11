@@ -2,7 +2,7 @@ import { baseUrl } from "../../../constants";
 import { postRequest, getRequest, postRequestImg, patchRequest } from "../../../services/Requests";
 
 
-export async function postComment(postId, image, text) {
+export async function submitComment(postId, image, text) {
     let url = `${baseUrl}/comment`;
 
     const formData = new FormData();

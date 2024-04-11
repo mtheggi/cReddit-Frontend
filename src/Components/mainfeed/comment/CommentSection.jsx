@@ -1,13 +1,14 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import CancelComment from "./CancelComment";
-import { postComment } from "./CommentUtils";
+import { submitComment } from "./CommentUtils";
 
 function CommentSection({
   postId,
   isCommenting,
   setIsCommenting,
   onAddComment,
+  setPostComments
 }) {
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
@@ -31,9 +32,10 @@ function CommentSection({
   }, [isCommenting]);
 
   async function addComment() {
-    const newComment = await postComment(postId, image, comment);
+    const newComment = await submitComment(postId, image, comment);
     if (!newComment) return;
     onAddComment(newComment);
+    setPostComments((prevComments) => [newComment, ...prevComments]);    
     setComment("");
     setImage(null);
     setIsCommenting(false);

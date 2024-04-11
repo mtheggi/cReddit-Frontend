@@ -2,35 +2,33 @@ import moment from "moment";
 import Vote from "../Vote";
 import Share from "../Share";
 import SaveComment from "./SaveComment";
+import { useEffect } from "react";
 
-function PostComment({
+const PostComment = ({
   id,
+  postId,
+  isImage,
   username,
   content,
-  isImage,
   createdAt,
-  updatedAt,
-  profilePicture,
   netVote,
   isUpvoted,
   isDownvoted,
-  isSaved,
-})
+  profilePicture,
+  isSaved, }) => {
 
-{
-  
+
   return (
-    <>
+    <div className="px-4 mt-2">
       <div className="w-full mt-6 flex flex-row justify-start items-center overflow-hidden">
         <div className=" bg-reddit_greenyDark flex flex-row justify-start items-center">
-          <img
-            src="https://www.redditstatic.com/avatars/defaults/v2/avatar_default_1.png"
+          <img src={profilePicture}
             alt="avatar"
             className="h-9 w-9 rounded-full"
           />
           <p className="text-white text-xs font-bold ml-3">{username}</p>
           <p className="text-gray-400 text-xs  ml-2">
-            • {moment(updatedAt).fromNow()}
+            • {moment(createdAt).fromNow()}
           </p>
         </div>
       </div>
@@ -69,7 +67,8 @@ function PostComment({
           <SaveComment id={`mainfeed_${id}_save`} Saved={isSaved} />
         </div>
       </div>
-    </>
+    </div>
+
   );
 }
 
