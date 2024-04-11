@@ -115,7 +115,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     return (
         <>
 
-            <div className="w-full mt-14 flex flex-row justify-center overflow-hidden">
+            <div className="w-full mt-14 h-full flex flex-row justify-center overflow-hidden">
 
                 <div className={`relative flex flex-row w-fit xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
 

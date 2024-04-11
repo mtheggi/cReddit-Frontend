@@ -7,6 +7,7 @@ import { postRequest, getRequest, postRequestImg } from "../../services/Requests
 import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
 import { useLocation } from "react-router-dom";
+import Comment from "./comment/Comment";
 
 
 const Mainfeed = () => {
@@ -20,6 +21,7 @@ const Mainfeed = () => {
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
+  const [loadingPost, setLoadingPost] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -28,6 +30,7 @@ const Mainfeed = () => {
 
 
   const getSinglePost = async (selectedPostId) => {
+    setLoadingPost(true);
     const existingPost = posts.find(post => post._id === selectedPostId);
     if (existingPost) {
       setSelectedPost(existingPost);
@@ -37,6 +40,7 @@ const Mainfeed = () => {
         setSelectedPost(response.data);
       }
     }
+    setLoadingPost(false);
   }
 
   useEffect(() => {
@@ -58,8 +62,15 @@ const Mainfeed = () => {
       }
     }
 
-    getHomeFeed();
-  }, [isLoggedIn, page]);
+    const url = navigate.pathname;
+    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
+    const match = url.match(regex);
+
+    if (!match)
+      getHomeFeed();
+
+  }, [isLoggedIn, page, navigate.pathname]);
+
 
   useEffect(() => {
     const url = navigate.pathname;
@@ -70,8 +81,7 @@ const Mainfeed = () => {
       setIsSinglePostSelected(true);
       getSinglePost(selectedPostId);
     }
-    else
-    {
+    else {
       setIsSinglePostSelected(false);
     }
   }, [navigate.pathname]);
@@ -248,20 +258,22 @@ const Mainfeed = () => {
         <Post id={post._id} key={i} {...post} />
       ))}
 
-      {isSinglePostSelected && 
-      <Post {...selectedPost} isSinglePostSelected={isSinglePostSelected}/>
-      
-      
-      
+      {isSinglePostSelected && loadingPost && <Loading />}
+
+      {isSinglePostSelected && !loadingPost &&
+        <>
+          <Post id={selectedPost._id} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+          <Comment postId={selectedPost._id}/>
+        </>
       }
 
       {
         <div className="w-full max-h-15 mt-10">
-          {loading && <Loading />}
+          {loading && !isSinglePostSelected && <Loading />}
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">
-                Tabgo corpus texo. Cicuta dsdsdsdddddddddddddsdsdsds dsdsdsddsdsdsds in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
+                Tabgo corpus texo. Cicuta dsdsdsdddddddddddddsdsdsds dsdsdsddsdsdsdsffffffffffff in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
               </p>
             </div>
           </div>

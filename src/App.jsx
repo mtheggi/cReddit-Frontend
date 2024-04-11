@@ -54,7 +54,7 @@ function App() {
               }
             />
              <Route
-              path={"/:param1/comments/:param2"}
+              path={"/:param3/:param1/comments/:param2"}
               element={
                 <Home
                   isVisibleLeftSidebar={isVisibleLeftSidebar}

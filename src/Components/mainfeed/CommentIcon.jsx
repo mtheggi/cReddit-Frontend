@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline';
 
 
-const Comment = ({ id, commentCount, username, postId }) => {
+const CommentIcon = ({ id, commentCount, username, communityName }) => {
     const location = useLocation();
     const navigate = useNavigate();
     function formatComments(num) {
@@ -22,7 +22,10 @@ const Comment = ({ id, commentCount, username, postId }) => {
             const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
             const match = url.match(regex);
             if (!match) {
-                navigate(`${username}/comments/${id}`)
+                if(!communityName)
+                navigate(`u/${username}/comments/${id}`)
+            else
+                navigate(`r/${communityName}/comments/${id}`)
             }
           }
         }
@@ -34,4 +37,4 @@ const Comment = ({ id, commentCount, username, postId }) => {
     );
 }
 
-export default Comment;
+export default CommentIcon;

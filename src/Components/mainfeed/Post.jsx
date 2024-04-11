@@ -1,6 +1,6 @@
 
 import Share from './Share';
-import Comment from './Comment';
+import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
 import { getRequest, patchRequest } from '@/services/Requests';
@@ -30,7 +30,8 @@ const Post = ({
     pollOptions,
     expirationDate,
     isHidden,
-    isSaved
+    isSaved,
+    isSinglePostSelected
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -54,6 +55,7 @@ const Post = ({
             return num;
         }
     }
+
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -165,7 +167,7 @@ const Post = ({
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
                 id={"mainfeed_" + id + "_full"}
-                className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${isOpenDots ? "bg-reddit_hover" : ""
+                className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected? "":'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
                     } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
@@ -349,7 +351,7 @@ const Post = ({
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
                     />
-                    <Comment id={id} postId={postId} username={username} commentCount={commentCount} />
+                    <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
             </div>
