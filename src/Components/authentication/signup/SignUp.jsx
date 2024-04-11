@@ -75,6 +75,7 @@ const SignUp = ({ setIsOpenedSignupMenu, setIsOpenedSecondSignupMenu, NavbarSign
         LoginSuccessToast("Signed up successfully");
         setTimeout(() => {
           setIsOpenedSecondSignupMenu(false);
+          setIsOpenedSignupMenu(false);
           setIsLoggedIn(true);
         }, 3000);
       }
