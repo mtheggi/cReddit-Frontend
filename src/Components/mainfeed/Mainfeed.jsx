@@ -6,21 +6,38 @@ import { UserContext } from '@/context/UserContext';
 import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
+import { useLocation } from "react-router-dom";
 
 
 const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState({});
   const { isLoggedIn } = useContext(UserContext);
   const [page, setPage] = useState(1);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
+  const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
+  const navigate = useLocation();
 
+
+
+  const getSinglePost = async (selectedPostId) => {
+    const existingPost = posts.find(post => post._id === selectedPostId);
+    if (existingPost) {
+      setSelectedPost(existingPost);
+    } else {
+      const response = await getRequest(`${baseUrl}/post/${selectedPostId}`);
+      if (response.status == 200 || response.status == 201) {
+        setSelectedPost(response.data);
+      }
+    }
+  }
 
   useEffect(() => {
     const getHomeFeed = async () => {
@@ -40,9 +57,24 @@ const Mainfeed = () => {
         setLoading(false);
       }
     }
+
     getHomeFeed();
   }, [isLoggedIn, page]);
 
+  useEffect(() => {
+    const url = navigate.pathname;
+    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
+    const match = url.match(regex);
+    if (match) {
+      const selectedPostId = match[1];
+      setIsSinglePostSelected(true);
+      getSinglePost(selectedPostId);
+    }
+    else
+    {
+      setIsSinglePostSelected(false);
+    }
+  }, [navigate.pathname]);
 
   const handleScroll = useCallback(() => {
     const mainfeedElement = document.getElementById("mainfeed");
@@ -52,20 +84,19 @@ const Mainfeed = () => {
     }
   }, []);
 
+
   useEffect(() => {
     const mainfeedElement = document.getElementById("mainfeed");
 
     if (mainfeedElement) {
       mainfeedElement.addEventListener("scroll", handleScroll);
     }
-
     return () => {
       if (mainfeedElement) {
         mainfeedElement.removeEventListener("scroll", handleScroll);
       }
     };
   }, [handleScroll]);
-
 
 
   useEffect(() => {
@@ -106,7 +137,7 @@ const Mainfeed = () => {
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >
-      <div className="flex items-center h-12 mb-2 px-2 w-full">
+      <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
           ref={menuRefCateg}
@@ -212,17 +243,25 @@ const Mainfeed = () => {
         <Separator />
       </div>
 
-      {posts.map((post, i) => (
+
+      {!isSinglePostSelected && posts.map((post, i) => (
         <Post id={post._id} key={i} {...post} />
       ))}
 
+      {isSinglePostSelected && 
+      <Post {...selectedPost} isSinglePostSelected={isSinglePostSelected}/>
+      
+      
+      
+      }
+
       {
         <div className="w-full max-h-15 mt-10">
-          <Loading />
+          {loading && <Loading />}
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">
-                Tabgo corpus texo. Cicuta dsdsdsddsdsdsds dsdsdsddsdsdsds in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
+                Tabgo corpus texo. Cicuta dsdsdsdddddddddddddsdsdsds dsdsdsddsdsdsds in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
               </p>
             </div>
           </div>

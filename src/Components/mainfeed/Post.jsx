@@ -12,6 +12,7 @@ import HiddenPost from './HiddenPost';
 
 const Post = ({
     id,
+    postId,
     title,
     username,
     communityName,
@@ -348,7 +349,7 @@ const Post = ({
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
                     />
-                    <Comment id={id} commentCount={commentCount} />
+                    <Comment id={id} postId={postId} username={username} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
             </div>

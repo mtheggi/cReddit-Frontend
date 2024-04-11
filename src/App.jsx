@@ -44,7 +44,17 @@ function App() {
           )}
           <Routes>
             <Route
-              path="/"
+              path={"/"}
+              element={
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              }
+            />
+             <Route
+              path={"/:param1/comments/:param2"}
               element={
                 <Home
                   isVisibleLeftSidebar={isVisibleLeftSidebar}
@@ -56,6 +66,7 @@ function App() {
             <Route path="/settings/*" element={<Settings />} />
             <Route path="/submit" element={<CreatePost />} />
             <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} />
+            
           </Routes>
         </div>
       </Router>
