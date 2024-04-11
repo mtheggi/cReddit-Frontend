@@ -719,7 +719,7 @@ export const userHandlers = [
 
 
 
-    http.delete('/user/clear-history', async (resolver) => {
+    http.delete('/user/history', async (resolver) => {
 
         return HttpResponse.json(
             {

@@ -23,7 +23,7 @@ const Recent = ({ userHistoryRes }) => {
 
 
     async function handleClearRecentPosts() {
-        const response = await deleteRequest(`${baseUrl}/user/clear-history`);
+        const response = await deleteRequest(`${baseUrl}/user/history`);
         if (response.status === 200 || response.status === 201) {
             setRecentPosts([]);
             localStorage.removeItem('userHistory');

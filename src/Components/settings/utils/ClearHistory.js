@@ -1,7 +1,7 @@
 import { deleteRequest } from "../../../services/Requests";
 import { baseUrl } from "../../../constants";
 
-const url = `${baseUrl}/user/clear-history`
+const url = `${baseUrl}/user/history`
 
 export async function clearHistory() {
     console.log("Clearing History...")
