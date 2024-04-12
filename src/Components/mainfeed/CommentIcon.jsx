@@ -22,16 +22,16 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
             const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
             const match = url.match(regex);
             if (!match) {
-                if(!communityName)
-                navigate(`u/${username}/comments/${id}`)
-            else
-                navigate(`r/${communityName}/comments/${id}`)
+                if (!communityName)
+                    navigate(`u/${username}/comments/${id}`)
+                else
+                    navigate(`r/${communityName}/comments/${id}`)
             }
-            else
-            {
-                window.scrollBy(0, 100);
+            else {
+                const element = document.getElementById('mainfeed');
+                element.scrollTop += 100;
             }
-          }
+        }
         }
             id={"mainfeed_" + id + "_comment"} className="flex justify-center cursor-pointer flex-row items-center min-w-18 h-8 w-fit  bg-reddit_search hover:bg-reddit_search_light rounded-3xl">
             <ChatBubbleBottomCenterTextIcon className="h-6 w-6 mr-1 text-gray-300" />
