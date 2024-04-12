@@ -66,8 +66,8 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
     return (
         <div
             ref={!isNewNotificationsPage ? reference : null}
-            className={`${isNewNotificationsPage ? 'bg-reddit text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center w-full h-full' : 'absolute right-0 bg-reddit_lightGreen text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center'}`}
-            style={!isNewNotificationsPage ? { right: '70px', top: '4rem', width: '360px' } : null}
+            className={`${isNewNotificationsPage ? 'bg-reddit text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center w-full h-full' : ' w-90 mr-80 mt-148 h-130 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'}`}
+            
         >
             {isNewNotificationsPage && (
                 <div className='text-2xl font-bold w-full text-left ml-15 py-2'>

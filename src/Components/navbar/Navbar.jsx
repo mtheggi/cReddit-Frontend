@@ -57,9 +57,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             {
               key: "1",
               title: "u/Abdelaal replied to your comment in r/cReddit",
-              description: "Notification Description 1",
+              description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
               date: "4/11/2024",
-              time: "18:45",
+              time: "23:45",
               image: avatar,
             },
             {
@@ -67,13 +67,13 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
               title: "u/Malek replied to your post in r/CCE",
               description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
               date: "4/11/2024",
-              time: "22:30",
+              time: "23:30",
               image: avatar,
             },
             {
               key: "3",
               title: "u/Maro replied to your post in r/APT",
-              description: "Notification Description 3",
+              description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
               date: "4/11/2024",
               time: "20:10",
               image: avatar,
