@@ -105,7 +105,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                             </Link>
                         </div>
                         {todayNotifications.map(({ key, title, description, date, time, image }) => (
-                            <NotificationItem notificationKey={key} title={title} description={description} date={time} image={image} onRemove={removeNotification}/>
+                            <NotificationItem notificationKey={key} title={title} description={description} date={time} image={image} onRemove={removeNotification} isNewNotificationsPage={isNewNotificationsPage}/>
                         ))}
                         {earlierNotifications.length > 0 && (
                             <>
@@ -113,7 +113,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                                     <span className='font-bold' style={{ fontSize: '0.85rem', color: '#777777' }}>EARLIER</span>
                                 </div>
                                 {earlierNotifications.map(({ key, title, description, date, time, image }) => (
-                                    <NotificationItem notificationKey={key} title={title} description={description} date={date} image={image} onRemove={removeNotification}/>
+                                    <NotificationItem notificationKey={key} title={title} description={description} date={date} image={image} onRemove={removeNotification} isNewNotificationsPage={isNewNotificationsPage}/>
                                 ))}
                             </>
                         )}

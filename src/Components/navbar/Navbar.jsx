@@ -33,7 +33,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const [signupEmail, setSignupEmail] = useState('');
     const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
-    const [activeTab, setActiveTab] = useState('Notifications');
     const [showInboxTooltip, setShowInboxTooltip] = useState(false);
     const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
 
