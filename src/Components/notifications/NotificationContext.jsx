@@ -15,6 +15,12 @@ export const NotificationProvider = ({ children }) => {
         localStorage.setItem('notifications', JSON.stringify(notifications));
     }, [notifications]);
 
+    const removeNotification = (id) => {
+        setNotifications(currentNotifications =>
+            currentNotifications.filter(notification => notification.key !== id)
+        );
+    };
+
     const showNotificationList = () => {
         setIsNotificationListVisible(true);
     };
@@ -28,7 +34,7 @@ export const NotificationProvider = ({ children }) => {
     };
 
     return (
-        <NotificationContext.Provider value={{ isNotificationListVisible, showNotificationList, hideNotificationList, notifications, setNotifications, flushAndAddNotifications }}>
+        <NotificationContext.Provider value={{ isNotificationListVisible, showNotificationList, hideNotificationList, notifications, setNotifications, flushAndAddNotifications, removeNotification }}>
             {children}
         </NotificationContext.Provider>
     );

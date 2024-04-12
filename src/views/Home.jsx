@@ -1,12 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from '../Components/navbar/Navbar';
 import Sidebar from '../Components/sidebar/Sidebar';
 import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
 import { useState, useEffect, useRef } from 'react';
-import { useNotifications } from '../Components/notifications/NotificationContext';
-import NotificationList from '../Components/notifications/NotificationList';
 
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {

@@ -52,59 +52,59 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const bellMenuRefExpanded = useRef();
 
     const { notifications, flushAndAddNotifications } = useNotifications();
-    
-    const handleReplaceNotifications = () => {
-        flushAndAddNotifications(newNotifications);
-    };
-    
-    const newNotifications = [
-        {
-          key: "1",
-          title: "u/Abdelaal replied to your comment in r/cReddit",
-          description: "Notification Description 1",
-          date: "4/11/2024",
-          time: "15:45",
-          image: avatar,
-        },
-        {
-          key: "2",
-          title: "u/Malek replied to your post in r/CCE",
-          description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
-          date: "4/11/2024",
-          time: "22:30",
-          image: avatar,
-        },
-        {
-          key: "3",
-          title: "u/Maro replied to your post in r/APT",
-          description: "Notification Description 3",
-          date: "4/10/2024",
-          time: "20:10",
-          image: avatar,
-        },
-        {
-          key: "4",
-          title: "u/Bassel replied to your comment in r/Front",
-          description: "Notification Description 4",
-          date: "4/5/2024",
-          time: "11:11",
-          image: avatar,
-        },
-        {
-          key: "5",
-          title: "u/Heggi replied to your comment in r/Pattern",
-          description: "Notification Description 5",
-          date: "4/6/2024",
-          time: "18:50",
-          image: avatar,
-        },
-    ];
 
-    newNotifications.sort((a, b) => {
-        const dateA = new Date(`${a.date} ${a.time}`);
-        const dateB = new Date(`${b.date} ${b.time}`);
-        return dateB - dateA;
-    });
+    useEffect(() => {
+        const newNotifications = [
+            {
+              key: "1",
+              title: "u/Abdelaal replied to your comment in r/cReddit",
+              description: "Notification Description 1",
+              date: "4/11/2024",
+              time: "18:45",
+              image: avatar,
+            },
+            {
+              key: "2",
+              title: "u/Malek replied to your post in r/CCE",
+              description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
+              date: "4/11/2024",
+              time: "22:30",
+              image: avatar,
+            },
+            {
+              key: "3",
+              title: "u/Maro replied to your post in r/APT",
+              description: "Notification Description 3",
+              date: "4/11/2024",
+              time: "20:10",
+              image: avatar,
+            },
+            {
+              key: "4",
+              title: "u/Bassel replied to your comment in r/Front",
+              description: "Notification Description 4",
+              date: "4/5/2024",
+              time: "11:11",
+              image: avatar,
+            },
+            {
+              key: "5",
+              title: "u/Heggi replied to your comment in r/Pattern",
+              description: "Notification Description 5",
+              date: "4/6/2024",
+              time: "18:50",
+              image: avatar,
+            },
+        ];
+
+        newNotifications.sort((a, b) => {
+            const dateA = new Date(`${a.date} ${a.time}`);
+            const dateB = new Date(`${b.date} ${b.time}`);
+            return dateB - dateA;
+        });
+
+        flushAndAddNotifications(newNotifications);
+    }, []);
 
 
     useEffect(() => {
@@ -301,7 +301,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" 
-                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); flushAndAddNotifications(newNotifications);}} 
+                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false);}} 
                                         onMouseEnter={handleMouseEnterBellIcon}
                                         onMouseLeave={handleMouseLeaveBellIcon}
                                     >

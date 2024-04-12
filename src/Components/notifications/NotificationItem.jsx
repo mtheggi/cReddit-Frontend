@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const NotificationItem = ({ title, date, description, image }) => {
+const NotificationItem = ({ notificationKey, title, date, description, image, onRemove }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = (event) => {
         event.stopPropagation();
@@ -58,7 +58,7 @@ const NotificationItem = ({ title, date, description, image }) => {
             </button>
             {dropdownOpen && (
                 <div ref={dropdownRef} className="absolute right-0 mt-4 py-2 w-48 bg-reddit_dark rounded-md shadow-xl z-50">
-                    <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-500">Hide this notification</a>
+                    <a href="#" onClick={() => onRemove(notificationKey)} className="block px-4 py-2 text-sm text-white hover:bg-gray-500">Hide this notification</a>
                     <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-500">Don't get updates on this</a>
                 </div>
             )}
