@@ -22,6 +22,7 @@ const Mainfeed = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
+  const [selectedSort, setSelectedSort] = useState("Best");
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -48,7 +49,7 @@ const Mainfeed = () => {
       setLoading(true);
       setError(false);
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=8&sort=all`);
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=8&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
           setPosts(prevPosts => [...prevPosts, ...response.data]);
           setHasMore(response.data.length > 0);
@@ -69,7 +70,7 @@ const Mainfeed = () => {
     if (!match)
       getHomeFeed();
 
-  }, [isLoggedIn, page, navigate.pathname]);
+  }, [isLoggedIn, page, navigate.pathname, selectedSort]);
 
 
   useEffect(() => {
@@ -142,12 +143,23 @@ const Mainfeed = () => {
     };
   });
 
+  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post.id === id) {
+        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
+      }
+      return post;
+    }));
+  };
+
+
+
   return (
     <div
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >
-      <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
+      {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
           ref={menuRefCateg}
@@ -158,18 +170,18 @@ const Mainfeed = () => {
             className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
               } justify-center items-center cursor-pointer`} >
             <p className="text-gray-500 font-semibold text-xs no-select ">
-              Best
+              {selectedSort}
             </p>
             <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
           </div>
 
           {isOpenCateg && (
-            <div className=" w-20 h-72 bg-reddit_lightGreen absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
+            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false) }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -177,37 +189,30 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <a
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false) }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
               >
                 <p className="no-select">Hot</p>
-              </a>
+              </div>
 
-              <a
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false) }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
               >
                 <p className="no-select">New</p>
-              </a>
+              </div>
 
-              <a
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false) }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
               >
                 <p className="no-select">Top</p>
-              </a>
+              </div>
 
-              <a
-                id="mainfeed_category_rising"
-                href=""
-                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer rounded-b-lg"
-              >
-                <p className="no-select">Rising</p>
-              </a>
             </div>
           )}
         </div>
@@ -247,22 +252,23 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
-      </div>
-      <div className=" h-1 px-2.5 flex w-full">
+      </div>}
+      <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
         <Separator />
       </div>
 
 
       {!isSinglePostSelected && posts.map((post, i) => (
-        <Post id={post._id} key={i} {...post} />
+  
+        <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
       ))}
 
       {isSinglePostSelected && loadingPost && <Loading />}
 
       {isSinglePostSelected && !loadingPost &&
         <>
-          <Post id={selectedPost._id} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-          <Comment postId={selectedPost._id}/>
+          <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+          <Comment postId={selectedPost._id} />
         </>
       }
 

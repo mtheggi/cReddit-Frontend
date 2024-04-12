@@ -1,6 +1,6 @@
 function FloatingInput({ id, label, buttonText, onSubmit }) {
   return (
-    <div className="relative w-90% max-w-3xl mt-2">
+    <div className="relative w-100% max-w-3xl mt-2">
       <input
         type="text"
         id={id}

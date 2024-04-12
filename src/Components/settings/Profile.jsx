@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useContext } from 'react';
 import TextArea from "./components/TextArea";
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import SocialLinksModal from "./components/SocialLinksModal";
 import ImageUpload from "./components/ImageUpload";
+
 import { changeSetting } from "./utils/ChangeSetting";
 import { notify } from "./components/CustomToast";
 import SocialLinks from "./components/SocialLinks";
 import { clearHistory } from "./utils/ClearHistory";
+import DropImage from "../create_post/DropImage";
+import { getRequest, putRequestFD } from "@/services/Requests";
+import { baseUrl } from "../../constants";
+import { UserContext } from '@/context/UserContext';
 
 function Profile({
   displayName,
@@ -20,6 +25,53 @@ function Profile({
   setUserSettings,
 }) {
   const [modalShow, setModalShow] = useState(false);
+  const [avatar, setAvatar] = useState(null);
+  const [banner, setBanner] = useState(null);
+  const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
+  const [userBanner, setUserBanner] = useState(null);
+
+
+
+  useEffect(() => {
+
+    const getBanner = async () => {
+
+      
+      const response = await getRequest(`${baseUrl}/user/settings`);
+      if (response.status === 200 || response.status === 201) {
+        setUserBanner(response.data.profile.banner);
+      }
+    }
+    getBanner();
+  }, []);
+
+
+
+  const bannerChange = (e) => {
+    setBanner(e.target.files[0]);
+  }
+
+  const avatarChange = (e) => {
+    setAvatar(e.target.files[0]);
+  }
+
+  const uploadImage = async (type) => {
+    const formData = new FormData();
+
+    if (type == "avatar" && avatar) {
+
+      formData.append('avatar', avatar);
+    }
+
+    if (type == "banner" && banner) {
+   
+      formData.append('banner', banner);
+    }
+
+    const response = await putRequestFD(`${baseUrl}/user/settings`, formData);
+    return response
+  }
+
 
   return (
     <div className="flex flex-col w-full">
@@ -84,10 +136,21 @@ function Profile({
 
       <Subtitle title="IMAGE UPLOAD" />
       <Setting
-        title="Upload profile picture"
+        title="Upload Avatar & Banner"
         message="Images must be .png or .jpg format"
       />
-      <ImageUpload id="profile-image-upload-drag-and-drop" />
+      <div className="flex flex-row mb-4 mt-3 text-white space-x-9">
+        <div onBlur={() => uploadImage("avatar")} className="mt-2 -mb-4 w-[180px] h-[160px]">
+          <p className="mb-1">Avatar</p>
+          <DropImage id={"settings_avatar_upload"} handleFileChange={avatarChange} userProfilePicture={userProfilePicture} userBanner={null} />
+        </div>
+
+        <div onBlur={() => uploadImage("banner")} className="mt-2 -mb-4 w-[300px] h-[160px]">
+          <p className="mb-1">Banner</p>
+          <DropImage id={"settings_banner_upload"} handleFileChange={bannerChange} userProfilePicture={null} userBanner={userBanner} />
+        </div>
+      </div>
+
 
       <Subtitle title="PROFILE CATEGORY" />
       <Setting
@@ -98,7 +161,7 @@ function Profile({
         isToggled={showAdultContent}
         pageName={"profile"}
         settingName={"isNSFW"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
 
       <Subtitle title="PROFILE CATEGORY" />
@@ -110,7 +173,7 @@ function Profile({
         isToggled={allowFollow}
         pageName={"profile"}
         settingName={"allowFollow"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
       <Setting
         id="profile-category-visibility-toggle-button"
@@ -120,25 +183,16 @@ function Profile({
         isToggled={isContentVisible}
         pageName={"profile"}
         settingName={"isContentVisible"}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
-      <Setting
-        id="profile-category-active-communities-toggle-button"
-        title="Active in communities visibility"
-        message="Show which communities I am active in on my profile."
-        toggleButton={true}
-        isToggled={isActiveCommunityVisible}
-        pageName={"profile"}
-        settingName={"isActiveCommunityVisible"}
-        setUserSettings = {setUserSettings}
-      />
+   
       <Setting
         id="profile-category-clear-history-button"
         title="Clear history"
         message="Delete your post views history."
         regularButton="Clear History"
         overrideOnClick={clearHistory}
-        setUserSettings = {setUserSettings}
+        setUserSettings={setUserSettings}
       />
     </div>
   );

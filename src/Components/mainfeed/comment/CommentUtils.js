@@ -2,16 +2,17 @@ import { baseUrl } from "../../../constants";
 import { postRequest, getRequest, postRequestImg, patchRequest } from "../../../services/Requests";
 
 
-export async function submitComment(postId, image, text) {
+export async function submitComment(postId, image, text, isImage) {
     let url = `${baseUrl}/comment`;
+
 
     const formData = new FormData();
     formData.append('postId', postId);
 
-    if (text)
+    if (!isImage)
         formData.append('content', text);
     else
-        formData.append('content', image);
+        formData.append('images', image);
 
     let res = await postRequestImg(url, formData);
     if (res.status !== 200 && res.status !== 201) return null;

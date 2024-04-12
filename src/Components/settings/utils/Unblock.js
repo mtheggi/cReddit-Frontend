@@ -9,6 +9,6 @@ export async function unblockUser(username) {
 
 export async function unblockCommunity(communityName) {
     console.log(`Unblocking community ${communityName}`)
-    const res = await deleteRequest(`${baseUrl}/user/block-community/${communityName}`);
+    const res = await deleteRequest(`${baseUrl}/subreddit/${communityName}/mute`);
     return res;
 }

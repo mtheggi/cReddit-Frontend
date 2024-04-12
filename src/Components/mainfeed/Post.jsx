@@ -3,13 +3,14 @@ import Share from './Share';
 import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
-import { getRequest, patchRequest } from '@/services/Requests';
-import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon,ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
+import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
 // import {useHistory} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
+import { Save } from './comment/CommentUtils';
 
 const Post = ({
     id,
@@ -32,7 +33,8 @@ const Post = ({
     expirationDate,
     isHidden,
     isSaved,
-    isSinglePostSelected
+    isSinglePostSelected,
+    setPosts
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -47,7 +49,19 @@ const Post = ({
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
+    const [saved, setSaved] = useState(isSaved);
+    const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
+
     const navigate = useNavigate();
+
+
+    async function handleClickSave() {
+        setSaved((prev) => !prev);
+        if (!await Save(id, saved)) {
+            setSaved((prev) => !prev);
+        }
+    }
+
     function formatNumber(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -164,12 +178,24 @@ const Post = ({
             setCurrentIsHidden(prev => !prev);
         }
     }
+    const handleJoinSubreddit = async () => {
+        setIsSubbredditJoined(prev => !prev);
+        let response = null;
+        if ((isSubbredditJoined)) {
+            response = await deleteRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        } else {
+            response = await postRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        }
+        if (!(response.status === 200 || response.status === 201)) {
+            setIsSubbredditJoined(prev => !prev);
+        }
+    }
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
                 id={"mainfeed_" + id + "_full"}
-                className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected? "":'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
-                    } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
+                className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
+                    } px-1 xs:px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
                     <div
@@ -177,11 +203,11 @@ const Post = ({
                         href=""
                         className="flex items-center w-fit"
                     >
-                        {isSinglePostSelected && 
-                        <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
-                            <ArrowLeftIcon className='text-white w-6 h-6'/>
-                        </div>}
-                        <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected?'w-8 h-8':'w-6 h-6'} rounded-full `} />
+                        {isSinglePostSelected &&
+                            <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                                <ArrowLeftIcon className='text-white w-6 h-6' />
+                            </div>}
+                        <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                             {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
                         </p>
@@ -195,8 +221,8 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-                            <h1 className='text-[12px] font-medium text-white'>Join</h1>
+                        {(communityName !== null) && <div onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                            <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
                             id={"mainfeed_" + id + "_menu"}
@@ -210,15 +236,19 @@ const Post = ({
                                 className="h-6 w-6 outline-none"
                             />
                         </div>
-
                         {isOpenDots && (
-                            <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-[24px] mt-47 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
-                                <div
+                            <div className={`z-1 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
+                                <div onClick={handleClickSave}
                                     id={"mainfeed_" + id + "_menu_save"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                                 >
-                                    <BookmarkIcon className="h-4.5 w-5 text-white " />
-                                    <p className="ml-2 no-select">Save</p>
+                                    {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
+                                        :
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
+                                            <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clipRule="evenodd" />
+                                        </svg>
+                                    }
+                                    <p className="ml-2 no-select">{saved ? "Unsave" : "Save"}</p>
                                 </div>
                                 <div onClick={handleHidePost}
                                     id={"mainfeed_" + id + "_menu_hide"}
@@ -280,11 +310,11 @@ const Post = ({
                             <div
                                 id={"mainfeed_" + id + "_" + type}
                                 className="w-full h-full mt-2">
-                                <div className={`relative flex-row rounded-lg py-3 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div className={`relative flex-row   rounded-lg p-2 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
                                     {
                                         content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`rounded-2xl`} controls /> :
-                                            <img src={content} alt="Post" className={`rounded-2xl`} />
+                                            <video src={content} alt="Post" className={`max-h-150 rounded-lg`} controls /> :
+                                            <img src={content} alt="Post" className={` max-h-150 rounded-lg`} />
                                     }
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
@@ -355,11 +385,12 @@ const Post = ({
                         netVotes={netVote}
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
+                        setPosts={setPosts}
                     />
                     <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
-            </div>
+            </div >
 
     );
 };

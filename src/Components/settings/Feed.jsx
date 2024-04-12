@@ -52,10 +52,10 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
         pageName = "feedSettings"
         setUserSettings = {setUserSettings}
         menuItems={[
-          { name: "Hot" },
-          { name: "New" },
-          { name: "Top" },
-          { name: "Rising" },
+          { name: "hot" },
+          { name: "new" },
+          { name: "top" },
+          { name: "rising" },
         ]}
         selectedItem={communityContentSort}
       />
@@ -67,7 +67,7 @@ function Feed({showAdultContent, autoPlayMedia, communityThemes, communityConten
         settingName = "globalContentView"
         pageName = "feedSettings"
         setUserSettings = {setUserSettings}
-        menuItems = {[{ name: "Card" }, { name: "Classic" }, { name: "Compact" }]}
+        menuItems = {[{ name: "card" }, { name: "classic" }]}
         selectedItem={globalContentView}
       />
 

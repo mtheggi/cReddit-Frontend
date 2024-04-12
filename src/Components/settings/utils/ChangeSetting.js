@@ -1,18 +1,21 @@
-import { putRequest } from "../../../services/Requests";
+import { putRequestFD } from "../../../services/Requests";
 import { baseUrl } from "../../../constants";
 
 const url = `${baseUrl}/user/settings`
 let setUserSettings;
 
 export async function changeSetting(pageName, settingName, newSettingValue) {
-    const newSetting = {}
-    newSetting[pageName] = {}
-    newSetting[pageName][settingName] = newSettingValue
 
-    console.log(newSetting)
+    const msg={}
+    msg[settingName]=newSettingValue
+
+    
+    const settingsFormData = new FormData();
+    settingsFormData.append(pageName, JSON.stringify(msg));
+    
 
     try {
-        const res = await putRequest(url, newSetting);
+        const res = await putRequestFD(url, settingsFormData);
 
         return res
     }
@@ -20,7 +23,6 @@ export async function changeSetting(pageName, settingName, newSettingValue) {
         console.log(error)
         return null;
     }
-
 }
 
 export function getF(F) {

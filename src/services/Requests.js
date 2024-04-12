@@ -14,6 +14,22 @@ export const putRequest = async (url, body) => {
     }
 }
 
+
+export const putRequestFD = async (url, formData) => {
+    try {
+        return axios.put(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return response;
+
+    } catch (error) {
+        return error.response;
+    }
+}
+
+
 export const postRequest = async (url, body) => {
     try {
         const response = await axios.post(url, body, {

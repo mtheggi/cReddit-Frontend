@@ -43,16 +43,6 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
       />
 
       <Setting
-          title="Upvotes on your comments"
-          clickableID = "settings-notifications-upvotes-on-your-comments-toggle-button"
-          settingName = "commentsUpvotesNotifs"
-          pageName = "notifications"
-          setUserSettings = {setUserSettings}
-          toggleButton={true}
-          isToggled={true}
-      />
-
-      <Setting
           title="Replies to your comments"
           clickableID = "settings-notifications-replies-to-your-comments-toggle-button"
           settingName = "repliesNotifs"
@@ -62,15 +52,6 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           isToggled={repliesNotifs}
       />
 
-      <Setting
-          title="New followers"
-          clickableID = "settings-notifications-new-followers-toggle-button"
-          settingName = "newFollowersNotifs"
-          pageName = "notifications"
-          setUserSettings = {setUserSettings}
-          toggleButton={true}
-          isToggled={newFollowersNotifs}
-      />
 
       <Setting
           title="Posts you follow"
@@ -82,15 +63,6 @@ function Notifications({ mentionsNotifs, commentsNotifs, postsUpvotesNotifs, rep
           isToggled={postNotifs}
       />
 
-      <Setting
-          title="Comments you follow"
-          clickableID = "settings-notifications-comments-you-follow-toggle-button"
-          settingName = "commentsYouFollowNotifs"
-          pageName = "notifications"
-          setUserSettings = {setUserSettings}
-          toggleButton={true}
-          isToggled={true}
-      />
     </div>
   );
 }

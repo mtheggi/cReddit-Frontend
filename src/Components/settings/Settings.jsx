@@ -54,11 +54,11 @@ function Settings() {
   useEffect(() => {
     getRequest(`${baseUrl}/user/settings`)
       .then((res) => {
-        console.log(res.data);
+    
         setUserSettings(res.data);
       })
       .catch((err) => {
-        console.log(err);
+
       });
   }, []);
 

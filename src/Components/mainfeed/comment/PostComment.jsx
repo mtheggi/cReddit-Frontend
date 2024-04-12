@@ -15,7 +15,8 @@ const PostComment = ({
   isUpvoted,
   isDownvoted,
   profilePicture,
-  isSaved, }) => {
+  isSaved 
+}) => {
 
 
   return (
@@ -39,8 +40,7 @@ const PostComment = ({
         >
           <p className="text-white text-sm ml-3">{content}</p>
         </div>
-        <div
-          hidden={!isImage}
+        <div hidden={!isImage}
           className="ml-12 bg-reddit_greenyDark flex flex-row justify-start items-center"
         >
           <img
@@ -53,7 +53,7 @@ const PostComment = ({
       <div className="w-full ml-12 flex flex-wrap justify-start items-center">
         <div className="mt-3">
           <Vote
-            id={`mainfeed_${id}_vote`}
+            id={id}
             netVotes={netVote}
             isUpvoted={isUpvoted}
             isDownvoted={isDownvoted}
@@ -61,10 +61,10 @@ const PostComment = ({
         </div>
 
         <div className="ml-3 mt-3">
-          <Share id={`mainfeed_${id}_share`} />
+          <Share id={id} />
         </div>
         <div className="ml-3 mt-3">
-          <SaveComment id={`mainfeed_${id}_save`} Saved={isSaved} />
+          <SaveComment id={id} Saved={isSaved} />
         </div>
       </div>
     </div>

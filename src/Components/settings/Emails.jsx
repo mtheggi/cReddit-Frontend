@@ -31,8 +31,8 @@ function Emails({chatEmail, followEmail, setUserSettings}) {
           isToggled = {followEmail}
       />
 
-      <Subtitle title = "" />
-      <Setting
+
+      {/* <Setting
           title = "Unsubscribe from all emails"
           clickableID = "settings-emails-unsubscribe-from-all-emails-toggle-button"
           settingName = "unsubEmails"
@@ -40,7 +40,7 @@ function Emails({chatEmail, followEmail, setUserSettings}) {
           setUserSettings = {setUserSettings}
           toggleButton = {true}
           isToggled = {false}
-      />
+      /> */}
     </div>
   );
 }

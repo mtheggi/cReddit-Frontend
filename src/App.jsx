@@ -15,11 +15,12 @@ import EmailVerification from "./Components/authentication/reset_components/Emai
 import CreatePost from "./Components/create_post/CreatePost";
 import { UserContext } from "./context/UserContext";
 import Loading from "./Components/Loading/Loading";
+import Community from "./views/Community";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
-  const { isLoading } = useContext(UserContext);
+  const { isLoading, isLoggedIn } = useContext(UserContext);
   const navbarRef = useRef();
   return (
     isLoading ? (
@@ -53,7 +54,7 @@ function App() {
                 />
               }
             />
-             <Route
+            <Route
               path={"/:param3/:param1/comments/:param2"}
               element={
                 <Home
@@ -63,10 +64,11 @@ function App() {
                 />
               }
             />
-            <Route path="/settings/*" element={<Settings />} />
-            <Route path="/submit" element={<CreatePost />} />
+            {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
+            {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
+
+            <Route path="/r/:name" element={<Community />} />
             <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} />
-            
           </Routes>
         </div>
       </Router>

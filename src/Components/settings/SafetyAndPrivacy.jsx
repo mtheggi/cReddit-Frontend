@@ -71,41 +71,47 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
         title="People You’ve Blocked"
         message="Blocked people can’t send you chat requests or private messages."
       />
-      <FloatingInput
-        id="safety-block-user-input"
-        label="BLOCK NEW USER"
-        buttonText="ADD"
-        onSubmit={onBlockUser}
-      />
-      {currBlockedUsers &&
-        currBlockedUsers.map((user) => (
-          <BlockedEntity
-            key={user.username}
-            entityName={user.username}
-            timestamp={user.blockTimestamp}
-            onUnblock={() => onUnBlockUser(user.username)}
-          />
-        ))}
+
+      <div className="  w-90% max-w-3xl h-fit flex flex-col">
+        <FloatingInput
+          id="safety-block-user-input"
+          label="BLOCK NEW USER"
+          buttonText="ADD"
+          onSubmit={onBlockUser}
+        />
+        {currBlockedUsers &&
+          currBlockedUsers.map((user) => (
+            <BlockedEntity
+              key={user.username}
+              entityName={user.username}
+              timestamp={user.blockTimestamp}
+              onUnblock={() => onUnBlockUser(user.username)}
+            />
+          ))}
+      </div>
 
       <Setting
         title="Communities You've Muted"
         message="Posts from muted communities won't show up in your feeds or recommendations."
       />
-      <FloatingInput
-        id="safety-mute-community-input"
-        label="MUTE NEW COMMUNITY"
-        buttonText="ADD"
-        onSubmit={onMuteCommunity}
-      />
-      {currBlockedCommunities &&
-        currBlockedCommunities.map((community) => (
-          <BlockedEntity
-            key={community.communityName}
-            entityName={community.communityName}
-            timestamp={community.muteTimestamp}
-            onUnblock={() => onUnMuteCommunity(community.communityName)}
-          />
-        ))}
+
+      <div className="  w-90% max-w-3xl h-fit flex flex-col">
+        <FloatingInput
+          id="safety-mute-community-input"
+          label="MUTE NEW COMMUNITY"
+          buttonText="ADD"
+          onSubmit={onMuteCommunity}
+        />
+        {currBlockedCommunities &&
+          currBlockedCommunities.map((community) => (
+            console.log(currBlockedCommunities),
+            <BlockedEntity
+             key={community.communityName}
+              entityName={community.communityName}
+              onUnblock={() => onUnMuteCommunity(community.communityName)}
+            />
+          ))}
+      </div>
     </div>
   );
 }
