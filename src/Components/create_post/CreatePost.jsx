@@ -26,7 +26,7 @@ const CreatePost = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [inputFields, setInputFields] = useState([{ id: uuidv4(), value: '' }, { id: uuidv4(), value: '' }]);
-    const [voteDurationValue, setVoteDurationValue] = useState("3 Days");
+    const [voteDurationValue, setVoteDurationValue] = useState(3);
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isNSFW, setIsNSFW] = useState(false);
     const [yourOrAllCommunities, setYourOrAllCommunities] = useState("YOUR COMMUNITIES");
@@ -67,7 +67,7 @@ const CreatePost = () => {
     const getExpirationDate = (voteDurationValue) => {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + parseInt(voteDurationValue));
-        return expirationDate.toLocaleString('en-GB').replace(',', '');
+        return expirationDate.toISOString();
     }
 
     const handleSubmitOtherTypes = async () => {
@@ -369,25 +369,25 @@ const CreatePost = () => {
 
                                                     <ul className="text-xs border-[0.5px] rounded-sm border-gray-400" aria-labelledby="dropdownInformationButton">
                                                         <li id="vote_1_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('1 Day')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '1 Day' ? 'bg-reddit_search_light' : ''}`}>1 Day</p>
+                                                            <p onClick={() => setVoteDurationValue(1 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 1  ? 'bg-reddit_search_light' : ''}`}>1 Day</p>
                                                         </li>
                                                         <li id="vote_2_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('2 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '2 Days' ? 'bg-reddit_search_light' : ''}`}>2 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(2 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 2 ? 'bg-reddit_search_light' : ''}`}>2 Days</p>
                                                         </li>
                                                         <li id="vote_3_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('3 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '3 Days' ? 'bg-reddit_search_light' : ''}`}>3 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(3 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 3  ? 'bg-reddit_search_light' : ''}`}>3 Days</p>
                                                         </li>
                                                         <li id="vote_4_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('4 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '4 Days' ? 'bg-reddit_search_light' : ''}`}>4 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(4 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 4 ? 'bg-reddit_search_light' : ''}`}>4 Days</p>
                                                         </li>
                                                         <li id="vote_5_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('5 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '5 Days' ? 'bg-reddit_search_light' : ''}`}>5 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(5 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 5 ? 'bg-reddit_search_light' : ''}`}>5 Days</p>
                                                         </li>
                                                         <li id="vote_6_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue('6 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '6 Days' ? 'bg-reddit_search_light' : ''}`}>6 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(6 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 6  ? 'bg-reddit_search_light' : ''}`}>6 Days</p>
                                                         </li>
                                                         <li id="vote_7_day" className={`cursor-pointer`}>
-                                                            <p onClick={() => setVoteDurationValue('7 Days')} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == '7 Days' ? 'bg-reddit_search_light' : ''}`}>7 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(7)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 7  ? 'bg-reddit_search_light' : ''}`}>7 Days</p>
                                                         </li>
 
                                                     </ul>

@@ -1,17 +1,19 @@
 
 import Share from './Share';
-import Comment from './Comment';
+import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
 import { getRequest, patchRequest } from '@/services/Requests';
-import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon,ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-
+// import {useHistory} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 
 const Post = ({
     id,
+    postId,
     title,
     username,
     communityName,
@@ -29,7 +31,8 @@ const Post = ({
     pollOptions,
     expirationDate,
     isHidden,
-    isSaved
+    isSaved,
+    isSinglePostSelected
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -44,6 +47,7 @@ const Post = ({
     const [hasExpired, setHasExpired] = useState(moment(expirationDate).isBefore(moment()));
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
+    const navigate = useNavigate();
     function formatNumber(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -164,7 +168,7 @@ const Post = ({
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
                 id={"mainfeed_" + id + "_full"}
-                className={`flex flex-col bg-reddit_greenyDark hover:bg-reddit_hover ${isOpenDots ? "bg-reddit_hover" : ""
+                className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected? "":'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
                     } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
@@ -173,14 +177,18 @@ const Post = ({
                         href=""
                         className="flex items-center w-fit"
                     >
-                        <img src={profilePicture} alt="Logo" className="w-6 rounded-full h-6" />
+                        {isSinglePostSelected && 
+                        <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <ArrowLeftIcon className='text-white w-6 h-6'/>
+                        </div>}
+                        <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected?'w-8 h-8':'w-6 h-6'} rounded-full `} />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                             {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
                         </p>
                     </div>
 
                     <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
-                        <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5">.</p>
+                        <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
                         <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
                             {uploadedFrom}
                         </p>
@@ -348,7 +356,7 @@ const Post = ({
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
                     />
-                    <Comment id={id} commentCount={commentCount} />
+                    <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
             </div>
