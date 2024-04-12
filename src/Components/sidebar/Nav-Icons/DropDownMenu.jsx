@@ -102,7 +102,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                 <NavIcon id={toSnakeCase("Careers")} href="#" text="Careers" ><WrenchIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Press")} href="#" text="Press" ><MicrophoneIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <Separator />
-                <NavIcon id={toSnakeCase("Communties")} href="#" text="Communties" ><UserGroupIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
+                <NavIcon id={toSnakeCase("Communties")} href="/best/communities" text="Communties" ><UserGroupIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Best of Reddit")} href="#" text="Best of Reddit" ><BoltIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Topics")} href="#" text="Topics" ><RectangleGroupIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <Separator />
