@@ -90,7 +90,7 @@ function CommentSection({
           </button>
           <div 
             onClick={addComment}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment||comment.trim()==""))?'cursor-not-allowed':""} `}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment||comment.trim()==""))?'cursor-not-allowed':"cursor-pointer"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}

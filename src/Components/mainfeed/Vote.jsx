@@ -138,7 +138,6 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       setPosts(prevPosts => {
         return prevPosts.map(post => {
           if (post._id === id) {
-            console.log(newVoters);
             return {
               ...post,
               netVote: newVoters,
@@ -186,7 +185,6 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       setPosts(prevPosts => {
         return prevPosts.map(post => {
           if (post._id === id) {
-            console.log(newVoters);
             return {
               ...post,
               netVote: newVoters,

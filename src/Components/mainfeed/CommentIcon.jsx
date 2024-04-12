@@ -16,6 +16,32 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
             return num;
         }
     }
+
+    const smoothScroll = (element, target, duration) => {
+        let start = element.scrollTop,
+            change = target - start,
+            currentTime = 0,
+            increment = 20;
+
+        const animateScroll = function() {
+            currentTime += increment;
+            let val = Math.easeInOutQuad(currentTime, start, change, duration);
+            element.scrollTop = val;
+            if(currentTime < duration) {
+                window.requestAnimationFrame(animateScroll);
+            }
+        };
+        animateScroll();
+    }
+
+    Math.easeInOutQuad = function (t, b, c, d) {
+        t /= d/2;
+        if (t < 1) return c/2*t*t + b;
+        t--;
+        return -c/2 * (t*(t-2) - 1) + b;
+    };
+
+
     return (
         <div onClick={() => {
             const url = location.pathname;
@@ -28,8 +54,14 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
                     navigate(`r/${communityName}/comments/${id}`)
             }
             else {
-                const element = document.getElementById('mainfeed');
-                element.scrollTop += 100;
+                const element = document.getElementById('mainfeed_comment_category_dropdown');
+                const mainfeed = document.getElementById('mainfeed');
+                console.log(element, mainfeed);
+                if (element && mainfeed) {
+                    
+                    const position = element.offsetTop - mainfeed.offsetTop - 10;
+                    smoothScroll(mainfeed, position, 300);
+                }
             }
         }
         }

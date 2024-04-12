@@ -27,7 +27,7 @@ const Comment = ({ postId }) => {
             if (response.status == 200 || response.status == 201) {
                 setPostComments(response.data);
             }
-            setIsLoading(false); 
+            setIsLoading(false);
         }
         getSinglepostComments(postId);
 
@@ -39,15 +39,17 @@ const Comment = ({ postId }) => {
             if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
                 setIsOpenCateg(false);
             }
-
         };
         document.addEventListener("click", closeDropdown);
 
         const mainfeedElement = document.getElementById("mainfeed");
 
         const handleScroll = () => {
-            const scrollThreshold = 58;
-            if (mainfeedElement.scrollTop > scrollThreshold) {
+            const dropdownElement = document.getElementById("mainfeed_comment_category_dropdown");
+            const dropdownRect = dropdownElement.getBoundingClientRect();
+            const isVisible = dropdownRect.top >= 55 && dropdownRect.bottom <= window.innerHeight - 250;
+
+            if (!isVisible) {
                 setIsOpenCateg(false);
             }
         };
@@ -62,10 +64,9 @@ const Comment = ({ postId }) => {
                 mainfeedElement.removeEventListener("scroll", handleScroll);
             }
         };
-    });
+    }, []);
 
-
-
+ 
 
     return (
         <div>
@@ -79,7 +80,7 @@ const Comment = ({ postId }) => {
                         className="relative w-fit"
                     >
                         <div
-                            onClick={() => setIsOpenCateg((prev) => !prev)}
+                            onClick={() => { setIsOpenCateg((prev) => !prev); handleTransition() }}
                             className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
                                 } justify-center items-center cursor-pointer`} >
                             <p className="text-gray-500 font-semibold text-xs no-select ">
@@ -89,7 +90,7 @@ const Comment = ({ postId }) => {
                         </div>
 
                         {isOpenCateg && (
-                            <div className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
+                            <div id="tempID" className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
                                 <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                                     <p className="no-select">Sort by</p>
                                 </div>

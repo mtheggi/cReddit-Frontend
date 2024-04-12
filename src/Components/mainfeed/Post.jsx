@@ -183,7 +183,7 @@ const Post = ({
             <div
                 id={"mainfeed_" + id + "_full"}
                 className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
-                    } px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
+                    } px-1 xs:px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
                     <div
@@ -299,11 +299,11 @@ const Post = ({
                             <div
                                 id={"mainfeed_" + id + "_" + type}
                                 className="w-full h-full mt-2">
-                                <div className={`relative flex-row rounded-lg p-2 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div className={`relative flex-row   rounded-lg p-2 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
                                     {
                                         content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`rounded-lg`} controls /> :
-                                            <img src={content} alt="Post" className={`rounded-lg`} />
+                                            <video src={content} alt="Post" className={`max-h-150 rounded-lg`} controls /> :
+                                            <img src={content} alt="Post" className={` max-h-150 rounded-lg`} />
                                     }
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}

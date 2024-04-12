@@ -259,7 +259,7 @@ const Mainfeed = () => {
 
 
       {!isSinglePostSelected && posts.map((post, i) => (
-        console.log(post),
+  
         <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
       ))}
 
