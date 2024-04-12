@@ -14,7 +14,7 @@ import { UserContext } from '@/context/UserContext';
 
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
-    const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
+    const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
     const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
@@ -250,7 +250,7 @@ const CreatePost = () => {
                             </div>
                         </li>
 
-                        <ul className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
+                        <ul data-testid="joined-subreddits" className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
                             {joinedSubreddits.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
@@ -426,7 +426,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2) != user) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file == null && type == "Images & Video") || (type == "Link" && content.trim() == "") ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
+                        <div onClick={handleSubmitPost} id='submit_post' data-testid="submit_post" className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2) != user) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file == null && type == "Images & Video") || (type == "Link" && content.trim() == "") ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
                             <p className=' ml-1 mr-0.5   text-sm'>Post</p>
                         </div>
                     </div>
