@@ -254,7 +254,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                         </div>
                                     </div>
 
-                                    {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-52 mt-104 h-88 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
+                                    {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-46 mt-90 h-72 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
 
                                         <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
                                             <div className='flex flex-row w-full'>

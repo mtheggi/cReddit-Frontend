@@ -16,6 +16,7 @@ import CreatePost from "./Components/create_post/CreatePost";
 import { UserContext } from "./context/UserContext";
 import Loading from "./Components/Loading/Loading";
 import Community from "./views/Community";
+import TopCommunities from "./Components/topcommunities/TopCommunities";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -66,7 +67,7 @@ function App() {
             />
             {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
             {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
-
+            <Route path="/best/communities" element={<TopCommunities />} />
             <Route path="/r/:name" element={<Community />} />
             <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} />
           </Routes>
