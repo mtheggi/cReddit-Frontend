@@ -3,14 +3,14 @@ import Share from './Share';
 import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
-import { getRequest, patchRequest } from '@/services/Requests';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
 // import {useHistory} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
-import {Save} from './comment/CommentUtils';
+import { Save } from './comment/CommentUtils';
 
 const Post = ({
     id,
@@ -49,7 +49,7 @@ const Post = ({
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
-
+    const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
 
     const navigate = useNavigate();
 
@@ -57,9 +57,9 @@ const Post = ({
     async function handleClickSave() {
         setSaved((prev) => !prev);
         if (!await Save(id, saved)) {
-        setSaved((prev) => !prev);
+            setSaved((prev) => !prev);
         }
-      }
+    }
 
     function formatNumber(num) {
         if (num >= 1000000) {
@@ -177,6 +177,18 @@ const Post = ({
             setCurrentIsHidden(prev => !prev);
         }
     }
+    const handleJoinSubreddit = async () => {
+        setIsSubbredditJoined(prev => !prev);
+        let response = null;
+        if ((isSubbredditJoined)) {
+            response = await deleteRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        } else {
+            response = await postRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        }
+        if (!(response.status === 200 || response.status === 201)) {
+            setIsSubbredditJoined(prev => !prev);
+        }
+    }
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
@@ -208,8 +220,8 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-                            <h1 className='text-[12px] font-medium text-white'>Join</h1>
+                        {!(communityName === null) && <div onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                            <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
                             id={"mainfeed_" + id + "_menu"}

@@ -29,9 +29,6 @@ export const UserContextProvider = ({ children }) => {
     useEffect(() => {
         // console.log("runned")
         async function getUserData() {
-            // setIsLoading(true);
-
-            // console.log("islogged", isLoggedIn);
             const response = await getRequest(`${baseUrl}/user`);
             if (response && response.status === 200) {
                 setUser(response.data.username);

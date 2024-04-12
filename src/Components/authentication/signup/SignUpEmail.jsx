@@ -47,6 +47,7 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
         async function sendToken() {
             if (OAuthAccessToken) {
                 const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
+
                 if (response.status !== 200 && response.status !== 201) {
                     setOauthSignUpError(response.data.message);
                     LoginFailedToast(response.data.message);
