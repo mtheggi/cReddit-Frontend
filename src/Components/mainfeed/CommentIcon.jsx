@@ -27,6 +27,10 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
             else
                 navigate(`r/${communityName}/comments/${id}`)
             }
+            else
+            {
+                window.scrollBy(0, 100);
+            }
           }
         }
             id={"mainfeed_" + id + "_comment"} className="flex justify-center cursor-pointer flex-row items-center min-w-18 h-8 w-fit  bg-reddit_search hover:bg-reddit_search_light rounded-3xl">

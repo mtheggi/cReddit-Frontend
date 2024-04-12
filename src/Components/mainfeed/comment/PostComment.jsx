@@ -15,7 +15,8 @@ const PostComment = ({
   isUpvoted,
   isDownvoted,
   profilePicture,
-  isSaved, }) => {
+  isSaved 
+}) => {
 
 
   return (
@@ -53,7 +54,7 @@ const PostComment = ({
       <div className="w-full ml-12 flex flex-wrap justify-start items-center">
         <div className="mt-3">
           <Vote
-            id={`mainfeed_${id}_vote`}
+            id={id}
             netVotes={netVote}
             isUpvoted={isUpvoted}
             isDownvoted={isDownvoted}
@@ -61,10 +62,10 @@ const PostComment = ({
         </div>
 
         <div className="ml-3 mt-3">
-          <Share id={`mainfeed_${id}_share`} />
+          <Share id={id} />
         </div>
         <div className="ml-3 mt-3">
-          <SaveComment id={`mainfeed_${id}_save`} Saved={isSaved} />
+          <SaveComment id={id} Saved={isSaved} />
         </div>
       </div>
     </div>
