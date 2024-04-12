@@ -218,7 +218,7 @@ const CreatePost = () => {
                 </div>
 
                 <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
-                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
+                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
                         <input autoComplete='off' onChange={() => { !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("YOUR COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -369,25 +369,25 @@ const CreatePost = () => {
 
                                                     <ul className="text-xs border-[0.5px] rounded-sm border-gray-400" aria-labelledby="dropdownInformationButton">
                                                         <li id="vote_1_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(1 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 1  ? 'bg-reddit_search_light' : ''}`}>1 Day</p>
+                                                            <p onClick={() => setVoteDurationValue(1)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 1 ? 'bg-reddit_search_light' : ''}`}>1 Day</p>
                                                         </li>
                                                         <li id="vote_2_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(2 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 2 ? 'bg-reddit_search_light' : ''}`}>2 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(2)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 2 ? 'bg-reddit_search_light' : ''}`}>2 Days</p>
                                                         </li>
                                                         <li id="vote_3_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(3 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 3  ? 'bg-reddit_search_light' : ''}`}>3 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(3)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 3 ? 'bg-reddit_search_light' : ''}`}>3 Days</p>
                                                         </li>
                                                         <li id="vote_4_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(4 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 4 ? 'bg-reddit_search_light' : ''}`}>4 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(4)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 4 ? 'bg-reddit_search_light' : ''}`}>4 Days</p>
                                                         </li>
                                                         <li id="vote_5_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(5 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 5 ? 'bg-reddit_search_light' : ''}`}>5 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(5)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 5 ? 'bg-reddit_search_light' : ''}`}>5 Days</p>
                                                         </li>
                                                         <li id="vote_6_day" className={`cursor-pointer border-b-[0.5px] border-gray-400`}>
-                                                            <p onClick={() => setVoteDurationValue(6 )} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 6  ? 'bg-reddit_search_light' : ''}`}>6 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(6)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 6 ? 'bg-reddit_search_light' : ''}`}>6 Days</p>
                                                         </li>
                                                         <li id="vote_7_day" className={`cursor-pointer`}>
-                                                            <p onClick={() => setVoteDurationValue(7)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 7  ? 'bg-reddit_search_light' : ''}`}>7 Days</p>
+                                                            <p onClick={() => setVoteDurationValue(7)} className={`block px-4 py-2  text-gray-200 hover:bg-reddit_search_light ${voteDurationValue == 7 ? 'bg-reddit_search_light' : ''}`}>7 Days</p>
                                                         </li>
 
                                                     </ul>
