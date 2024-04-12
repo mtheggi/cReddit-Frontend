@@ -53,7 +53,7 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
                     <p className="text-xs text-gray-400" style={{overflowWrap: 'break-word', ...textStyle}}>{truncateDescription(description)}</p>
                 </div>
             </div>
-            <button ref={buttonRef} onClick={toggleDropdown} className="ml-3 text-white hover:text-reddit_text hover:bg-gray-600 p-2 rounded-full">
+            <button id="notification-item-dropdown-button" ref={buttonRef} onClick={toggleDropdown} className="ml-3 text-white hover:text-reddit_text hover:bg-gray-600 p-2 rounded-full">
                 <svg width="20" height="5" fill="currentColor" viewBox="0 0 18 6" xmlns="http://www.w3.org/2000/svg" style={{ transform: 'scale(0.83)', ...textStyle }}>
                     <circle cx="3" cy="3" r="1.5" />
                     <circle cx="9" cy="3" r="1.5" />
@@ -62,7 +62,7 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
             </button>
             {dropdownOpen && (
                 <div ref={dropdownRef} className="absolute right-0 mt-4 py-2 w-48 bg-reddit_dark rounded-md shadow-xl z-50">
-                    <a href="#" onClick={() => onRemove(notificationKey)} className="block px-4 py-2 text-sm text-white hover:bg-gray-500" style={textStyle}>Hide this notification</a>
+                    <a id="notification-item-hide-notification-button" onClick={() => onRemove(notificationKey)} className="block px-4 py-2 text-sm text-white hover:bg-gray-500" style={textStyle}>Hide this notification</a>
                     <a href="#" className="block px-4 py-2 text-sm text-white hover:bg-gray-500" style={textStyle}>Don't get updates on this</a>
                 </div>
             )}
