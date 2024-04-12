@@ -18,15 +18,15 @@ const RecentRow = ({ id, post }) => {
     function formatVotes(num) {
         let absoluteNum = Math.abs(num);
         let sign = num < 0 ? '-' : '';
-    
+
         if (absoluteNum >= 1000000) {
-          return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
+            return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
         } else if (absoluteNum >= 1000) {
-          return sign + (absoluteNum / 1000).toFixed(1) + 'K';
+            return sign + (absoluteNum / 1000).toFixed(1) + 'K';
         } else {
-          return num.toString();
+            return num.toString();
         }
-      }
+    }
 
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const RecentRow = ({ id, post }) => {
 
                 {
                     containsImage && <div id={id + "_post_img"} onClick={handleSubmitPost} className='min-w-21 w-21 h-full no-select cursor-pointer'>
-                        <img src={post.content} alt="" className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} />
+                        {post.content.endsWith("mp4") ? <video src={post.content} alt='' className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} /> : <img src={post.content} alt="" className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} />}
                     </div>
                 }
             </div >

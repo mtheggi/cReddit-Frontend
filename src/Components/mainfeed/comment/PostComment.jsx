@@ -40,8 +40,7 @@ const PostComment = ({
         >
           <p className="text-white text-sm ml-3">{content}</p>
         </div>
-        <div
-          hidden={!isImage}
+        <div hidden={!isImage}
           className="ml-12 bg-reddit_greenyDark flex flex-row justify-start items-center"
         >
           <img

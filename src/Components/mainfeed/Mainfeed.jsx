@@ -142,12 +142,23 @@ const Mainfeed = () => {
     };
   });
 
+  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post.id === id) {
+        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
+      }
+      return post;
+    }));
+  };
+
+
+
   return (
     <div
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >
-      <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
+      {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
           ref={menuRefCateg}
@@ -247,22 +258,23 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
-      </div>
-      <div className=" h-1 px-2.5 flex w-full">
+      </div>}
+      <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
         <Separator />
       </div>
 
 
       {!isSinglePostSelected && posts.map((post, i) => (
-        <Post id={post._id} key={i} {...post} />
+        console.log(post),
+        <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
       ))}
 
       {isSinglePostSelected && loadingPost && <Loading />}
 
       {isSinglePostSelected && !loadingPost &&
         <>
-          <Post id={selectedPost._id} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-          <Comment postId={selectedPost._id}/>
+          <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+          <Comment postId={selectedPost._id} />
         </>
       }
 
