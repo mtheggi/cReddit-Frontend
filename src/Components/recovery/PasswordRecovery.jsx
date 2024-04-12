@@ -41,7 +41,7 @@ const PasswordRecovery = () => {
               <div className="flex flex-col">
                 <div className="min-h-[70px] px-2 mt-4">
                   <FloatingInput
-                    id="new_password"
+                    id="password_recovery_new_password"
                     label="New Password"
                     validateInput={validatePassword}
                     setInputNameOnChange={setPassword}
@@ -52,7 +52,7 @@ const PasswordRecovery = () => {
 
                 <div className="min-h-[70px] px-2 mt-4">
                   <FloatingInput
-                    id="confirm_password"
+                    id="password_recovery_confirm_password"
                     label="Confirm New Password"
                     validateInput={validatePassword}
                     setInputNameOnChange={setConfirmPassword}
