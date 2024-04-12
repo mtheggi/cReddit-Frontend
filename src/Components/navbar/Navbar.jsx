@@ -322,7 +322,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </Link>
 
-                                <div className="flex justify-center items-center w-fit h-fit">
+                                <div className="flex relative justify-center items-center w-fit h-fit">
                                     <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" 
                                         onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false);}} 
                                         onMouseEnter={handleMouseEnterBellIcon}

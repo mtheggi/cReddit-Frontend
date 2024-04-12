@@ -37,7 +37,7 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
     const titleSpacingStyle = isNewNotificationsPage ? { marginBottom: '6px' } : {}; 
 
     return (
-        <div className="relative flex items-start justify-between p-3 cursor-pointer hover:bg-reddit_dark-brighter rounded-md w-full">
+        <div className="relative flex items-start justify-between py-2 px-1 cursor-pointer hover:bg-reddit_dark-brighter rounded-md w-full">
             <div className="flex space-x-3 w-full">
                 <div className="flex-shrink-0">
                     <img src={image} alt="Notification Image" className="h-8 w-8 rounded-full" />

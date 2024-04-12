@@ -66,7 +66,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
     return (
         <div
             ref={!isNewNotificationsPage ? reference : null}
-            className={`${isNewNotificationsPage ? 'bg-reddit text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center w-full h-full' : ' w-90 mr-80 mt-148 h-130 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'}`}
+            className={`${isNewNotificationsPage ? 'bg-reddit text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col items-center w-full h-full' : ' w-90 h-fit -right-0 shadow-lg  shadow-black top-11 z-10 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-3xl font-extralight flex flex-col'}`}
             
         >
             {isNewNotificationsPage && (
@@ -91,7 +91,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                 </div>
             </div>
 
-            <div className='w-full px-4 py-2 flex justify-between items-center'>
+            <div className='w-full px-2 py-2 flex justify-between items-center'>
                 {activeTab === 'Notifications' && (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem', width: '100%' }}>
