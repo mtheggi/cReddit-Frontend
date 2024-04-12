@@ -5,7 +5,6 @@ import { postRequest, getRequest, postRequestImg, patchRequest } from "../../../
 export async function submitComment(postId, image, text, isImage) {
     let url = `${baseUrl}/comment`;
 
-    
 
     const formData = new FormData();
     formData.append('postId', postId);

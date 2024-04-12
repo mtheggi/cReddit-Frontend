@@ -1,9 +1,27 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
-function DropImage({ id, handleFileChange }) {
+function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
+
   const [previewSrc, setPreviewSrc] = useState(null);
+
+
+  useEffect(() => {
+    console.log(userBanner);
+
+    if(userProfilePicture)
+    {
+      setPreviewSrc(userProfilePicture);
+    }
+
+    if(userBanner)
+    {
+      setPreviewSrc(userBanner);
+   
+    }
+  }, [userBanner]);
+
 
   const onDrop = useCallback((acceptedFiles) => {
     handleFileChange({
@@ -44,7 +62,7 @@ function DropImage({ id, handleFileChange }) {
           <img className="h-full" src={previewSrc} alt="preview" />
         </div>
         <div className="absolute hover:bg-reddit_search_light rounded-full w-9 h-9 flex flex-row justify-center items-center right-2 top-1" onClick={removeImage}>
-          <XMarkIcon className="w-7 text-gray-200 h-7"/>
+          <XMarkIcon className="w-7 text-gray-200 h-7" />
         </div>
       </div>}
     </div>

@@ -66,14 +66,14 @@ const Comment = ({ postId }) => {
         };
     }, []);
 
- 
+
 
     return (
         <div>
             {isLoading ? (
                 <Loading />
             ) : (
-                <div>
+                <div className="w-full flex flex-col px-2">
                     <div
                         id="mainfeed_comment_category_dropdown"
                         ref={menuRefCateg}
@@ -81,7 +81,7 @@ const Comment = ({ postId }) => {
                     >
                         <div
                             onClick={() => { setIsOpenCateg((prev) => !prev); handleTransition() }}
-                            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
+                            className={`flex w-14 -ml-1 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
                                 } justify-center items-center cursor-pointer`} >
                             <p className="text-gray-500 font-semibold text-xs no-select ">
                                 {selectedSort}
@@ -129,8 +129,7 @@ const Comment = ({ postId }) => {
                             </div>
                         )}
                     </div>
-                    <AddComment postId={postId} setPostComments={setPostComments} onAddComment={onAddComment} isCommenting={isCommenting} setIsCommenting={setIsCommenting} />
-
+                    <AddComment postId={postId} setPostComments={setPostComments} onAddComment={onAddComment} isCommenting={isCommenting} setIsCommenting={setIsCommenting} selectedSort={selectedSort} />
                     {postComments.map((comment, index) => (
                         <PostComment
                             key={index}
@@ -142,7 +141,6 @@ const Comment = ({ postId }) => {
                     {postComments.length == 0 && !isLoading && (
                         <NoComments />
                     )}
-
                 </div>
             )}
         </div>

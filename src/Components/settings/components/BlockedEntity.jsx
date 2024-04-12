@@ -6,21 +6,20 @@ function BlockedEntity({ entityName, timestamp, onUnblock }) {
   const timeAgo = moment(timestamp).fromNow();
 
   return (
-    <div className="flex flex-row max-w-3xl mt-4 text-white font-plex">
+    <div className="flex flex-row mt-4 text-white font-plex">
       <div className="w-full flex flex-row justify-start items-center">
         <h3 className="text-sm mr-2 pb-0.5">{entityName}</h3>
         <h6 className="text-xs text-gray-500">{timeAgo}</h6>
-      </div>
-
-      <div className="w-full flex flex-row justify-end items-center">
         <button
-          className="bg-reddit_greenyDark rounded-r-md font-bold text-sm"
+          className="bg-reddit_greenyDark ml-auto rounded-r-md font-bold text-sm"
           onClick={onUnblock}
         >
           REMOVE
         </button>
       </div>
+
     </div>
+
   );
 }
 export default BlockedEntity;

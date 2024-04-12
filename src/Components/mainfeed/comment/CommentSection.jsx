@@ -3,6 +3,8 @@ import { useDropzone } from "react-dropzone";
 import CancelComment from "./CancelComment";
 import { submitComment } from "./CommentUtils";
 import DropCommentImage from "./DropCommentImage";
+import { getRequest } from "../../../services/Requests";
+import { baseUrl } from "../../../constants";
 
 
 function CommentSection({
@@ -11,7 +13,8 @@ function CommentSection({
   setIsCommenting,
   onAddComment,
   setPostComments,
-  isImage
+  isImage,
+  selectedSort
 }) {
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
@@ -23,7 +26,13 @@ function CommentSection({
     setImage(e.target.files[0]);
   }
 
-
+  const getSinglepostComments = async (selectedPostId) => {
+    const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
+    if (response.status == 200 || response.status == 201) {
+        setPostComments(response.data);
+    }
+    setIsLoading(false);
+}
 
   useEffect(() => {
     if (isCommenting) {
@@ -36,7 +45,7 @@ function CommentSection({
     const newComment = await submitComment(postId, image, comment, isImage);
     if (!newComment) return;
     onAddComment(newComment);
-    setPostComments((prevComments) => [newComment, ...prevComments]);
+    getSinglepostComments(postId);
     setComment("");
     setImage(null);
     setIsCommenting(false);

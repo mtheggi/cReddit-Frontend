@@ -12,6 +12,6 @@ export async function blockUser(username) {
 export async function blockCommunity(communityName) {
     if (!communityName) return false;
     console.log(`Blocking community ${communityName}`)
-    const res = await postRequest(`${baseUrl}/user/block-community/${communityName}`);
+    const res = await postRequest(`${baseUrl}/subreddit/${communityName}/mute`);
     return (res.status === 200);
 }
