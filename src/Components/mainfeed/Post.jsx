@@ -220,7 +220,7 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {!(communityName === null) && <div onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        {(communityName !== null) && <div onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
                             <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
@@ -235,9 +235,8 @@ const Post = ({
                                 className="h-6 w-6 outline-none"
                             />
                         </div>
-
                         {isOpenDots && (
-                            <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-[24px] mt-47 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
+                            <div className={`z-1 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
                                 <div onClick={handleClickSave}
                                     id={"mainfeed_" + id + "_menu_save"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -389,7 +388,7 @@ const Post = ({
                     <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
-            </div>
+            </div >
 
     );
 };
