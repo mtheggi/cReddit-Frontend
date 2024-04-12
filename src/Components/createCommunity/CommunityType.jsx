@@ -1,7 +1,7 @@
 
 import propTypes from "prop-types";
 
-const CommunityType = ({ type, typeDescription, children, handleRadioChange }) => {
+const CommunityType = ({ type, typeDescription, children, handleRadioChange, isChecked }) => {
     return (
 
         <div className="commuity-type flex flex-row px-3 py-3 items-center justify-between hover:bg-reddit_search rounded-xl">
@@ -13,7 +13,7 @@ const CommunityType = ({ type, typeDescription, children, handleRadioChange }) =
                 </span>
             </div>
 
-            <input type="radio" className="h-5 w-5 focus:ring-0 cursor-pointer" id={`${type}-community-type`} name="Type" onChange={handleRadioChange} />
+            <input type="radio" className="h-5 w-5 focus:ring-0 cursor-pointer" id={`${type}-community-type`} name="Type" onChange={handleRadioChange} checked={isChecked} />
 
         </div>
 

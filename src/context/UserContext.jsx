@@ -13,21 +13,17 @@ export const UserContextProvider = ({ children }) => {
         async function checkIfLoggedIn() {
             setIsLoading(true);
             const response = await getRequest(`${baseUrl}/user/refresh-token`);
-            // console.log("refresh token context ")
-            // console.log(response);
             if (response.status === 200) {
                 setIsLoggedIn(true);
             } else {
                 setIsLoggedIn(false);
             }
-            // setIsLoading(false);
         }
 
         checkIfLoggedIn();
     }, [])
 
     useEffect(() => {
-        // console.log("runned")
         async function getUserData() {
             const response = await getRequest(`${baseUrl}/user`);
             if (response && response.status === 200) {
