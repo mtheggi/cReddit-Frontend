@@ -22,12 +22,12 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
     useEffect(() => {
         async function getHistory() {
-            const response = await getRequest(`${baseUrl}/user/history`);
+            const response = await getRequest(`${baseUrl}/user/history?limit=7`);
             setUserHistoryRes(response);
             if (response.status == 200 || response.status == 201)
                 localStorage.setItem('userHistory', JSON.stringify(response.data));
             else
-                localStorage.setItem('userHistory',(null));
+                localStorage.setItem('userHistory', (null));
         }
         getHistory();
     }, [isLoggedIn])

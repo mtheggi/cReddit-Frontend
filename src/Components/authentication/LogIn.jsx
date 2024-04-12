@@ -49,8 +49,8 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
     async function sendToken() {
       if (OAuthAccessToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, { googleToken: OAuthAccessToken });
-        console.log("accessToken", OAuthAccessToken);
-        console.log("Response ", response);
+        // console.log("accessToken", OAuthAccessToken);
+        // console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
           LoginFailedToast(response.data.message);
@@ -81,8 +81,8 @@ const LogIn = ({ setIsOpenedLoginMenu, setIsOpenedForgotPass, setIsOpenedForgotU
       closeOnClick
       rtl={false}
       draggable
-      theme="colored"/>
-      
+      theme="colored" />
+
     <div id="navbar_login_menu" className="flex pt-10 flex-col bg-reddit_menu msm:rounded-3xl h-full min-w-88 w-full px-6 msm:px-16">
 
       <div className="h-full flex flex-col">

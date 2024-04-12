@@ -22,6 +22,14 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
             }
         }
     }
+    const isAvailableSubredditName = async (subredditName) => {
+        if (validateInput(subredditName)) {
+            const response = await getRequest(`${baseUrl}/subreddit/is-name-available/${subredditName}`);
+            if (response.status !== 200 && response.status !== 201) {
+                setBackendValidationError(response.data.message);
+            }
+        }
+    }
 
     const handleGenerateUsername = async () => {
         const response = await getRequest(`${baseUrl}/user/generate-username`);
@@ -42,8 +50,8 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
     return (
         <div className='w-full flex-col h-16'>
-            <div onChange={(e) => { if (setBackendValidationError) { setBackendValidationError(null) }; if (setInputNameOnChange) { setInputNameOnChange(e.target.value) }; if (setBackendMessage) { setBackendMessage(null) } }} onBlur={(e) => { setInput(e.target.value); if (id == 'signup_username') { isAvailableUsername(e.target.value) } }} className={`relative flex items-center flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
-                <input ref={inputRef} onFocus={() => { setInput(null); setBackendUsernameError(null) }} onChange={(e) => {
+            <div onChange={(e) => { if (setBackendValidationError) { setBackendValidationError(null) }; if (setInputNameOnChange) { setInputNameOnChange(e.target.value) }; if (setBackendMessage) { setBackendMessage(null) } }} onBlur={(e) => { setInput(e.target.value); if (id == 'signup_username') { isAvailableUsername(e.target.value) }; if (id === "community-name") { isAvailableSubredditName(e.target.value) } }} className={`relative flex items-center flex-row z-0 bg-reddit_search rounded-2xl h-14 w-full hover:bg-reddit_search_light border-1 ${isRed ? 'border-red-400' : 'border-transparent'}`}>
+                <input ref={inputRef} onFocus={() => { setInput(null); setBackendUsernameError(null); }} onChange={(e) => {
                     if (e.target.value !== "") {
                         e.target.style.height = "24px";
                         e.target.style.marginTop = "20px";
@@ -57,8 +65,8 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
 
 
 
-                <div className={`${id=="signup_username"? 'mr-2':''}`}>
-                    {isRed ? (<ExclamationCircleIcon className={`text-red-400 ml-auto my-auto ${id=="signup_username"? '':'mr-3'} w-9 h-9`} />) : ''}
+                <div className={`${id == "signup_username" ? 'mr-2' : ''}`}>
+                    {isRed ? (<ExclamationCircleIcon className={`text-red-400 ml-auto my-auto ${id == "signup_username" ? '' : 'mr-3'} w-9 h-9`} />) : ''}
                     {isGreen ? (<CheckIcon className="text-green-400 ml-auto w-7 my-auto h-7" />) : ''}
                 </div>
 
@@ -76,7 +84,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
                         (input === '') && (<p className="text-red-400">Please fill out this field.</p>)
                     }
                     {
-                        (!validateInput(input) && !(input === '') && label != 'Password' && label!='Username') &&  <p className="text-red-400">Please enter a valid {label}.</p>
+                        (!validateInput(input) && !(input === '') && label != 'Password' && label != 'Username') && <p className="text-red-400">Please enter a valid {label}.</p>
                     }
                     {
                         (!validateInput(input) && !(input === '') && label == 'Password') && <p className="text-red-400">Please lengthen this {label} to 8 characters or more.</p>

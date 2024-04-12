@@ -4,11 +4,29 @@ import { XMarkIcon, GlobeAltIcon, EyeIcon, LockClosedIcon, ShieldExclamationIcon
 import "./CreateCommunity.css";
 import redditCare from "../../assets/reddit_care.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Separator from "../sidebar/Nav-Icons/Separator";
 import CommunityType from "./CommunityType";
 import SwitchButton from "./SwitchButton";
 import FloatingInput from "../authentication/FloatingInput";
+import { postRequest } from "@/services/Requests";
+import { baseUrl } from "@/constants";
+import { toast, ToastContainer } from "react-toastify";
+import { CustomToast } from "./CustomToast";
+const SuccessToast = (message) =>
+    toast.success(<CustomToast message={message} />,
+        {
+            toastId: "create-toast-success",
+            position: "bottom-center",
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
 
+        }
+    );
 const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     const validateCommName = (commName) => {
@@ -21,17 +39,52 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     }
 
     const [communityName, setCommunityName] = useState("");
-    const [selectedRadio, setSelectedRadio] = useState(""); 
+    const [selectedRadio, setSelectedRadio] = useState("Public-community-type");
     const [isMature, setIsMature] = useState(false);
+    const [communityNameError, setCommunityNameError] = useState(null);
+    const navigate = useNavigate();
 
+    const Checked = (selectedRadio, type) => {
+        const value = type + "-community-type"
+        if (selectedRadio === value) {
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    }
     const handleRadioChange = (e) => {
+        console.log(selectedRadio);
         setSelectedRadio(e.target.id);
     }
 
 
- 
+    const handleCreateCommunity = async () => {
+        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        if (response.status !== 200 && response.status !== 201) {
+            setCommunityNameError(response.data.message);
+        } else {
+            SuccessToast("Community created successfully");
+            console.log("Community created successfully");
+            setTimeout(() => {
+                setIsCommunityOpen(false);
+                navigate(`/r/${communityName}`);
+            }, 2000);
+        }
+    }
 
-    return (
+    return (<><ToastContainer
+        position="bottom-center"
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="colored"
+        autoClose={2000}
+    />
+
         <div className="community-modal flex flex-row items-center justify-center">
             <div className="overlay"></div>
             <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark min-w-88  z-20 text-white rounded-xl w-100% h-100% pt-auto flex flex-col xs:py-2 xs:h-fit xs:w-120 px-3 ">
@@ -49,31 +102,21 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
                     </div>
                     <div id="card-content" className="flex flex-col ">
                         <p className="mb-3 text-sm text-gray-400 hidden sm:block">Build and grow a community about something you care about. We will help you set things up.</p>
-                        {/* <input type="text"
-                        id="community-name"
-                        className="bg-reddit_search h-13 px-3 rounded-3xl hover:bg-reddit_search_light"
-                        placeholder="Name"
-                        value={communityName}
-                        onChange={(e) => setCommunityName(e.target.value)}
-                        maxLength="21"
-                        autoComplete="off"
-                        required
-                    /> */}
 
-                        {/* Replaced the upper normal input with the FloatingInput component */}
                         <div className="w-full px-1.5">
-                            <FloatingInput id="community-name" label="Community Name" validateInput={validateCommName} setInputNameOnChange={setCommunityName} />
+                            <FloatingInput id="community-name" label="Community Name" validateInput={validateCommName} setBackendValidationError={setCommunityNameError} backendValidationError={communityNameError} setInputNameOnChange={setCommunityName} />
+                            {communityNameError && <p className="mt-1 text-red-500 text-[13px]"> {communityNameError} </p>}
                         </div>
                         <div className="flex flex-col space-y-1">
                             <p className="text-sm mt-4 mb-2"><strong>Type</strong></p>
 
-                            <CommunityType type="Public" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} >
+                            <CommunityType type="Public" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} isChecked={Checked(selectedRadio, "Public")} >
                                 <GlobeAltIcon className="h-7 w-7 mr-3 text-gray-50" />
                             </ CommunityType >
-                            <CommunityType type="Restricted" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} >
+                            <CommunityType type="Restricted" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} isChecked={Checked(selectedRadio, "Restricted")}  >
                                 <EyeIcon className="h-7 w-7 mr-3 text-gray-50" />
                             </ CommunityType >
-                            <CommunityType type="Private" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} >
+                            <CommunityType type="Private" typeDescription="Anyone can view, post, and comment to this community" handleRadioChange={handleRadioChange} isChecked={Checked(selectedRadio, "Private")} >
                                 <LockClosedIcon className="h-7 w-7 mr-3 text-gray-50" />
                             </ CommunityType >
 
@@ -95,18 +138,19 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
                             </div>
                         </div>
 
-
+                        {/* <p></p> */}
 
                         <div className="flex mt-1.5 mb-2.5 justify-end">
                             <button id="cancel-create-community" onClick={() => { setIsCommunityOpen(false) }} className="bg-reddit_search hover:bg-reddit_search_light mx-2 mt-2 px-3 py-3 h-10 rounded-full flex items-center">Cancel</button>
 
-                            <button id="name-create-community" className={`mt-2 px-3 py-3 h-10 rounded-full flex items-center ${communityName.length === 0 ? `bg-reddit_search hover:bg-reddit_search_light opacity-60` : `bg-reddit_blue hover:bg-reddit_light_blue`}`} disabled={communityName.length === 0}>{communityName.length === 0 ? "Create your community" : `r/${communityName}`}</button>
+                            <button onClick={handleCreateCommunity} id="name-create-community" className={`mt-2 px-3 py-3 h-10 rounded-full flex items-center ${(communityNameError !== null || communityName.length === 0) ? `bg-reddit_search hover:bg-reddit_search_light opacity-60` : `bg-reddit_blue hover:bg-reddit_light_blue`}`} disabled={(communityNameError !== null || communityName.length === 0)} >{communityName.length === 0 ? "Create your community" : `r/${communityName} `}</button>
                         </div>
                     </div>
                 </div>
             </div>
 
         </div >
+    </>
     );
 }
 

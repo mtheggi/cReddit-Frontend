@@ -90,17 +90,6 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                     );
                 })}
 
-                {/* <CommunityIcon text={"r/testcomminty"} divId="sidebar_community_icon1" bookmarkId="sidebar_community_bookmark1" />
-                <CommunityIcon text={"r/samirsaiid"} divId="sidebar_community_icon2" bookmarkId="sidebar_community_bookmark2" />
-                <CommunityIcon text={"r/Pizzalovers"} divId="sidebar_community_icon3" bookmarkId="sidebar_community_bookmark3" />
-                <CommunityIcon text={"r/getsomeshit"} divId="sidebar_community_icon4" bookmarkId="sidebar_community_bookmark4" />
-                <CommunityIcon text={"r/hellobitchass"} divId="sidebar_community_icon5" bookmarkId="sidebar_community_bookmark5" />
-                <CommunityIcon text={"r/noreway"} divId="sidebar_community_icon6" bookmarkId="sidebar_community_bookmark6" />
-                <CommunityIcon text={"r/itestCsdlkj"} divId="sidebar_community_icon7" bookmarkId="sidebar_community_bookmark7" />
-                <CommunityIcon text={"r/programmming"} divId="sidebar_community_icon8" bookmarkId="sidebar_community_bookmark8" />
-                <CommunityIcon text={"r/Pythooon"} divId="sidebar_community_icon9" bookmarkId="sidebar_community_bookmark9" />
-                <CommunityIcon text={"r/cppTESTT"} divId="sidebar_community_icon10" bookmarkId="sidebar_community_bookmark10" /> */}
-
             </div>
             }
 

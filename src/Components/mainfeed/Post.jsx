@@ -3,14 +3,14 @@ import Share from './Share';
 import CommentIcon from './CommentIcon';
 import Vote from './Vote';
 import { useState, useEffect, useRef } from "react";
-import { getRequest, patchRequest } from '@/services/Requests';
+import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
 // import {useHistory} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
-import {Save} from './comment/CommentUtils';
+import { Save } from './comment/CommentUtils';
 
 const Post = ({
     id,
@@ -50,7 +50,7 @@ const Post = ({
     const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
-
+    const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
 
     const navigate = useNavigate();
 
@@ -58,9 +58,9 @@ const Post = ({
     async function handleClickSave() {
         setSaved((prev) => !prev);
         if (!await Save(id, saved)) {
-        setSaved((prev) => !prev);
+            setSaved((prev) => !prev);
         }
-      }
+    }
 
     function formatNumber(num) {
         if (num >= 1000000) {
@@ -178,6 +178,18 @@ const Post = ({
             setCurrentIsHidden(prev => !prev);
         }
     }
+    const handleJoinSubreddit = async () => {
+        setIsSubbredditJoined(prev => !prev);
+        let response = null;
+        if ((isSubbredditJoined)) {
+            response = await deleteRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        } else {
+            response = await postRequest(`${baseUrl}/subreddit/${communityName}/join`);
+        }
+        if (!(response.status === 200 || response.status === 201)) {
+            setIsSubbredditJoined(prev => !prev);
+        }
+    }
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
@@ -209,8 +221,8 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {!isJoined && <div onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-                            <h1 className='text-[12px] font-medium text-white'>Join</h1>
+                        {(communityName !== null) && <div onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                            <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
                             id={"mainfeed_" + id + "_menu"}
@@ -224,17 +236,16 @@ const Post = ({
                                 className="h-6 w-6 outline-none"
                             />
                         </div>
-
                         {isOpenDots && (
-                            <div className="z-1 w-30 h-37 bg-reddit_lightGreen absolute -ml-[24px] mt-47 text-white text-sm py-2 rounded-lg font-extralight flex flex-col">
+                            <div className={`z-1 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
                                 <div onClick={handleClickSave}
                                     id={"mainfeed_" + id + "_menu_save"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                                 >
                                     {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
                                         :
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-5 h-4.5">
-                                            <path fill-rule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clip-rule="evenodd" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
+                                            <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clipRule="evenodd" />
                                         </svg>
                                     }
                                     <p className="ml-2 no-select">{saved ? "Unsave" : "Save"}</p>
@@ -379,7 +390,7 @@ const Post = ({
                     <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />
                 </div>
-            </div>
+            </div >
 
     );
 };
