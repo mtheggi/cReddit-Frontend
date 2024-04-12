@@ -14,6 +14,7 @@ import EmailVerification from "./Components/authentication/reset_components/Emai
 import CreatePost from "./Components/create_post/CreatePost";
 import { NotificationProvider } from './Components/notifications/NotificationContext';
 import NotificationPage from './views/NotificationPage';
+import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -38,6 +39,7 @@ function App() {
             <Route path="/settings/*" element={<Settings />} />
             <Route path="/submit" element={ <CreatePost/>}/>
             <Route path="/notifications" element={<NotificationPage isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
+            <Route path="/passwordrecovery" element={<PasswordRecovery/>}/>
           </Routes>
         </div>
       </Router>
