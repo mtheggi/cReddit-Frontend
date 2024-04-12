@@ -113,7 +113,7 @@ const NotificationPage = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navba
                     </div>
 
                     <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={notificationsRef}>
-                            <NotificationList notifications={notifications}/>
+                            <NotificationList notifications={notifications} isNewNotificationsPage={true}/>
                     </div>
 
 

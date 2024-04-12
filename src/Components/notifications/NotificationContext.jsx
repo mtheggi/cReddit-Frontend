@@ -23,8 +23,12 @@ export const NotificationProvider = ({ children }) => {
         setIsNotificationListVisible(false);
     };
 
+    const flushAndAddNotifications = (newNotifications) => {
+        setNotifications(newNotifications);
+    };
+
     return (
-        <NotificationContext.Provider value={{ isNotificationListVisible, showNotificationList, hideNotificationList, notifications, setNotifications }}>
+        <NotificationContext.Provider value={{ isNotificationListVisible, showNotificationList, hideNotificationList, notifications, setNotifications, flushAndAddNotifications }}>
             {children}
         </NotificationContext.Provider>
     );
