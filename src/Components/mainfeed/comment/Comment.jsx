@@ -74,7 +74,7 @@ const Comment = ({ postId }) => {
             ) : (
                 <div>
                     <div
-                        id="mainfeed_category_dropdown"
+                        id="mainfeed_comment_category_dropdown"
                         ref={menuRefCateg}
                         className="relative w-fit"
                     >
