@@ -33,7 +33,8 @@ const Post = ({
     expirationDate,
     isHidden,
     isSaved,
-    isSinglePostSelected
+    isSinglePostSelected,
+    setPosts
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -384,6 +385,7 @@ const Post = ({
                         netVotes={netVote}
                         isUpvoted={isUpvoted}
                         isDownvoted={isDownvoted}
+                        setPosts={setPosts}
                     />
                     <CommentIcon id={id} postId={postId} username={username} communityName={communityName} commentCount={commentCount} />
                     <Share id={id} />

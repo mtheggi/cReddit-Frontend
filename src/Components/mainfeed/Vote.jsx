@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { patchRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants';
 
+
 const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
   return isUpvote ? (
     <svg
@@ -82,7 +83,7 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
   );
 };
 
-const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
+const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
@@ -93,8 +94,8 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
     let absoluteNum = Math.abs(num);
     let sign = num < 0 ? '-' : '';
 
-    if(!num)
-    return num;
+    if (!num)
+      return num;
 
     if (absoluteNum >= 1000000) {
       return sign + (absoluteNum / 1000000).toFixed(1) + 'M';
@@ -106,58 +107,98 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted }) => {
   }
 
   const handleUpvote = async () => {
-    let oldVoters = voters;
-    let oldIsUpvote = isUpvote;
-    let oldIsDownvote = isDownvote;
+    let newVoters = voters;
+    let newIsUpvote = isUpvote;
+    let newIsDownvote = isDownvote;
 
     if (isUpvote) {
-      setVoters(voters - 1);
-      setIsUpvote(false);
+      newVoters = voters - 1;
+      newIsUpvote = false;
     } else {
       if (isDownvote) {
-        setVoters(voters + 2);
-        setIsDownvote(false);
+        newVoters = voters + 2;
+        newIsDownvote = false;
       } else {
-        setVoters(voters + 1);
+        newVoters = voters + 1;
       }
-      setIsUpvote(true);
+      newIsUpvote = true;
     }
+
+    setVoters(newVoters);
+    setIsUpvote(newIsUpvote);
+    setIsDownvote(newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(oldVoters);
-      setIsUpvote(oldIsUpvote);
-      setIsDownvote(oldIsDownvote);
+      setVoters(voters);
+      setIsUpvote(isUpvote);
+      setIsDownvote(isDownvote);
+    } else {
+
+      setPosts(prevPosts => {
+        return prevPosts.map(post => {
+          if (post._id === id) {
+            console.log(newVoters);
+            return {
+              ...post,
+              netVote: newVoters,
+              isUpvoted: newIsUpvote,
+              isDownvoted: newIsDownvote
+            };
+          }
+          return post;
+        });
+      });
+
     }
   };
 
 
   const handleDownvote = async () => {
-    let oldVoters = voters;
-    let oldIsUpvote = isUpvote;
-    let oldIsDownvote = isDownvote;
+    let newVoters = voters;
+    let newIsUpvote = isUpvote;
+    let newIsDownvote = isDownvote;
 
     if (isDownvote) {
-      setVoters(voters + 1);
-      setIsDownvote(false);
+      newVoters = voters + 1;
+      newIsDownvote = false;
     } else {
       if (isUpvote) {
-        setVoters(voters - 2);
-        setIsUpvote(false);
+        newVoters = voters - 2;
+        newIsUpvote = false;
       } else {
-        setVoters(voters - 1);
+        newVoters = voters - 1;
       }
-      setIsDownvote(true);
+      newIsDownvote = true;
     }
+
+    setVoters(newVoters);
+    setIsUpvote(newIsUpvote);
+    setIsDownvote(newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(oldVoters);
-      setIsUpvote(oldIsUpvote);
-      setIsDownvote(oldIsDownvote);
+      setVoters(voters);
+      setIsUpvote(isUpvote);
+      setIsDownvote(isDownvote);
+    } else {
+
+      setPosts(prevPosts => {
+        return prevPosts.map(post => {
+          if (post._id === id) {
+            console.log(newVoters);
+            return {
+              ...post,
+              netVote: newVoters,
+              isUpvoted: newIsUpvote,
+              isDownvoted: newIsDownvote
+            };
+          }
+          return post;
+        });
+      });
     }
   };
-
 
   return (
     <div
