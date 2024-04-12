@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect} from 'react';
 
 const NotificationContext = createContext();
 
@@ -6,7 +6,14 @@ export const useNotifications = () => useContext(NotificationContext);
 
 export const NotificationProvider = ({ children }) => {
     const [isNotificationListVisible, setIsNotificationListVisible] = useState(false);
-    const [notifications, setNotifications] = useState([]);
+    const [notifications, setNotifications] = useState(() => {
+        const savedNotifications = localStorage.getItem('notifications');
+        return savedNotifications ? JSON.parse(savedNotifications) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem('notifications', JSON.stringify(notifications));
+    }, [notifications]);
 
     const showNotificationList = () => {
         setIsNotificationListVisible(true);

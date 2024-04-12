@@ -13,6 +13,7 @@ import axiosInterceptor from "./utils/axiosInterceptor";
 import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
 import CreatePost from "./Components/create_post/CreatePost";
 import { NotificationProvider } from './Components/notifications/NotificationContext';
+import NotificationPage from './views/NotificationPage';
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -36,6 +37,7 @@ function App() {
             <Route path="/" element={<Home isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
             <Route path="/settings/*" element={<Settings />} />
             <Route path="/submit" element={ <CreatePost/>}/>
+            <Route path="/notifications" element={<NotificationPage isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
           </Routes>
         </div>
       </Router>

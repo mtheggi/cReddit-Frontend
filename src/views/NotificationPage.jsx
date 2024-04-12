@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Navbar from '../Components/navbar/Navbar';
 import Sidebar from '../Components/sidebar/Sidebar';
-import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
 import { useState, useEffect, useRef } from 'react';
@@ -9,12 +8,13 @@ import { useNotifications } from '../Components/notifications/NotificationContex
 import NotificationList from '../Components/notifications/NotificationList';
 
 
-const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+const NotificationPage = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const [isCommunityOpen, setIsCommunityOpen] = useState(false);
+    const { notifications } = useNotifications();
 
     const sidebarRef = useRef();
     const recentRef = useRef();
-    const mainfeedRef = useRef();
+    const notificationsRef = useRef();
     const communiyCardRef = useRef();
     const communityButtonRef = useRef();
 
@@ -65,8 +65,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 sidebarRef.current.classList.add('scrolling');
             }
 
-            if (!mainfeedRef.current.classList.contains('scrolling')) {
-                mainfeedRef.current.classList.add('scrolling');
+            if (!notificationsRef.current.classList.contains('scrolling')) {
+              notificationsRef.current.classList.add('scrolling');
             }
 
             timer = setTimeout(function () {
@@ -76,15 +76,15 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 if (sidebarRef.current.classList.contains('scrolling')) {
                     sidebarRef.current.classList.remove('scrolling');
                 }
-                if (mainfeedRef.current.classList.contains('scrolling')) {
-                    mainfeedRef.current.classList.remove('scrolling');
+                if (notificationsRef.current.classList.contains('scrolling')) {
+                  notificationsRef.current.classList.remove('scrolling');
                 }
             }, 440);
         };
 
         recentRef.current.addEventListener('scroll', handleScroll);
         sidebarRef.current.addEventListener('scroll', handleScroll);
-        mainfeedRef.current.addEventListener('scroll', handleScroll);
+        notificationsRef.current.addEventListener('scroll', handleScroll);
 
         return () => {
             if (recentRef.current) {
@@ -93,8 +93,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
             if (sidebarRef.current) {
                 sidebarRef.current.removeEventListener('scroll', handleScroll);
             }
-            if (mainfeedRef.current) {
-                mainfeedRef.current.removeEventListener('scroll', handleScroll);
+            if (notificationsRef.current) {
+              notificationsRef.current.removeEventListener('scroll', handleScroll);
             }
         };
     });
@@ -112,8 +112,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                         {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef}  />}
                     </div>
 
-                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                            <Mainfeed />
+                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={notificationsRef}>
+                            <NotificationList notifications={notifications}/>
                     </div>
 
 
@@ -132,4 +132,4 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     );
 }
 
-export default Home;
+export default NotificationPage;

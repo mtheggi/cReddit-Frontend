@@ -13,8 +13,8 @@ import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
 import NotificationItem from '../notifications/NotificationItem';
-import Notifications from '../settings/Notifications';
 import { useNotifications } from '../notifications/NotificationContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
@@ -50,16 +50,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const emailVerificationRef = useRef();
     const bellMenuRef = useRef();
     const bellMenuRefExpanded = useRef();
-    const { showNotificationList, setNotifications } = useNotifications();
 
-
-
-    const [isNotificationsMenuOpen, setIsNotificationsMenuOpen] = useState(false);
-    const [selectedTab, setSelectedTab] = useState('Notifications');
-
-    const toggleNotificationsMenu = () => {
-    setIsNotificationsMenuOpen(prev => !prev);
-    };
+    const navigate = useNavigate();
+    const { setNotifications } = useNotifications();
 
     const notifications = [
         {
@@ -160,7 +153,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const handleSeeAllClick = () => {
         setNotifications(notifications);
-        showNotificationList();
+        navigate('/notifications');
     };
 
     const seeAllBaseStyle = {
