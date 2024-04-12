@@ -1,10 +1,10 @@
 import redditLogo from '../../assets/reddit_logo.png';
+import { Link } from 'react-router-dom';
 import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, PlusIcon, } from '@heroicons/react/24/outline'
 import { useState, useEffect, useRef, useContext } from 'react';
 import avatar from '../../assets/avatar.png';
 import Searchbar from '../searchbar/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
-import { Link } from 'react-router-dom';
 import Setting from '../settings/Setting';
 import ForgetPass from '../authentication/reset_components/ForgetPass';
 import ForgetUsername from '../authentication/reset_components/ForgetUsername';
@@ -17,7 +17,8 @@ import { baseUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-
+import NotificationList from '../notifications/NotificationList'
+import { useNotifications } from '../notifications/NotificationContext'; 
 
 
 
@@ -40,6 +41,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [isPrevForgotPassOrUsername, setIsPrevForgotPassOrUsername] = useState(null);
     const [isOpenedSecondSignupMenu, setIsOpenedSecondSignupMenu] = useState(false);
     const [signupEmail, setSignupEmail] = useState('');
+    const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
+    const [showInboxTooltip, setShowInboxTooltip] = useState(false);
+    const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
+
+    
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -50,6 +56,64 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const forgotPassRef = useRef();
     const forgotUsernameRef = useRef();
     const emailVerificationRef = useRef();
+    const bellMenuRef = useRef();
+    const bellMenuRefExpanded = useRef();
+
+    const { notifications, flushAndAddNotifications } = useNotifications();
+
+    useEffect(() => {
+        const newNotifications = [
+            {
+              key: "1",
+              title: "u/Abdelaal replied to your comment in r/cReddit",
+              description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
+              date: "4/11/2024",
+              time: "23:45",
+              image: avatar,
+            },
+            {
+              key: "2",
+              title: "u/Malek replied to your post in r/CCE",
+              description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
+              date: "4/11/2024",
+              time: "23:30",
+              image: avatar,
+            },
+            {
+              key: "3",
+              title: "u/Maro replied to your post in r/APT",
+              description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
+              date: "4/11/2024",
+              time: "20:10",
+              image: avatar,
+            },
+            {
+              key: "4",
+              title: "u/Bassel replied to your comment in r/Front",
+              description: "Notification Description 4",
+              date: "4/5/2024",
+              time: "11:11",
+              image: avatar,
+            },
+            {
+              key: "5",
+              title: "u/Heggi replied to your comment in r/Pattern",
+              description: "Notification Description 5",
+              date: "4/6/2024",
+              time: "18:50",
+              image: avatar,
+            },
+        ];
+
+        newNotifications.sort((a, b) => {
+            const dateA = new Date(`${a.date} ${a.time}`);
+            const dateB = new Date(`${b.date} ${b.time}`);
+            return dateB - dateA;
+        });
+
+        flushAndAddNotifications(newNotifications);
+    }, []);
+
     const navigate = useNavigate();
 
     const handleLogout = async () => {
@@ -92,6 +156,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             if (secondSignupMenuRef.current && !secondSignupMenuRef.current.contains(e.target)) {
                 setIsOpenedSecondSignupMenu(false);
             }
+            if (bellMenuRef.current && !bellMenuRef.current.contains(e.target) && bellMenuRefExpanded.current && !bellMenuRefExpanded.current.contains(e.target)) {
+                setIsOpenBellMenu(false);
+            }
 
         };
         document.addEventListener('click', closeDropdown);
@@ -104,6 +171,22 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const words = ['/submit', '/settings']; 
 
     const urlContainsWord = words.some(word => location.pathname.includes(word));
+    const handleMouseEnterBellIcon = () => {
+        setShowInboxTextTransition(true); 
+        
+        setTimeout(() => {
+          setShowInboxTooltip(true); 
+        }, 100); 
+    };
+      
+    const handleMouseLeaveBellIcon = () => {
+        setShowInboxTooltip(false);
+        
+        setTimeout(() => {
+          setShowInboxTextTransition(false);
+        }, 100); 
+    };
+
 
     return (
         <div ref={navbarRef} className="flex z-20 fixed flex-col w-full no-select">
@@ -239,16 +322,48 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
                                 </Link>
 
-                                <a id='navbar_bell' href='' className="flex justify-center items-center w-fit h-fit">
-                                    <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer '>
-                                        <BellIcon className="h-7 w-6 text-gray-300" />
+                                <div className="flex justify-center items-center w-fit h-fit">
+                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" 
+                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false);}} 
+                                        onMouseEnter={handleMouseEnterBellIcon}
+                                        onMouseLeave={handleMouseLeaveBellIcon}
+                                    >
+                                        <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
+                                            <BellIcon className="h-7 w-6 text-gray-300" />
+                                        </div>
+                                        {showInboxTextTransition  && (
+                                            <span 
+                                                style={{ 
+                                                position: 'absolute',
+                                                zIndex: 100,
+                                                bottom: '-35px',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                backgroundColor: '#e0e0e0',
+                                                color: '#333',
+                                                fontSize: '0.75rem',
+                                                fontWeight: 'bold',
+                                                padding: '0.25rem 0.5rem',
+                                                borderRadius: '4px',
+                                                whiteSpace: 'nowrap',
+                                                opacity: showInboxTooltip ? 1 : 0,
+                                                transition: 'opacity 1s linear',
+                                                }}
+                                            >
+                                                Open inbox
+                                            </span>
+                                        )}
                                     </div>
-                                </a>
+
+                                    {isOpenBellMenu && (
+                                        <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded}/>
+                                    )}
+                                </div>
 
 
 
                                 <div className="flex justify-center items-center w-fit h-fit">
-                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
+                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
                                         <div className='  w-8 h-8 rounded-full'>
                                             <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
                                         </div>

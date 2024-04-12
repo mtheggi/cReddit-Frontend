@@ -1,35 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Navbar from '../Components/navbar/Navbar';
 import Sidebar from '../Components/sidebar/Sidebar';
-import Mainfeed from '../Components/mainfeed/Mainfeed';
 import Recent from '../Components/mainfeed/Recent';
-import { getRequest } from '@/services/Requests';
-import { baseUrl } from '@/constants';
 import CreateCommunity from '../Components/createCommunity/CreateCommunity';
-import { UserContext } from '@/context/UserContext';
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useNotifications } from '../Components/notifications/NotificationContext';
+import NotificationList from '../Components/notifications/NotificationList';
 
 
-const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+const NotificationPage = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const [isCommunityOpen, setIsCommunityOpen] = useState(false);
-    const [userHistoryRes, setUserHistoryRes] = useState(null);
-    const { isLoggedIn } = useContext(UserContext);
+    const { notifications } = useNotifications();
+
     const sidebarRef = useRef();
     const recentRef = useRef();
-    const mainfeedRef = useRef();
+    const notificationsRef = useRef();
     const communiyCardRef = useRef();
     const communityButtonRef = useRef();
-
-    useEffect(() => {
-        async function getHistory() {
-            const response = await getRequest(`${baseUrl}/user/history?limit=7`);
-            setUserHistoryRes(response);
-            if (response.status == 200 || response.status == 201)
-                localStorage.setItem('userHistory', JSON.stringify(response.data));
-            else
-                localStorage.setItem('userHistory', (null));
-        }
-        getHistory();
-    }, [isLoggedIn])
 
     useEffect(() => {
         let handleClickOutside = (e) => {
@@ -38,9 +25,9 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 setIsVisibleLeftSidebar(false);
             }
             if (communiyCardRef.current && !communiyCardRef.current.contains(e.target)
-                && communityButtonRef.current && !communityButtonRef.current.contains(e.target)) {
-                setIsCommunityOpen(false);
-            }
+            && communityButtonRef.current && !communityButtonRef.current.contains(e.target)) {
+             setIsCommunityOpen(false);
+        }
         };
         document.addEventListener('click', handleClickOutside);
 
@@ -78,8 +65,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 sidebarRef.current.classList.add('scrolling');
             }
 
-            if (!mainfeedRef.current.classList.contains('scrolling')) {
-                mainfeedRef.current.classList.add('scrolling');
+            if (!notificationsRef.current.classList.contains('scrolling')) {
+              notificationsRef.current.classList.add('scrolling');
             }
 
             timer = setTimeout(function () {
@@ -89,15 +76,15 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
                 if (sidebarRef.current.classList.contains('scrolling')) {
                     sidebarRef.current.classList.remove('scrolling');
                 }
-                if (mainfeedRef.current.classList.contains('scrolling')) {
-                    mainfeedRef.current.classList.remove('scrolling');
+                if (notificationsRef.current.classList.contains('scrolling')) {
+                  notificationsRef.current.classList.remove('scrolling');
                 }
             }, 440);
         };
 
         recentRef.current.addEventListener('scroll', handleScroll);
         sidebarRef.current.addEventListener('scroll', handleScroll);
-        mainfeedRef.current.addEventListener('scroll', handleScroll);
+        notificationsRef.current.addEventListener('scroll', handleScroll);
 
         return () => {
             if (recentRef.current) {
@@ -106,31 +93,32 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
             if (sidebarRef.current) {
                 sidebarRef.current.removeEventListener('scroll', handleScroll);
             }
-            if (mainfeedRef.current) {
-                mainfeedRef.current.removeEventListener('scroll', handleScroll);
+            if (notificationsRef.current) {
+              notificationsRef.current.removeEventListener('scroll', handleScroll);
             }
         };
     });
     return (
         <>
 
-            <div className="w-full mt-14 h-full flex flex-row justify-center overflow-hidden">
+            <div className="w-full mt-14 inline-flex flex-row justify-center overflow-hidden">
 
-                <div className={`flex flex-row w-fit xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
+                <div className={`relative flex flex-row w-fit lg:mr-5 xl:mr-3% mxl:mr-10 h-full`}>
 
-                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10  w-66 min-w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
+                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'absolute xl:relative xl:flex  bg-reddit_navbar w-70' : 'hidden xl:flex'} z-10 w-60 border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                     </div>
                     <div className="">
-                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
+                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef}  />}
                     </div>
 
-                    <div className='w-fit max-w-210 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0  mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                        <Mainfeed />
+                    <div className='mxl:w-192 mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 w-65% xl:w-51% mx-1 lg:mx-2 ' ref={notificationsRef}>
+                            <NotificationList notifications={notifications} isNewNotificationsPage={true}/>
                     </div>
 
-                    <div className='w-fit min-w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
-                        <Recent userHistoryRes={userHistoryRes} />
+
+                    <div className='w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod' ref={recentRef}>
+                        <Recent />
                     </div>
 
                 </div>
@@ -144,4 +132,4 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     );
 }
 
-export default Home;
+export default NotificationPage;

@@ -1,18 +1,20 @@
 # IDS Documentation  
-### component
+### Component
     * id = "specifed name" 
         - Explaination
-### Usercard.jsx
+### NotificationItem.jsx
          
-    * follow button ID = "follow-btn-usercard" 
-    * Chat   button ID = "chat-btn-usercard"
+    * Notification Options button ID = "notification-item-dropdown-button" 
+                                     - Pressing on this button displays a dropdown list that gives the user the option to hide the notification
+    * Hide Notification button ID = "notification-item-hide-notification-button"
+                                  - Pressing on this button removes the associated notification from the current list of notifications  
 
-### createPost.jsx
-    * cancel create community button : id ="cancel-create-community" 
-    * button that have community name and create community : id = "name-create-community" 
-    * Mature swtich button : id= "ismature-switch-btn" 
-    * radio buttons for types : 
-                id ="Public-community-type"
-                id = "Private-community-type"
-                id = "Restricted-community-type"
-    * community name input text field :  id = "community-name"
+### PasswordRecovery.jsx
+         
+    * New Password Input ID = "password_recovery_new_password"
+                            - This is where the user types in their new password
+    * Confirm Password Input ID = "password_recovery_confirm_password"
+                                - This is where the user retypes the password to check for correctness
+    * Continue Button ID = "password_recovery_submit"
+                         - Clicking on this button enforces the password change (not implemented yet)
+                                
