@@ -51,9 +51,13 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-
+    // console.log("pollOption", pollOptions);
     const navigate = useNavigate();
 
+
+    useEffect(() => {
+        setEditedPollOptions(pollOptions);
+    }, [pollOptions])
 
     async function handleClickSave() {
         setSaved((prev) => !prev);
@@ -334,8 +338,7 @@ const Post = ({
                                             <h1 className='text-gray-300 font-light'>{!hasVoted ? formatNumber(getTotalVotes(pollOptions)) : formatNumber(getTotalVotes(editedPollOptions))} total votes</h1>
                                         </div>
                                         <div id={"mainfeed_" + id + "_polloptions"} className='w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3'>
-                                            {editedPollOptions.map((option, index) => (
-
+                                            {editedPollOptions && editedPollOptions.map((option, index) => (
                                                 <div key={index} className='flex items-center flex-row w-full'>
                                                     {
                                                         !hasVoted && !hasExpired ? (

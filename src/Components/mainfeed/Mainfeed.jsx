@@ -27,6 +27,7 @@ const Mainfeed = () => {
   const menuRefCateg = useRef();
   const menuRefView = useRef();
   const navigate = useLocation();
+  const prevSelectedSort = useRef(selectedSort);
 
 
 
@@ -45,13 +46,19 @@ const Mainfeed = () => {
   }
 
   useEffect(() => {
+    let isSortChanged = (prevSelectedSort.current !== selectedSort);
+    let pageNum = isSortChanged ? 1 : page;
     const getHomeFeed = async () => {
       setLoading(true);
       setError(false);
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=8&sort=${selectedSort.toLowerCase()}`);
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=8&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
-          setPosts(prevPosts => [...prevPosts, ...response.data]);
+          if (isSortChanged) {
+            setPosts(response.data);
+          } else {
+            setPosts(prevPosts => [...prevPosts, ...response.data]);
+          }
           setHasMore(response.data.length > 0);
         } else {
           setError(true);
@@ -67,8 +74,13 @@ const Mainfeed = () => {
     const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
     const match = url.match(regex);
 
-    if (!match)
+    if (!match) {
       getHomeFeed();
+      prevSelectedSort.current = selectedSort;
+
+    }
+
+
 
   }, [isLoggedIn, page, navigate.pathname, selectedSort]);
 
@@ -259,7 +271,6 @@ const Mainfeed = () => {
 
 
       {!isSinglePostSelected && posts.map((post, i) => (
-  
         <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
       ))}
 
