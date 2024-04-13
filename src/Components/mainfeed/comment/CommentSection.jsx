@@ -15,25 +15,20 @@ function CommentSection({
   onAddComment,
   setPostComments,
   isImage,
-  selectedSort
+  selectedSort,
+  setIsNewCommentCreated
 }) {
   const [comment, setComment] = useState("");
   const [image, setImage] = useState(null);
   const [buttonColor, setButtonColor] = useState("#4d4608");
   const [modalShow, setModalShow] = useState(false);
-  const textareaRef = useRef();
 
+
+  const textareaRef = useRef();
   const handleFileChange = (e) => {
     setImage(e.target.files[0]);
   }
 
-  const getSinglePostComments = async (selectedPostId) => {
-    const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
-    if (response.status == 200 || response.status == 201) {
-        setPostComments(response.data);
-    }
-    
-}
 
   useEffect(() => {
     if (isCommenting) {
@@ -42,11 +37,10 @@ function CommentSection({
   }, [isCommenting]);
 
   async function addComment() {
-    if(isImage && !image || !isImage && (!comment||comment.trim()=="")) return;
-    const newComment = await submitComment(postId, image, comment, isImage);
-    if (!newComment) return;
-    onAddComment(newComment);
-    await getSinglePostComments(postId);
+    if (isImage && !image || !isImage && (!comment || comment.trim() == "")) return;
+    await submitComment(postId, image, comment, isImage);
+    onAddComment();
+    setIsNewCommentCreated(prev=>prev + 1);
     setComment("");
     setImage(null);
     setIsCommenting(false);
@@ -98,9 +92,9 @@ function CommentSection({
           >
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
-          <div 
+          <div
             onClick={addComment}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment||comment.trim()==""))?'cursor-not-allowed':"cursor-pointer"} `}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment || comment.trim() == "")) ? 'cursor-not-allowed' : "cursor-pointer"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}

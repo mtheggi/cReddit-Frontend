@@ -93,9 +93,9 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
   useEffect
     (() => {
       console.log("netVotes", netVotes);
-      setVoters(netVotes);
-      setIsUpvote(isUpvoted);
-      setIsDownvote(isDownvoted);
+      setVoters(prevVotes => netVotes);
+      setIsUpvote(prevIsUpvote => isUpvoted);
+      setIsDownvote(prevIsDownvote => isDownvoted);
     }, [netVotes, isUpvoted, isDownvoted]);
 
   function formatVotes(num) {
@@ -132,15 +132,15 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       newIsUpvote = true;
     }
 
-    setVoters(newVoters);
-    setIsUpvote(newIsUpvote);
-    setIsDownvote(newIsDownvote);
+    setVoters(prevVoters=>newVoters);
+    setIsUpvote(prevIsUpvote=>newIsUpvote);
+    setIsDownvote(prevIsDownvote=>newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(voters);
-      setIsUpvote(isUpvote);
-      setIsDownvote(isDownvote);
+      setVoters(prevVoters=>voters);
+      setIsUpvote(prevIsUpvote=>isUpvote);
+      setIsDownvote(prevIsDownvote=>isDownvote);
     } else {
 
       if (setPosts) {
@@ -180,15 +180,15 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       newIsDownvote = true;
     }
 
-    setVoters(newVoters);
-    setIsUpvote(newIsUpvote);
-    setIsDownvote(newIsDownvote);
+    setVoters(prevVoters=>newVoters);
+    setIsUpvote(prevIsUpvote=>newIsUpvote);
+    setIsDownvote(prevIsDownvote=>newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(voters);
-      setIsUpvote(isUpvote);
-      setIsDownvote(isDownvote);
+      setVoters(prevVoters=>voters);
+      setIsUpvote(prevIsUpvote=>isUpvote);
+      setIsDownvote(prevIsDownvote=>isDownvote);
     } else {
 
       if (setPosts) {

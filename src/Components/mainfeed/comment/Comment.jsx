@@ -16,6 +16,7 @@ const Comment = ({ postId }) => {
     const [isCommenting, setIsCommenting] = useState(false);
     const [selectedSort, setSelectedSort] = useState("New");
     const [isLoading, setIsLoading] = useState(true);
+    const [isNewCommentCreated, setIsNewCommentCreated] = useState(0);
 
     const onAddComment = () => {
         setIsCommenting(false);
@@ -23,15 +24,15 @@ const Comment = ({ postId }) => {
 
     useEffect(() => {
         const getSinglepostComments = async (selectedPostId) => {
-            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
+            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?limit=50&sort=${selectedSort.toLowerCase()}`)
             if (response.status == 200 || response.status == 201) {
-                setPostComments(response.data);
+                setPostComments([...response.data]);
             }
             setIsLoading(false);
         }
 
         getSinglepostComments(postId);
-    }, [selectedSort]);
+    }, [selectedSort, isNewCommentCreated]);
 
 
     useEffect(() => {
@@ -129,7 +130,13 @@ const Comment = ({ postId }) => {
                             </div>
                         )}
                     </div>
-                    <AddComment postId={postId} setPostComments={setPostComments} onAddComment={onAddComment} isCommenting={isCommenting} setIsCommenting={setIsCommenting} selectedSort={selectedSort} />
+                    <AddComment postId={postId} 
+                    setPostComments={setPostComments} 
+                    onAddComment={onAddComment} isCommenting={isCommenting} 
+                    setIsCommenting={setIsCommenting} 
+                    selectedSort={selectedSort} 
+                    setIsNewCommentCreated={setIsNewCommentCreated} />
+
                     {postComments.map((comment, index) => (
                         <PostComment
                             key={index}

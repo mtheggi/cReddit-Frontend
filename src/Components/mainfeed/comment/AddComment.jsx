@@ -1,6 +1,6 @@
 import CommentSection from "./CommentSection";
 
-function AddComment({ postId, isCommenting, setIsCommenting, onAddComment, setPostComments, selectedSort }) {
+function AddComment({ postId, isCommenting, setIsCommenting, onAddComment, setPostComments, selectedSort, setIsNewCommentCreated }) {
   return (
     <div className="w-full mt-3 inline-flex flex-row  justify-center">
       <button
@@ -20,6 +20,7 @@ function AddComment({ postId, isCommenting, setIsCommenting, onAddComment, setPo
         isCommenting={isCommenting}
         setIsCommenting={setIsCommenting}
         selectedSort={selectedSort}
+        setIsNewCommentCreated={setIsNewCommentCreated}
       />
     </div>
   );
