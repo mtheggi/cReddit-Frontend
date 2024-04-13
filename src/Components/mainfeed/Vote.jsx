@@ -90,6 +90,14 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
   const [isHoverUpvote, setIsHoverUpvote] = useState(false);
   const [isHoverDownvote, setIsHoverDownvote] = useState(false);
 
+  useEffect
+    (() => {
+      console.log("netVotes", netVotes);
+      setVoters(netVotes);
+      setIsUpvote(isUpvoted);
+      setIsDownvote(isDownvoted);
+    }, [netVotes, isUpvoted, isDownvoted]);
+
   function formatVotes(num) {
     let absoluteNum = Math.abs(num);
     let sign = num < 0 ? '-' : '';
@@ -135,20 +143,21 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       setIsDownvote(isDownvote);
     } else {
 
-      setPosts(prevPosts => {
-        return prevPosts.map(post => {
-          if (post._id === id) {
-            return {
-              ...post,
-              netVote: newVoters,
-              isUpvoted: newIsUpvote,
-              isDownvoted: newIsDownvote
-            };
-          }
-          return post;
+      if (setPosts) {
+        setPosts(prevPosts => {
+          return prevPosts.map(post => {
+            if (post._id === id) {
+              return {
+                ...post,
+                netVote: newVoters,
+                isUpvoted: newIsUpvote,
+                isDownvoted: newIsDownvote
+              };
+            }
+            return post;
+          });
         });
-      });
-
+      }
     }
   };
 
@@ -182,19 +191,21 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       setIsDownvote(isDownvote);
     } else {
 
-      setPosts(prevPosts => {
-        return prevPosts.map(post => {
-          if (post._id === id) {
-            return {
-              ...post,
-              netVote: newVoters,
-              isUpvoted: newIsUpvote,
-              isDownvoted: newIsDownvote
-            };
-          }
-          return post;
+      if (setPosts) {
+        setPosts(prevPosts => {
+          return prevPosts.map(post => {
+            if (post._id === id) {
+              return {
+                ...post,
+                netVote: newVoters,
+                isUpvoted: newIsUpvote,
+                isDownvoted: newIsDownvote
+              };
+            }
+            return post;
+          });
         });
-      });
+      }
     }
   };
 

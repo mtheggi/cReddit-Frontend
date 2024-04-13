@@ -14,7 +14,7 @@ const Comment = ({ postId }) => {
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
     const [isCommenting, setIsCommenting] = useState(false);
-    const [selectedSort, setSelectedSort] = useState("Best");
+    const [selectedSort, setSelectedSort] = useState("New");
     const [isLoading, setIsLoading] = useState(true);
 
     const onAddComment = () => {
@@ -29,8 +29,8 @@ const Comment = ({ postId }) => {
             }
             setIsLoading(false);
         }
-        getSinglepostComments(postId);
 
+        getSinglepostComments(postId);
     }, [selectedSort]);
 
 
@@ -80,7 +80,7 @@ const Comment = ({ postId }) => {
                         className="relative w-fit"
                     >
                         <div
-                            onClick={() => { setIsOpenCateg((prev) => !prev); handleTransition() }}
+                            onClick={() => { setIsOpenCateg((prev) => !prev) }}
                             className={`flex w-14 -ml-1 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
                                 } justify-center items-center cursor-pointer`} >
                             <p className="text-gray-500 font-semibold text-xs no-select ">

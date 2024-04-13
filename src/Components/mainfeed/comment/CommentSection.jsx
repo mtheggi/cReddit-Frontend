@@ -5,6 +5,7 @@ import { submitComment } from "./CommentUtils";
 import DropCommentImage from "./DropCommentImage";
 import { getRequest } from "../../../services/Requests";
 import { baseUrl } from "../../../constants";
+import PostComment from "./PostComment";
 
 
 function CommentSection({
@@ -26,12 +27,12 @@ function CommentSection({
     setImage(e.target.files[0]);
   }
 
-  const getSinglepostComments = async (selectedPostId) => {
+  const getSinglePostComments = async (selectedPostId) => {
     const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
     if (response.status == 200 || response.status == 201) {
         setPostComments(response.data);
     }
-    setIsLoading(false);
+    
 }
 
   useEffect(() => {
@@ -45,7 +46,7 @@ function CommentSection({
     const newComment = await submitComment(postId, image, comment, isImage);
     if (!newComment) return;
     onAddComment(newComment);
-    getSinglepostComments(postId);
+    await getSinglePostComments(postId);
     setComment("");
     setImage(null);
     setIsCommenting(false);
