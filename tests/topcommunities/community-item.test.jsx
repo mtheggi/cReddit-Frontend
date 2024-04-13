@@ -1,5 +1,6 @@
-import { mount } from "vitest";
-import CommunityItem from "./CommunityItem";
+import CommunityItem from "@/Components/topcommunities/CommunityItem";
+import { mount, test } from "vitest";
+
 
 const mockCommunity = {
   index: 1,

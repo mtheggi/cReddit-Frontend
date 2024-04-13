@@ -1,12 +1,13 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import PasswordRecovery from './PasswordRecovery';
-import { postRequest } from '../../services/Requests';
+import PasswordRecovery from '@/Components/recovery/PasswordRecovery';
+import { postRequest } from '@/services/Requests';
 
 // Mock the postRequest function
 vi.mock('../../services/Requests', () => ({
   postRequest: vi.fn(),
 }));
+
 
 describe('PasswordRecovery Component', () => {
   it('should accept a valid password', async () => {
