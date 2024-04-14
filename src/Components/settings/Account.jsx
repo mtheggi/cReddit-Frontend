@@ -1,7 +1,17 @@
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import DisconnectButton from "./components/DisconnectButton";
-
+/**
+ * Account is a React component that displays the user's account settings.
+ * It allows the user to connect their account to Twitter and Apple.
+ *
+ * @component
+ * @param {Object} props - The props for the Account component.
+ * @param {boolean} props.connectedToTwitter - Whether the user's account is connected to Twitter.
+ * @param {boolean} props.connectedToApple - Whether the user's account is connected to Apple.
+ * @param {boolean} props.connectedToGoogle - Whether the user's account is connected to Google.
+ * @param {Function} props.setUserSettings - A function to update the user settings.
+ */
 function Account({
   email,
   gender,
@@ -56,9 +66,9 @@ function Account({
         settingName={"country"}
         setUserSettings={setUserSettings}
       />
-{/* */}
+      {/* */}
 
-     
+
 
       {/* <Setting
         title="Connect to Google"

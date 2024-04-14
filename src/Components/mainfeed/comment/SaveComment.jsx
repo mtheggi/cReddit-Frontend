@@ -1,6 +1,15 @@
 import { useState } from "react";
 import { Save } from "./CommentUtils";
-
+/**
+ * SaveComment is a React component that allows the user to save or unsave a comment.
+ * It displays a button that, when clicked, saves or unsaves the comment.
+ *
+ * @component
+ * @param {Object} props - The props for the SaveComment component.
+ * @param {string} props.id - The ID of the comment to save or unsave.
+ * @param {boolean} props.Saved - Whether the comment is saved by the current user.
+ * @returns {JSX.Element}
+ *  */
 function SaveComment({ id, Saved }) {
   const [isSaved, setIsSaved] = useState(Saved);
 
