@@ -1,3 +1,11 @@
+/**
+ * CustomToast component displays a toast message with an icon.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.message - The message to be displayed in the toast.
+ * @returns {JSX.Element} - The rendered CustomToast component.
+ */
 export const CustomToast = ({ message }) => {
 
     return (

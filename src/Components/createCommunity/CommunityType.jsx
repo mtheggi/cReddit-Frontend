@@ -1,6 +1,17 @@
 
 import propTypes from "prop-types";
-
+/**
+ * Renders a community type component.
+ *
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.type - The type of the community.
+ * @param {string} props.typeDescription - The description of the community type.
+ * @param {ReactNode} props.children - The child components.
+ * @param {function} props.handleRadioChange - The event handler for radio button change.
+ * @param {boolean} props.isChecked - Indicates whether the radio button is checked.
+ * @returns {JSX.Element} The rendered component.
+ */
 const CommunityType = ({ type, typeDescription, children, handleRadioChange, isChecked }) => {
     return (
 
