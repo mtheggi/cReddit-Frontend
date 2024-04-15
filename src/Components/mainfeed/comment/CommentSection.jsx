@@ -112,13 +112,13 @@ function CommentSection({
       <div className="w-full flex flex-row">
         <div className="w-full flex flex-row p-2 pb-1 items-end  justify-end">
 
-          <div className="w-fit h-fit cursor-pointer mr-auto" onClick={() => dropzoneRef.current.click()}>
+          <div id="comment_img" className="w-fit h-fit cursor-pointer mr-auto" onClick={() => dropzoneRef.current.click()}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="gray" className="w-7 h-7">
               <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
             </svg>
           </div>
 
-          <button
+          <button id="cancel_comment"
             className="bg-gray-800 h-8 items-center rounded-3xl font-plex hover:bg-gray-700"
             onClick={() => {
               if (comment.length || image) setModalShow(true);
@@ -130,7 +130,7 @@ function CommentSection({
           >
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
-          <div
+          <div id="submit_comment"
             onClick={addComment}
             className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment || comment.trim() == "")) ? 'cursor-not-allowed' : "cursor-pointer"} `}
             style={{ backgroundColor: buttonColor }}
