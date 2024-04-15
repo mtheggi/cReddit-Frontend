@@ -33,7 +33,8 @@ const PostComment = ({
   isUpvoted,
   isDownvoted,
   profilePicture,
-  isSaved
+  isSaved,
+  testId
 }) => {
 
 
@@ -75,6 +76,7 @@ const PostComment = ({
             netVotes={netVote}
             isUpvoted={isUpvoted}
             isDownvoted={isDownvoted}
+            testId={"_comment"}
           />
         </div>
 

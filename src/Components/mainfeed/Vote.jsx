@@ -113,7 +113,7 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
  * @param {function} props.setPosts - The function to set the posts.
  * @returns {JSX.Element} The rendered Vote component.
  * */
-const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
+const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId }) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
@@ -267,7 +267,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
         }  rounded-3xl`}
     >
       <span
-        id={"mainfeed_" + id + "_upvote"}
+        id={"mainfeed_" + id + "_upvote"+testId}
         onMouseEnter={() => setIsHoverUpvote(true)}
         onMouseLeave={() => setIsHoverUpvote(false)}
         role="button"
@@ -283,7 +283,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       </span>
       <span className="text-gray-300 text-sm">{formatVotes(voters)}</span>
       <span
-        id={"mainfeed_" + id + "_downvote"}
+        id={"mainfeed_" + id + "_downvote"+testId}
         onMouseEnter={() => setIsHoverDownvote(true)}
         onMouseLeave={() => setIsHoverDownvote(false)}
         role="button"
