@@ -10,10 +10,18 @@ import CommentSection from "./CommentSection";
  * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
  * @param {Function} props.onAddComment - A function to call when a comment is added.
  */
-function AddComment({ postId, isCommenting, setIsCommenting, onAddComment, setPostComments, selectedSort }) {
+function AddComment({
+  postId,
+  isCommenting,
+  setIsCommenting,
+  onAddComment,
+  setPostComments,
+  selectedSort,
+}) {
   return (
     <div className="w-full mt-3 inline-flex flex-row  justify-center">
       <button
+        id={`${postId}-add-comment-button`}
         className="w-full h-10 bg-greenyDark flex flex-row items-center rounded-3xl border border-gray-600 font-plex"
         hidden={isCommenting}
         onClick={() => {
