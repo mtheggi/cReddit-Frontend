@@ -23,6 +23,7 @@ const Mainfeed = () => {
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [selectedSort, setSelectedSort] = useState("Best");
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -79,9 +80,6 @@ const Mainfeed = () => {
       prevSelectedSort.current = selectedSort;
 
     }
-
-
-
   }, [isLoggedIn, page, navigate.pathname, selectedSort]);
 
 
@@ -99,13 +97,17 @@ const Mainfeed = () => {
     }
   }, [navigate.pathname]);
 
+
   const handleScroll = useCallback(() => {
     const mainfeedElement = document.getElementById("mainfeed");
     const threshold = 10;
-    if (mainfeedElement.scrollTop + mainfeedElement.clientHeight >= mainfeedElement.scrollHeight - threshold) {
+    if (!hasScrolledToEnd && mainfeedElement.scrollTop + mainfeedElement.clientHeight >= mainfeedElement.scrollHeight - threshold) {
       setPage(prevPage => prevPage + 1);
+      setHasScrolledToEnd(true);
+    } else if (mainfeedElement.scrollTop + mainfeedElement.clientHeight < mainfeedElement.scrollHeight) {
+      setHasScrolledToEnd(false);
     }
-  }, []);
+  }, [hasScrolledToEnd]);
 
 
   useEffect(() => {
