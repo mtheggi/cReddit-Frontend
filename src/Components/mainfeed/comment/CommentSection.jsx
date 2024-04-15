@@ -94,7 +94,7 @@ function CommentSection({
         <DropCommentImage id="comment" handleFileChange={handleFileChange} ref={dropzoneRef} />
       </div>
       {!image && (
-        <textarea
+        <textarea id="comment_text"
           disabled={image ? true : false}
           ref={textareaRef}
           className="w-full block resize-none rounded-2xl pl-3 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
