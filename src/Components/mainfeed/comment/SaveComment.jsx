@@ -22,7 +22,7 @@ function SaveComment({ id, Saved }) {
 
   return (
     <div
-      id={id}
+      id={id+"_save"}
       className="flex flex-row items-center w-full h-8 justify-center  bg-reddit_search hover:bg-reddit_search_light rounded-3xl"
       onClick={handleClickSave}
     >
