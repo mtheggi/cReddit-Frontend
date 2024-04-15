@@ -217,7 +217,7 @@ const Post = ({
                         </p>
                     </div>
 
-                    <div className=' flex flex-row w-[20%] xs:w-[40%] items-center '>
+                    <div className=' flex flex-row w-[32%] xs:w-[40%] items-center '>
                         <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
                         <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
                             {uploadedFrom}
