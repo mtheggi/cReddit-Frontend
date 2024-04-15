@@ -81,7 +81,9 @@ const PostComment = ({
         </div>
 
         <div className="ml-3 mt-3">
-          <Share id={id} />
+          <Share id={id}
+           testId={"_comment"} />
+          
         </div>
         <div className="ml-3 mt-3">
           <SaveComment id={id} Saved={isSaved} />
