@@ -20,8 +20,7 @@ function AddComment({
 }) {
   return (
     <div className="w-full mt-3 inline-flex flex-row  justify-center">
-      <button
-        id={`${postId}-add-comment-button`}
+      <button id="add_comment"
         className="w-full h-10 bg-greenyDark flex flex-row items-center rounded-3xl border border-gray-600 font-plex"
         hidden={isCommenting}
         onClick={() => {
