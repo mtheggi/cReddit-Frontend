@@ -113,7 +113,7 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
  * @param {function} props.setPosts - The function to set the posts.
  * @returns {JSX.Element} The rendered Vote component.
  * */
-const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId }) => {
+const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
