@@ -52,20 +52,5 @@ describe('DropDown menue testing', () => {
         expect(getByTestId('chvronUP')).toBeInTheDocument();
     });
 
-    // it('renders the chevron down icon when menu is not dropped', () => {
-    //     const { getByRole } = renderDropDownMenu({ isLoggedIn: false });
-    //     expect(getByRole('img', { name: /chevron down/i })).toBeInTheDocument();
-    // });
 
-    // it('renders the correct number of NavIcon components for "RECENT" MenuHeader', async () => {
-    //     const { findAllByTestId } = renderDropDownMenu({ isLoggedIn: false });
-    //     const navIcons = await findAllByTestId('nav-icon'); // Assuming NavIcon components have a data-testid="nav-icon"
-    //     expect(navIcons.length).toBe(userHistoryRes.length);
-    // });
-
-    // it('renders the correct number of CommunityIcon components for "COMMUNITIES" MenuHeader', async () => {
-    //     const { findAllByTestId } = renderDropDownMenu({ isLoggedIn: true }); // Assuming user needs to be logged in to see communities
-    //     const communityIcons = await findAllByTestId('community-icon'); // Assuming CommunityIcon components have a data-testid="community-icon"
-    //     expect(communityIcons.length).toBe(joinedSubreddits.length); // Assuming joinedSubreddits is available in this scope
-    // });
 })

@@ -5,7 +5,16 @@ import Separator from "./Nav-Icons/Separator";
 import DropDownMenu from "./Nav-Icons/DropDownMenu";
 import { useContext } from "react";
 import { UserContext } from '@/context/UserContext';
-
+/**
+ * Renders the sidebar component.
+ * 
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsCommunityOpen - The function to set the state of the community open.
+ * @param {Object} props.communityButtonRef - The reference to the community button.
+ * @param {Function} props.setIsVisibleLeftSidebar - The function to set the state of the left sidebar visibility.
+ * @param {Object} props.userHistoryRes - The user history response.
+ * @returns {JSX.Element} The rendered sidebar component.
+ */
 const Sidebar = ({ setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar, userHistoryRes }) => {
     const { isLoggedIn } = useContext(UserContext);
 
