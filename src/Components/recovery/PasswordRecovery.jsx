@@ -73,6 +73,8 @@ const PasswordRecovery = () => {
               <div className="w-full h-[96px] px-2 flex justify-center items-center">
                 <div
                   id="recovery_submit"
+                  role="button" 
+                  aria-disabled={!(passwordsMatch() && validatePassword(password) && !recoveryError)}
                   className={`${passwordsMatch() && validatePassword(password) && !recoveryError ? 'bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px] items-center justify-center rounded-3xl bg-reddit_search`}
                   onClick={handleRecoverySubmit}
                 >
