@@ -57,7 +57,6 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-    // console.log("pollOption", pollOptions);
     const navigate = useNavigate();
 
 

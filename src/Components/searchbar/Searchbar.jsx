@@ -2,10 +2,19 @@ import { useState, useEffect } from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 
+/**
+ * Component for the searchbar in the navbar.
+ * @component
+ * @returns {JSX.Element} The Searchbar component.
+ *  */
 const Searchbar = () => {
     const [placeholder, setPlaceholder] = useState('Search Reddit');
 
     useEffect(() => {
+        /**
+         * Function to handle the resizing of the searchbar input field.
+         * @function handleResize
+         */
         const handleResize = () => {
             if (window.innerWidth < 550) {
                 setPlaceholder('Search ...');

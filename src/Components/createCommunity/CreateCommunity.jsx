@@ -39,6 +39,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     /**
      * Validates the community name.
+     * @function validateCommName
      * @param {string} commName - The community name to validate.
      * @returns {boolean} True if the community name is valid, false otherwise.
      * */
@@ -59,6 +60,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     const navigate = useNavigate();
     /**
    * Checks if the given radio button is selected.
+   * @function Checked
    * @param {string} selectedRadio - The currently selected radio button.
    * @param {string} type - The type of the radio button.
    * @returns {boolean} True if the radio button is selected, false otherwise.
@@ -75,6 +77,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     }
     /**
    * Handles the change event of the radio buttons.
+   * @function handleRadioChange
    * @param {Object} e - The event object.
    */
     const handleRadioChange = (e) => {
@@ -83,6 +86,12 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
     }
 
 
+    /**
+     * Handles the creation of a new community.
+     * @function handleCreateCommunity
+     * @async
+     * @returns {Promise<void>}
+     * */
     const handleCreateCommunity = async () => {
         const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
         if (!response) return;

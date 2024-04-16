@@ -7,13 +7,11 @@ import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline';
  * CommentIcon component.
  * 
  * @component
- * 
  * @param {Object} props - Component props
  * @param {string} props.id - The ID of the comment
  * @param {number} props.commentCount - The count of comments
  * @param {string} props.username - The username of the user who made the comment
  * @param {string} props.communityName - The name of the community where the comment was made
- * 
  * @returns {JSX.Element} The rendered CommentIcon component
  */
 const CommentIcon = ({ id, commentCount, username, communityName }) => {
@@ -22,7 +20,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
 
     /**
     * Formats the comment count for display.
-    * 
+    * @function formatComments
     * @param {number} num - The number of comments
     * @returns {string} The formatted comment count
     */
@@ -38,7 +36,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
 
     /**
    * Smoothly scrolls the page to a target element.
-   * 
+   * @function smoothScroll
    * @param {HTMLElement} element - The element to scroll
    * @param {number} target - The target scroll position
    * @param {number} duration - The duration of the scroll animation in milliseconds
@@ -51,6 +49,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
 
         /**
         * Animates the scroll position of the page.
+        * @function animateScroll
         */
         const animateScroll = function () {
             currentTime += increment;

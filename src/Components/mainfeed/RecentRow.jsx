@@ -4,6 +4,14 @@ import redditLogo from '../../assets/reddit_logo.png';
 import Separator from '../sidebar/Nav-Icons/Separator';
 // 50 pic, 70
 
+/**
+ * RecentRow component displays a row of recent posts.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.id - The ID of the post.
+ * @param {Object} props.post - The post object.
+ * @returns {JSX.Element} The RecentRow component.
+ * */
 const RecentRow = ({ id, post }) => {
     // const [postType, setPostType] = useState(post.type);
     const [containsImage, setContainsImage] = useState(post.type === 'Images & Video' ? true : false);
@@ -15,6 +23,13 @@ const RecentRow = ({ id, post }) => {
         else { navigate(`/r/${post.communityName}/comments/${id}`); }
     }
 
+
+    /**
+     * Formats the vote count for display.
+     * @function formatVotes
+     * @param {number} num - The number of votes
+     * @returns {string} The formatted vote count
+     * */
     function formatVotes(num) {
         let absoluteNum = Math.abs(num);
         let sign = num < 0 ? '-' : '';

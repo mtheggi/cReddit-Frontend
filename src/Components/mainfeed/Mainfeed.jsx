@@ -42,7 +42,7 @@ const Mainfeed = () => {
  * Fetches a single post by its ID. If the post is already in the state, it uses that.
  * Otherwise, it sends a GET request to fetch the post.
  * @async
- * @function
+ * @function getSinglePost
  * @param {string} selectedPostId - The ID of the post to fetch.
  */
   const getSinglePost = async (selectedPostId) => {
@@ -115,7 +115,7 @@ const Mainfeed = () => {
  * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
  * it increments the page number to load more posts.
  *
- * @function
+ * @callback handleScroll
  */
   const handleScroll = useCallback(() => {
     const mainfeedElement = document.getElementById("mainfeed");

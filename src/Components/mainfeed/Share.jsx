@@ -1,5 +1,12 @@
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
+/**
+ * Share component.
+ * @component
+ * @param {Object} props - Component props
+ * @param {string} props.id - The ID of the post
+ * @returns {JSX.Element} The rendered Share component
+ */
 const Share = ({id}) => {
     return (
         <div id={"mainfeed_"+id+"_share"} className="flex flex-row items-center cursor-pointer w-21 h-8 justify-center  bg-reddit_search hover:bg-reddit_search_light rounded-3xl ">

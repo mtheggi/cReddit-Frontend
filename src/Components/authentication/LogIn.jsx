@@ -33,6 +33,7 @@ const LogIn = ({
 
   /**
    * Validates the login username.
+   * @function validateLoginUsername
    * @param {string} username - The username to validate.
    * @returns {boolean} Whether the username is valid.
    */
@@ -43,6 +44,7 @@ const LogIn = ({
 
   /**
    * Validates the login password.
+   * @function validateLoginPassword
    * @param {string} password - The password to validate.
    * @returns {boolean} Whether the password is valid.
    */
@@ -54,6 +56,9 @@ const LogIn = ({
 
   /**
    * Handles the login form submission.
+   * @function handleLoginSubmit
+   * @returns {Promise<void>} A Promise that resolves when the login process is complete.
+   * @async
    */
   const handleLoginSubmit = async () => {
     if (
@@ -80,10 +85,14 @@ const LogIn = ({
     }
   };
 
-  /**
-   * Sends the Google authentication token to the backend for login.
-   */
+
   useEffect(() => {
+    /**
+     * Sends the Google authentication token to the backend for login.
+     * @function sendToken
+     * @returns {Promise<void>} A Promise that resolves when the token is sent.
+     * @async
+      */
     async function sendToken() {
       if (OAuthAccessToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, {
@@ -108,6 +117,9 @@ const LogIn = ({
 
   /**
    * Handles the Google login process.
+   * @function handleGoogleLogin
+   * @returns {void}
+   * @async
    */
   const handleGoogleLogin = useGoogleLogin({
     clientId: { Client_ID },

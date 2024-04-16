@@ -3,6 +3,15 @@ import { patchRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants';
 
 
+/**
+ * upVote component allows users to upvote a post.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} isUpvote - The upvote status.
+ * @param {boolean} isDownvote - The downvote status.
+ * @param {boolean} isHoverUpvote - The hover status of the upvote.
+ * @returns {JSX.Element} The rendered upVote component.
+ * */
 const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
   return isUpvote ? (
     <svg
@@ -41,6 +50,16 @@ const UpVote = ({ isUpvote, isDownvote, isHoverUpvote }) => {
     </svg>
   );
 };
+
+/**
+ * downVote component allows users to downvote a post.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {boolean} isDownvote - The downvote status.
+ * @param {boolean} isUpvote - The upvote status.
+ * @param {boolean} isHoverDownvote - The hover status of the downvote.
+ * @returns {JSX.Element} The rendered downVote component.
+ * */
 const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
   return isDownvote ? (
     <svg
@@ -83,6 +102,17 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
   );
 };
 
+/**
+ * Vote component allows users to vote on a post.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {string} props.id - The ID of the post.
+ * @param {number} props.netVotes - The net votes of the post.
+ * @param {boolean} props.isUpvoted - The upvote status of the post.
+ * @param {boolean} props.isDownvoted - The downvote status of the post.
+ * @param {function} props.setPosts - The function to set the posts.
+ * @returns {JSX.Element} The rendered Vote component.
+ * */
 const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
@@ -98,6 +128,14 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
       setIsDownvote(isDownvoted);
     }, [netVotes, isUpvoted, isDownvoted]);
 
+
+
+  /**
+   * Formats the vote count for display.
+   * @function formatVotes
+   * @param {number} num - The number of votes
+   * @returns {string} The formatted vote count
+   * */
   function formatVotes(num) {
     let absoluteNum = Math.abs(num);
     let sign = num < 0 ? '-' : '';
@@ -114,6 +152,11 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
     }
   }
 
+  /**
+   * Handles the upvote event of the post, updating the vote count and status.
+   * @function handleUpvote
+   * @async
+   * */
   const handleUpvote = async () => {
     let newVoters = voters;
     let newIsUpvote = isUpvote;
@@ -162,6 +205,11 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts }) => {
   };
 
 
+  /**
+   * Handles the downvote event of the post, updating the vote count and status.
+   * @function handleDownvote
+   * @async
+   * */
   const handleDownvote = async () => {
     let newVoters = voters;
     let newIsUpvote = isUpvote;

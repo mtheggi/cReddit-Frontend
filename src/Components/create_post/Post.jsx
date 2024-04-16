@@ -24,6 +24,13 @@ class Post extends Component {
         value: RichTextEditor.createEmptyValue()
     }
 
+    /**
+ * Handles changes to the rich text editor's content.
+ * 
+ * This function updates the component's state with the new value, calls the `onChange` prop function with the new value as a markdown string, and if the `type` prop is 'Post', calls the `setContent` prop function with the new value as a markdown string.
+ * @function onChange
+ * @param {Object} value - The new content of the rich text editor.
+ */
     onChange = (value) => {
         this.setState({ value });
         if (this.props.onChange) {

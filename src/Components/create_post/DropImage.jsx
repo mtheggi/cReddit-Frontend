@@ -6,7 +6,7 @@ import { useDropzone } from "react-dropzone";
  * DropImage is a React component that provides a dropzone for image files.
  * It displays a preview of the dropped image and allows the user to remove the image.
  * 
- * @component
+ * @component 
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.id - The id of the dropzone.
  * @param {Function} props.handleFileChange - The function to call when an image file is dropped.
@@ -39,7 +39,7 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
  * Callback function to handle the drop event.
  * It calls the handleFileChange function with the dropped files and sets the preview source to the first dropped file.
  * 
- * @callback
+ * @callback onDrop
  * @param {Array<File>} acceptedFiles - The files dropped on the dropzone.
  * @param {Function} handleFileChange - The function to call when files are dropped.
  * @param {Function} setPreviewSrc - The function to set the preview source.
@@ -62,7 +62,7 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
  * Function to remove the image.
  * It stops the event propagation, sets the preview source to null, and calls the handleFileChange function with null.
  * 
- * @function
+ * @function removeImage
  * @param {Event} event - The event object.
  * @param {Function} handleFileChange - The function to call when the image is removed.
  * @param {Function} setPreviewSrc - The function to set the preview source.

@@ -33,7 +33,7 @@ const Recent = ({ userHistoryRes }) => {
      * Function to handle clearing of recent posts.
      * 
      * @async
-     * @function
+     * @function handleClearRecentPosts
      */
     async function handleClearRecentPosts() {
         const originalPosts = recentPosts;

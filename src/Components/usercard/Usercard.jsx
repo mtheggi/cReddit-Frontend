@@ -3,7 +3,7 @@ import { ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, ShareIcon, Book
     from "@heroicons/react/24/outline";
 /**
  * Renders the FollowIcon component.
- *
+ * @component
  * @returns {JSX.Element} The rendered FollowIcon component.
  */
 
@@ -15,7 +15,7 @@ const FollowIcon = () => {
 }
 /**
  * Renders the FollowIcon component.
- *
+ * @component
  * @returns {JSX.Element} The rendered UnfollowIcon component.
  */
 const UnfollowIcon = () => {
@@ -30,7 +30,7 @@ const UnfollowIcon = () => {
  * Usercard component.
  *
  * This component represents a user card with various information and actions.
- *
+ * @component
  * @returns {JSX.Element} The rendered Usercard component.
  */
 const Usercard = () => {

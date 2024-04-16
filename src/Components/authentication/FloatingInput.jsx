@@ -67,7 +67,7 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
  * Generates a new username and sets it as the current input.
  *
  * @async
- * @function
+ * @function handleGenerateUsername
  * @returns {Promise<void>} A Promise that resolves when the username is generated and set.
  */
     const handleGenerateUsername = async () => {

@@ -43,7 +43,7 @@ const PasswordRecovery = () => {
         <div className="flex min-w-88 flex-col w-full h-full msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
           <div className="h-full w-full flex flex-col">
             <div className="flex flex-col h-full px-10 pt-8">
-              <h1 className="text-2xl text-white font-bold mb-2 text-neutral">
+              <h1 className="text-2xl text-white font-bold mb-2">
                 Reset your password
               </h1>
 

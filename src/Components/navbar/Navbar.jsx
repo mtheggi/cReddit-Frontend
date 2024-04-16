@@ -22,17 +22,21 @@ import { useNotifications } from '../notifications/NotificationContext';
 
 
 
+
+/**
+ * Navbar component.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
+ * @param {Object} props.navbarRef - Reference to the navbar element.
+ * @returns {JSX.Element} The Navbar component.
+ * */
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
     const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
     const {user, setUser} = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    // const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    //     const savedisLoggedIn = localStorage.getItem('isLoggedIn');
-    //     return savedisLoggedIn !== null ? JSON.parse(savedisLoggedIn) : false;
-    // });
-
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
@@ -116,6 +120,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const navigate = useNavigate();
 
+    /**
+     * Function to handle logout.
+     * @async
+     * @function handleLogout
+     * */
     const handleLogout = async () => {
         const response = await getRequest(`${baseUrl}/user/logout`);
         if (response.status == 200 || response.status == 201) {
@@ -124,11 +133,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             navigate('');
         }
     }
-
-    // useEffect(() => {
-    //     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
-    // }, [isLoggedIn]);
-
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -171,6 +175,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const words = ['/submit', '/settings']; 
 
     const urlContainsWord = words.some(word => location.pathname.includes(word));
+
+    /**
+     * Function to handle mouse enter event on the bell icon.
+     * @function handleMouseEnterBellIcon
+     * */
     const handleMouseEnterBellIcon = () => {
         setShowInboxTextTransition(true); 
         
@@ -179,6 +188,10 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
         }, 100); 
     };
       
+    /**
+     * Function to handle mouse leave event on the bell icon.
+     * @function handleMouseLeaveBellIcon
+     * */
     const handleMouseLeaveBellIcon = () => {
         setShowInboxTooltip(false);
         

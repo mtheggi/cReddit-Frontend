@@ -65,7 +65,7 @@ const CreatePost = () => {
 
     /**
  * Handles file changes.
- * 
+ * @function handleFileChange
  * @param {Object} e - The event object.
  */
     const handleFileChange = (e) => {
@@ -74,7 +74,7 @@ const CreatePost = () => {
 
     /**
  * Checks if a community is joined.
- * 
+ * @function isCommunityJoined
  * @param {string} communityName - The name of the community.
  * @returns {boolean} - Returns true if the community is joined, false otherwise.
  */
@@ -84,7 +84,7 @@ const CreatePost = () => {
 
     /**
  * Gets the expiration date.
- * 
+ * @function getExpirationDate
  * @param {number} voteDurationValue - The vote duration value.
  * @returns {string} - Returns the expiration date as a string.
  */
@@ -97,6 +97,7 @@ const CreatePost = () => {
 
 /**
  * Handles the submission of other types of posts.
+ * @function handleSubmitOtherTypes
  * @async
  * @returns {Object} - The response from the post request.
  */
@@ -115,7 +116,7 @@ const CreatePost = () => {
 
 /**
  * Handles the submission of image posts.
- * 
+ * @function handleSubmitImg
  * @async
  * @returns {Object} - The response from the post request.
  */
@@ -138,7 +139,7 @@ const CreatePost = () => {
 
     /**
  * Handles the submission of poll posts.
- * 
+ * @function handleSubmitPoll
  * @async
  * @returns {Object} - The response from the post request.
  */
@@ -161,7 +162,7 @@ const CreatePost = () => {
 
     /**
  * Gets the joined subreddits.
- * 
+ * @function getJoinedSubreddits
  * @async
  * @returns {Array} - An array of joined subreddits.
  */
@@ -181,7 +182,7 @@ const CreatePost = () => {
 
     /**
  * Handles the submission of posts.
- * 
+ * @function handleSubmitPost
  * @async
  */
     const handleSubmitPost = async () => {
@@ -218,7 +219,7 @@ const CreatePost = () => {
 
     /**
  * Handles input changes.
- * 
+ * @function handleInput
  * @param {Object} e - The event object.
  */
     const handleInput = (e) => {
@@ -235,7 +236,7 @@ const CreatePost = () => {
 
     /**
  * Checks if input fields are not empty.
- * 
+ * @function checkInputFieldsNotEmpty
  * @returns {boolean} - Returns true if input fields are not empty, false otherwise.
  */
     const checkInputFieldsNotEmpty = () => {
@@ -245,7 +246,9 @@ const CreatePost = () => {
 
 
     /**
- * Adds an input field.
+ * Adds an input field for voting in a poll.
+ * @function addInputField
+ * 
  */
     const addInputField = () => {
         if (inputFields.length < 6) {
@@ -254,8 +257,8 @@ const CreatePost = () => {
     };
 
     /**
- * Removes an input field.
- * 
+ * Removes an input field from poll.
+ * @function removeInputField
  * @param {string} id - The id of the input field.
  */
     const removeInputField = (id) => {
