@@ -1,5 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+/**
+ * NotificationItem component displays a single notification with an optional dropdown menu for additional actions.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {string} props.notificationKey - Unique key for the notification.
+ * @param {string} props.title - Title of the notification.
+ * @param {string} props.date - Date of the notification.
+ * @param {string} props.description - Description of the notification.
+ * @param {string} props.image - Image URL for the notification.
+ * @param {function} props.onRemove - Callback function to handle the removal of the notification.
+ * @param {boolean} props.isNewNotificationsPage - Indicates if the notification is being displayed on a new notifications page.
+ * @returns {JSX.Element} A single notification item with interactive elements.
+ */
 const NotificationItem = ({ notificationKey, title, date, description, image, onRemove, isNewNotificationsPage }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = (event) => {
@@ -8,7 +22,11 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
     };
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
-
+    
+    /**
+     * Effect hook that adds event listener to handle click events outside the dropdown
+     * to close it if it is open and the click is outside the dropdown area.
+     */
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownOpen && dropdownRef.current && !dropdownRef.current.contains(event.target) && !buttonRef.current.contains(event.target)) {
@@ -23,6 +41,12 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
         };
     }, [dropdownOpen]);
 
+    /**
+     * Truncates the description text to 100 characters if it is longer, appending ellipses.
+     * 
+     * @param {string} desc - The description text to potentially truncate.
+     * @returns {string} The potentially truncated description.
+     */
     const truncateDescription = (desc) => {
         if (desc.length <= 100) return desc;
 
