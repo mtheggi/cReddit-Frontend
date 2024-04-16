@@ -65,14 +65,14 @@ const RecentRow = ({ id, post }) => {
 
                 <div className='flex flex-col h-full min-w-10/12'>
 
-                    <a id={id + "_community"} href="" className='w-fit h-fit flex'>
+                    <a id={id + "_community_recent"} href="" className='w-fit h-fit flex'>
                         <div className=' w-full h-8 flex no-select flex-row items-center'>
                             <img src={post.profilePicture} alt="profile_picture" className="w-7 h-7 rounded-xl" />
                             <p className='text-gray-400 font-normal text-xs ml-1.5 hover:underline cursor-pointer'>{isCommunity ? `r/${post.communityName}` : `u/${post.username}`}</p>
                         </div>
                     </a>
 
-                    <div id={id + "_post_header"} onClick={handleSubmitPost} className='w-fit h-fit flex'>
+                    <div id={id + "_post_header_recent"} onClick={handleSubmitPost} className='w-fit h-fit flex'>
                         <div className={`${containsImage ? 'max-w-56' : ''} w-full max-h-18 text-gray-400 text-sm py-2 font-semibold  overflow-auto break-words`}>
                             <h1 className='hover:underline no-select cursor-pointer'>{title}</h1>
                         </div>
@@ -81,7 +81,7 @@ const RecentRow = ({ id, post }) => {
                 </div>
 
                 {
-                    containsImage && <div id={id + "_post_img"} onClick={handleSubmitPost} className='min-w-21 w-21 h-full no-select cursor-pointer'>
+                    containsImage && <div id={id + "_post_img_recent"} onClick={handleSubmitPost} className='min-w-21 w-21 h-full no-select cursor-pointer'>
                         {post.content.endsWith("mp4") ? <video src={post.content} alt='' className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} /> : <img src={post.content} alt="" className='w-21 h-21 rounded-xl' style={{ objectFit: 'cover' }} />}
                     </div>
                 }
