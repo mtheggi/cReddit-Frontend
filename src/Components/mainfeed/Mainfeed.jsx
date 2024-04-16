@@ -157,14 +157,7 @@ const Mainfeed = () => {
     };
   });
 
-  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
-    setPosts(prevPosts => prevPosts.map(post => {
-      if (post.id === id) {
-        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
-      }
-      return post;
-    }));
-  };
+
 
 
 
