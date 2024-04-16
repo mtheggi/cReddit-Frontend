@@ -3,6 +3,15 @@ import FloatingInput from '../authentication/FloatingInput';
 import { postRequest } from '../../services/Requests';
 import { baseUrl } from '../../constants';
 
+/**
+ * Component for handling user password recovery.
+ *
+ * @component
+ * @returns {JSX.Element} The PasswordRecovery component that includes input fields
+ * for new password and password confirmation, along with a submit button to finalize
+ * the password recovery process.
+ */
+
 const PasswordRecovery = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
