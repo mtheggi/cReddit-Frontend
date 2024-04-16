@@ -9,20 +9,17 @@ import { getRequest } from "../../services/Requests";
  */
 const CommunitiesSection = () => {
   /**
-   * State to hold the list of communities.
-   * @type {[Object[], function]} State hook for communities and setter function.
+   * State hook for communities and setter function.
    */
   const [communities, setCommunities] = useState([]);
 
   /**
-   * State to manage the current page.
-   * @type {[number, function]} State hook for page number and setter function.
+   * State hook for page number and setter function.
    */
   const [page, setPage] = useState(1);
 
   /**
-   * State to hold the total count of communities.
-   * @type {[number, function]} State hook for total count and setter function.
+   * State hook for total count and setter function.
    */
   const [totalCount, setTotalCount] = useState(0);
 
