@@ -84,6 +84,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
     const handleCreateCommunity = async () => {
         const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        if (!response) return;
         if (response.status !== 200 && response.status !== 201) {
             setCommunityNameError(response.data.message);
         } else {

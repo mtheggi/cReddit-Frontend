@@ -117,6 +117,7 @@ const CreatePost = () => {
 
     const getJoinedSubreddits = async () => {
         const response = await getRequest(`${baseUrl}/user/joined-communities`);
+        if (!response) return;
         if (response.status == 200 || response.status == 201) {
             const subredditData = response.data.map(subreddit => ({
                 name: subreddit.communityName,
