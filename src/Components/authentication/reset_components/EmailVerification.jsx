@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 /**
  * EmailVerification component.
  *
- * @component
+ * @component 
  * @param {Object} props - Props that are passed to the component.
  * @param {function} props.setIsOpenedEmailVerification - Function to set the state of email verification modal.
  * @param {function} props.setIsOpenedForgotPass - Function to set the state of forgot password modal.
@@ -20,15 +20,6 @@ const EmailVerification = ({ setIsOpenedEmailVerification, setIsOpenedForgotPass
     const [internalClose, setInternalClose] = useState(false);
     const [internalReturnBack, setInternalReturnBack] = useState(false);
 
-
-    /**
- * useEffect hook for managing the state of the modals.
- *
- * This hook listens for changes in the `internalClose` and `internalReturnBack` states.
- * If `internalClose` is true, it closes the EmailVerification modal and resets `internalClose` to false.
- * If `internalReturnBack` is true, it closes the EmailVerification modal and opens either the ForgotPassword or ForgotUsername modal based on the value of `isPrevForgotPassOrUsername`.
- * It then resets `internalReturnBack` to false.
- */
     useEffect(() => {
         if (internalClose) {
             setIsOpenedEmailVerification(false);

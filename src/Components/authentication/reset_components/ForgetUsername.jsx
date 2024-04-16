@@ -27,7 +27,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
 
   /**
  * Validates the provided email.
- *
+ * @function validateEmail
  * @param {string} email - The email to validate.
  * @returns {boolean} True if the email is valid, false otherwise.
  */
@@ -38,6 +38,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
 
     /**
  * Handles the submission of the forget username form.
+ * @function handleForgetUsernameSubmit
  * @param {Event} e - The event triggered by the form submission.
  */
     const handleForgetUsernameSubmit = async (e) => {
@@ -59,9 +60,7 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
         }
       }
 
-/**
- * Handles the internal state changes for closing and returning back.
- */
+
   useEffect(() => {
     if(internalClose)
     {

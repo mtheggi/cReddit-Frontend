@@ -16,7 +16,7 @@ import Comment from "./comment/Comment";
  * It also handles scroll events and dropdown menus.
  *
  * @component
- * @returns {JSX.Element} The rendered React element.
+ * @returns {JSX.Element} The rendered Mainfeed component.
  */
 const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
@@ -110,6 +110,13 @@ const Mainfeed = () => {
     }
   }, [navigate.pathname]);
 
+
+  /**
+ * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
+ * it increments the page number to load more posts.
+ *
+ * @function
+ */
   const handleScroll = useCallback(() => {
     const mainfeedElement = document.getElementById("mainfeed");
     const threshold = 10;
@@ -146,12 +153,6 @@ const Mainfeed = () => {
 
     const mainfeedElement = document.getElementById("mainfeed");
 
-    /**
- * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
- * it increments the page number to load more posts.
- *
- * @function
- */
     const handleScroll = () => {
       const scrollThreshold = 58;
       if (mainfeedElement.scrollTop > scrollThreshold) {
@@ -172,16 +173,6 @@ const Mainfeed = () => {
     };
   });
 
-  
-  /**
- * Updates the votes for a post in the state.
- *
- * @function
- * @param {string} id - The ID of the post to update.
- * @param {number} newVotes - The new vote count.
- * @param {boolean} newIsUpvoted - Whether the post is upvoted by the current user.
- * @param {boolean} newIsDownvoted - Whether the post is downvoted by the current user.
- */
   
 
   return (
