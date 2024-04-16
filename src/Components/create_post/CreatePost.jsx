@@ -12,6 +12,13 @@ import RedditRuleIcon from './RedditRuleIcon';
 import DropImage from './DropImage';
 import { UserContext } from '@/context/UserContext';
 
+
+
+/**
+ * CreatePost component is a form for creating a new post.
+ * @component
+ * @returns {JSX.Element} React component.
+ */
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
     const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
@@ -56,20 +63,43 @@ const CreatePost = () => {
         };
     });
 
+    /**
+ * Handles file changes.
+ * 
+ * @param {Object} e - The event object.
+ */
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     }
 
+    /**
+ * Checks if a community is joined.
+ * 
+ * @param {string} communityName - The name of the community.
+ * @returns {boolean} - Returns true if the community is joined, false otherwise.
+ */
     const isCommunityJoined = (communityName) => {
         return joinedSubreddits.some(subreddit => subreddit.name === communityName);
     }
 
+    /**
+ * Gets the expiration date.
+ * 
+ * @param {number} voteDurationValue - The vote duration value.
+ * @returns {string} - Returns the expiration date as a string.
+ */
     const getExpirationDate = (voteDurationValue) => {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + parseInt(voteDurationValue));
         return expirationDate.toISOString();
     }
 
+
+/**
+ * Handles the submission of other types of posts.
+ * @async
+ * @returns {Object} - The response from the post request.
+ */
     const handleSubmitOtherTypes = async () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
@@ -82,6 +112,13 @@ const CreatePost = () => {
         return response
     }
 
+
+/**
+ * Handles the submission of image posts.
+ * 
+ * @async
+ * @returns {Object} - The response from the post request.
+ */
     const handleSubmitImg = async () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
@@ -99,6 +136,12 @@ const CreatePost = () => {
         return response
     }
 
+    /**
+ * Handles the submission of poll posts.
+ * 
+ * @async
+ * @returns {Object} - The response from the post request.
+ */
     const handleSubmitPoll = async () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
@@ -115,6 +158,13 @@ const CreatePost = () => {
 
     }
 
+
+    /**
+ * Gets the joined subreddits.
+ * 
+ * @async
+ * @returns {Array} - An array of joined subreddits.
+ */
     const getJoinedSubreddits = async () => {
         const response = await getRequest(`${baseUrl}/user/joined-communities`);
         if (!response) return;
@@ -128,6 +178,12 @@ const CreatePost = () => {
         }
     }
 
+
+    /**
+ * Handles the submission of posts.
+ * 
+ * @async
+ */
     const handleSubmitPost = async () => {
         //Todo add a check that the communityName exists inside the returned array from database: 
         if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2) == user) {
@@ -160,6 +216,11 @@ const CreatePost = () => {
         }
     }
 
+    /**
+ * Handles input changes.
+ * 
+ * @param {Object} e - The event object.
+ */
     const handleInput = (e) => {
         if (!initialHeight) {
             initialHeight = `${e.target.clientHeight}px`;
@@ -171,18 +232,32 @@ const CreatePost = () => {
         setCharCount(e.target.value.length);
     };
 
+
+    /**
+ * Checks if input fields are not empty.
+ * 
+ * @returns {boolean} - Returns true if input fields are not empty, false otherwise.
+ */
     const checkInputFieldsNotEmpty = () => {
         const nonEmptyFields = inputFields.filter(field => field.value.trim() !== "");
         return nonEmptyFields.length >= 2;
     };
 
 
+    /**
+ * Adds an input field.
+ */
     const addInputField = () => {
         if (inputFields.length < 6) {
             setInputFields([...inputFields, { id: uuidv4(), value: '' }]);
         }
     };
 
+    /**
+ * Removes an input field.
+ * 
+ * @param {string} id - The id of the input field.
+ */
     const removeInputField = (id) => {
         setInputFields(inputFields.filter(field => field.id !== id));
     };

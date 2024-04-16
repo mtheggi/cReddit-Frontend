@@ -9,9 +9,21 @@ import { UserContext } from '@/context/UserContext';
 import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
 import { ToastContainer } from "react-toastify";
 
+
+/**
+ * SignUpEmail component.
+ * 
+ * @component
+ * @param {Object} props - Props passed to the component.
+ * @param {function} props.setIsOpenedSignupMenu - Function to set the state of the signup menu.
+ * @param {function} props.setIsOpenedLoginMenu - Function to set the state of the login menu.
+ * @param {function} props.setIsOpenedSecondSignupMenu - Function to set the state of the second signup menu.
+ * @param {function} props.setNavbarSignupEmail - Function to set the email in the navbar.
+ * 
+ * @returns {JSX.Element} The rendered SignUpEmail component.
+ * 
+ */
 const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedSecondSignupMenu, setNavbarSignupEmail }) => {
-
-
     const [nextPage, setNextPage] = useState(false)
     const [email, setEmail] = useState('');
     const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
@@ -30,12 +42,27 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
     }, [nextPage]);
 
 
-
+    /**
+     * Validates the provided email.
+     * 
+     * @param {string} email - The email to validate.
+     * 
+     * @returns {boolean} True if the email is valid, false otherwise.
+     * 
+     * @example
+     * const isValid = validateEmail('test@example.com'); // returns true
+     */
     const validateEmail = (email) => {
         var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
         return re.test(email);
     };
 
+    /**
+ * Handles the submission of the signup form.
+ * 
+ * @param {Event} e - The event triggered by the form submission.
+ * 
+ */
     const handleSignupEmailSubmit = async (e) => {
         if (email && validateEmail(email)) {
             e.stopPropagation();
@@ -65,6 +92,11 @@ const SignUpEmail = ({ setIsOpenedSignupMenu, setIsOpenedLoginMenu, setIsOpenedS
     },
         [OAuthAccessToken]
     );
+
+    /**
+ * Handles the Google login process.
+ * 
+ */
     const handleGoogleLogin = useGoogleLogin({
         clientId: { Client_ID },
         onSuccess: (codeResponse) => { setOAuthAccessToken(codeResponse.access_token); },

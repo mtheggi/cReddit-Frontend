@@ -8,7 +8,7 @@ import { UserContext } from "@/context/UserContext";
 
 /**
  * React component for user signup.
- *
+ * @component
  * @param {Object} props - Component props.
  * @param {function} props.setIsOpenedSignupMenu - Function to control the visibility of the signup menu.
  * @param {function} props.setIsOpenedSecondSignupMenu - Function to control the visibility of the second signup menu.

@@ -4,6 +4,22 @@ import { getRequest } from '../../services/Requests';
 import { baseUrl } from '../../constants';
 
 
+/**
+ * FloatingInput is a React component that renders an input field with validation and error handling.
+ *
+ * @component
+ * @param {Object} props - The properties that define the component's behavior and display.
+ * @param {string} props.id - The unique identifier for the input field.
+ * @param {string} props.label - The label for the input field.
+ * @param {Function} props.validateInput - The function to validate the input field.
+ * @param {Function} props.setInputNameOnChange - The function to set the input name on change.
+ * @param {string} props.backendValidationError - The backend validation error message.
+ * @param {Function} props.setBackendValidationError - The function to set the backend validation error.
+ * @param {Function} props.setBackendMessage - The function to set the backend message.
+ * @returns {JSX.Element} A JSX element that represents the input field.
+ */
+
+
 const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backendValidationError, setBackendValidationError, setBackendMessage }) => {
 
     const [input, setInput] = useState(null);

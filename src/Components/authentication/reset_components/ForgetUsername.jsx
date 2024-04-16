@@ -4,6 +4,18 @@ import { useEffect, useState } from 'react';
 import { postRequest } from "../../../services/Requests";
 import { baseUrl } from '../../../constants';
 
+/**
+ * ForgetUsername component for handling forgotten username.
+ *
+ * @component
+ * @param {Object} props - The properties that define the component.
+ * @param {Function} props.setIsOpenedForgotUsername - Function to set the state of the Forgot Username modal.
+ * @param {Function} props.setIsOpenedLoginMenu - Function to set the state of the Login Menu modal.
+ * @param {Function} props.setIsOpenedEmailVerification - Function to set the state of the Email Verification modal.
+ * @param {Function} props.setIsPrevForgotPassOrUsername - Function to set the state of the previous modal (Forgot Password or Username).
+ *
+ * @returns {JSX.Element} The rendered ForgetUsername component.
+ */
 const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsOpenedEmailVerification, setIsPrevForgotPassOrUsername}) => {
 
     const[email, setEmail] = useState(null);
@@ -12,11 +24,22 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
     const [internalClose, setInternalClose] = useState(false);
     const [internalReturnBack, setInternalReturnBack] = useState(false);
 
+
+  /**
+ * Validates the provided email.
+ *
+ * @param {string} email - The email to validate.
+ * @returns {boolean} True if the email is valid, false otherwise.
+ */
     const validateEmail = (email) => {
         var re = /^([a-z A-Z 0-9 \. _]+)@([a-z A-Z]+)\.([a-z A-Z]{2,6})$/;
         return re.test(email);
     }
 
+    /**
+ * Handles the submission of the forget username form.
+ * @param {Event} e - The event triggered by the form submission.
+ */
     const handleForgetUsernameSubmit = async (e) => {
         e.stopPropagation();
         if (email && validateEmail(email) && resetUsernameError==null) {
@@ -36,7 +59,9 @@ const ForgetUsername = ({setIsOpenedForgotUsername, setIsOpenedLoginMenu, setIsO
         }
       }
 
-
+/**
+ * Handles the internal state changes for closing and returning back.
+ */
   useEffect(() => {
     if(internalClose)
     {

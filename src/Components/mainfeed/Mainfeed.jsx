@@ -10,6 +10,14 @@ import { useLocation } from "react-router-dom";
 import Comment from "./comment/Comment";
 
 
+/**
+ * Mainfeed component. It is responsible for displaying the main feed of posts.
+ * It manages several states including the posts, selected post, page, error, loading states, etc.
+ * It also handles scroll events and dropdown menus.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered React element.
+ */
 const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
@@ -30,7 +38,13 @@ const Mainfeed = () => {
   const prevSelectedSort = useRef(selectedSort);
 
 
-
+/**
+ * Fetches a single post by its ID. If the post is already in the state, it uses that.
+ * Otherwise, it sends a GET request to fetch the post.
+ * @async
+ * @function
+ * @param {string} selectedPostId - The ID of the post to fetch.
+ */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
     const existingPost = posts.find(post => post._id === selectedPostId);
@@ -79,9 +93,6 @@ const Mainfeed = () => {
       prevSelectedSort.current = selectedSort;
 
     }
-
-
-
   }, [isLoggedIn, page, navigate.pathname, selectedSort]);
 
 
@@ -135,6 +146,12 @@ const Mainfeed = () => {
 
     const mainfeedElement = document.getElementById("mainfeed");
 
+    /**
+ * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
+ * it increments the page number to load more posts.
+ *
+ * @function
+ */
     const handleScroll = () => {
       const scrollThreshold = 58;
       if (mainfeedElement.scrollTop > scrollThreshold) {
@@ -155,16 +172,17 @@ const Mainfeed = () => {
     };
   });
 
-  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
-    setPosts(prevPosts => prevPosts.map(post => {
-      if (post.id === id) {
-        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
-      }
-      return post;
-    }));
-  };
-
-
+  
+  /**
+ * Updates the votes for a post in the state.
+ *
+ * @function
+ * @param {string} id - The ID of the post to update.
+ * @param {number} newVotes - The new vote count.
+ * @param {boolean} newIsUpvoted - Whether the post is upvoted by the current user.
+ * @param {boolean} newIsDownvoted - Whether the post is downvoted by the current user.
+ */
+  
 
   return (
     <div

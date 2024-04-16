@@ -4,6 +4,7 @@ import RedditLogo from '../../assets/reddit_logo.svg';
 /**
  * Loading component displays a loading animation with the Reddit logo.
  * @component
+ * @returns {JSX.Element} The loading component.
  */
 const Loading = () => {
     return (

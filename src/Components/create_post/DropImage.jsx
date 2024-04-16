@@ -2,6 +2,18 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState, useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
+/**
+ * DropImage is a React component that provides a dropzone for image files.
+ * It displays a preview of the dropped image and allows the user to remove the image.
+ * 
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.id - The id of the dropzone.
+ * @param {Function} props.handleFileChange - The function to call when an image file is dropped.
+ * @param {string} props.userProfilePicture - The URL of the user's profile picture.
+ * @param {string} props.userBanner - The URL of the user's banner.
+ * @returns  {JSX.Element} The rendered DropImage component.
+ */
 function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
 
   const [previewSrc, setPreviewSrc] = useState(null);
@@ -23,6 +35,15 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
   }, [userBanner]);
 
 
+  /**
+ * Callback function to handle the drop event.
+ * It calls the handleFileChange function with the dropped files and sets the preview source to the first dropped file.
+ * 
+ * @callback
+ * @param {Array<File>} acceptedFiles - The files dropped on the dropzone.
+ * @param {Function} handleFileChange - The function to call when files are dropped.
+ * @param {Function} setPreviewSrc - The function to set the preview source.
+ */
   const onDrop = useCallback((acceptedFiles) => {
     handleFileChange({
       target: {
@@ -36,6 +57,16 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
     onDrop,
   });
 
+
+  /**
+ * Function to remove the image.
+ * It stops the event propagation, sets the preview source to null, and calls the handleFileChange function with null.
+ * 
+ * @function
+ * @param {Event} event - The event object.
+ * @param {Function} handleFileChange - The function to call when the image is removed.
+ * @param {Function} setPreviewSrc - The function to set the preview source.
+ */
   const removeImage = (event) => {
     event.stopPropagation();
     setPreviewSrc(null);

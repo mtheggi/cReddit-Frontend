@@ -10,6 +10,7 @@ import { UserContext } from "@/context/UserContext";
 
 /**
  * React component for user login.
+ * @component
  * @param {Object} props - Component props.
  * @param {Function} props.setIsOpenedLoginMenu - Function to control the visibility of the login menu.
  * @param {Function} props.setIsOpenedForgotPass - Function to control the visibility of the forgot password menu.

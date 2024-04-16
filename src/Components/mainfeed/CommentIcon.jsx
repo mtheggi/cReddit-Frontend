@@ -3,10 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline';
 
-
+/**
+ * CommentIcon component.
+ * 
+ * @component
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.id - The ID of the comment
+ * @param {number} props.commentCount - The count of comments
+ * @param {string} props.username - The username of the user who made the comment
+ * @param {string} props.communityName - The name of the community where the comment was made
+ * 
+ * @returns {JSX.Element} The rendered CommentIcon component
+ */
 const CommentIcon = ({ id, commentCount, username, communityName }) => {
     const location = useLocation();
     const navigate = useNavigate();
+
+    /**
+    * Formats the comment count for display.
+    * 
+    * @param {number} num - The number of comments
+    * @returns {string} The formatted comment count
+    */
     function formatComments(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -17,28 +36,47 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
         }
     }
 
+    /**
+   * Smoothly scrolls the page to a target element.
+   * 
+   * @param {HTMLElement} element - The element to scroll
+   * @param {number} target - The target scroll position
+   * @param {number} duration - The duration of the scroll animation in milliseconds
+   */
     const smoothScroll = (element, target, duration) => {
         let start = element.scrollTop,
             change = target - start,
             currentTime = 0,
             increment = 20;
 
-        const animateScroll = function() {
+        /**
+        * Animates the scroll position of the page.
+        */
+        const animateScroll = function () {
             currentTime += increment;
             let val = Math.easeInOutQuad(currentTime, start, change, duration);
             element.scrollTop = val;
-            if(currentTime < duration) {
+            if (currentTime < duration) {
                 window.requestAnimationFrame(animateScroll);
             }
         };
         animateScroll();
     }
 
+    /**
+     * Easing function for smooth animations.
+     * 
+     * @param {number} t - Current time
+     * @param {number} b - Start value
+     * @param {number} c - Change in value
+     * @param {number} d - Duration
+     * @returns {number} The calculated intermediate value
+     */
     Math.easeInOutQuad = function (t, b, c, d) {
-        t /= d/2;
-        if (t < 1) return c/2*t*t + b;
+        t /= d / 2;
+        if (t < 1) return c / 2 * t * t + b;
         t--;
-        return -c/2 * (t*(t-2) - 1) + b;
+        return -c / 2 * (t * (t - 2) - 1) + b;
     };
 
 
@@ -58,7 +96,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
                 const mainfeed = document.getElementById('mainfeed');
                 console.log(element, mainfeed);
                 if (element && mainfeed) {
-                    
+
                     const position = element.offsetTop - mainfeed.offsetTop - 10;
                     smoothScroll(mainfeed, position, 300);
                 }

@@ -2,11 +2,33 @@ import { Button, Checkbox, Label, Modal, TextInput } from 'flowbite-react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 
+/**
+ * EmailVerification component.
+ *
+ * @component
+ * @param {Object} props - Props that are passed to the component.
+ * @param {function} props.setIsOpenedEmailVerification - Function to set the state of email verification modal.
+ * @param {function} props.setIsOpenedForgotPass - Function to set the state of forgot password modal.
+ * @param {function} props.setIsOpenedForgotUsername - Function to set the state of forgot username modal.
+ * @param {boolean} props.isPrevForgotPassOrUsername - Boolean to check if the previous modal was forgot password or username.
+ * @return {JSX.Element} The rendered EmailVerification component.
+ *
+ */
+
 const EmailVerification = ({ setIsOpenedEmailVerification, setIsOpenedForgotPass, setIsOpenedForgotUsername, isPrevForgotPassOrUsername }) => {
 
     const [internalClose, setInternalClose] = useState(false);
     const [internalReturnBack, setInternalReturnBack] = useState(false);
 
+
+    /**
+ * useEffect hook for managing the state of the modals.
+ *
+ * This hook listens for changes in the `internalClose` and `internalReturnBack` states.
+ * If `internalClose` is true, it closes the EmailVerification modal and resets `internalClose` to false.
+ * If `internalReturnBack` is true, it closes the EmailVerification modal and opens either the ForgotPassword or ForgotUsername modal based on the value of `isPrevForgotPassOrUsername`.
+ * It then resets `internalReturnBack` to false.
+ */
     useEffect(() => {
         if (internalClose) {
             setIsOpenedEmailVerification(false);
@@ -60,7 +82,7 @@ const EmailVerification = ({ setIsOpenedEmailVerification, setIsOpenedForgotPass
                 <div className='flex flex-col mt-auto items-center'>
                     <p className='mb-2.5 text-sm font-light'>Didn't receive an email? Check your spam folder or</p>
                     <div onClick={(e) => {
-                        e.stopPropagation; 
+                        e.stopPropagation;
                         setInternalReturnBack(true);
                     }} id="Email_verify_try_another_email" className={`w-full h-13 msm:w-93 mt-auto mb-10  msm:mt-23 flex bg-reddit_search hover:bg-reddit_search_light cursor-pointer  rounded-3xl text-gray-600 flex-row justify-center items-center `}>
                         <p className="no-select font-medium text-sm text-gray-300 ">Try Another Email</p>

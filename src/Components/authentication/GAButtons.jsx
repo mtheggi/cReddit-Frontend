@@ -1,5 +1,6 @@
 /**
  * Component displaying Google authentication button.
+ * @component
  * @returns {JSX.Element} Google authentication button component.
  */
 export default function GAButtons() {

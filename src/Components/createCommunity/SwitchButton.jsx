@@ -5,6 +5,7 @@ import Switch from '@mui/material/Switch';
 
 /**
  * Custom styled switch component for iOS-like toggle switch.
+ * @component
  * @param {Object} props - Component props.
  * @param {boolean} props.isSwitched - Current state of the switch.
  * @param {function} props.setIsSwitched - Function to update the state of the switch.

@@ -29,6 +29,7 @@ const SuccessToast = (message) =>
     );
 /**
  * CreateCommunity component allows users to create a new community.
+ * @component
  * @param {Object} props - The component props.
  * @param {Function} props.setIsCommunityOpen - Function to set the state of the community modal.
  * @param {Object} props.communityCardRef - Reference to the community card element.
