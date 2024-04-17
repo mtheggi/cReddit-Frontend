@@ -378,8 +378,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
-                                        <div className='  w-8 h-8 rounded-full'>
+                                        <div className='relative w-8 h-8 rounded-full'>
                                             <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
+                                            
+                                            <div className='w-[10px] h-[10px] absolute left-[24px] bottom-[0px] border-[2px] border-[#0C1416] -mt-[8px] rounded-full bg-[#55BD45]'>
+                                            </div>
                                         </div>
                                     </div>
 
