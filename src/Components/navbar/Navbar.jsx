@@ -216,6 +216,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
                     <Link id='navbar_reddit' className='w-fit h-fit flex mr-2 xs:mr-0 items-center' to="">
                         <img src={redditLogo} alt="Logo" className="w-8  h-8 min-w-8" />
+                        
                         <svg className="h-[22px] ml-2 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
                             <g className=' fill-white'>
                                 <path d="m71.62,45.92l-12.01,28.56c-1.51-.76-5.11-1.61-8.51-1.61s-6.81.85-10.12,2.46c-6.53,3.31-11.35,9.93-11.35,19.48v52.3H-.26V45.35h29.04v14.28h.57c6.81-9.08,17.21-15.79,30.74-15.79,4.92,0,9.65.95,11.54,2.08Z"></path>

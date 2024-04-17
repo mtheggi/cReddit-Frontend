@@ -1,6 +1,6 @@
 
 import LoadingGift from '../../assets/Loading.gif';
-import RedditLogo from '../../assets/reddit_logo.svg';
+import RedditLogo from '../../assets/reddit_logo.png';
 /**
  * Loading component displays a loading animation with the Reddit logo.
  * @component
