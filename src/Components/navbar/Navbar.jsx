@@ -202,7 +202,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
 
     return (
-        <div ref={navbarRef} className="flex z-20 fixed flex-col w-full no-select">
+        <div ref={navbarRef} className="flex z-30 fixed flex-col w-full no-select">
 
 
             <header className="flex w-full bg-reddit_navbar p-2 items-center">
