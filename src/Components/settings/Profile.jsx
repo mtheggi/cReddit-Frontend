@@ -13,7 +13,22 @@ import DropImage from "../create_post/DropImage";
 import { getRequest, putRequestFD } from "@/services/Requests";
 import { baseUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
-
+/**
+ * Profile is a React component that displays the user's profile settings.
+ * It allows the user to change their display name, about text, social links, and various visibility settings.
+ * It also allows the user to clear their history.
+ *
+ * @component
+ * @param {Object} props - The props for the Profile component.
+ * @param {string} props.displayName - The user's display name.
+ * @param {string} props.about - The user's about text.
+ * @param {Object[]} props.socialLinks - The user's social links.
+ * @param {boolean} props.showAdultContent - Whether the user has chosen to show adult content.
+ * @param {boolean} props.allowFollow - Whether the user allows others to follow them.
+ * @param {boolean} props.isContentVisible - Whether the user's content is visible to others.
+ * @param {boolean} props.isActiveCommunityVisible - Whether the user's active community is visible to others.
+ * @param {Function} props.setUserSettings - A function to update the user settings.
+ */
 function Profile({
   displayName,
   about,
@@ -36,7 +51,7 @@ function Profile({
 
     const getBanner = async () => {
 
-      
+
       const response = await getRequest(`${baseUrl}/user/settings`);
       if (response.status === 200 || response.status === 201) {
         setUserBanner(response.data.profile.banner);
@@ -64,7 +79,7 @@ function Profile({
     }
 
     if (type == "banner" && banner) {
-   
+
       formData.append('banner', banner);
     }
 
@@ -185,7 +200,7 @@ function Profile({
         settingName={"isContentVisible"}
         setUserSettings={setUserSettings}
       />
-   
+
       <Setting
         id="profile-category-clear-history-button"
         title="Clear history"

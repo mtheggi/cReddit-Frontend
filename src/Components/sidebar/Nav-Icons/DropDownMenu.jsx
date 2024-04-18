@@ -9,7 +9,18 @@ import { getRequest } from '@/services/Requests';
 import { baseUrl } from '@/constants.js';
 import { UserContext } from '@/context/UserContext';
 import PropTypes from 'prop-types';
-
+/**
+ * Renders a dropdown menu component.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.MenuHeader - The header text of the menu.
+ * @param {string} props.id - The ID of the menu.
+ * @param {function} props.setIsCommunityOpen - The function to set the state of the community open status.
+ * @param {Object} props.communityButtonRef - The reference to the community button element.
+ * @param {function} props.setIsVisibleLeftSidebar - The function to set the state of the left sidebar visibility.
+ * @param {Array} props.userHistoryRes - The user history data.
+ * @returns {JSX.Element} The rendered dropdown menu component.
+ */
 const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSidebar, userHistoryRes }) => {
 
     const toSnakeCase = (str) => "sidebar_resources_" + str.toLowerCase().split(' ').join('_');
@@ -23,6 +34,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
     const getJoinedSubreddits = async () => {
         const response = await getRequest(`${baseUrl}/user/joined-communities`);
+        if (!response) return;
         if (response.status == 200 || response.status == 201) {
             const subredditData = response.data.map(subreddit => ({
                 name: subreddit.communityName,

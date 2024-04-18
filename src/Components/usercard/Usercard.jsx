@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { ChatBubbleOvalLeftEllipsisIcon, EllipsisHorizontalIcon, ShareIcon, BookmarkIcon, EnvelopeIcon, EyeSlashIcon, FlagIcon, UserMinusIcon }
     from "@heroicons/react/24/outline";
-
+/**
+ * Renders the FollowIcon component.
+ * @component
+ * @returns {JSX.Element} The rendered FollowIcon component.
+ */
 
 const FollowIcon = () => {
     return (<svg rpl="" aria-hidden="true" className="button-leading-icon" fill="currentColor" height="16" icon-name="join-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -9,6 +13,11 @@ const FollowIcon = () => {
     </svg>
     );
 }
+/**
+ * Renders the FollowIcon component.
+ * @component
+ * @returns {JSX.Element} The rendered UnfollowIcon component.
+ */
 const UnfollowIcon = () => {
 
     return (<svg rpl="" aria-hidden="true" className="button-leading-icon" fill="currentColor" height="16" icon-name="leave-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +26,13 @@ const UnfollowIcon = () => {
 }
 
 
-
+/**
+ * Usercard component.
+ *
+ * This component represents a user card with various information and actions.
+ * @component
+ * @returns {JSX.Element} The rendered Usercard component.
+ */
 const Usercard = () => {
     const [isFollow, setIsFollow] = useState(false);
     const [isOpenDots, setIsOpenDots] = useState(false);

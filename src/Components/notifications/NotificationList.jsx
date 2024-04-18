@@ -3,17 +3,32 @@ import NotificationItem from './NotificationItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
 
+
+/**
+ * Component for displaying a list of notifications, handling different tabs and the ability to navigate to a detailed notifications page.
+ *
+ * @component
+ * @param {Object} props - Component props.
+ * @param {Array} props.notifications - List of notification objects to display.
+ * @param {boolean} props.isNewNotificationsPage - Indicates if this component is used on a page dedicated to notifications.
+ * @param {Object} props.reference - React ref passed to the component for handling outside clicks or similar behaviors.
+ * @returns {JSX.Element} A component that displays a list of notifications with interactive tabs and options.
+ */
 const NotificationList = ({ notifications, isNewNotificationsPage, reference }) => {
     const [activeTab, setActiveTab] = useState('Notifications');
     const [seeAllHovered, setSeeAllHovered] = useState(false);
     const { setNotifications, removeNotification } = useNotifications();
     const navigate = useNavigate();    
 
+    /**
+     * Handles the action to navigate to the full notifications page and sets the current notifications in context.
+     */
     const handleSeeAllClick = () => {
         setNotifications(notifications);
         navigate('/notifications');
     };
 
+    // Styling constants
     const seeAllBaseStyle = {
         backgroundColor: '#1a282d',
         color: 'white',
@@ -37,15 +52,29 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
 
     const now = new Date();
 
+    /**
+     * Parses date and time into a Date object.
+     * 
+     * @param {string} date - The date string.
+     * @param {string} time - The time string.
+     * @returns {Date} The combined date and time as a Date object.
+     */
     const parseDateTime = (date, time) => {
         return new Date(`${date} ${time}`);
     };
 
+    /**
+     * Calculates the hour difference between the current time and the given date.
+     * 
+     * @param {Date} date - The date to compare with the current time.
+     * @returns {number} The number of hours difference.
+     */
     const getHourDifference = (date) => {
         const msPerHour = 1000 * 60 * 60;
         return Math.floor((now - date) / msPerHour);
     };
 
+    // Organize notifications by today and earlier
     const todayNotifications = [];
     const earlierNotifications = [];
 

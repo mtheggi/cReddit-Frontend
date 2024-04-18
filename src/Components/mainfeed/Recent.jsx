@@ -9,6 +9,14 @@ import { ServerContext } from '@/context/ServerContext';
 
 import Loading from '../Loading/Loading';
 
+
+/**
+ * Recent component displays the recent posts of a user.
+ * 
+ * @component
+ * @param {Object} userHistoryRes - The user's history response object.
+ * @returns {JSX.Element} - The rendered Recent component.
+ */
 const Recent = ({ userHistoryRes }) => {
     const [recentPosts, setRecentPosts] = useState([]);
     const { isLoggedIn } = useContext(UserContext);
@@ -21,7 +29,12 @@ const Recent = ({ userHistoryRes }) => {
         }
     }, [isLoggedIn, userHistoryRes]);
 
-
+   /**
+     * Function to handle clearing of recent posts.
+     * 
+     * @async
+     * @function handleClearRecentPosts
+     */
     async function handleClearRecentPosts() {
         const originalPosts = recentPosts;
         setRecentPosts([]);

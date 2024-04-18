@@ -6,12 +6,18 @@ import { useState, useEffect, useRef } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-// import {useHistory} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 import { Save } from './comment/CommentUtils';
 
+
+/**
+ * Post component for displaying a post.
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @returns {JSX.Element} - The rendered Post component.
+ */
 const Post = ({
     id,
     postId,
@@ -51,7 +57,6 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-    // console.log("pollOption", pollOptions);
     const navigate = useNavigate();
 
 
@@ -59,6 +64,12 @@ const Post = ({
         setEditedPollOptions(pollOptions);
     }, [pollOptions])
 
+    /**
+ * Function to handle saving a post.
+ *
+ * @async
+ * @function handleClickSave
+ */
     async function handleClickSave() {
         setSaved((prev) => !prev);
         if (!await Save(id, saved)) {
@@ -66,6 +77,13 @@ const Post = ({
         }
     }
 
+    /**
+ * Function to format a number to a more readable format.
+ *
+ * @function formatNumber
+ * @param {number} num - The number to format.
+ * @returns {string} The formatted number.
+ */
     function formatNumber(num) {
         if (num >= 1000000) {
             return (num / 1000000).toFixed(1) + 'M';
@@ -110,10 +128,25 @@ const Post = ({
         };
     });
 
+    /**
+ * Function to get the total votes of a poll.
+ *
+ * @function getTotalVotes
+ * @param {Array} pollOptions - The options of the poll.
+ * @returns {number} The total votes.
+ */
+
     const getTotalVotes = (pollOptions) => {
         return pollOptions.reduce((total, option) => total + option.votes, 0);
     }
 
+    /**
+ * Function to get the maximum votes of a poll.
+ *
+ * @function getMaxVotes
+ * @param {Array} pollOptions - The options of the poll.
+ * @returns {number} The maximum votes.
+ */
     const getMaxVotes = (pollOptions) => {
         let maxVotes = 0;
         for (let option of pollOptions) {
@@ -123,11 +156,26 @@ const Post = ({
         }
         return maxVotes;
     };
+
+
+/**
+ * Function to get the vote width of a poll.
+ *
+ * @function getVoteWidth
+ * @param {number} votes - The votes of the poll.
+ * @returns {string} The vote width.
+ */
     const getVoteWidth = (votes) => {
         let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
         return voteWidth;
     };
 
+    /**
+ * Function to handle the change of an option in a poll.
+ *
+ * @function handleOptionChange
+ * @param {number} index - The index of the option.
+ */
     const handleOptionChange = (index) => {
         const newPollOptions = editedPollOptions.map((option, i) => {
             if (i === index) {
@@ -148,6 +196,12 @@ const Post = ({
         setIsOptionSelected(true);
     };
 
+    /**
+ * Function to handle voting in a poll.
+ *
+ * @async
+ * @function handleVote
+ */
     const handleVote = async () => {
         if (!isOptionSelected) {
             return;
@@ -169,6 +223,12 @@ const Post = ({
         backgroundColor: hoverJoin ? '#196FF4' : '#0045AC',
     };
 
+    /**
+ * Function to handle hiding a post.
+ *
+ * @async
+ * @function handleHidePost
+ */
     const handleHidePost = async () => {
         setCurrentIsHidden(prev => !prev);
         setIsOpenDots(false);
@@ -182,6 +242,13 @@ const Post = ({
             setCurrentIsHidden(prev => !prev);
         }
     }
+
+    /**
+ * Function to handle joining a subreddit.
+ *
+ * @async
+ * @function handleJoinSubreddit
+ */
     const handleJoinSubreddit = async () => {
         setIsSubbredditJoined(prev => !prev);
         let response = null;

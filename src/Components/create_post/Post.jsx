@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
 
+
+
+/**
+ * `Post` is a React component that provides a rich text editor for creating posts.
+ * @component
+ * @param {Object} props - The properties that define the component's behavior and display.
+ * @param {function} props.onChange - The function to call when the text editor's content changes.
+ * @param {function} props.setContent - The function to call to set the content of the post.
+ * @param {string} props.type - The type of the component, used to determine if `setContent` should be called.
+ * @returns {JSX.Element} A React element that renders the rich text editor.
+ */
 class Post extends Component {
     static propTypes = {
         onChange: PropTypes.func,
@@ -13,6 +24,13 @@ class Post extends Component {
         value: RichTextEditor.createEmptyValue()
     }
 
+    /**
+ * Handles changes to the rich text editor's content.
+ * 
+ * This function updates the component's state with the new value, calls the `onChange` prop function with the new value as a markdown string, and if the `type` prop is 'Post', calls the `setContent` prop function with the new value as a markdown string.
+ * @function onChange
+ * @param {Object} value - The new content of the rich text editor.
+ */
     onChange = (value) => {
         this.setState({ value });
         if (this.props.onChange) {

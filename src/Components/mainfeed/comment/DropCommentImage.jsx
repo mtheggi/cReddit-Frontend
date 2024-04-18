@@ -5,7 +5,11 @@ import { forwardRef } from 'react';
 
 function DropCommentImage({ id, handleFileChange }, ref) {
   const [previewSrc, setPreviewSrc] = useState(null);
-
+  /**
+   * Callback for when files are dropped onto the dropzone.
+   * It sets the image state to the first accepted file and reads the file as a base64 string and as an ArrayBuffer.
+   * @param {File[]} acceptedFiles - The files dropped onto the dropzone.
+   */
   const onDrop = useCallback((acceptedFiles) => {
     handleFileChange({
       target: {
@@ -30,15 +34,15 @@ function DropCommentImage({ id, handleFileChange }, ref) {
   };
 
   return (
-    <div 
+    <div
       {...getRootProps()}
       id={id}
       className={`relative cursor-pointer rounded-lg w-full flex flex-col justify-center items-center text-center ${isDragActive ? "bg-green-600" : ""
         } text-gray-600 font-plex text-sm font-bold`}
     >
       <input {...getInputProps()} ref={ref} />
-     
-      {previewSrc && 
+
+      {previewSrc &&
         <div className="w-full p-2 flex flex-row justify-center  rounded-md ">
           <img className="w-full rounded-xl" src={previewSrc} alt="preview" />
         </div>}

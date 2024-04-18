@@ -6,7 +6,18 @@ import DropCommentImage from "./DropCommentImage";
 import { getRequest } from "../../../services/Requests";
 import { baseUrl } from "../../../constants";
 import PostComment from "./PostComment";
-
+/**
+ * CommentSection is a React component that allows the user to add a comment to a post.
+ * It includes a text area for the user to write their comment and a dropzone for the user to add an image to their comment.
+ * It also includes a CancelComment component that allows the user to cancel adding a comment.
+ *
+ * @component
+ * @param {Object} props - The props for the CommentSection component.
+ * @param {string} props.postId - The ID of the post to add a comment to.
+ * @param {boolean} props.isCommenting - Whether the user is currently adding a comment.
+ * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
+ * @param {Function} props.onAddComment - A function to call when a comment is added.
+ */
 
 function CommentSection({
   postId,
@@ -18,17 +29,43 @@ function CommentSection({
   selectedSort,
   setIsNewCommentCreated
 }) {
+  /**
+  * State variable for the comment text. Initially set to an empty string.
+  * @type {string}
+  */
   const [comment, setComment] = useState("");
+
+  /**
+   * State variable for the comment image. Initially set to null.
+   * @type {Object|null}
+   */
   const [image, setImage] = useState(null);
+  /**
+   * State variable for the color of the button. Initially set to "#4d4608".
+   * @type {string}
+   */
   const [buttonColor, setButtonColor] = useState("#4d4608");
+  /**
+    * State variable for whether the modal is shown. Initially set to false.
+    * @type {boolean}
+    */
   const [modalShow, setModalShow] = useState(false);
-
-
+  /**
+   * Ref for the text area.
+   * @type {React.RefObject}
+   */
   const textareaRef = useRef();
   const handleFileChange = (e) => {
     setImage(e.target.files[0]);
   }
 
+  const getSinglePostComments = async (selectedPostId) => {
+    const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
+    if (response.status == 200 || response.status == 201) {
+      setPostComments(response.data);
+    }
+
+  }
 
   useEffect(() => {
     if (isCommenting) {
@@ -38,9 +75,10 @@ function CommentSection({
 
   async function addComment() {
     if (isImage && !image || !isImage && (!comment || comment.trim() == "")) return;
-    await submitComment(postId, image, comment, isImage);
-    onAddComment();
-    setIsNewCommentCreated(prev=>prev + 1);
+    const newComment = await submitComment(postId, image, comment, isImage);
+    if (!newComment) return;
+    onAddComment(newComment);
+    await getSinglePostComments(postId);
     setComment("");
     setImage(null);
     setIsCommenting(false);

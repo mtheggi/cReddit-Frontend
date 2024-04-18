@@ -3,6 +3,15 @@ import FloatingInput from '../authentication/FloatingInput';
 import { postRequest } from '../../services/Requests';
 import { baseUrl } from '../../constants';
 
+/**
+ * Component for handling user password recovery.
+ *
+ * @component
+ * @returns {JSX.Element} The PasswordRecovery component that includes input fields
+ * for new password and password confirmation, along with a submit button to finalize
+ * the password recovery process.
+ */
+
 const PasswordRecovery = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,7 +43,7 @@ const PasswordRecovery = () => {
         <div className="flex min-w-88 flex-col w-full h-full msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
           <div className="h-full w-full flex flex-col">
             <div className="flex flex-col h-full px-10 pt-8">
-              <h1 className="text-2xl text-white font-bold mb-2 text-neutral">
+              <h1 className="text-2xl text-white font-bold mb-2">
                 Reset your password
               </h1>
 
@@ -73,6 +82,8 @@ const PasswordRecovery = () => {
               <div className="w-full h-[96px] px-2 flex justify-center items-center">
                 <div
                   id="recovery_submit"
+                  role="button" 
+                  aria-disabled={!(passwordsMatch() && validatePassword(password) && !recoveryError)}
                   className={`${passwordsMatch() && validatePassword(password) && !recoveryError ? 'bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px] items-center justify-center rounded-3xl bg-reddit_search`}
                   onClick={handleRecoverySubmit}
                 >

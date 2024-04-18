@@ -6,12 +6,39 @@ import { useState } from "react";
 import { notify } from "./components/CustomToast";
 import { unblockCommunity, unblockUser } from "./utils/Unblock";
 import { blockCommunity, blockUser } from "./utils/Block";
-
+/**
+ * SafetyAndPrivacy is a React component that displays the safety and privacy settings for the user.
+ * It allows the user to block and unblock users and communities.
+ *
+ * @component
+ * @param {Object} props - The props for the SafetyAndPrivacy component.
+ * @param {Object[]} props.blockedUsers - The users that the current user has blocked.
+ * @param {Object[]} props.mutedCommunities - The communities that the current user has muted.
+ * @param {Function} props.setUserSettings - A function to update the user settings.
+ */
 function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
+  /**
+  * State variable for the current blocked users. Initially set to the blockedUsers prop.
+  * @type {Object[]}
+  */
   const [currBlockedUsers, setCurrBlockedUsers] = useState(blockedUsers);
+  /**
+   * State variable for the current blocked communities. Initially set to the mutedCommunities prop.
+   * @type {Object[]}
+   */
   const [currBlockedCommunities, setCurrBlockedCommunities] =
     useState(mutedCommunities);
-
+  /**
+  * Unblocks a user.
+  * Calls the unblockUser utility function and updates the currBlockedUsers state variable.
+  * @async
+  * @param {string} username - The username of the user to unblock.
+  * @returns {Promise<void>}
+  * @resolves {void}
+  * @rejects {void}
+  * @notify {string} "Changes saved" - If the changes are saved successfully.
+  * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+  */
   async function onUnBlockUser(username) {
     const res = await unblockUser(username);
     if (res) {
@@ -31,7 +58,17 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
       notify("Changes saved");
     } else notify("Failed to save changes");
   }
-
+  /**
+  * Unmutes a community.
+  * Calls the unblockCommunity utility function and updates the currBlockedCommunities state variable.
+  * @async
+  * @param {string} communityName - The name of the community to unmute.
+  * @returns {Promise<void>}
+  * @resolves {void}
+  * @rejects {void}
+  * @notify {string} "Changes saved" - If the changes are saved successfully.
+  * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+  */
   async function onUnMuteCommunity(communityName) {
     const res = await unblockCommunity(communityName);
     if (res) {
@@ -43,7 +80,17 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
       notify("Changes saved");
     } else notify("Failed to save changes");
   }
-
+  /**
+ * Mutes a community.
+ * Calls the blockCommunity utility function and updates the currBlockedCommunities state variable.
+ * @async
+ * @param {string} communityName - The name of the community to mute.
+ * @returns {Promise<void>}
+ * @resolves {void}
+ * @rejects {void}
+ * @notify {string} "Changes saved" - If the changes are saved successfully.
+ * @notify {string} "Failed to save changes" - If the changes are not saved successfully.
+ * */
   async function onMuteCommunity(communityName) {
     const res = await blockCommunity(communityName);
     if (res) {
@@ -106,7 +153,7 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
           currBlockedCommunities.map((community) => (
             console.log(currBlockedCommunities),
             <BlockedEntity
-             key={community.communityName}
+              key={community.communityName}
               entityName={community.communityName}
               onUnblock={() => onUnMuteCommunity(community.communityName)}
             />

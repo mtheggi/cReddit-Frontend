@@ -3,6 +3,14 @@ import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
+/**
+ * Custom styled switch component for iOS-like toggle switch.
+ * @component
+ * @param {Object} props - Component props.
+ * @param {boolean} props.isSwitched - Current state of the switch.
+ * @param {function} props.setIsSwitched - Function to update the state of the switch.
+ * @returns {JSX.Element} - SwitchButton component.
+ */
 const IOSSwitch = styled((props) => (
     <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
@@ -53,11 +61,17 @@ const IOSSwitch = styled((props) => (
         }),
     },
 }));
-
+/**
+ * SwitchButton component.
+ * @param {Object} props - Component props.
+ * @param {boolean} props.isSwitched - Current state of the switch.
+ * @param {function} props.setIsSwitched - Function to update the state of the switch.
+ * @returns {JSX.Element} - SwitchButton component.
+ */
 const SwitchButton = ({ isSwtched, setIsSwitched }) => {
     return (<>
         <FormControlLabel
-            control={<IOSSwitch sx={{ mt: 1, mb:0, mr:-2 }} />}
+            control={<IOSSwitch sx={{ mt: 1, mb: 0, mr: -2 }} />}
             label=""
             onClick={() => setIsSwitched(!isSwtched)}
         />

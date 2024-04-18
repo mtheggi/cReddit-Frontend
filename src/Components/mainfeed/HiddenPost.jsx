@@ -1,3 +1,12 @@
+
+/**
+ * `HiddenPost` is a functional component that renders a hidden post with an undo button.
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {string|number} props.id - The unique identifier of the post.
+ * @param {Function} props.handleHidePost - The function to be called when the undo button is clicked.
+ * @returns {JSX.Element} The rendered React element.
+ */
 const HiddenPost = ({ id, handleHidePost }) => {
     return (
         <div

@@ -4,6 +4,22 @@ import { getRequest } from '../../services/Requests';
 import { baseUrl } from '../../constants';
 
 
+/**
+ * FloatingInput is a React component that renders an input field with validation and error handling.
+ *
+ * @component
+ * @param {Object} props - The properties that define the component's behavior and display.
+ * @param {string} props.id - The unique identifier for the input field.
+ * @param {string} props.label - The label for the input field.
+ * @param {Function} props.validateInput - The function to validate the input field.
+ * @param {Function} props.setInputNameOnChange - The function to set the input name on change.
+ * @param {string} props.backendValidationError - The backend validation error message.
+ * @param {Function} props.setBackendValidationError - The function to set the backend validation error.
+ * @param {Function} props.setBackendMessage - The function to set the backend message.
+ * @returns {JSX.Element} A JSX element that represents the input field.
+ */
+
+
 const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backendValidationError, setBackendValidationError, setBackendMessage }) => {
 
     const [input, setInput] = useState(null);
@@ -13,7 +29,14 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
     const isGreen = validateInput(input) && input != null && (backendValidationError == null) && backendUsernameError == null;
 
 
-
+    /**
+ * Checks if the provided username is available.
+ *
+ * @async
+ * @function isAvailableUsername
+ * @param {string} username - The username to check.
+ * @returns {Promise<void>} A Promise that resolves when the check is complete.
+ */
     const isAvailableUsername = async (username) => {
         if (validateInput(username)) {
             const response = await getRequest(`${baseUrl}/user/is-username-available/${username}`);
@@ -22,6 +45,15 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
             }
         }
     }
+
+    /**
+ * Checks if the provided subreddit name is available.
+ *
+ * @async
+ * @function isAvailableSubredditName
+ * @param {string} subredditName - The subreddit name to check.
+ * @returns {Promise<void>} A Promise that resolves when the check is complete.
+ */
     const isAvailableSubredditName = async (subredditName) => {
         if (validateInput(subredditName)) {
             const response = await getRequest(`${baseUrl}/subreddit/is-name-available/${subredditName}`);
@@ -31,6 +63,13 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
         }
     }
 
+    /**
+ * Generates a new username and sets it as the current input.
+ *
+ * @async
+ * @function handleGenerateUsername
+ * @returns {Promise<void>} A Promise that resolves when the username is generated and set.
+ */
     const handleGenerateUsername = async () => {
         const response = await getRequest(`${baseUrl}/user/generate-username`);
         if (response.status == 200 || response.status == 201) {
@@ -46,7 +85,6 @@ const FloatingInput = ({ id, label, validateInput, setInputNameOnChange, backend
             }
         }
     }
-
 
     return (
         <div className='w-full flex-col h-16'>

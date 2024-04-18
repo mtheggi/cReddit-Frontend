@@ -1,13 +1,17 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fireEvent, render, screen, cleanup } from '@testing-library/react';
 import PasswordRecovery from '@/Components/recovery/PasswordRecovery';
 import { postRequest } from '@/services/Requests';
+import '@testing-library/jest-dom/vitest';
+
+afterEach(() => {
+    cleanup();
+});
 
 // Mock the postRequest function
-vi.mock('../../services/Requests', () => ({
-  postRequest: vi.fn(),
+vi.mock('@/services/Requests', () => ({
+  postRequest: vi.fn(() => Promise.resolve({ status: 200 })),
 }));
-
 
 describe('PasswordRecovery Component', () => {
   it('should accept a valid password', async () => {
@@ -15,8 +19,8 @@ describe('PasswordRecovery Component', () => {
     const newPasswordInput = screen.getByLabelText('New Password');
     fireEvent.change(newPasswordInput, { target: { value: 'validPassword123' } });
 
-    // The Continue button should not be disabled after inputting a valid password
-    expect(screen.getByText('Continue').closest('button')).not.toHaveAttribute('disabled');
+    // Check if Continue button is enabled
+    expect(screen.getByRole('button', { name: 'Continue' })).toBeEnabled();
   });
 
   it('should not accept an invalid password', async () => {
@@ -24,8 +28,8 @@ describe('PasswordRecovery Component', () => {
     const newPasswordInput = screen.getByLabelText('New Password');
     fireEvent.change(newPasswordInput, { target: { value: 'short' } });
 
-    // The Continue button should be disabled after inputting an invalid password
-    expect(screen.getByText('Continue').closest('button')).toHaveAttribute('disabled');
+    // Check if Continue button is disabled
+    expect(screen.getByRole('button', { name: 'Continue' })).toHaveAttribute('aria-disabled', 'true');
   });
 
   it('should check if passwords match', async () => {
@@ -36,23 +40,21 @@ describe('PasswordRecovery Component', () => {
     fireEvent.change(newPasswordInput, { target: { value: 'validPassword123' } });
     fireEvent.change(confirmPasswordInput, { target: { value: 'validPassword123' } });
 
-    // The passwords should match, and thus, the Continue button should not be disabled
-    expect(screen.getByText('Continue').closest('button')).not.toHaveAttribute('disabled');
+    // Check if Continue button is enabled because passwords match
+    expect(screen.getByRole('button', { name: 'Continue' })).toBeEnabled();
   });
 
   it('should handle form submission correctly', async () => {
-    postRequest.mockResolvedValueOnce({ status: 200 });
+    postRequest.mockImplementation(() => Promise.resolve({ status: 200 }));
     render(<PasswordRecovery />);
     const newPasswordInput = screen.getByLabelText('New Password');
     const confirmPasswordInput = screen.getByLabelText('Confirm New Password');
 
     fireEvent.change(newPasswordInput, { target: { value: 'validPassword123' } });
     fireEvent.change(confirmPasswordInput, { target: { value: 'validPassword123' } });
-    
-    fireEvent.click(screen.getByText('Continue'));
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
-    // postRequest should be called since both passwords match and are valid
+    // Verify that the postRequest was called
     expect(postRequest).toHaveBeenCalled();
   });
-
 });

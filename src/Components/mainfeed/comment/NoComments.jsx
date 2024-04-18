@@ -1,3 +1,9 @@
+/**
+ * NoComments is a React component that displays a message when there are no comments on a post.
+ * It shows an image and a text saying "Be the first to comment", along with a suggestion to add thoughts and start the conversation.
+ *
+ * @component
+ */
 function NoComments() {
   return (
     <div className="w-full mt-9 mb-3 flex flex-row">

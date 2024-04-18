@@ -5,7 +5,14 @@ import propsTypes from "prop-types";
 EmptyStart.propTypes = {
     color: propsTypes.string
 }
-
+/**
+ * Renders an SVG icon for a bookmarked item or an empty star.
+ * 
+ * @param {Object} props - The component props.
+ * @param {string} props.color - The color of the SVG icon.
+ * @param {boolean} props.isBookmarked - Indicates whether the item is bookmarked.
+ * @returns {JSX.Element} - The rendered SVG icon.
+ */
 function EmptyStart({ color, isBookmarked }) {
 
     if (isBookmarked) {
@@ -35,12 +42,22 @@ function EmptyStart({ color, isBookmarked }) {
         </svg>
     );
 }
+/**
+ * Renders a community icon with optional text, bookmark functionality, and custom styling.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.text - The text to display next to the icon.
+ * @param {string} props.divId - The ID of the container div.
+ * @param {string} props.bookmarkId - The ID of the bookmark element.
+ * @param {string} props.icon - The URL of the icon image.
+ * @returns {JSX.Element} The rendered community icon component.
+ */
 
 const CommunityIcon = ({ text, divId, bookmarkId, icon }) => {
 
     const [isBookmarked, setIsHisBookmarkedover] = useState(false)
     return (
-        <div id={divId} className="flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
+        <div id={divId} data-testid={divId} className="testClass flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
             <div className="flex flex-row items-center justify-start">
                 <img src={icon} className="h-[30px] w-[32px] rounded-xl" alt="randomImgs" />
                 <span className="text-gray-200 text-[13px] tracking-wider letter font-normal ml-3">{text}</span>

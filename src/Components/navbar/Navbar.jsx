@@ -22,17 +22,21 @@ import { useNotifications } from '../notifications/NotificationContext';
 
 
 
+
+/**
+ * Navbar component.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
+ * @param {Object} props.navbarRef - Reference to the navbar element.
+ * @returns {JSX.Element} The Navbar component.
+ * */
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
     const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
     const {user, setUser} = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    // const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    //     const savedisLoggedIn = localStorage.getItem('isLoggedIn');
-    //     return savedisLoggedIn !== null ? JSON.parse(savedisLoggedIn) : false;
-    // });
-
     const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
@@ -116,6 +120,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     const navigate = useNavigate();
 
+    /**
+     * Function to handle logout.
+     * @async
+     * @function handleLogout
+     * */
     const handleLogout = async () => {
         const response = await getRequest(`${baseUrl}/user/logout`);
         if (response.status == 200 || response.status == 201) {
@@ -124,11 +133,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
             navigate('');
         }
     }
-
-    // useEffect(() => {
-    //     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
-    // }, [isLoggedIn]);
-
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -171,6 +175,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const words = ['/submit', '/settings']; 
 
     const urlContainsWord = words.some(word => location.pathname.includes(word));
+
+    /**
+     * Function to handle mouse enter event on the bell icon.
+     * @function handleMouseEnterBellIcon
+     * */
     const handleMouseEnterBellIcon = () => {
         setShowInboxTextTransition(true); 
         
@@ -179,6 +188,10 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
         }, 100); 
     };
       
+    /**
+     * Function to handle mouse leave event on the bell icon.
+     * @function handleMouseLeaveBellIcon
+     * */
     const handleMouseLeaveBellIcon = () => {
         setShowInboxTooltip(false);
         
@@ -203,6 +216,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
                     <Link id='navbar_reddit' className='w-fit h-fit flex mr-2 xs:mr-0 items-center' to="">
                         <img src={redditLogo} alt="Logo" className="w-8  h-8 min-w-8" />
+                        
                         <svg className="h-[22px] ml-2 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
                             <g className=' fill-white'>
                                 <path d="m71.62,45.92l-12.01,28.56c-1.51-.76-5.11-1.61-8.51-1.61s-6.81.85-10.12,2.46c-6.53,3.31-11.35,9.93-11.35,19.48v52.3H-.26V45.35h29.04v14.28h.57c6.81-9.08,17.21-15.79,30.74-15.79,4.92,0,9.65.95,11.54,2.08Z"></path>
@@ -364,8 +378,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
-                                        <div className='  w-8 h-8 rounded-full'>
+                                        <div className='relative w-8 h-8 rounded-full'>
                                             <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
+                                            
+                                            <div className='w-[10px] h-[10px] absolute left-[24px] bottom-[0px] border-[2px] border-[#0C1416] -mt-[8px] rounded-full bg-[#55BD45]'>
+                                            </div>
                                         </div>
                                     </div>
 

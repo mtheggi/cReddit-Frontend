@@ -1,5 +1,12 @@
 import { toast } from "react-toastify";
 
+/**
+ * CustomToast is a functional component that displays a custom toast message.
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.message - The message to be displayed in the toast.
+ * @returns {JSX.Element} A JSX element representing the custom toast.
+ */
 const CustomToast = ({ message }) => (
   <div className=" max-h-7 mb-1  flex flex-row items-center">
     <svg
@@ -28,6 +35,13 @@ const CustomToast = ({ message }) => (
   </div>
 );
 
+
+/**
+ * LoginSuccessToast is a function that displays a success toast with a custom message.
+ * @component
+ * @param {string} message - The message to be displayed in the toast.
+ * @returns {React.ReactText} A React Text component representing the toast.
+ */
 export const LoginSuccessToast = (message) =>
   toast.success(<CustomToast message={message} />,
     {
@@ -43,6 +57,13 @@ export const LoginSuccessToast = (message) =>
   );
 
 
+
+/**
+ * LoginFailedToast is a function that displays an error toast with a custom message.
+ * @component
+ * @param {string} message - The message to be displayed in the toast.
+ * @returns {React.ReactText} A React Text component representing the toast.
+ */
 export const LoginFailedToast = (message) =>
   toast.error(<CustomToast message={message} />,
     {

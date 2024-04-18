@@ -27,7 +27,22 @@ const SuccessToast = (message) =>
 
         }
     );
+/**
+ * CreateCommunity component allows users to create a new community.
+ * @component
+ * @param {Object} props - The component props.
+ * @param {Function} props.setIsCommunityOpen - Function to set the state of the community modal.
+ * @param {Object} props.communityCardRef - Reference to the community card element.
+ * @returns {JSX.Element} The CreateCommunity component.
+ */
 const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
+
+    /**
+     * Validates the community name.
+     * @function validateCommName
+     * @param {string} commName - The community name to validate.
+     * @returns {boolean} True if the community name is valid, false otherwise.
+     * */
 
     const validateCommName = (commName) => {
         if (commName != '' && commName) {
@@ -37,13 +52,19 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
             return false;
         }
     }
-
+    // State variables
     const [communityName, setCommunityName] = useState("");
     const [selectedRadio, setSelectedRadio] = useState("Public-community-type");
     const [isMature, setIsMature] = useState(false);
     const [communityNameError, setCommunityNameError] = useState(null);
     const navigate = useNavigate();
-
+    /**
+   * Checks if the given radio button is selected.
+   * @function Checked
+   * @param {string} selectedRadio - The currently selected radio button.
+   * @param {string} type - The type of the radio button.
+   * @returns {boolean} True if the radio button is selected, false otherwise.
+   */
     const Checked = (selectedRadio, type) => {
         const value = type + "-community-type"
         if (selectedRadio === value) {
@@ -54,14 +75,26 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
         }
 
     }
+    /**
+   * Handles the change event of the radio buttons.
+   * @function handleRadioChange
+   * @param {Object} e - The event object.
+   */
     const handleRadioChange = (e) => {
         console.log(selectedRadio);
         setSelectedRadio(e.target.id);
     }
 
 
+    /**
+     * Handles the creation of a new community.
+     * @function handleCreateCommunity
+     * @async
+     * @returns {Promise<void>}
+     * */
     const handleCreateCommunity = async () => {
         const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        if (!response) return;
         if (response.status !== 200 && response.status !== 201) {
             setCommunityNameError(response.data.message);
         } else {

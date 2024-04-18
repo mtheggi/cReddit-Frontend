@@ -10,6 +10,14 @@ import { useLocation } from "react-router-dom";
 import Comment from "./comment/Comment";
 
 
+/**
+ * Mainfeed component. It is responsible for displaying the main feed of posts.
+ * It manages several states including the posts, selected post, page, error, loading states, etc.
+ * It also handles scroll events and dropdown menus.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Mainfeed component.
+ */
 const Mainfeed = () => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
@@ -29,9 +37,16 @@ const Mainfeed = () => {
   const menuRefView = useRef();
   const navigate = useLocation();
   const prevSelectedSort = useRef(selectedSort);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
 
 
-
+/**
+ * Fetches a single post by its ID. If the post is already in the state, it uses that.
+ * Otherwise, it sends a GET request to fetch the post.
+ * @async
+ * @function getSinglePost
+ * @param {string} selectedPostId - The ID of the post to fetch.
+ */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
     const existingPost = posts.find(post => post._id === selectedPostId);
@@ -53,7 +68,7 @@ const Mainfeed = () => {
       setLoading(true);
       setError(false);
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=8&sort=${selectedSort.toLowerCase()}`);
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
           if (isSortChanged) {
             setPosts(response.data);
@@ -97,7 +112,12 @@ const Mainfeed = () => {
     }
   }, [navigate.pathname]);
 
-
+  /**
+ * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
+ * it increments the page number to load more posts.
+ *
+ * @callback handleScroll
+ */
   const handleScroll = useCallback(() => {
     const mainfeedElement = document.getElementById("mainfeed");
     const threshold = 10;
@@ -157,7 +177,14 @@ const Mainfeed = () => {
     };
   });
 
-
+  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post.id === id) {
+        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
+      }
+      return post;
+    }));
+  };
 
 
 
