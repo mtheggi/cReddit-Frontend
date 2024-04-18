@@ -67,7 +67,7 @@ const Mainfeed = () => {
       setLoading(true);
       setError(false);
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=8&sort=${selectedSort.toLowerCase()}`);
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
           if (isSortChanged) {
             setPosts(response.data);
