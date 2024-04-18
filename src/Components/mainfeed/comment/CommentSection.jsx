@@ -25,7 +25,6 @@ function CommentSection({
   setIsCommenting,
   onAddComment,
   setPostComments,
-  isImage,
   selectedSort
 }) {
   /**
@@ -74,8 +73,8 @@ function CommentSection({
   }, [isCommenting]);
 
   async function addComment() {
-    if (isImage && !image || !isImage && (!comment || comment.trim() == "")) return;
-    const newComment = await submitComment(postId, image, comment, isImage);
+    if (!(image || (comment && comment.trim() !== ""))) return;
+    const newComment = await submitComment(postId, image, comment);
     if (!newComment) return;
     onAddComment(newComment);
     await getSinglePostComments(postId);
@@ -90,9 +89,10 @@ function CommentSection({
       className="w-full  bg-greenyDark flex flex-col relative items-center rounded-2xl font-plex border-1 border-gray-500 "
       hidden={!isCommenting}
     >
-      <div className=" mr-auto h-fit">
-        <DropCommentImage id="comment" handleFileChange={handleFileChange} ref={dropzoneRef} />
+      <div className="h-fit">
+        <DropCommentImage id="comment" handleFileChange={handleFileChange} image={image} ref={dropzoneRef} />
       </div>
+
       {!image && (
         <textarea id="comment_text"
           disabled={image ? true : false}
@@ -132,7 +132,7 @@ function CommentSection({
           </button>
           <div id="submit_comment"
             onClick={addComment}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(isImage && !image || !isImage && (!comment || comment.trim() == "")) ? 'cursor-not-allowed' : "cursor-pointer"} `}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${( image || (comment && comment.trim() !== "") ) ? "cursor-pointer":"cursor-not-allowed"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}
