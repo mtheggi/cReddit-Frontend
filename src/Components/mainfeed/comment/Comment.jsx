@@ -14,7 +14,15 @@ const Comment = ({ postId }) => {
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
     const [isCommenting, setIsCommenting] = useState(false);
-    const [selectedSort, setSelectedSort] = useState("New");
+    const [selectedSort, setSelectedSort] = useState(() => {
+        const storedSort = localStorage.getItem('commentsSelectedSort');
+        if (storedSort) {
+          return storedSort;
+        } else {
+          localStorage.setItem('commentsSelectedSort', 'Best');
+          return 'Best';
+        }
+      });
     const [isLoading, setIsLoading] = useState(true);
 
     const onAddComment = () => {
@@ -95,7 +103,7 @@ const Comment = ({ postId }) => {
                                     <p className="no-select">Sort by</p>
                                 </div>
 
-                                <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false) }}
+                                <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
                                     id="mainfeed_category_best"
                                     href=""
                                     className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -103,7 +111,7 @@ const Comment = ({ postId }) => {
                                     <p className="no-select">Best</p>
                                 </div>
 
-                                <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false) }}
+                                <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
                                     id="mainfeed_category_hot"
                                     href=""
                                     className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -111,7 +119,7 @@ const Comment = ({ postId }) => {
                                     <p className="no-select">Top</p>
                                 </div>
 
-                                <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false) }}
+                                <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "New"); }}
                                     id="mainfeed_category_new"
                                     href=""
                                     className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -119,7 +127,7 @@ const Comment = ({ postId }) => {
                                     <p className="no-select">New</p>
                                 </div>
 
-                                <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false) }}
+                                <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Old"); }}
                                     id="mainfeed_category_top"
                                     href=""
                                     className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"

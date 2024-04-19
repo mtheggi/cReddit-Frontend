@@ -30,7 +30,16 @@ const Mainfeed = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("Best");
+
+  const [selectedSort, setSelectedSort] = useState(() => {
+    const storedSort = localStorage.getItem('homeSelectedSort');
+    if (storedSort) {
+      return storedSort;
+    } else {
+      localStorage.setItem('homeSelectedSort', 'Best');
+      return 'Best';
+    }
+  });
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -203,7 +212,7 @@ const Mainfeed = () => {
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Best"); }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -211,7 +220,7 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -219,7 +228,7 @@ const Mainfeed = () => {
                 <p className="no-select">Hot</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -227,7 +236,7 @@ const Mainfeed = () => {
                 <p className="no-select">New</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
