@@ -381,11 +381,11 @@ const Post = ({
                             <div
                                 id={"mainfeed_" + id + "_" + type}
                                 className="w-full h-full mt-2">
-                                <div className={`relative flex-row   rounded-lg p-2 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div id='cover' className={`relative flex-row rounded-lg px-3 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
                                     {
                                         content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`max-h-150 rounded-lg`} controls /> :
-                                            <img src={content} alt="Post" className={` max-h-150 rounded-lg`} />
+                                            <video src={content} alt="Post" className={`max-h-[500px] `} controls /> :
+                                            <img src={content} alt="Post" className={` max-h-[500px] `} />
                                     }
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
