@@ -37,16 +37,15 @@ const Mainfeed = () => {
   const menuRefView = useRef();
   const navigate = useLocation();
   const prevSelectedSort = useRef(selectedSort);
-  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
 
 
-/**
- * Fetches a single post by its ID. If the post is already in the state, it uses that.
- * Otherwise, it sends a GET request to fetch the post.
- * @async
- * @function getSinglePost
- * @param {string} selectedPostId - The ID of the post to fetch.
- */
+  /**
+   * Fetches a single post by its ID. If the post is already in the state, it uses that.
+   * Otherwise, it sends a GET request to fetch the post.
+   * @async
+   * @function getSinglePost
+   * @param {string} selectedPostId - The ID of the post to fetch.
+   */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
     const existingPost = posts.find(post => post._id === selectedPostId);
