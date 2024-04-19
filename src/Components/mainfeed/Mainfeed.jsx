@@ -115,7 +115,6 @@ const Mainfeed = () => {
   /**
  * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
  * it increments the page number to load more posts.
- *
  * @callback handleScroll
  */
   const handleScroll = useCallback(() => {
