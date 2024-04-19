@@ -5,9 +5,14 @@ import Sidebar from "../sidebar/Sidebar";
 
 /**
  * React component representing a page displaying top communities.
+ * This component renders a list of top communities alongside a sidebar.
+ * @param {Object} props - Component props.
+ * @param {boolean} props.isVisibleLeftSidebar - Flag indicating if the left sidebar is visible.
+ * @param {function} props.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
  * @returns {JSX.Element} React component.
  */
 const TopCommunities = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar }) => {
+  // Retrieve context variables from SidebarContext
   const { setIsCommunityOpen, communityButtonRef, userHistoryRes, sidebarRef } =
     useContext(SidebarContext);
 
