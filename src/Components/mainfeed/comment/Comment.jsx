@@ -16,7 +16,7 @@ const Comment = ({ postId }) => {
     const [isCommenting, setIsCommenting] = useState(false);
     const [selectedSort, setSelectedSort] = useState("New");
     const [isLoading, setIsLoading] = useState(true);
-    const [isNewCommentCreated, setIsNewCommentCreated] = useState(0);
+  
 
     const onAddComment = () => {
         setIsCommenting(false);
@@ -32,7 +32,7 @@ const Comment = ({ postId }) => {
         }
 
         getSinglepostComments(postId);
-    }, [selectedSort, isNewCommentCreated]);
+    }, [selectedSort]);
 
 
     useEffect(() => {
@@ -134,8 +134,7 @@ const Comment = ({ postId }) => {
                     setPostComments={setPostComments} 
                     onAddComment={onAddComment} isCommenting={isCommenting} 
                     setIsCommenting={setIsCommenting} 
-                    selectedSort={selectedSort} 
-                    setIsNewCommentCreated={setIsNewCommentCreated} />
+                    selectedSort={selectedSort}  />
 
                     {postComments.map((comment, index) => (
                         <PostComment
