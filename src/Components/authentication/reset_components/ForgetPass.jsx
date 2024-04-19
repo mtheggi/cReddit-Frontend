@@ -62,7 +62,7 @@ const ForgetPass = ({
     e.stopPropagation();
     if (email && validateEmail(email) && resetPasswordError == null) {
       const response = await postRequest(`${baseUrl}/user/forgot-password`, {
-        email,
+        info: email,
       });
       if (response.status !== 200 && response.status !== 201) {
         setResetPasswordError(response.data.message);
