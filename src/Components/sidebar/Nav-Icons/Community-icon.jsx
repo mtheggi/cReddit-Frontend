@@ -59,7 +59,7 @@ const CommunityIcon = ({ text, divId, bookmarkId, icon }) => {
     return (
         <div id={divId} data-testid={divId} className="testClass flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
             <div className="flex flex-row items-center justify-start">
-                <img src={icon} className="h-[30px] w-[32px] rounded-xl" alt="randomImgs" />
+                <img src={icon} className="h-[30px] w-[32px] rounded-full" alt="randomImgs" />
                 <span className="text-gray-200 text-[13px] tracking-wider letter font-normal ml-3">{text}</span>
             </div>
 

@@ -93,7 +93,6 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
             else {
                 const element = document.getElementById('mainfeed_comment_category_dropdown');
                 const mainfeed = document.getElementById('mainfeed');
-                console.log(element, mainfeed);
                 if (element && mainfeed) {
 
                     const position = element.offsetTop - mainfeed.offsetTop - 10;

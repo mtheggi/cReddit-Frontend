@@ -65,7 +65,7 @@ const PostComment = ({
           <img
             src={content}
             alt="image"
-            className="max-w-60 max-h-60 object-cover"
+            className="max-w-60 rounded-md max-h-60 object-cover"
           />
         </div>
       </div>

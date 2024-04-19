@@ -9,7 +9,7 @@ import RedditLogo from '../../assets/reddit_logo.png';
 const Loading = () => {
     return (
         <div className="w-full h-full flex flex-col items-center justify-center">
-            <img src={RedditLogo} alt="Reddit Logo" className="h-17 w-14" />
+            <img src={RedditLogo} alt="Reddit Logo" className=" w-14" />
             <img src={LoadingGift} alt="Loading" className='h-8 w-17' />
         </div>
     );

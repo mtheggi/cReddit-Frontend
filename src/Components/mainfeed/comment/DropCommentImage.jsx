@@ -1,9 +1,9 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { forwardRef } from 'react';
 
-function DropCommentImage({ id, handleFileChange }, ref) {
+function DropCommentImage({ id, handleFileChange, image }, ref) {
   const [previewSrc, setPreviewSrc] = useState(null);
   /**
    * Callback for when files are dropped onto the dropzone.
@@ -18,6 +18,12 @@ function DropCommentImage({ id, handleFileChange }, ref) {
     });
     setPreviewSrc(URL.createObjectURL(acceptedFiles[0]));
   }, [handleFileChange]);
+
+  useEffect(() => {
+    if (!image) {
+      setPreviewSrc(null);
+    }
+  }, [image]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -43,7 +49,7 @@ function DropCommentImage({ id, handleFileChange }, ref) {
       <input {...getInputProps()} ref={ref} />
 
       {previewSrc &&
-        <div className="w-full p-2 flex flex-row justify-center  rounded-md ">
+        <div className="w-full p-2 mt-2 flex flex-row justify-center  rounded-md ">
           <img className="w-full rounded-xl" src={previewSrc} alt="preview" />
         </div>}
     </div>
