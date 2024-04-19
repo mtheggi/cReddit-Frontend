@@ -131,7 +131,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
                                 <span className="flex items-center text-2xl xs:text-2xl font-semibold pt-1 ml-3 mb-2.5 sm:mb-0">Create a Community</span>
                             </span>
                         </div>
-                        <button onClick={() => { setIsCommunityOpen(false) }} className="h-8 w-8 rounded-full mt-2 bg-reddit_search  hover:bg-reddit_search_light"> <XMarkIcon className="h-6 w-6 ml-1 text-gray-50" /> </button>
+                        <button onClick={() => { setIsCommunityOpen(false) }} id="close-create-community" className="h-8 w-8 rounded-full mt-2 bg-reddit_search  hover:bg-reddit_search_light"> <XMarkIcon className="h-6 w-6 ml-1 text-gray-50" /> </button>
                     </div>
                     <div id="card-content" className="flex flex-col ">
                         <p className="mb-3 text-sm text-gray-400 hidden sm:block">Build and grow a community about something you care about. We will help you set things up.</p>
