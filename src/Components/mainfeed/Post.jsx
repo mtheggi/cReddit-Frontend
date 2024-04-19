@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 import { Save } from './comment/CommentUtils';
+import { Palette } from 'react-palette'
 
 
 /**
@@ -158,13 +159,13 @@ const Post = ({
     };
 
 
-/**
- * Function to get the vote width of a poll.
- *
- * @function getVoteWidth
- * @param {number} votes - The votes of the poll.
- * @returns {string} The vote width.
- */
+    /**
+     * Function to get the vote width of a poll.
+     *
+     * @function getVoteWidth
+     * @param {number} votes - The votes of the poll.
+     * @returns {string} The vote width.
+     */
     const getVoteWidth = (votes) => {
         let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
         return voteWidth;
@@ -292,7 +293,7 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {(communityName !== null) && <div id={`join`+id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
                             <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
@@ -381,12 +382,19 @@ const Post = ({
                             <div
                                 id={"mainfeed_" + id + "_" + type}
                                 className="w-full h-full mt-2">
-                                <div className={`relative flex-row   rounded-lg p-2 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
+                                <div className={`relative flex-row rounded-2xl px-4 flex justify-center ${Blured ? 'filter blur-[10px]' : ''}`}>
                                     {
                                         content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`max-h-150 rounded-lg`} controls /> :
-                                            <img src={content} alt="Post" className={` max-h-150 rounded-lg`} />
+                                            <video src={content} alt="Post" className={`max-h-[500px] z-10 `} controls /> :
+                                            <img src={content} alt="Post" className={` max-h-[500px] z-10 `} />
                                     }
+
+                                    <Palette src={content}>
+                                        {({ data }) => (
+                                            <div className='w-full absolute z-1 h-full rounded-2xl' style={{ background: `linear-gradient(10deg, ${data.vibrant}, ${data.darkVibrant}, ${data.muted})`  }}>
+                                            </div>
+                                        )}
+                                    </Palette>
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
                                 </div>
