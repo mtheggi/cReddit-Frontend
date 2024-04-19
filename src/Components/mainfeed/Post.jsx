@@ -389,12 +389,9 @@ const Post = ({
                                             <img src={content} alt="Post" className={` max-h-[500px] z-10 `} />
                                     }
 
-                                    <Palette src={content}>
-                                        {({ data }) => (
-                                            <div className='w-full absolute z-1 h-full rounded-2xl' style={{ background: `linear-gradient(10deg, ${data.vibrant}, ${data.darkVibrant}, ${data.muted})`  }}>
+                                            <div className='w-full bg-black absolute z-1 h-full rounded-2xl'   >
                                             </div>
-                                        )}
-                                    </Palette>
+                                   
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
                                 </div>
