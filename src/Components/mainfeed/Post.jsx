@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 import { Save } from './comment/CommentUtils';
-import { Palette } from 'react-palette'
 
 
 /**
@@ -293,7 +292,7 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {(communityName !== null) && <div id={`join`+id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
                             <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div
@@ -389,9 +388,9 @@ const Post = ({
                                             <img src={content} alt="Post" className={` max-h-[500px] z-10 `} />
                                     }
 
-                                            <div className='w-full bg-black absolute z-1 h-full rounded-2xl'   >
-                                            </div>
-                                   
+                                    <div className='w-full bg-black absolute z-1 h-full rounded-2xl'   >
+                                    </div>
+
 
                                     {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
                                 </div>
