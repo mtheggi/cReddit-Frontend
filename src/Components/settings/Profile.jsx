@@ -3,7 +3,6 @@ import TextArea from "./components/TextArea";
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import SocialLinksModal from "./components/SocialLinksModal";
-import ImageUpload from "./components/ImageUpload";
 
 import { changeSetting } from "./utils/ChangeSetting";
 import { notify } from "./components/CustomToast";

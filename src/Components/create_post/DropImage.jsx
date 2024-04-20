@@ -67,6 +67,8 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
  * @param {Function} setPreviewSrc - The function to set the preview source.
  */
   const removeImage = (event) => {
+    if(id.includes("settings"))
+    return;
     event.stopPropagation();
     setPreviewSrc(null);
     handleFileChange({
@@ -91,7 +93,7 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
         <div className="w-96 h-full py-1 flex flex-row justify-center bg-black rounded-md ">
           <img className="h-full" src={previewSrc} alt="preview" />
         </div>
-        <div className="absolute hover:bg-reddit_search_light rounded-full w-9 h-9 flex flex-row justify-center items-center right-2 top-1" onClick={removeImage}>
+        <div className={`absolute ${id.includes("settings")?"hidden":"hover:bg-reddit_search_light"} rounded-full w-8 h-8 flex flex-row justify-center items-center right-2 top-1`} onClick={removeImage}>
           <XMarkIcon className="w-7 text-gray-200 h-7" />
         </div>
       </div>}
