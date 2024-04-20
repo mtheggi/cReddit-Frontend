@@ -30,7 +30,7 @@ const Mainfeed = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [homeFeedScroll, setHomeFeedScroll]=useState(0);
+  const [homeFeedScroll, setHomeFeedScroll] = useState(0);
   const mainfeedRef = useRef();
 
   const [selectedSort, setSelectedSort] = useState(() => {
@@ -96,7 +96,7 @@ const Mainfeed = () => {
       }
     }
 
-    
+
 
     if (!navigate.pathname.includes("/comments/")) {
       console.log("fetching home feed", page, selectedSort);
@@ -109,7 +109,10 @@ const Mainfeed = () => {
 
 
   useEffect(() => {
-    if (navigate.pathname.includes("/comments/")) {
+    const url = navigate.pathname;
+    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
+    const match = url.match(regex);
+    if (match) {
       const selectedPostId = match[1];
       setIsSinglePostSelected(true);
       getSinglePost(selectedPostId);
@@ -186,19 +189,17 @@ const Mainfeed = () => {
   });
 
   useEffect(() => {
-    if (navigate.pathname.includes("/comments/")) 
-    {
+    if (navigate.pathname.includes("/comments/")) {
       console.log("scrolling to comment", homeFeedScroll);
       localStorage.setItem('homeFeedScroll', homeFeedScroll);
     }
-    else
-    {
+    else {
       setTimeout(() => {
         mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-        console.log("switch",mainfeedRef.current.scrollTop);
+        console.log("switch", mainfeedRef.current.scrollTop);
       }, 10);
     }
-  },[navigate.pathname]);
+  }, [navigate.pathname]);
 
 
   return (
