@@ -1,4 +1,11 @@
-function SocialLink({ id, url, platform }) {
+function SocialLink({
+  id,
+  url,
+  platform,
+  selected,
+  handleAddSocial,
+  handleRemoveSocial,
+}) {
   return (
     <button
       id={id}
@@ -11,6 +18,13 @@ function SocialLink({ id, url, platform }) {
       <span className="text-xs text-white font-bold font-plex pl-2 pr-1">
         {platform}
       </span>
+      {selected && (
+        <i
+          className="fa-solid fa-times fa-xs ml-2 mr-1"
+          style={{ color: "white" }}
+          onClick={() => handleRemoveSocial({ url, displayName: platform })}
+        ></i>
+      )}
     </button>
   );
 }
