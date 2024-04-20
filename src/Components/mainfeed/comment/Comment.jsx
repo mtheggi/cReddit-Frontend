@@ -54,6 +54,7 @@ const Comment = ({ postId }) => {
 
         const handleScroll = () => {
             const dropdownElement = document.getElementById("mainfeed_comment_category_dropdown");
+            if(!dropdownElement) return;
             const dropdownRect = dropdownElement.getBoundingClientRect();
             const isVisible = dropdownRect.top >= 55 && dropdownRect.bottom <= window.innerHeight - 250;
 

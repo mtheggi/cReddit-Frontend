@@ -6,7 +6,8 @@ import { useState, useEffect, useRef } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+
 import moment from "moment";
 import HiddenPost from './HiddenPost';
 import { Save } from './comment/CommentUtils';
@@ -58,6 +59,7 @@ const Post = ({
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
     const navigate = useNavigate();
+    const location = useLocation();
 
 
     useEffect(() => {
@@ -158,13 +160,13 @@ const Post = ({
     };
 
 
-/**
- * Function to get the vote width of a poll.
- *
- * @function getVoteWidth
- * @param {number} votes - The votes of the poll.
- * @returns {string} The vote width.
- */
+    /**
+     * Function to get the vote width of a poll.
+     *
+     * @function getVoteWidth
+     * @param {number} votes - The votes of the poll.
+     * @returns {string} The vote width.
+     */
     const getVoteWidth = (votes) => {
         let voteWidth = votes / getMaxVotes(editedPollOptions) * 100 + "%";
         return voteWidth;
@@ -275,7 +277,7 @@ const Post = ({
                         className="flex items-center w-fit"
                     >
                         {isSinglePostSelected &&
-                            <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <div onClick={() => navigate(location.state?.from || -1)} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
                                 <ArrowLeftIcon className='text-white w-6 h-6' />
                             </div>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
@@ -292,7 +294,7 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {(communityName !== null) && <div id={`join`+id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
                             <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div

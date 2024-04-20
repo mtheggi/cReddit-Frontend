@@ -122,7 +122,6 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
 
   useEffect
     (() => {
-      console.log("netVotes", netVotes);
       setVoters(netVotes);
       setIsUpvote(isUpvoted);
       setIsDownvote(isDownvoted);
