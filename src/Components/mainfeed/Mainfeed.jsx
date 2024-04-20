@@ -32,6 +32,7 @@ const Mainfeed = () => {
   const [loadingPost, setLoadingPost] = useState(false);
   const [selectedSort, setSelectedSort] = useState("Best");
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+  const [feedLoading, setIsFeedLoading] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
@@ -64,8 +65,13 @@ const Mainfeed = () => {
     let isSortChanged = (prevSelectedSort.current !== selectedSort);
     let pageNum = isSortChanged ? 1 : page;
     const getHomeFeed = async () => {
+
       setLoading(true);
       setError(false);
+      if (pageNum === 1) {
+        setIsFeedLoading(true);
+      }
+
       try {
         const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
@@ -75,6 +81,7 @@ const Mainfeed = () => {
             setPosts(prevPosts => [...prevPosts, ...response.data]);
           }
           setHasMore(response.data.length > 0);
+          setIsFeedLoading(false);
         } else {
           setError(true);
         }
@@ -198,7 +205,7 @@ const Mainfeed = () => {
           </div>
 
           {isOpenCateg && (
-            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
+            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-3 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                 <p className="no-select">Sort by</p>
               </div>
@@ -280,9 +287,13 @@ const Mainfeed = () => {
       </div>
 
 
-      {!isSinglePostSelected && posts.map((post, i) => (
-        <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
-      ))}
+      {feedLoading ? <Loading /> :
+        <>
+          {!isSinglePostSelected && posts.map((post, i) => (
+            <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
+          ))}
+        </>
+      }
 
       {isSinglePostSelected && loadingPost && <Loading />}
 
@@ -295,7 +306,7 @@ const Mainfeed = () => {
 
       {
         <div className="w-full max-h-15 mt-10">
-          {loading && !isSinglePostSelected && <Loading />}
+          {loading && !isSinglePostSelected && !feedLoading && <Loading />}
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">
