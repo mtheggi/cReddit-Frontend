@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { useState, useEffect, useRef, useContext } from "react";
 import TextArea from "./components/TextArea";
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
@@ -12,7 +12,7 @@ import { clearHistory } from "./utils/ClearHistory";
 import DropImage from "../create_post/DropImage";
 import { getRequest, putRequestFD } from "@/services/Requests";
 import { baseUrl } from "../../constants";
-import { UserContext } from '@/context/UserContext';
+import { UserContext } from "@/context/UserContext";
 /**
  * Profile is a React component that displays the user's profile settings.
  * It allows the user to change their display name, about text, social links, and various visibility settings.
@@ -45,48 +45,38 @@ function Profile({
   const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
   const [userBanner, setUserBanner] = useState(null);
 
-
-
   useEffect(() => {
-
     const getBanner = async () => {
-
-
       const response = await getRequest(`${baseUrl}/user/settings`);
       if (response.status === 200 || response.status === 201) {
         setUserBanner(response.data.profile.banner);
       }
-    }
+    };
     getBanner();
   }, []);
 
-
-
   const bannerChange = (e) => {
     setBanner(e.target.files[0]);
-  }
+  };
 
   const avatarChange = (e) => {
     setAvatar(e.target.files[0]);
-  }
+  };
 
   const uploadImage = async (type) => {
     const formData = new FormData();
 
     if (type == "avatar" && avatar) {
-
-      formData.append('avatar', avatar);
+      formData.append("avatar", avatar);
     }
 
     if (type == "banner" && banner) {
-
-      formData.append('banner', banner);
+      formData.append("banner", banner);
     }
 
     const response = await putRequestFD(`${baseUrl}/user/settings`, formData);
-    return response
-  }
-
+    return response;
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -141,7 +131,11 @@ function Profile({
         message="People who visit your profile will see your social links."
       />
 
-      <SocialLinks socialLinks={socialLinks} setModalShow={setModalShow} />
+      <SocialLinks
+        pageName="profile"
+        socialLinks={socialLinks}
+        setModalShow={setModalShow}
+      />
 
       <SocialLinksModal
         id="profile-social-links-modal"
@@ -155,17 +149,32 @@ function Profile({
         message="Images must be .png or .jpg format"
       />
       <div className="flex flex-row mb-4 mt-3 text-white space-x-9">
-        <div onBlur={() => uploadImage("avatar")} className="mt-2 -mb-4 w-[180px] h-[160px]">
+        <div
+          onBlur={() => uploadImage("avatar")}
+          className="mt-2 -mb-4 w-[180px] h-[160px]"
+        >
           <p className="mb-1">Avatar</p>
-          <DropImage id={"settings_avatar_upload"} handleFileChange={avatarChange} userProfilePicture={userProfilePicture} userBanner={null} />
+          <DropImage
+            id={"settings_avatar_upload"}
+            handleFileChange={avatarChange}
+            userProfilePicture={userProfilePicture}
+            userBanner={null}
+          />
         </div>
 
-        <div onBlur={() => uploadImage("banner")} className="mt-2 -mb-4 w-[300px] h-[160px]">
+        <div
+          onBlur={() => uploadImage("banner")}
+          className="mt-2 -mb-4 w-[300px] h-[160px]"
+        >
           <p className="mb-1">Banner</p>
-          <DropImage id={"settings_banner_upload"} handleFileChange={bannerChange} userProfilePicture={null} userBanner={userBanner} />
+          <DropImage
+            id={"settings_banner_upload"}
+            handleFileChange={bannerChange}
+            userProfilePicture={null}
+            userBanner={userBanner}
+          />
         </div>
       </div>
-
 
       <Subtitle title="PROFILE CATEGORY" />
       <Setting
