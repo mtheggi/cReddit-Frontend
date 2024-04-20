@@ -20,7 +20,6 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
 
 
   useEffect(() => {
-    console.log(userBanner);
 
     if(userProfilePicture)
     {

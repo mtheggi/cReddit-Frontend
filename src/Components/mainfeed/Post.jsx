@@ -240,7 +240,6 @@ const Post = ({
             setIsHiddenMsg(response.data.message);
         }
         else {
-            console.log("post couldn't be hidden");
             setIsHiddenMsg(response.data.message);
             setCurrentIsHidden(prev => !prev);
         }

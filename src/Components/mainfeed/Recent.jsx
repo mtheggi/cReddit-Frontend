@@ -41,7 +41,6 @@ const Recent = ({ userHistoryRes }) => {
         localStorage.removeItem('userHistory');
         const response = await deleteRequest(`${baseUrl}/user/history`);
         if (!(response.status === 200 || response.status === 201)) {
-            console.log("serverError is set");
             setServerError(true);
             setRecentPosts(originalPosts);
             localStorage.setItem('userHistory', JSON.stringify(originalPosts));

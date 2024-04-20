@@ -99,7 +99,6 @@ const Mainfeed = () => {
 
 
     if (!navigate.pathname.includes("/comments/")) {
-      console.log("fetching home feed", page, selectedSort);
 
       getHomeFeed();
       prevSelectedSort.current = selectedSort;
@@ -190,13 +189,11 @@ const Mainfeed = () => {
 
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
-      console.log("scrolling to comment", homeFeedScroll);
       localStorage.setItem('homeFeedScroll', homeFeedScroll);
     }
     else {
       setTimeout(() => {
         mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-        console.log("switch", mainfeedRef.current.scrollTop);
       }, 10);
     }
   }, [navigate.pathname]);

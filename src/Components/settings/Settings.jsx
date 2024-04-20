@@ -43,9 +43,9 @@ const TabsPath = [
  */
 const initCurrTab = () => {
   const path = window.location.pathname;
-  // console.log(path);
+
   const tab = path.split("/")[2];
-  // console.log(tab, TabsPath.indexOf(tab));
+
   const index = TabsPath.indexOf(tab);
   return index != -1 ? index : 0;
 };
