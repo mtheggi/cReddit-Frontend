@@ -59,7 +59,6 @@ function SocialLinksModal(props) {
             platform={social}
           />
         ))}
-        {/* <h1>Coming Soon!</h1> */}
       </Modal.Body>
     </Modal>
   );

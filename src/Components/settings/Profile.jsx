@@ -40,8 +40,8 @@ function Profile({
   setUserSettings,
 }) {
   const [modalShow, setModalShow] = useState(false);
-  const [avatar, setAvatar] = useState(null);
-  const [banner, setBanner] = useState(null);
+  // const [avatar, setAvatar] = useState(null);
+  // const [banner, setBanner] = useState(null);
   const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
   const [userBanner, setUserBanner] = useState(null);
 
@@ -55,25 +55,25 @@ function Profile({
     getBanner();
   }, []);
 
-  const bannerChange = (e) => {
-    setBanner(e.target.files[0]);
+  const bannerChange = async (e) => {
+    const res = await uploadImage("banner", e.target.files[0]);
+    if (res.status === 200 || res.status === 201) {
+      setUserBanner(res.data.profile.banner);
+      notify("Changes saved successfully");
+    } else notify("Failed to save changes");
   };
 
-  const avatarChange = (e) => {
-    setAvatar(e.target.files[0]);
+  const avatarChange = async (e) => {
+    const res = await uploadImage("avatar", e.target.files[0]);
+    if (res.status === 200 || res.status === 201) {
+      setUserProfilePicture(res.data.profile.avatar);
+      notify("Changes saved successfully");
+    } else notify("Failed to save changes");
   };
 
-  const uploadImage = async (type) => {
+  const uploadImage = async (type, img) => {
     const formData = new FormData();
-
-    if (type == "avatar" && avatar) {
-      formData.append("avatar", avatar);
-    }
-
-    if (type == "banner" && banner) {
-      formData.append("banner", banner);
-    }
-
+    formData.append(type, img);
     const response = await putRequestFD(`${baseUrl}/user/settings`, formData);
     return response;
   };
@@ -149,10 +149,7 @@ function Profile({
         message="Images must be .png or .jpg format"
       />
       <div className="flex flex-row mb-4 mt-3 text-white space-x-9">
-        <div
-          onBlur={() => uploadImage("avatar")}
-          className="mt-2 -mb-4 w-[180px] h-[160px]"
-        >
+        <div className="mt-2 -mb-4 w-[180px] h-[160px]">
           <p className="mb-1">Avatar</p>
           <DropImage
             id={"settings_avatar_upload"}
@@ -162,10 +159,7 @@ function Profile({
           />
         </div>
 
-        <div
-          onBlur={() => uploadImage("banner")}
-          className="mt-2 -mb-4 w-[300px] h-[160px]"
-        >
+        <div className="mt-2 -mb-4 w-[300px] h-[160px]">
           <p className="mb-1">Banner</p>
           <DropImage
             id={"settings_banner_upload"}

@@ -390,11 +390,11 @@ export const userHandlers = [
                 displayName: "John Doe",
                 about: "I am a developer",
                 socialLinks: [
-                    {
-                        displayName: "El Buy Me a Coffee bta3y",
-                        platform: "Buy Me a Coffee",
-                        url: "https://twitter.com/faUwUsa"
-                    },
+                    // {
+                    //     displayName: "El Buy Me a Coffee bta3y",
+                    //     platform: "Buy Me a Coffee",
+                    //     url: "https://twitter.com/faUwUsa"
+                    // },
                     {
                         displayName: "El twitter bta3y",
                         platform: "Twitter",
