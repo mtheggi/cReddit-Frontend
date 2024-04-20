@@ -48,7 +48,6 @@ const Post = ({
     const [isOpenDots, setIsOpenDots] = useState(false);
     const [hoverJoin, setHoverJoin] = useState(false);
     const [editedPollOptions, setEditedPollOptions] = useState(pollOptions);
-    const [enableVote, setEnableVote] = useState(false);
     const uploadedFrom = moment(createdAt).fromNow();
     const durationRemaining = moment(expirationDate).fromNow();
     const [Blured, setBlured] = useState(isSpoiler || isNSFW);
@@ -59,9 +58,6 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-
-
-
 
     useEffect(() => {
         setEditedPollOptions(pollOptions);
@@ -267,8 +263,8 @@ const Post = ({
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
                 id={"mainfeed_" + id + "_full"}
-                className={`flex px-3 flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
-                    } px-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
+                className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
+                    }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
                     <div
