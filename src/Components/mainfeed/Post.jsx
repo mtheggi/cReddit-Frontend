@@ -6,10 +6,11 @@ import { useState, useEffect, useRef } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-import { useNavigate, useLocation } from 'react-router-dom';
+
 
 import moment from "moment";
 import HiddenPost from './HiddenPost';
+import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 
 
@@ -58,8 +59,8 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-    const navigate = useNavigate();
-    const location = useLocation();
+
+
 
 
     useEffect(() => {
@@ -277,9 +278,9 @@ const Post = ({
                         className="flex items-center w-fit"
                     >
                         {isSinglePostSelected &&
-                            <div onClick={() => navigate(location.state?.from || -1)} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <Link to="/" className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
                                 <ArrowLeftIcon className='text-white w-6 h-6' />
-                            </div>}
+                            </Link>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                             {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}

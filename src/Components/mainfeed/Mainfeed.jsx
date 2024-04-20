@@ -30,6 +30,8 @@ const Mainfeed = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
+  const [homeFeedScroll, setHomeFeedScroll]=useState(0);
+  const mainfeedRef = useRef();
 
   const [selectedSort, setSelectedSort] = useState(() => {
     const storedSort = localStorage.getItem('homeSelectedSort');
@@ -48,13 +50,13 @@ const Mainfeed = () => {
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
 
 
-/**
- * Fetches a single post by its ID. If the post is already in the state, it uses that.
- * Otherwise, it sends a GET request to fetch the post.
- * @async
- * @function getSinglePost
- * @param {string} selectedPostId - The ID of the post to fetch.
- */
+  /**
+   * Fetches a single post by its ID. If the post is already in the state, it uses that.
+   * Otherwise, it sends a GET request to fetch the post.
+   * @async
+   * @function getSinglePost
+   * @param {string} selectedPostId - The ID of the post to fetch.
+   */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
     const existingPost = posts.find(post => post._id === selectedPostId);
@@ -94,23 +96,20 @@ const Mainfeed = () => {
       }
     }
 
-    const url = navigate.pathname;
-    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
-    const match = url.match(regex);
+    
 
-    if (!match) {
+    if (!navigate.pathname.includes("/comments/")) {
+      console.log("fetching home feed", page, selectedSort);
+
       getHomeFeed();
       prevSelectedSort.current = selectedSort;
 
     }
-  }, [isLoggedIn, page, navigate.pathname, selectedSort]);
+  }, [isLoggedIn, navigate.pathname, page, selectedSort]);
 
 
   useEffect(() => {
-    const url = navigate.pathname;
-    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
-    const match = url.match(regex);
-    if (match) {
+    if (navigate.pathname.includes("/comments/")) {
       const selectedPostId = match[1];
       setIsSinglePostSelected(true);
       getSinglePost(selectedPostId);
@@ -167,6 +166,7 @@ const Mainfeed = () => {
 
     const handleScroll = () => {
       const scrollThreshold = 58;
+      setHomeFeedScroll(mainfeedElement.scrollTop);
       if (mainfeedElement.scrollTop > scrollThreshold) {
         setIsOpenCateg(false);
         setIsOpenView(false);
@@ -185,8 +185,24 @@ const Mainfeed = () => {
     };
   });
 
+  useEffect(() => {
+    if (navigate.pathname.includes("/comments/")) 
+    {
+      console.log("scrolling to comment", homeFeedScroll);
+      localStorage.setItem('homeFeedScroll', homeFeedScroll);
+    }
+    else
+    {
+      setTimeout(() => {
+        mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
+        console.log("switch",mainfeedRef.current.scrollTop);
+      }, 10);
+    }
+  },[navigate.pathname]);
+
+
   return (
-    <div
+    <div ref={mainfeedRef}
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >

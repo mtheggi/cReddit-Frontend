@@ -185,21 +185,21 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
       setIsDownvote(isDownvote);
     } else {
 
-      if (setPosts) {
-        setPosts(prevPosts => {
-          return prevPosts.map(post => {
-            if (post._id === id) {
-              return {
-                ...post,
-                netVote: newVoters,
-                isUpvoted: newIsUpvote,
-                isDownvoted: newIsDownvote
-              };
-            }
-            return post;
-          });
-        });
-      }
+      // if (setPosts) {
+      //   setPosts(prevPosts => {
+      //     return prevPosts.map(post => {
+      //       if (post._id === id) {
+      //         return {
+      //           ...post,
+      //           netVote: newVoters,
+      //           isUpvoted: newIsUpvote,
+      //           isDownvoted: newIsDownvote
+      //         };
+      //       }
+      //       return post;
+      //     });
+      //   });
+      // }
     }
   };
 
@@ -238,21 +238,21 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
       setIsDownvote(isDownvote);
     } else {
 
-      if (setPosts) {
-        setPosts(prevPosts => {
-          return prevPosts.map(post => {
-            if (post._id === id) {
-              return {
-                ...post,
-                netVote: newVoters,
-                isUpvoted: newIsUpvote,
-                isDownvoted: newIsDownvote
-              };
-            }
-            return post;
-          });
-        });
-      }
+      // if (setPosts) {
+      //   setPosts(prevPosts => {
+      //     return prevPosts.map(post => {
+      //       if (post._id === id) {
+      //         return {
+      //           ...post,
+      //           netVote: newVoters,
+      //           isUpvoted: newIsUpvote,
+      //           isDownvoted: newIsDownvote
+      //         };
+      //       }
+      //       return post;
+      //     });
+      //   });
+      // }
     }
   };
 
