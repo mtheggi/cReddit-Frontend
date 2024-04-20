@@ -295,7 +295,7 @@ const Mainfeed = () => {
         </>
       }
 
-      {isSinglePostSelected && loadingPost && <Loading />}
+      {/* {isSinglePostSelected && loadingPost && <Loading />} */}
 
       {isSinglePostSelected && !loadingPost &&
         <>
