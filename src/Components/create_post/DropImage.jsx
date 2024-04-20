@@ -93,7 +93,6 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
       </p>}
       {previewSrc && <div className="w-full px-2 py-2 h-full relative justify-center flex flex-row ">
         <div className="w-96 h-full py-1 flex flex-row justify-center bg-black rounded-md ">
-          {console.log(previewSrc)}
           {isVideo? (<video className="h-full" src={previewSrc} alt=""  />) : (<img className="h-full" src={previewSrc} alt="preview" />) }
         </div>
         <div className={`absolute ${id.includes("settings")?"hidden":"hover:bg-reddit_search_light"} rounded-full w-8 h-8 flex flex-row justify-center items-center right-2 top-1`} onClick={removeImage}>
