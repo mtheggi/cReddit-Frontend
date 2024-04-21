@@ -280,7 +280,7 @@ const Mainfeed = () => {
           </div>
 
           {isOpenView && (
-            <div className=" w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col">
+            <div className=" w-30 h-33  bg-reddit_search absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-20 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-3  rounded-lg h-8 flex items-center font-medium">
                 <p className="no-select">View</p>
               </div>
