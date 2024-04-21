@@ -17,13 +17,13 @@ const Comment = ({ postId }) => {
     const [selectedSort, setSelectedSort] = useState(() => {
         const storedSort = localStorage.getItem('commentsSelectedSort');
         if (storedSort) {
-          return storedSort;
+            return storedSort;
         } else {
-          localStorage.setItem('commentsSelectedSort', 'Best');
-          return 'Best';
+            localStorage.setItem('commentsSelectedSort', 'Best');
+            return 'Best';
         }
-      });
-    const [isLoading, setIsLoading] = useState(true);
+    });
+    const [isLoading, setIsLoading] = useState(false);
 
     const onAddComment = () => {
         setIsCommenting(false);
@@ -31,9 +31,10 @@ const Comment = ({ postId }) => {
 
     useEffect(() => {
         const getSinglepostComments = async (selectedPostId) => {
-            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
+            setIsLoading(true);
+            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?limit=50&sort=${selectedSort.toLowerCase()}`)
             if (response.status == 200 || response.status == 201) {
-                setPostComments(response.data);
+                setPostComments([...response.data]);
             }
             setIsLoading(false);
         }
@@ -54,7 +55,7 @@ const Comment = ({ postId }) => {
 
         const handleScroll = () => {
             const dropdownElement = document.getElementById("mainfeed_comment_category_dropdown");
-            if(!dropdownElement) return;
+            if (!dropdownElement) return;
             const dropdownRect = dropdownElement.getBoundingClientRect();
             const isVisible = dropdownRect.top >= 55 && dropdownRect.bottom <= window.innerHeight - 250;
 
@@ -138,7 +139,13 @@ const Comment = ({ postId }) => {
                             </div>
                         )}
                     </div>
-                    <AddComment postId={postId} setPostComments={setPostComments} onAddComment={onAddComment} isCommenting={isCommenting} setIsCommenting={setIsCommenting} selectedSort={selectedSort} />
+                    <AddComment postId={postId}
+                        setPostComments={setPostComments}
+                        onAddComment={onAddComment} isCommenting={isCommenting}
+                        setIsCommenting={setIsCommenting}
+                        selectedSort={selectedSort}
+                        setIsLoading={setIsLoading} />
+
                     {postComments.map((comment, index) => (
                         <PostComment
                             key={index}

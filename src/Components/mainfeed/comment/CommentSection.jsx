@@ -25,7 +25,8 @@ function CommentSection({
   setIsCommenting,
   onAddComment,
   setPostComments,
-  selectedSort
+  selectedSort,
+  setIsLoading
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -53,7 +54,6 @@ function CommentSection({
    * @type {React.RefObject}
    */
   const textareaRef = useRef();
-
   const handleFileChange = (e) => {
     setImage(e.target.files[0]);
   }
@@ -63,8 +63,8 @@ function CommentSection({
     if (response.status == 200 || response.status == 201) {
       setPostComments(response.data);
     }
-
   }
+
 
   useEffect(() => {
     if (isCommenting) {
@@ -74,8 +74,10 @@ function CommentSection({
 
   async function addComment() {
     if (!(image || (comment && comment.trim() !== ""))) return;
+    setIsLoading(true);
     const newComment = await submitComment(postId, image, comment);
     if (!newComment) return;
+    setIsLoading(false);
     onAddComment(newComment);
     await getSinglePostComments(postId);
     setComment("");
@@ -95,6 +97,7 @@ function CommentSection({
 
       {!image && (
         <textarea id="comment_text"
+
           disabled={image ? true : false}
           ref={textareaRef}
           className="w-full block resize-none rounded-2xl pl-3 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
@@ -132,7 +135,7 @@ function CommentSection({
           </button>
           <div id="submit_comment"
             onClick={addComment}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${( image || (comment && comment.trim() !== "") ) ? "cursor-pointer":"cursor-not-allowed"} `}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(image || (comment && comment.trim() !== "")) ? "cursor-pointer" : "cursor-not-allowed"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}

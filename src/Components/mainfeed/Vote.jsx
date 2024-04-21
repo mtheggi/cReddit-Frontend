@@ -113,7 +113,7 @@ const DownVote = ({ isDownvote, isUpvote, isHoverDownvote }) => {
  * @param {function} props.setPosts - The function to set the posts.
  * @returns {JSX.Element} The rendered Vote component.
  * */
-const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => {
+const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId = "" }) => {
   const [voters, setVoters] = useState(netVotes);
   const [isUpvote, setIsUpvote] = useState(isUpvoted);
   const [isDownvote, setIsDownvote] = useState(isDownvoted);
@@ -174,15 +174,15 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
       newIsUpvote = true;
     }
 
-    setVoters(newVoters);
-    setIsUpvote(newIsUpvote);
-    setIsDownvote(newIsDownvote);
+    setVoters(prevVoters => newVoters);
+    setIsUpvote(prevIsUpvote => newIsUpvote);
+    setIsDownvote(prevIsDownvote => newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/upvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(voters);
-      setIsUpvote(isUpvote);
-      setIsDownvote(isDownvote);
+      setVoters(prevVoters => voters);
+      setIsUpvote(prevIsUpvote => isUpvote);
+      setIsDownvote(prevIsDownvote => isDownvote);
     } else {
 
       // if (setPosts) {
@@ -227,15 +227,15 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
       newIsDownvote = true;
     }
 
-    setVoters(newVoters);
-    setIsUpvote(newIsUpvote);
-    setIsDownvote(newIsDownvote);
+    setVoters(prevVoters => newVoters);
+    setIsUpvote(prevIsUpvote => newIsUpvote);
+    setIsDownvote(prevIsDownvote => newIsDownvote);
 
     const response = await patchRequest(`${baseUrl}/post/${id}/downvote`);
     if (response.status != 200 && response.status != 201) {
-      setVoters(voters);
-      setIsUpvote(isUpvote);
-      setIsDownvote(isDownvote);
+      setVoters(prevVoters => voters);
+      setIsUpvote(prevIsUpvote => isUpvote);
+      setIsDownvote(prevIsDownvote => isDownvote);
     } else {
 
       // if (setPosts) {
@@ -266,7 +266,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
         }  rounded-3xl`}
     >
       <span
-        id={"mainfeed_" + id + "_upvote"+testId}
+        id={"mainfeed_" + id + "_upvote" + testId}
         onMouseEnter={() => setIsHoverUpvote(true)}
         onMouseLeave={() => setIsHoverUpvote(false)}
         role="button"
@@ -282,7 +282,7 @@ const Vote = ({ id, netVotes, isUpvoted, isDownvoted, setPosts, testId="" }) => 
       </span>
       <span className="text-gray-300 text-sm">{formatVotes(voters)}</span>
       <span
-        id={"mainfeed_" + id + "_downvote"+testId}
+        id={"mainfeed_" + id + "_downvote" + testId}
         onMouseEnter={() => setIsHoverDownvote(true)}
         onMouseLeave={() => setIsHoverDownvote(false)}
         role="button"

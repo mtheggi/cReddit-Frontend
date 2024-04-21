@@ -70,7 +70,7 @@ function App() {
               </SidebarContextProvider>
             }
           />
-             <Route
+          <Route
             path={"/popular"}
             element={
               <SidebarContextProvider>

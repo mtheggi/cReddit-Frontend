@@ -17,7 +17,9 @@ function AddComment({
   onAddComment,
   setPostComments,
   selectedSort,
+  setIsLoading,
 }) {
+
   return (
     <div className="w-full mt-3 inline-flex flex-row  justify-center">
       <button id="add_comment"
@@ -37,6 +39,7 @@ function AddComment({
         isCommenting={isCommenting}
         setIsCommenting={setIsCommenting}
         selectedSort={selectedSort}
+        setIsLoading={setIsLoading}
       />
     </div>
   );

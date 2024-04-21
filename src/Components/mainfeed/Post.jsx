@@ -389,7 +389,7 @@ const Post = ({
                                             <img  src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full'  />}
                                     </div>
 
-                                    { (
+                                    {(
                                         content.endsWith('.mp4') ?
                                             <video src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"} max-h-[500px] w-full object-contain `} controls /> :
                                             <img src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"}  max-h-[500px] w-full object-contain `} />)

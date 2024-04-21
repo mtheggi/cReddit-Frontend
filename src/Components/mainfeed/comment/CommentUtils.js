@@ -14,12 +14,7 @@ export async function submitComment(postId, image, text) {
         formData.append('images', image);
 
     let res = await postRequestImg(url, formData);
-    if (res.status !== 200 && res.status !== 201) return null;
-
-    url = `${baseUrl}/comment/${res.data.commentId}`;
-    res = await getRequest(url);
-
-    return res.data;
+    return res.status === 200 || res.status === 201;
 }
 
 export async function UpDownVoteComment(commentId, voteType) {
