@@ -79,7 +79,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                         <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
                         <span className='items-center' style={{ pointerEvents: "none" }}>
 
-                            <ChevronDownIcon data-testid="chvronUP" className={`h-5 w-5 mr-2  text-gray-300 transition-transform duration-200 ${isDropped ? 'rotate' : ''}`} />
+                            <ChevronDownIcon data-testid="chvronUP" className={`h-5 w-5 mr-2  text-gray-300 transition-transform duration-[300ms] ${isDropped ? 'rotate' : ''}`} />
                         </span>
                     </div>
 
@@ -90,7 +90,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
 
 
-            <div className={`overflow-hidden transition-all duration-200 max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
                 {recentSubreddits && recentSubreddits.map((subreddit, index) => {
                     if (!subreddit.name) {
                         return null;
@@ -105,7 +105,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
 
 
-            <div className={`overflow-hidden transition-all duration-200 max-h-0 opacity-0 ${isDropped && isCommunity ? 'max-h-[600px] opacity-100' : ''}`}>
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isCommunity ? 'max-h-[600px] opacity-100' : ''}`}>
                 <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
 
                 {joinedSubreddits && joinedSubreddits.map((subreddit, index) => {
@@ -120,7 +120,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
 
 
 
-            <div className={`overflow-hidden transition-all duration-200 max-h-0 opacity-0 ${isDropped && isResources ? 'max-h-[1000px] opacity-100' : ''}`}>
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isResources ? 'max-h-[1000px] opacity-100' : ''}`}>
                 <NavIcon id={toSnakeCase("About Reddit")} href="#" text="About Reddit" >  <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon id={toSnakeCase("Advertise")} href="#" text="Advertise" ><SignalIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Help")} href="#" text="Help" ><QuestionMarkCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>

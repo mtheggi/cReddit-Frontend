@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 
 
+
+
 /**
  * Post component for displaying a post.
  * @component
@@ -259,6 +261,8 @@ const Post = ({
             setIsSubbredditJoined(prev => !prev);
         }
     }
+
+
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
@@ -306,7 +310,7 @@ const Post = ({
                             />
                         </div>
                         {isOpenDots && (
-                            <div className={`z-1 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
+                            <div className={`z-20 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
                                 <div onClick={handleClickSave}
                                     id={"mainfeed_" + id + "_menu_save"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -377,16 +381,20 @@ const Post = ({
                         {
                             type == "Images & Video" &&
                             <div
-                                id={"mainfeed_" + id + "_" + type}
-                                className="w-full h-full mt-2">
-                                <div id='cover' className={`relative flex-row rounded-lg px-3 flex justify-center bg-black ${Blured ? 'filter blur-[10px]' : ''}`}>
-                                    {
-                                        content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`min-h-[400px] max-h-[450px] `} controls /> :
-                                            <img src={content} alt="Post" className={`min-h-[400px] max-h-[450px] `} />
-                                    }
+                                id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
+                                <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
 
-                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
+                                    <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row `} onClick={(e) => { setBlured(false) }} >
+                                        {Array(3).fill().map((_, i) => (
+                                            <img key={i} src={content} alt="" className=' blur-[50px] max-h-[500px]'  />
+                                        ))}
+                                    </div>
+
+                                    {!Blured && (
+                                        content.endsWith('.mp4') ?
+                                            <video src={content} alt="Post" className={`${Blured ? "rounded-[40px]" : "z-10"}  max-h-[500px] `} controls /> :
+                                            <img src={content} alt="Post" className={`${Blured ? "rounded-[40px]" : "z-10"} max-h-[500px] `} />)
+                                    }
                                 </div>
                             </div>
                         }
