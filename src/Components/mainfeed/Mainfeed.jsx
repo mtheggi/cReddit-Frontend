@@ -228,7 +228,7 @@ const Mainfeed = () => {
           </div>
 
           {isOpenCateg && (
-            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-3 rounded-lg  font-extralight flex flex-col">
+            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                 <p className="no-select">Sort by</p>
               </div>
