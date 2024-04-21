@@ -26,6 +26,7 @@
     "bootstrap": "^5.3.3",
     "deep-email-validator": "^0.1.21",
     "email-validator": "^2.0.4",
+    "firebase": "^10.11.0",
     "flowbite-react": "^0.7.2",
     "jwt-decode": "^4.0.0",
     "moment": "^2.30.1",

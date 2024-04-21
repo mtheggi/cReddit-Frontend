@@ -16,12 +16,8 @@ import { getRequest } from '../../services/Requests';
 import { baseUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import NotificationList from '../notifications/NotificationList'
 import { useNotifications } from '../notifications/NotificationContext'; 
-
-
-
 
 /**
  * Navbar component.

@@ -21,6 +21,25 @@ import NotificationPage from './views/NotificationPage';
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 
 function App() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./firebase-messaging-sw.js')
+    .then((registration) => {
+        console.log("Service Worker Registered", registration);
+        return registration.update();
+    })
+    .then(() => {
+        console.log("Service Worker Updated");
+        return navigator.serviceWorker.ready;
+    })
+    .then((registration) => {
+        console.log("Service Worker is controlling the site", registration);
+    })
+    .catch((err) => {
+        console.error("Service Worker Registration Failed", err);
+    });
+}
+
+
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
   const { isLoading, isLoggedIn } = useContext(UserContext);
