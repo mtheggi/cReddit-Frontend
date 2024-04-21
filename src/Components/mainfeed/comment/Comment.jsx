@@ -80,85 +80,90 @@ const Comment = ({ postId }) => {
 
     return (
         <div>
-            {isLoading ? (
-                <Loading />
-            ) : (
-                <div className="w-full flex flex-col px-2">
+            <div className="w-full flex flex-col px-2">
+                <div
+                    id="mainfeed_comment_category_dropdown"
+                    ref={menuRefCateg}
+                    className="relative w-fit"
+                >
                     <div
-                        id="mainfeed_comment_category_dropdown"
-                        ref={menuRefCateg}
-                        className="relative w-fit"
-                    >
-                        <div
-                            onClick={() => { setIsOpenCateg((prev) => !prev) }}
-                            className={`flex w-14 -ml-1 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
-                                } justify-center items-center cursor-pointer`} >
-                            <p className="text-gray-500 font-semibold text-xs no-select ">
-                                {selectedSort}
-                            </p>
-                            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-                        </div>
-
-                        {isOpenCateg && (
-                            <div id="tempID" className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
-                                <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
-                                    <p className="no-select">Sort by</p>
-                                </div>
-
-                                <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
-                                    id="mainfeed_category_best"
-                                    href=""
-                                    className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                                >
-                                    <p className="no-select">Best</p>
-                                </div>
-
-                                <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
-                                    id="mainfeed_category_hot"
-                                    href=""
-                                    className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                                >
-                                    <p className="no-select">Top</p>
-                                </div>
-
-                                <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "New"); }}
-                                    id="mainfeed_category_new"
-                                    href=""
-                                    className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                                >
-                                    <p className="no-select">New</p>
-                                </div>
-
-                                <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Old"); }}
-                                    id="mainfeed_category_top"
-                                    href=""
-                                    className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                                >
-                                    <p className="no-select">Old</p>
-                                </div>
-                            </div>
-                        )}
+                        onClick={() => { setIsOpenCateg((prev) => !prev) }}
+                        className={`flex w-14 -ml-1 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
+                            } justify-center items-center cursor-pointer`} >
+                        <p className="text-gray-500 font-semibold text-xs no-select ">
+                            {selectedSort}
+                        </p>
+                        <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
                     </div>
-                    <AddComment postId={postId}
-                        setPostComments={setPostComments}
-                        onAddComment={onAddComment} isCommenting={isCommenting}
-                        setIsCommenting={setIsCommenting}
-                        selectedSort={selectedSort}
-                        setIsLoading={setIsLoading} />
 
-                    {postComments.map((comment, index) => (
-                        <PostComment
-                            key={index}
-                            id={comment._id}
-                            {...comment}
-                        />
-                    ))}
+                    {isOpenCateg && (
+                        <div id="tempID" className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
+                            <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
+                                <p className="no-select">Sort by</p>
+                            </div>
 
-                    {postComments.length == 0 && !isLoading && (
-                        <NoComments />
+                            <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
+                                id="mainfeed_category_best"
+                                href=""
+                                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
+                            >
+                                <p className="no-select">Best</p>
+                            </div>
+
+                            <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
+                                id="mainfeed_category_hot"
+                                href=""
+                                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
+                            >
+                                <p className="no-select">Top</p>
+                            </div>
+
+                            <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "New"); }}
+                                id="mainfeed_category_new"
+                                href=""
+                                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
+                            >
+                                <p className="no-select">New</p>
+                            </div>
+
+                            <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Old"); }}
+                                id="mainfeed_category_top"
+                                href=""
+                                className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
+                            >
+                                <p className="no-select">Old</p>
+                            </div>
+                        </div>
                     )}
                 </div>
-            )}
+                <AddComment postId={postId}
+                    setPostComments={setPostComments}
+                    onAddComment={onAddComment} isCommenting={isCommenting}
+                    setIsCommenting={setIsCommenting}
+                    selectedSort={selectedSort}
+                    setIsLoading={setIsLoading} />
+
+                {
+                    !isLoading ? (
+                        <>
+                            {postComments.map((comment, index) => (
+                                <PostComment
+                                    key={index}
+                                    id={comment._id}
+                                    {...comment}
+                                />
+                            ))}
+
+                            {postComments.length === 0 && (
+                                <NoComments />
+                            )}
+                        </>
+                    ) : (
+                        <div className="w-full flex flex-row h-full mt-4">
+                            <Loading />
+                        </div>
+                    )}
+            </div>
         </div>
 
     );
