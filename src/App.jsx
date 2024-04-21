@@ -9,9 +9,7 @@ import { useContext, useState, useRef } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { FormText } from "react-bootstrap";
 import "./utils/axiosInterceptor";
-import EmailVerification from "./Components/authentication/reset_components/EmailVerification";
 import CreatePost from "./Components/create_post/CreatePost";
 import { UserContext } from "./context/UserContext";
 import Loading from "./Components/Loading/Loading";
@@ -20,6 +18,7 @@ import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
+
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -41,9 +40,8 @@ function App() {
         )}
         {!isNotFound && (
           <div
-            className={`fixed inset-0 bg-black opacity-50 z-10 ${
-              isVisibleLeftSidebar ? "block" : "hidden"
-            }`}
+            className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
+              }`}
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
@@ -62,6 +60,18 @@ function App() {
           />
           <Route
             path={"/:param3/:param1/comments/:param2"}
+            element={
+              <SidebarContextProvider>
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+             <Route
+            path={"/popular"}
             element={
               <SidebarContextProvider>
                 <Home

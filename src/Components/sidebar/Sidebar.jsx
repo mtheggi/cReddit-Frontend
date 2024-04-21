@@ -24,8 +24,8 @@ const Sidebar = ({ setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSideb
 
         <div className="flex h-fit mb-3 pl-4 pr-2 flex-col w-full">
             <NavIcon href="/" text="Home" id="sidebar_home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-            <NavIcon href="popular" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-            <NavIcon href="all" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
+            <NavIcon href="/popular" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
+            <NavIcon href="/all" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
 
 
             {isLoggedIn &&
