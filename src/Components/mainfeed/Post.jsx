@@ -384,16 +384,15 @@ const Post = ({
                                 id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
                                 <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
 
-                                    <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row `} onClick={(e) => { setBlured(false) }} >
-                                        {Array(3).fill().map((_, i) => (
-                                            <img key={i} src={content} alt="" className=' blur-[50px] max-h-[500px]'  />
-                                        ))}
+                                    <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
+                                            {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[450px] object-cover w-full `} />:
+                                            <img  src={content} alt="" className=' blur-[50px] max-h-[450px] object-cover w-full'  />}
                                     </div>
 
-                                    {!Blured && (
+                                    { (
                                         content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`${Blured ? "rounded-[40px]" : "z-10"}  max-h-[500px] `} controls /> :
-                                            <img src={content} alt="Post" className={`${Blured ? "rounded-[40px]" : "z-10"} max-h-[500px] `} />)
+                                            <video src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"}  max-h-[450px] `} controls /> :
+                                            <img src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"}  max-h-[450px] `} />)
                                     }
                                 </div>
                             </div>
