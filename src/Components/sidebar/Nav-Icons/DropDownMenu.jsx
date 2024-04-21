@@ -1,6 +1,6 @@
 /*eslint-disable */
 import { useState, useEffect, useRef, useContext } from 'react';
-import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon, DocumentTextIcon, MicrophoneIcon, ChevronDownIcon, WrenchIcon, BookOpenIcon, ScaleIcon, NewspaperIcon, ChatBubbleOvalLeftIcon, QuestionMarkCircleIcon } from '@heroicons/react/20/solid';
+import { ChevronUpIcon, UserGroupIcon, RectangleGroupIcon, BoltIcon, SignalIcon, DocumentTextIcon, MicrophoneIcon, ChevronDownIcon, WrenchIcon, BookOpenIcon, ScaleIcon, NewspaperIcon, ChatBubbleOvalLeftIcon, QuestionMarkCircleIcon, ChevronLeftIcon } from '@heroicons/react/20/solid';
 import CommunityIcon from './Community-icon';
 import NavIcon from './Nav-Icons';
 import Separator from './Separator';
@@ -31,6 +31,7 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
     const { isLoggedIn } = useContext(UserContext);
     const [joinedSubreddits, setJoinedSubreddits] = useState(null);
     const [recentSubreddits, setRecentSubreddits] = useState(null);
+    const dropdownRef = useRef(null);
 
     const getJoinedSubreddits = async () => {
         const response = await getRequest(`${baseUrl}/user/joined-communities`);
@@ -72,28 +73,39 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
         <>
             <div id={id} className="min-h-15 w-full bg-reddit_greenyDark flex flex-row  relative items-center rounded-lg  ">
 
-                <div data-testid="isDropped-set" onClick={(event) => { setIsDropped(!isDropped); }} className='flex justify-between h-13 items-center hover:bg-reddit_search px-3 w-full flex-row cursor-pointer'>
-                    <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
-                    <span className='items-center'>
-                        {isDropped ? <ChevronUpIcon data-testid="chvronUP" className="h-5 w-5 mr-2  text-gray-300" /> : <ChevronDownIcon data-testid="chvronDown" className="h-5 w-5 mr-2 text-gray-300" />}
-                    </span>
+                <div className='flex h-13 pl-[0.5px] items-center w-full flex-row '>
+
+                    <div data-testid="isDropped-set" onClick={(event) => { setIsDropped(!isDropped); }} className='flex px-2 flex-row justify-between w-full h-10 items-center hover:bg-reddit_hover cursor-pointer rounded-lg'>
+                        <span className='text-gray-400 font-light lette text-xs tracking-widest'> {MenuHeader} </span>
+                        <span className='items-center' style={{ pointerEvents: "none" }}>
+
+                            <ChevronDownIcon data-testid="chvronUP" className={`h-5 w-5 mr-2  text-gray-300 transition-transform duration-[300ms] ${isDropped ? 'rotate' : ''}`} />
+                        </span>
+                    </div>
+
+
                 </div>
 
             </div >
-            {isRecent && isDropped && <div className='mb-1 '>
+
+
+
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
                 {recentSubreddits && recentSubreddits.map((subreddit, index) => {
                     if (!subreddit.name) {
                         return null;
                     }
                     return (
-                        <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} ><img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' /> </NavIcon>
+                        <NavIcon key={index} href="#" text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} >
+                            <img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' />
+                        </NavIcon>
                     );
                 })}
             </div>
-            }
 
 
-            {isCommunity && isDropped && <div className='mb-1'>
+
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isCommunity ? 'max-h-[600px] opacity-100' : ''}`}>
                 <CreateCommunityIcon setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
 
                 {joinedSubreddits && joinedSubreddits.map((subreddit, index) => {
@@ -103,10 +115,12 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                 })}
 
             </div>
-            }
 
 
-            {isResources && isDropped && <div className="">
+
+
+
+            <div className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isResources ? 'max-h-[1000px] opacity-100' : ''}`}>
                 <NavIcon id={toSnakeCase("About Reddit")} href="#" text="About Reddit" >  <ChatBubbleOvalLeftIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
                 <NavIcon id={toSnakeCase("Advertise")} href="#" text="Advertise" ><SignalIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Help")} href="#" text="Help" ><QuestionMarkCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
@@ -121,7 +135,8 @@ const DropDownMenu = ({ MenuHeader, id, setIsCommunityOpen, communityButtonRef, 
                 <NavIcon id={toSnakeCase("Content Policy")} href="#" text="Content Policy" ><DocumentTextIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Privacy Policy")} href="#" text="Privacy Policy" ><ScaleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
                 <NavIcon id={toSnakeCase("Agreement")} href="#" text="Agreement" ><NewspaperIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
-            </div>}
+            </div>
+
 
         </>
 

@@ -22,21 +22,23 @@ const Sidebar = ({ setIsCommunityOpen, communityButtonRef, setIsVisibleLeftSideb
     return (
 
 
-        <div className="flex h-fit mb-3 flex-col w-full">
+        <div className="flex h-fit mb-3 pl-4 pr-2 flex-col w-full">
             <NavIcon href="/" text="Home" id="sidebar_home"> <HomeIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-            <NavIcon href="popular" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
-            <NavIcon href="all" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
-            <Separator />
-            <DropDownMenu MenuHeader="RECENT" id="sidebar_recent" code='dd_recents' userHistoryRes={userHistoryRes} />
+            <NavIcon href="/popular" text="Popular" id="sidebar_popular"> <ArrowTrendingUpIcon className="h-6 w-6 mr-2  text-gray-50" /> </NavIcon>
+            <NavIcon href="/all" text="All" id="sidebar_all" ><EllipsisHorizontalCircleIcon className="h-6 w-6 mr-2  text-gray-50" /></NavIcon>
+
 
             {isLoggedIn &&
                 <>
+                    <Separator />
+                    <DropDownMenu MenuHeader="RECENT" id="sidebar_recent" code='dd_recents' userHistoryRes={userHistoryRes} />
                     <Separator />
                     <DropDownMenu MenuHeader="COMMUNITIES" id="sidebar_communities" code='dd_communities' setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} />
                 </>
             }
             <Separator />
             <DropDownMenu MenuHeader="RESOURCES" id="sidebar_resources" code='dd_resources' />
+            <Separator />
         </div >
     );
 }

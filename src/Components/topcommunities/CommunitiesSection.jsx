@@ -75,7 +75,7 @@ const CommunitiesSection = () => {
     <>
       <section
         id="Communities-Section"
-        className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem] w-screen h-screen"
+        className="box-border p-[1rem] relative max-w-[1200px] mx-auto mb-[1rem] block break-words leading-[1.5rem] w-screen h-full"
       >
         <header className="p-0 my-[1rem] mx-[0rem]">
           <h1 className="flex items-center justify-center font-bold mt-[64px] mb-[0.25rem] mx-0 text-[1rem] leading-[1.25rem] ms-0 me-0 text-[#F2F2F2]">

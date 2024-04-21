@@ -52,7 +52,6 @@ function Setting({
       const res = await changeSetting(pageName, settingName);
 
       if (res) {
-        console.log(res.data);
         setUserSettings(res.data);
         notify("Changes saved");
       } else notify("Failed to save changes");

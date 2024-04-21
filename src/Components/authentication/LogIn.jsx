@@ -98,8 +98,6 @@ const LogIn = ({
         const response = await postRequest(`${baseUrl}/user/auth/google`, {
           googleToken: OAuthAccessToken,
         });
-        // console.log("accessToken", OAuthAccessToken);
-        // console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
           LoginFailedToast(response.data.message);
@@ -124,7 +122,6 @@ const LogIn = ({
   const handleGoogleLogin = useGoogleLogin({
     clientId: { Client_ID },
     onSuccess: (codeResponse) => {
-      console.log(codeResponse);
       setOAuthAccessToken(codeResponse.access_token);
     },
     onError: (error) => console.log("Login Failed:", error),

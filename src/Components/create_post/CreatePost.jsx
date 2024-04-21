@@ -126,7 +126,6 @@ const CreatePost = () => {
             communityName = commNameInputRef.current.value.substring(2);
 
         const formData = new FormData();
-        console.log(file);
         formData.append('images', file);
         formData.append('type', type);
         formData.append('communityName', communityName);

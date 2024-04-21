@@ -81,7 +81,6 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
    * @param {Object} e - The event object.
    */
     const handleRadioChange = (e) => {
-        console.log(selectedRadio);
         setSelectedRadio(e.target.id);
     }
 
@@ -99,7 +98,6 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
             setCommunityNameError(response.data.message);
         } else {
             SuccessToast("Community created successfully");
-            console.log("Community created successfully");
             setTimeout(() => {
                 setIsCommunityOpen(false);
                 navigate(`/r/${communityName}`);

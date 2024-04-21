@@ -6,10 +6,14 @@ import { useState, useEffect, useRef } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
-import { useNavigate } from 'react-router-dom';
+
+
 import moment from "moment";
 import HiddenPost from './HiddenPost';
+import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
+
+
 
 
 /**
@@ -46,7 +50,6 @@ const Post = ({
     const [isOpenDots, setIsOpenDots] = useState(false);
     const [hoverJoin, setHoverJoin] = useState(false);
     const [editedPollOptions, setEditedPollOptions] = useState(pollOptions);
-    const [enableVote, setEnableVote] = useState(false);
     const uploadedFrom = moment(createdAt).fromNow();
     const durationRemaining = moment(expirationDate).fromNow();
     const [Blured, setBlured] = useState(isSpoiler || isNSFW);
@@ -57,8 +60,6 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-    const navigate = useNavigate();
-
 
     useEffect(() => {
         setEditedPollOptions(pollOptions);
@@ -237,7 +238,6 @@ const Post = ({
             setIsHiddenMsg(response.data.message);
         }
         else {
-            console.log("post couldn't be hidden");
             setIsHiddenMsg(response.data.message);
             setCurrentIsHidden(prev => !prev);
         }
@@ -261,12 +261,14 @@ const Post = ({
             setIsSubbredditJoined(prev => !prev);
         }
     }
+
+
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
             <div
                 id={"mainfeed_" + id + "_full"}
                 className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
-                    } px-1 xs:px-3 pt-2.5 mt-1 pb-1 rounded-2xl w-full h-fit`}
+                    }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
             >
                 <div className="flex flex-row items-center w-full h-6 ">
                     <div
@@ -275,9 +277,9 @@ const Post = ({
                         className="flex items-center w-fit"
                     >
                         {isSinglePostSelected &&
-                            <div onClick={() => navigate('/')} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <Link to="/" className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
                                 <ArrowLeftIcon className='text-white w-6 h-6' />
-                            </div>}
+                            </Link>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
                         <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
                             {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
@@ -308,7 +310,7 @@ const Post = ({
                             />
                         </div>
                         {isOpenDots && (
-                            <div className={`z-1 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
+                            <div className={`z-20 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
                                 <div onClick={handleClickSave}
                                     id={"mainfeed_" + id + "_menu_save"}
                                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -379,20 +381,19 @@ const Post = ({
                         {
                             type == "Images & Video" &&
                             <div
-                                id={"mainfeed_" + id + "_" + type}
-                                className="w-full h-full mt-2">
-                                <div className={`relative flex-row rounded-2xl px-4 flex justify-center ${Blured ? 'filter blur-[10px]' : ''}`}>
-                                    {
-                                        content.endsWith('.mp4') ?
-                                            <video src={content} alt="Post" className={`max-h-[500px] z-10 `} controls /> :
-                                            <img src={content} alt="Post" className={` max-h-[500px] z-10 `} />
-                                    }
+                                id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
+                                <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
 
-                                    <div className='w-full bg-black absolute z-1 h-full rounded-2xl'   >
+                                    <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
+                                        {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[450px] object-cover w-full `} /> :
+                                            <img src={content} alt="" className=' blur-[50px] max-h-[450px] object-cover w-full' />}
                                     </div>
 
-
-                                    {Blured && <div onClick={(e) => { setBlured(false) }} className="absolute inset-0 bg-black opacity-60 rounded-2xl"></div>}
+                                    {(
+                                        content.endsWith('.mp4') ?
+                                            <video src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"}  max-h-[450px] `} controls /> :
+                                            <img src={content} alt="Post" className={`${Blured ? "rounded-[40px] hidden" : "z-10"}  max-h-[450px] `} />)
+                                    }
                                 </div>
                             </div>
                         }

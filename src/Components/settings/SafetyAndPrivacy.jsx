@@ -151,7 +151,6 @@ function SafetyAndPrivacy({ blockedUsers, mutedCommunities, setUserSettings }) {
         />
         {currBlockedCommunities &&
           currBlockedCommunities.map((community) => (
-            console.log(currBlockedCommunities),
             <BlockedEntity
               key={community.communityName}
               entityName={community.communityName}

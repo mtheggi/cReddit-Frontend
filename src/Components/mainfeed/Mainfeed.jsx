@@ -30,7 +30,18 @@ const Mainfeed = () => {
   const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("Best");
+  const [homeFeedScroll, setHomeFeedScroll] = useState(0);
+  const mainfeedRef = useRef();
+
+  const [selectedSort, setSelectedSort] = useState(() => {
+    const storedSort = localStorage.getItem('homeSelectedSort');
+    if (storedSort) {
+      return storedSort;
+    } else {
+      localStorage.setItem('homeSelectedSort', 'Best');
+      return 'Best';
+    }
+  });
   const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
   const [feedLoading, setIsFeedLoading] = useState(false);
 
@@ -92,16 +103,15 @@ const Mainfeed = () => {
       }
     }
 
-    const url = navigate.pathname;
-    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
-    const match = url.match(regex);
 
-    if (!match) {
+
+    if (!navigate.pathname.includes("/comments/")) {
+
       getHomeFeed();
       prevSelectedSort.current = selectedSort;
 
     }
-  }, [isLoggedIn, page, navigate.pathname, selectedSort]);
+  }, [isLoggedIn, navigate.pathname, page, selectedSort]);
 
 
   useEffect(() => {
@@ -164,6 +174,7 @@ const Mainfeed = () => {
 
     const handleScroll = () => {
       const scrollThreshold = 58;
+      setHomeFeedScroll(mainfeedElement.scrollTop);
       if (mainfeedElement.scrollTop > scrollThreshold) {
         setIsOpenCateg(false);
         setIsOpenView(false);
@@ -182,9 +193,20 @@ const Mainfeed = () => {
     };
   });
 
+  useEffect(() => {
+    if (navigate.pathname.includes("/comments/")) {
+      localStorage.setItem('homeFeedScroll', homeFeedScroll);
+    }
+    else {
+      setTimeout(() => {
+        mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
+      }, 10);
+    }
+  }, [navigate.pathname]);
+
 
   return (
-    <div
+    <div ref={mainfeedRef}
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
     >
@@ -210,7 +232,7 @@ const Mainfeed = () => {
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Best"); }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -218,7 +240,7 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -226,7 +248,7 @@ const Mainfeed = () => {
                 <p className="no-select">Hot</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -234,7 +256,7 @@ const Mainfeed = () => {
                 <p className="no-select">New</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"

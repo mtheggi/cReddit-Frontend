@@ -205,9 +205,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
         <div ref={navbarRef} className="flex z-30 fixed flex-col w-full no-select">
 
 
-            <header className="flex w-full bg-reddit_navbar p-2 items-center">
+            <header className="flex flex-row w-full bg-reddit_navbar p-2 items-center">
                 {!urlContainsWord && (
-                    <div className='ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex xl:hidden justify-center items-center'>
+                    <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${location.pathname=="/best/communities"?"hidden":"xl:hidden"}`}>
                         <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
                     </div>
                 )}
