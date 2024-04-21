@@ -70,6 +70,7 @@ const Mainfeed = () => {
       }
     }
     setLoadingPost(false);
+
   }
 
   useEffect(() => {
@@ -319,11 +320,14 @@ const Mainfeed = () => {
 
       {/* {isSinglePostSelected && loadingPost && <Loading />} */}
 
-      {isSinglePostSelected && !loadingPost &&
-        <>
-          <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-          <Comment postId={selectedPost._id} />
-        </>
+      {isSinglePostSelected &&
+        (
+          loadingPost ? <Loading /> :
+            <>
+              <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+              <Comment postId={selectedPost._id} />
+            </>
+        )
       }
 
       {
