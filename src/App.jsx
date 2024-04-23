@@ -19,7 +19,6 @@ import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 
-
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -40,8 +39,9 @@ function App() {
         )}
         {!isNotFound && (
           <div
-            className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
-              }`}
+            className={`fixed inset-0 bg-black opacity-50 z-10 ${
+              isVisibleLeftSidebar ? "block" : "hidden"
+            }`}
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
@@ -106,7 +106,18 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route path="/r/:name" element={<Community />} />
+          <Route
+            path="/r/:name"
+            element={
+              <SidebarContextProvider>
+                <Community
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
           <Route
             path="/*"
             element={
