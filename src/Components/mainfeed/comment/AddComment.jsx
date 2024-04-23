@@ -8,16 +8,14 @@ import CommentSection from "./CommentSection";
  * @param {string} props.postId - The ID of the post to add a comment to.
  * @param {boolean} props.isCommenting - Whether the user is currently adding a comment.
  * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
- * @param {Function} props.onAddComment - A function to call when a comment is added.
  */
 function AddComment({
   postId,
   isCommenting,
   setIsCommenting,
-  onAddComment,
   setPostComments,
-  selectedSort,
-  setIsLoading,
+  setIsPaginationLoading,
+  postComments
 }) {
 
   return (
@@ -35,11 +33,9 @@ function AddComment({
       <CommentSection
         setPostComments={setPostComments}
         postId={postId}
-        onAddComment={onAddComment}
         isCommenting={isCommenting}
         setIsCommenting={setIsCommenting}
-        selectedSort={selectedSort}
-        setIsLoading={setIsLoading}
+        setIsPaginationLoading={setIsPaginationLoading}
       />
     </div>
   );

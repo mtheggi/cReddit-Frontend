@@ -18,8 +18,6 @@ const Comment = ({ postId }) => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [paginationError, setPaginationError] = useState(false);
-    const navigate = useLocation();
-    const [isLoading, setIsLoading] = useState(true);
     const [isPaginationLoading, setIsPaginationLoading] = useState(true);
     const [isSortChanged, setIsSortChanged] = useState(0);
     const observer = useRef();
@@ -47,11 +45,6 @@ const Comment = ({ postId }) => {
         }
     });
     const prevSort = useRef(selectedSort);
-
-
-    const onAddComment = () => {
-        setIsCommenting(false);
-    }
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -189,11 +182,9 @@ const Comment = ({ postId }) => {
                 </div>
                 <AddComment postId={postId}
                     setPostComments={setPostComments}
-                    onAddComment={onAddComment} isCommenting={isCommenting}
+                    isCommenting={isCommenting}
                     setIsCommenting={setIsCommenting}
-                    selectedSort={selectedSort}
-                    setIsLoading={setIsLoading} />
-
+                    setIsPaginationLoading={setIsPaginationLoading} />
                 {
 
                     <>
@@ -215,16 +206,17 @@ const Comment = ({ postId }) => {
                             }
                         })}
 
-                        {postComments.length === 0 ? (
-                            <NoComments />
-                        ) :
-
-                            hasMore && <div className="w-full flex flex-row h-full mt-8">
+                           { hasMore && <div className="w-full flex flex-row h-full mt-8">
                                 {isPaginationLoading && hasMore && (
                                     <Loading />
                                 )}
-                            </div>
-                        }
+                            </div>}
+
+                            {
+                                page === 1 && !hasMore && postComments.length === 0 &&
+                                <NoComments />
+                            }
+                        
                     </>
                 }
             </div>
