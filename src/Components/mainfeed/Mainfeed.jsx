@@ -49,6 +49,7 @@ const Mainfeed = () => {
   const menuRefView = useRef();
   const navigate = useLocation();
   const prevSelectedSort = useRef(selectedSort);
+  const prevPageNum = useRef(null);
 
 
   /**
@@ -76,6 +77,7 @@ const Mainfeed = () => {
   useEffect(() => {
     let isSortChanged = (prevSelectedSort.current !== selectedSort);
     let pageNum = isSortChanged ? 1 : page;
+    setPage(pageNum);
     const getHomeFeed = async () => {
 
       setLoading(true);
@@ -85,7 +87,9 @@ const Mainfeed = () => {
       }
 
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`);
+        if (!isSortChanged && prevPageNum.current === pageNum)
+          return;
+        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=10&sort=${selectedSort.toLowerCase()}`);
         if (response.status == 200 || response.status == 201) {
           if (isSortChanged) {
             setPosts(response.data);
@@ -110,6 +114,7 @@ const Mainfeed = () => {
 
       getHomeFeed();
       prevSelectedSort.current = selectedSort;
+      prevPageNum.current = pageNum;
 
     }
   }, [isLoggedIn, navigate.pathname, page, selectedSort]);
@@ -227,6 +232,8 @@ const Mainfeed = () => {
             <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
           </div>
 
+
+
           {isOpenCateg && (
             <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
@@ -304,6 +311,10 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
+
+        <div className="ml-2">
+          <h2 className="text-[#F36b21] text-md font-semibold no-select">Wish Moa a happy birthday 🎂</h2>
+        </div>
       </div>}
       <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
         <Separator />
@@ -331,7 +342,7 @@ const Mainfeed = () => {
       }
 
       {
-        <div className="w-full max-h-15 mt-10">
+        <div className="w-full max-h-2 mt-1">
           {loading && !isSinglePostSelected && !feedLoading && <Loading />}
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
