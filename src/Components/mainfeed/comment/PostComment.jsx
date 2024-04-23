@@ -34,12 +34,13 @@ const PostComment = ({
   isDownvoted,
   profilePicture,
   isSaved,
-  testId
+  testId,
+  lastCommentElementRef
 }) => {
 
 
   return (
-    <div className="px-4 mt-2">
+    <div ref={lastCommentElementRef?lastCommentElementRef:null} className="px-4 mt-2">
       <div className="w-full mt-6 flex flex-row justify-start items-center overflow-hidden">
         <div className=" bg-reddit_greenyDark flex flex-row justify-start items-center">
           <img src={profilePicture}

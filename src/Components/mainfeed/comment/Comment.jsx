@@ -1,5 +1,5 @@
 import AddComment from "./AddComment";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PostComment from "./PostComment";
 import { ChevronDownIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../../constants";
@@ -7,6 +7,7 @@ import { getRequest } from "../../../services/Requests";
 import NoComments from "./NoComments";
 import { submitComment } from "./CommentUtils";
 import Loading from "@/Components/Loading/Loading";
+import { useLocation } from "react-router-dom";
 
 const Comment = ({ postId }) => {
 
@@ -14,6 +15,27 @@ const Comment = ({ postId }) => {
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
     const [isCommenting, setIsCommenting] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [paginationError, setPaginationError] = useState(false);
+    const navigate = useLocation();
+    const [isLoading, setIsLoading] = useState(true);
+    const [isPaginationLoading, setIsPaginationLoading] = useState(true);
+    const observer = useRef();
+
+    const lastCommentElementRef = useCallback(node => {
+        if (isPaginationLoading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setPage(prevPage => prevPage + 1);
+                console.log("Intersecting");
+            }
+        });
+        if (node) observer.current.observe(node);
+
+    }, [isPaginationLoading, hasMore]);
+    
     const [selectedSort, setSelectedSort] = useState(() => {
         const storedSort = localStorage.getItem('commentsSelectedSort');
         if (storedSort) {
@@ -23,25 +45,12 @@ const Comment = ({ postId }) => {
             return 'Best';
         }
     });
-    const [isLoading, setIsLoading] = useState(false);
+    const prevSort = useRef(selectedSort);
+
 
     const onAddComment = () => {
         setIsCommenting(false);
     }
-
-    useEffect(() => {
-        const getSinglepostComments = async (selectedPostId) => {
-            setIsLoading(true);
-            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?limit=50&sort=${selectedSort.toLowerCase()}`)
-            if (response.status == 200 || response.status == 201) {
-                setPostComments([...response.data]);
-            }
-            setIsLoading(false);
-        }
-
-        getSinglepostComments(postId);
-    }, [selectedSort]);
-
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -74,7 +83,43 @@ const Comment = ({ postId }) => {
                 mainfeedElement.removeEventListener("scroll", handleScroll);
             }
         };
-    }, []);
+    });
+
+    const fetchComments = async (postId, page, sort) => {
+        const response = await getRequest(`${baseUrl}/post/${postId}/comments?page=${page}&limit=5&sort=${sort.toLowerCase()}`);
+        return response;
+    }
+
+    useEffect(() => {
+        setPostComments([]);
+        setPage(1);
+        console.log("useEffect1");
+    }, [selectedSort]);
+
+
+    useEffect(() => {
+        const getSinglepostComments = async () => {
+            try {
+                setHasMore(true);
+                setIsPaginationLoading(true);
+                const { status, data } = await fetchComments(postId, page, selectedSort);
+                if (status === 200 || status === 201) {
+                    setPostComments(prevComments => [...prevComments, ...data]);
+                    setHasMore(data.length > 0);
+                } else {
+                    throw new Error('Error fetching comments');
+                }
+            } catch (error) {
+                setPaginationError(true);
+            } finally {
+                setIsPaginationLoading(false);
+            }
+        }
+
+        console.log("useEffect2");
+        getSinglepostComments();
+        prevSort.current = selectedSort;
+    }, [page]);
 
 
 
@@ -102,6 +147,8 @@ const Comment = ({ postId }) => {
                                 <p className="no-select">Sort by</p>
                             </div>
 
+
+
                             <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
                                 id="mainfeed_category_best"
                                 href=""
@@ -110,8 +157,9 @@ const Comment = ({ postId }) => {
                                 <p className="no-select">Best</p>
                             </div>
 
+
                             <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
-                                id="mainfeed_category_hot"
+                                id="mainfeed_category_top"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
@@ -127,7 +175,7 @@ const Comment = ({ postId }) => {
                             </div>
 
                             <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Old"); }}
-                                id="mainfeed_category_top"
+                                id="mainfeed_category_old"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
@@ -144,25 +192,38 @@ const Comment = ({ postId }) => {
                     setIsLoading={setIsLoading} />
 
                 {
-                    !isLoading ? (
-                        <>
-                            {postComments.map((comment, index) => (
-                                <PostComment
+
+                    <>
+                        {postComments.map((comment, index) => {
+                            if (postComments.length === index + 1) {
+                                return <PostComment
+                                    key={index}
+                                    id={comment._id}
+                                    {...comment}
+                                    lastCommentElementRef={lastCommentElementRef}
+                                />
+                            }
+                            else {
+                                return <PostComment
                                     key={index}
                                     id={comment._id}
                                     {...comment}
                                 />
-                            ))}
+                            }
+                        })}
 
-                            {postComments.length === 0 && (
-                                <NoComments />
-                            )}
-                        </>
-                    ) : (
-                        <div className="w-full flex flex-row h-full mt-4">
-                            <Loading />
-                        </div>
-                    )}
+                        {postComments.length === 0 ? (
+                            <NoComments />
+                        ) :
+
+                            hasMore && <div className="w-full flex flex-row h-full mt-8">
+                                {isPaginationLoading && hasMore && (
+                                    <Loading />
+                                )}
+                            </div>
+                        }
+                    </>
+                }
             </div>
         </div>
 
