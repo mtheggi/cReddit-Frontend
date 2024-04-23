@@ -30,9 +30,9 @@ enableMocking().then(() => {
       <NotificationProvider>
         <ServerContextProvider>
           <UserContextProvider>
-            <StrictMode>
+
               <App />
-            </StrictMode>
+
           </UserContextProvider>
         </ServerContextProvider>
       </NotificationProvider>
