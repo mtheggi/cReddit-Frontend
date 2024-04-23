@@ -21,6 +21,7 @@ const Comment = ({ postId }) => {
     const navigate = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const [isPaginationLoading, setIsPaginationLoading] = useState(true);
+    const [isSortChanged, setIsSortChanged] = useState(0);
     const observer = useRef();
 
     const lastCommentElementRef = useCallback(node => {
@@ -93,6 +94,8 @@ const Comment = ({ postId }) => {
     useEffect(() => {
         setPostComments([]);
         setPage(1);
+        setIsSortChanged(prev=>(prevSort.current !== selectedSort?prev+1:prev));
+        console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
         console.log("useEffect1");
     }, [selectedSort]);
 
@@ -119,7 +122,7 @@ const Comment = ({ postId }) => {
         console.log("useEffect2");
         getSinglepostComments();
         prevSort.current = selectedSort;
-    }, [page]);
+    }, [page, isSortChanged]);
 
 
 
