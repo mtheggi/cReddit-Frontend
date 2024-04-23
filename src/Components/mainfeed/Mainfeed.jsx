@@ -341,8 +341,12 @@ const Mainfeed = () => {
         )
       }
 
+
+       <div className="mt-14">
+        {loading && !isSinglePostSelected && !feedLoading && <Loading />}
+       </div>
       
-      {loading && !isSinglePostSelected && !feedLoading && <Loading />}
+
       {
         <div className="w-full h-6 mt-2">
           <div className="relative w-full h-full">

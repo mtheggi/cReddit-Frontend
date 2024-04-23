@@ -38,8 +38,8 @@ const Comment = ({ postId }) => {
         if (storedSort) {
             return storedSort;
         } else {
-            localStorage.setItem('commentsSelectedSort', 'Best');
-            return 'Best';
+            localStorage.setItem('commentsSelectedSort', 'New');
+            return 'New';
         }
     });
     const prevSort = useRef(selectedSort);
@@ -136,20 +136,18 @@ const Comment = ({ postId }) => {
                     </div>
 
                     {isOpenCateg && (
-                        <div id="tempID" className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
+                        <div id="tempID" className=" w-20 h-48 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
                             <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                                 <p className="no-select">Sort by</p>
                             </div>
-
-
-
+{/* 
                             <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
                                 id="mainfeed_category_best"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
                                 <p className="no-select">Best</p>
-                            </div>
+                            </div> */}
 
 
                             <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
