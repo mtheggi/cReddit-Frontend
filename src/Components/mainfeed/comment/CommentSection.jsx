@@ -23,7 +23,8 @@ function CommentSection({
   isCommenting,
   setIsCommenting,
   setPostComments,
-  setIsPaginationLoading
+  setIsPaginationLoading,
+  setLoadingAddComment
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -64,10 +65,14 @@ function CommentSection({
 
 
   const addComment = async() => {
+    setIsPaginationLoading(true);
+    setLoadingAddComment(true);
     if (!(image || (comment && comment.trim() !== ""))) return;
     const newComment = await submitComment(postId, image, comment);
     if (!newComment) return;
     setPostComments(prev=>[newComment, ...prev]);
+    setIsPaginationLoading(false);
+    setLoadingAddComment(false);
     setComment("");
     setImage(null);
     setIsCommenting(false);

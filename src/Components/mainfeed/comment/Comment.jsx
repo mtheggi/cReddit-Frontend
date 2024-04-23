@@ -5,12 +5,9 @@ import { ChevronDownIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../../constants";
 import { getRequest } from "../../../services/Requests";
 import NoComments from "./NoComments";
-import { submitComment } from "./CommentUtils";
 import Loading from "@/Components/Loading/Loading";
-import { useLocation } from "react-router-dom";
 
 const Comment = ({ postId }) => {
-
     const menuRefCateg = useRef();
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
@@ -19,6 +16,7 @@ const Comment = ({ postId }) => {
     const [hasMore, setHasMore] = useState(true);
     const [paginationError, setPaginationError] = useState(false);
     const [isPaginationLoading, setIsPaginationLoading] = useState(true);
+    const [loadingAddComment, setLoadingAddComment] = useState(false);
     const [isSortChanged, setIsSortChanged] = useState(0);
     const observer = useRef();
 
@@ -34,7 +32,7 @@ const Comment = ({ postId }) => {
         if (node) observer.current.observe(node);
 
     }, [isPaginationLoading, hasMore]);
-    
+
     const [selectedSort, setSelectedSort] = useState(() => {
         const storedSort = localStorage.getItem('commentsSelectedSort');
         if (storedSort) {
@@ -87,7 +85,7 @@ const Comment = ({ postId }) => {
     useEffect(() => {
         setPostComments([]);
         setPage(1);
-        setIsSortChanged(prev=>(prevSort.current !== selectedSort?prev+1:prev));
+        setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
         console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
         console.log("useEffect1");
     }, [selectedSort]);
@@ -101,7 +99,7 @@ const Comment = ({ postId }) => {
                 const { status, data } = await fetchComments(postId, page, selectedSort);
                 if (status === 200 || status === 201) {
                     setPostComments(prevComments => [...prevComments, ...data]);
-                    setHasMore(data.length > 0);
+                    setHasMore(data.length >= 5);
                 } else {
                     throw new Error('Error fetching comments');
                 }
@@ -184,11 +182,14 @@ const Comment = ({ postId }) => {
                     setPostComments={setPostComments}
                     isCommenting={isCommenting}
                     setIsCommenting={setIsCommenting}
-                    setIsPaginationLoading={setIsPaginationLoading} />
+                    setIsPaginationLoading={setIsPaginationLoading}
+                    setLoadingAddComment={setLoadingAddComment}
+                />
+
                 {
 
                     <>
-                        {postComments.map((comment, index) => {
+                        { !loadingAddComment &&  postComments.map((comment, index) => {
                             if (postComments.length === index + 1) {
                                 return <PostComment
                                     key={index}
@@ -206,17 +207,17 @@ const Comment = ({ postId }) => {
                             }
                         })}
 
-                           { hasMore && <div className="w-full flex flex-row h-full mt-8">
-                                {isPaginationLoading && hasMore && (
-                                    <Loading />
-                                )}
-                            </div>}
+                        {(hasMore && isPaginationLoading || loadingAddComment) && <div className="w-full flex flex-row h-full mt-8">
+                            {(
+                                <Loading />
+                            )}
+                        </div>}
 
-                            {
-                                page === 1 && !hasMore && postComments.length === 0 &&
-                                <NoComments />
-                            }
-                        
+                        {
+                            page === 1 && !hasMore && postComments.length === 0 &&
+                            <NoComments />
+                        }
+
                     </>
                 }
             </div>
