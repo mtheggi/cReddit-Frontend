@@ -341,9 +341,10 @@ const Mainfeed = () => {
         )
       }
 
+      
+      {loading && !isSinglePostSelected && !feedLoading && <Loading />}
       {
-        <div className="w-full max-h-2 mt-1">
-          {loading && !isSinglePostSelected && !feedLoading && <Loading />}
+        <div className="w-full h-6 mt-2">
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">
