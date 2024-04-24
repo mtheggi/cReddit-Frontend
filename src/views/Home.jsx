@@ -30,7 +30,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
   useEffect(() => {
     async function getHistory() {
-      const response = await getRequest(`${baseUrl}/user/history?limit=7`);
+      const response = await getRequest(`${baseUrl}/user/history?limit=10`);
       setUserHistoryRes(response);
       if (response.status == 200 || response.status == 201)
         localStorage.setItem("userHistory", JSON.stringify(response.data));
@@ -116,41 +116,45 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     sidebarRef.current.addEventListener("scroll", handleScroll);
     mainfeedRef.current.addEventListener("scroll", handleScroll);
 
-        return () => {
-            if (recentRef.current) {
-                recentRef.current.removeEventListener('scroll', handleScroll);
-            }
-            if (sidebarRef.current) {
-                sidebarRef.current.removeEventListener('scroll', handleScroll);
-            }
-            if (mainfeedRef.current) {
-                mainfeedRef.current.removeEventListener('scroll', handleScroll);
-            }
-        };
-    });
-    return (
-        <>
+    return () => {
+      if (recentRef.current) {
+        recentRef.current.removeEventListener('scroll', handleScroll);
+      }
+      if (sidebarRef.current) {
+        sidebarRef.current.removeEventListener('scroll', handleScroll);
+      }
+      if (mainfeedRef.current) {
+        mainfeedRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  });
+  return (
+    <>
 
-            <div className="w-full mt-14 h-full flex flex-row justify-center overflow-hidden">
+      <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
 
-                <div className={`flex flex-row w-fit xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
+        <div className={`flex flex-row w-full xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
 
-                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
-                    </div>
-                    <div className="">
-                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
-                    </div>
+          <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+            <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
+          </div>
+          <div className="">
+            {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
+          </div>
 
-                    <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0  mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                        <Mainfeed />
-                    </div>
+          <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
+            <div className="flex flex-row w-fit">
+              <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
+                <Mainfeed />
+              </div>
 
-          <div
-            className="w-fit min-w-fit h-full overflow-auto overflow-x-hidden scrollbar_mod"
-            ref={recentRef}
-          >
-            <Recent userHistoryRes={userHistoryRes} />
+              <div
+                className="w-fit min-w-fit scrollbar_mod overflow-auto sticky top-0 h-[94vh]"
+                ref={recentRef}
+              >
+                <Recent userHistoryRes={userHistoryRes} />
+              </div>
+            </div>
           </div>
         </div>
       </div>

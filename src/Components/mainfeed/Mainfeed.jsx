@@ -202,7 +202,7 @@ const Mainfeed = () => {
   return (
     <div ref={mainfeedRef}
       id="mainfeed"
-      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
+      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 "
     >
       {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
