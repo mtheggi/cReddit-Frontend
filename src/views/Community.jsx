@@ -216,7 +216,7 @@ const Community = ({
 
             <div
               id="community_page__content__community_info"
-              className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf"
+              className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf sticky top-2"
               ref={commInfoRef}
             >
               {subreddit && <CommunityInfo {...subreddit} />}
