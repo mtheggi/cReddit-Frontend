@@ -24,15 +24,10 @@ const Mainfeed = () => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const { isLoggedIn } = useContext(UserContext);
-  const [page, setPage] = useState(1);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [homeFeedScroll, setHomeFeedScroll] = useState(0);
   const mainfeedRef = useRef();
-
   const [selectedSort, setSelectedSort] = useState(() => {
     const storedSort = localStorage.getItem('homeSelectedSort');
     if (storedSort) {
@@ -42,14 +37,28 @@ const Mainfeed = () => {
       return 'Best';
     }
   });
-  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+  const [page, setPage] = useState(1);
+  const prevSort = useRef(selectedSort);
+  const [hasMore, setHasMore] = useState(false);
+  const [isSortChanged, setIsSortChanged] = useState(0);
   const [feedLoading, setIsFeedLoading] = useState(false);
-
   const menuRefCateg = useRef();
   const menuRefView = useRef();
   const navigate = useLocation();
-  const prevSelectedSort = useRef(selectedSort);
-  const prevPageNum = useRef(null);
+  const observer = useRef();
+  const lastPostRef = useCallback(node => {
+    if (feedLoading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+        console.log("Intersecting");
+      }
+    });
+    if (node) observer.current.observe(node);
+
+  }, [feedLoading, hasMore]);
+
 
 
   /**
@@ -71,53 +80,60 @@ const Mainfeed = () => {
       }
     }
     setLoadingPost(false);
-
   }
 
+  /**
+   * Fetches posts from the API. It sends a GET request to the API to fetch posts, based on the page number and selected sort.
+   * @async
+   * @function fetchPosts
+   * @returns {Promise} The response from the API.
+   */
+  const fetchPosts = async (page, selectedSort) => {
+    const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+    return response;
+  }
+
+
+
+
   useEffect(() => {
-    let isSortChanged = (prevSelectedSort.current !== selectedSort);
-    let pageNum = isSortChanged ? 1 : page;
-    setPage(pageNum);
+    setPosts([]);
+    setPage(1);
+    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
+    console.log("useEffect1");
+  }, [selectedSort]);
+
+
+
+
+  useEffect(() => {
     const getHomeFeed = async () => {
-
-      setLoading(true);
-      setError(false);
-      if (pageNum === 1) {
-        setIsFeedLoading(true);
-      }
-
       try {
-        if (!isSortChanged && prevPageNum.current === pageNum)
-          return;
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=10&sort=${selectedSort.toLowerCase()}`);
-        if (response.status == 200 || response.status == 201) {
-          if (isSortChanged) {
-            setPosts(response.data);
-          } else {
-            setPosts(prevPosts => [...prevPosts, ...response.data]);
-          }
-          setHasMore(response.data.length > 0);
-          setIsFeedLoading(false);
+        setHasMore(true);
+        setIsFeedLoading(true);
+        const { status, data } = await fetchPosts(page, selectedSort);
+        if (status === 200 || status === 201) {
+          setPosts(prevComments => [...prevComments, ...data]);
+          // setHasMore(data.length >= 10);
+          setHasMore(data.length > 0);
         } else {
-          setError(true);
+          throw new Error('Error fetching comments');
         }
       } catch (error) {
-        setError(true);
+
       } finally {
-        setLoading(false);
+        setIsFeedLoading(false);
       }
     }
 
-
+    console.log("useEffect2");
 
     if (!navigate.pathname.includes("/comments/")) {
-
       getHomeFeed();
-      prevSelectedSort.current = selectedSort;
-      prevPageNum.current = pageNum;
-
+      prevSort.current = selectedSort;
     }
-  }, [isLoggedIn, navigate.pathname, page, selectedSort]);
+  }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
 
 
   useEffect(() => {
@@ -134,35 +150,6 @@ const Mainfeed = () => {
     }
   }, [navigate.pathname]);
 
-  /**
- * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
- * it increments the page number to load more posts.
- * @callback handleScroll
- */
-  const handleScroll = useCallback(() => {
-    const mainfeedElement = document.getElementById("mainfeed");
-    const threshold = 10;
-    if (!hasScrolledToEnd && mainfeedElement.scrollTop + mainfeedElement.clientHeight >= mainfeedElement.scrollHeight - threshold) {
-      setPage(prevPage => prevPage + 1);
-      setHasScrolledToEnd(true);
-    } else if (mainfeedElement.scrollTop + mainfeedElement.clientHeight < mainfeedElement.scrollHeight) {
-      setHasScrolledToEnd(false);
-    }
-  }, [hasScrolledToEnd]);
-
-
-  useEffect(() => {
-    const mainfeedElement = document.getElementById("mainfeed");
-
-    if (mainfeedElement) {
-      mainfeedElement.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (mainfeedElement) {
-        mainfeedElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [handleScroll]);
 
 
   useEffect(() => {
@@ -198,6 +185,7 @@ const Mainfeed = () => {
       }
     };
   });
+
 
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
@@ -321,15 +309,19 @@ const Mainfeed = () => {
       </div>
 
 
-      {feedLoading ? <Loading /> :
+      {feedLoading && page==1 ? <Loading /> :
         <>
-          {!isSinglePostSelected && posts.map((post, i) => (
-            <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
-          ))}
+          {!isSinglePostSelected && posts.map((post, i) => {
+            if (posts.length === i + 1) {
+              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
+            }
+            else {
+              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+            }
+          })}
         </>
       }
 
-      {/* {isSinglePostSelected && loadingPost && <Loading />} */}
 
       {isSinglePostSelected &&
         (
@@ -342,10 +334,10 @@ const Mainfeed = () => {
       }
 
 
-       <div className="mt-14">
-        {loading && !isSinglePostSelected && !feedLoading && <Loading />}
-       </div>
-      
+      <div className="mt-14">
+        { !isSinglePostSelected && feedLoading && page!=1 && <Loading />}
+      </div>
+
 
       {
         <div className="w-full h-6 mt-2">

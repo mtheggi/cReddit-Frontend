@@ -44,7 +44,8 @@ const Post = ({
     isHidden,
     isSaved,
     isSinglePostSelected,
-    setPosts
+    setPosts,
+    lastPostRef
 }) => {
     const menuRefDots = useRef();
     const [isOpenDots, setIsOpenDots] = useState(false);
@@ -265,7 +266,7 @@ const Post = ({
 
     return (
         currentIsHidden ? <HiddenPost id={id} handleHidePost={handleHidePost} /> :
-            <div
+            <div ref={lastPostRef}
                 id={"mainfeed_" + id + "_full"}
                 className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : 'hover:bg-reddit_hover'} ${isOpenDots ? "bg-reddit_hover" : ""
                     }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
