@@ -270,8 +270,10 @@ const Mainfeed = () => {
             className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
               } justify-center items-center cursor-pointer`}
           >
-            <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
-            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
+            <svg rpl="" fill="#82949B" height="16" icon-name="view-card-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+              <path d="M17.882 1H2.118A1.12 1.12 0 0 0 1 2.119v15.762A1.119 1.119 0 0 0 2.118 19h15.764A1.12 1.12 0 0 0 19 17.881V2.119A1.12 1.12 0 0 0 17.882 1Zm-.132 16.75H2.25v-7.138h15.5v7.138ZM2.25 9.362V2.25h15.5v7.112H2.25Z"></path>
+            </svg>
+            <ChevronDownIcon className="h-3 ml-1 w-3 text-gray-400" />
           </div>
 
           {isOpenView && (
@@ -284,7 +286,9 @@ const Mainfeed = () => {
                 href=""
                 className="w-full pl-6 hover:bg-reddit_hover h-11 flex items-center cursor-pointer"
               >
-                <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
+                <svg rpl="" fill="white" height="16" icon-name="view-card-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.882 1H2.118A1.12 1.12 0 0 0 1 2.119v15.762A1.119 1.119 0 0 0 2.118 19h15.764A1.12 1.12 0 0 0 19 17.881V2.119A1.12 1.12 0 0 0 17.882 1Zm-.132 16.75H2.25v-7.138h15.5v7.138ZM2.25 9.362V2.25h15.5v7.112H2.25Z"></path>
+                </svg>
                 <p className="ml-2 no-select">Card</p>
               </a>
               <a
@@ -292,7 +296,9 @@ const Mainfeed = () => {
                 href=""
                 className="w-full pl-6 hover:bg-reddit_hover h-11 flex rounded-b-lg items-center cursor-pointer"
               >
-                <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
+                <svg rpl="" fill="white" height="16" icon-name="view-classic-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M17.882 2H2.118A1.118 1.118 0 0 0 1 3.116v13.768A1.118 1.118 0 0 0 2.118 18h15.764A1.118 1.118 0 0 0 19 16.884V3.116A1.118 1.118 0 0 0 17.882 2ZM2.25 3.25h15.5V7H2.25V3.25Zm15.5 13.5H2.25v-3.5h15.5v3.5Zm0-4.75H2.25V8.25h15.5V12Z"></path>
+                </svg>
                 {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
                 <p className="ml-2 no-select">Classic</p>
               </a>
@@ -300,16 +306,13 @@ const Mainfeed = () => {
           )}
         </div>
 
-        <div className="ml-2">
-          <h2 className="text-[#F36b21] text-md font-semibold no-select">Wish Moa a happy birthday 🎂</h2>
-        </div>
       </div>}
       <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
         <Separator />
       </div>
 
 
-      {feedLoading && page==1 ? <Loading /> :
+      {feedLoading && page == 1 ? <Loading /> :
         <>
           {!isSinglePostSelected && posts.map((post, i) => {
             if (posts.length === i + 1) {
@@ -335,7 +338,7 @@ const Mainfeed = () => {
 
 
       <div className="mt-14">
-        { !isSinglePostSelected && feedLoading && page!=1 && <Loading />}
+        {!isSinglePostSelected && feedLoading && page != 1 && <Loading />}
       </div>
 
 
