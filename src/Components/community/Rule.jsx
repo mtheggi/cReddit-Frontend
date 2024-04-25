@@ -17,7 +17,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 function Rule({ id, i, text, description }) {
   return (
     <Accordion id={id} className="w-full pr-2 pl-5 mb-1 hover:bg-reddit_dark">
-      <CustomToggle eventKey={i.toString()} text={text} number={i} />
+      <CustomToggle id={id} eventKey={i.toString()} text={text} number={i} />
 
       <Accordion.Collapse eventKey={i.toString()}>
         <CustomCollapse description={description} />
@@ -28,7 +28,7 @@ function Rule({ id, i, text, description }) {
 
 export default Rule;
 
-function CustomToggle({ eventKey, text, number }) {
+function CustomToggle({ id, eventKey, text, number }) {
   const [isDropped, setIsDropped] = useState(false);
   const decoratedOnClick = useAccordionButton(eventKey, () =>
     setIsDropped(!isDropped)
@@ -45,7 +45,7 @@ function CustomToggle({ eventKey, text, number }) {
 
         <p className="text-gray-500 text-sm ml-3">{text}</p>
         <ChevronDownIcon
-          data-testid="chvronUP"
+          data-testid={`chvronUp_${id}`}
           className={`h-5 w-5 ml-auto text-gray-300 transition-transform duration-[300ms] ${
             isDropped ? "rotate" : ""
           }`}
