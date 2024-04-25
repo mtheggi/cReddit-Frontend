@@ -56,7 +56,7 @@ const Mainfeed = () => {
 
   }, [feedLoading, hasMore]);
 
-  let existingPost = null;
+  const existingPost = useRef(null);
 
 
 
@@ -69,9 +69,9 @@ const Mainfeed = () => {
    */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
-    existingPost = posts.find(post => post._id === selectedPostId);
-    if (existingPost) {
-      setSelectedPost(existingPost);
+    existingPost.current = posts.find(post => post._id === selectedPostId);
+    if (existingPost.current) {
+      setSelectedPost(existingPost.current);
     } else {
       const response = await getRequest(`${baseUrl}/post/${selectedPostId}`);
       if (response.status == 200 || response.status == 201) {
@@ -92,9 +92,6 @@ const Mainfeed = () => {
     return response;
   }
 
-
-
-
   useEffect(() => {
     setPosts([]);
     setPage(1);
@@ -106,9 +103,13 @@ const Mainfeed = () => {
 
 
   useEffect(() => {
-    
-    if (existingPost)
+
+    console.log("existingpost",existingPost.current);
+    if (existingPost.current)
+    {
+    existingPost.current = null;
     return;
+    }
 
     const getHomeFeed = async () => {
       try {
