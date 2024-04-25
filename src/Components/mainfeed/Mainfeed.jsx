@@ -97,7 +97,8 @@ const Mainfeed = () => {
     setPosts([]);
     setPage(1);
     setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-  }, [selectedSort]);
+    console.log("selectedSort changed");
+  }, [selectedSort, isLoggedIn]);
 
 
 
@@ -121,12 +122,11 @@ const Mainfeed = () => {
       }
     }
 
-  
-
     if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
       prevSort.current = selectedSort;
     }
+    console.log("page changed");
   }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
 
 
