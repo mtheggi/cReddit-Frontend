@@ -18,6 +18,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const homefeedRef = useRef();
   const communiyCardRef = useRef();
 
+
   const {
     isCommunityOpen,
     setIsCommunityOpen,
@@ -29,6 +30,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
   const navigate = useLocation();
   const [homeFeedScroll, setHomeFeedScroll] = useState(0);
+  const prevPath = useRef (navigate.pathname);
 
 
   useEffect(() => {
@@ -36,11 +38,13 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
       localStorage.setItem('homeFeedScroll', homeFeedScroll);
       console.log('scroll saved', homeFeedScroll);
     }
-    else {
+    else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/"))
+    {
       setTimeout(() => {
         homefeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
       }, 10);
     }
+    prevPath.current = navigate.pathname;
   }, [navigate.pathname]);
 
 
@@ -179,7 +183,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         </div>
 
         <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-{/*           
+          {/*           
           {location.pathname.includes("/popular") &&
             <div className="max-w-[1190px] ml-2 block min-h-[210px] mt-4 flex flex-col justify-center">
               <PopularCarousel />
