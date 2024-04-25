@@ -6,8 +6,8 @@ import { getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import CreateCommunity from "../Components/createCommunity/CreateCommunity";
 import { UserContext } from "@/context/UserContext";
-import { useState, useEffect, useRef, useContext } from "react";
 import { useLocation } from "react-router-dom";
+import { useState, useEffect, useRef, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
 import PopularCarousel from "../Components/popular/PopularCarousel";
 
@@ -15,8 +15,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const { isLoggedIn } = useContext(UserContext);
   const recentRef = useRef();
   const mainfeedRef = useRef();
+  const homefeedRef = useRef();
   const communiyCardRef = useRef();
-  const location = useLocation();
 
   const {
     isCommunityOpen,
@@ -26,6 +26,45 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     setUserHistoryRes,
     sidebarRef,
   } = useContext(SidebarContext);
+
+  const navigate = useLocation();
+  const [homeFeedScroll, setHomeFeedScroll] = useState(0);
+
+
+  useEffect(() => {
+    if (navigate.pathname.includes("/comments/")) {
+      localStorage.setItem('homeFeedScroll', homeFeedScroll);
+      console.log('scroll saved', homeFeedScroll);
+    }
+    else {
+      setTimeout(() => {
+        homefeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
+      }, 10);
+    }
+  }, [navigate.pathname]);
+
+
+
+  useEffect(() => {
+    const mainfeedElement = document.getElementById("homefeed");
+
+    const handleScroll = () => {
+
+      setHomeFeedScroll(mainfeedElement.scrollTop);
+    };
+
+    if (mainfeedElement) {
+      mainfeedElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (mainfeedElement) {
+        mainfeedElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  });
+
+
 
   useEffect(() => {
     async function getHistory() {
@@ -37,6 +76,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     }
     getHistory();
   }, [isLoggedIn]);
+
 
   useEffect(() => {
     let handleClickOutside = (e) => {
@@ -128,34 +168,37 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   });
   return (
 
-      <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
-        <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
+    <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
+      <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
 
-          <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-gray-700 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-            <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
-          </div>
-          <div className="">
-            {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
-          </div>
+        <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-gray-700 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+          <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
+        </div>
+        <div className="">
+          {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
+        </div>
 
-          <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-              {location.pathname.includes("/popular") && 
+        <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
+{/*           
+          {location.pathname.includes("/popular") &&
+            <div className="max-w-[1190px] ml-2 block min-h-[210px] mt-4 flex flex-col justify-center">
               <PopularCarousel />
-              }
-            <div className="flex flex-row w-fit">
-              <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                <Mainfeed />
-              </div>
+            </div>} */}
 
-              <div
-                className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-                <Recent userHistoryRes={userHistoryRes} />
-              </div>
+          <div className="flex flex-row w-fit">
+            <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
+              <Mainfeed />
+            </div>
+
+            <div
+              className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+              <Recent userHistoryRes={userHistoryRes} />
             </div>
           </div>
         </div>
       </div>
-  
+    </div>
+
   );
 };
 

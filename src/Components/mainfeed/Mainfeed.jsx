@@ -26,8 +26,6 @@ const Mainfeed = () => {
   const { isLoggedIn } = useContext(UserContext);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [homeFeedScroll, setHomeFeedScroll] = useState(0);
-  const mainfeedRef = useRef();
   const [selectedSort, setSelectedSort] = useState(() => {
     const storedSort = localStorage.getItem('homeSelectedSort');
     if (storedSort) {
@@ -52,7 +50,6 @@ const Mainfeed = () => {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setPage(prevPage => prevPage + 1);
-        console.log("Intersecting");
       }
     });
     if (node) observer.current.observe(node);
@@ -100,8 +97,6 @@ const Mainfeed = () => {
     setPosts([]);
     setPage(1);
     setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-    console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
-    console.log("useEffect1");
   }, [selectedSort]);
 
 
@@ -115,7 +110,6 @@ const Mainfeed = () => {
         const { status, data } = await fetchPosts(page, selectedSort);
         if (status === 200 || status === 201) {
           setPosts(prevComments => [...prevComments, ...data]);
-          // setHasMore(data.length >= 10);
           setHasMore(data.length > 0);
         } else {
           throw new Error('Error fetching comments');
@@ -127,7 +121,7 @@ const Mainfeed = () => {
       }
     }
 
-    console.log("useEffect2");
+  
 
     if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
@@ -163,44 +157,18 @@ const Mainfeed = () => {
     };
     document.addEventListener("click", closeDropdown);
 
-    const mainfeedElement = document.getElementById("mainfeed");
-
-    const handleScroll = () => {
-      const scrollThreshold = 58;
-      setHomeFeedScroll(mainfeedElement.scrollTop);
-      if (mainfeedElement.scrollTop > scrollThreshold) {
-        setIsOpenCateg(false);
-        setIsOpenView(false);
-      }
-    };
-
-    if (mainfeedElement) {
-      mainfeedElement.addEventListener("scroll", handleScroll);
-    }
 
     return () => {
       document.removeEventListener("click", closeDropdown);
-      if (mainfeedElement) {
-        mainfeedElement.removeEventListener("scroll", handleScroll);
-      }
+
     };
   });
 
 
-  useEffect(() => {
-    if (navigate.pathname.includes("/comments/")) {
-      localStorage.setItem('homeFeedScroll', homeFeedScroll);
-    }
-    else {
-      setTimeout(() => {
-        mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-      }, 10);
-    }
-  }, [navigate.pathname]);
 
 
   return (
-    <div ref={mainfeedRef}
+    <div
       id="mainfeed"
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 "
     >
