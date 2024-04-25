@@ -2,7 +2,7 @@
 import Share from './Share';
 import CommentIcon from './CommentIcon';
 import Vote from './Vote';
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
@@ -12,6 +12,7 @@ import moment from "moment";
 import HiddenPost from './HiddenPost';
 import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
+import { UserContext } from '@/context/UserContext';
 
 
 
@@ -61,6 +62,7 @@ const Post = ({
     const [isHiddenMsg, setIsHiddenMsg] = useState("");
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
+    const { isLoggedIn } = useContext(UserContext);
 
     useEffect(() => {
         setEditedPollOptions(pollOptions);
@@ -302,7 +304,7 @@ const Post = ({
                     </div>
 
                     <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-                        {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+                        {(communityName !== null) && isLoggedIn && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
                             <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
                         </div>}
                         <div

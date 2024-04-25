@@ -16,6 +16,8 @@ import { isMuiElement } from "@mui/material";
 import NSFW from "@/Components/NSFW/NSFW";
 import ProfileHead from "@/Components/othersprofile/ProfileHead";
 import ButtonsRow from "@/Components/othersprofile/ButtonsRow";
+import ProfileFeed from "@/Components/othersprofile/ProfileFeed";
+import Blocked from "@/Components/othersprofile/Blocked";
 
 const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const { isLoggedIn, userInfo } = useContext(UserContext);
@@ -209,10 +211,14 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
                                     <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
                                         <div className="flex flex-row w-fit">
 
-                                            <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2' ref={mainfeedRef}>
+                                            <div className='w-full mxl:px-4 max-w-[900px] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2' ref={mainfeedRef}>
                                                 <ProfileHead imgSrc={otherUserInfo?.profilePicture} displayName={otherUserInfo?.displayName} userName={otherUserInfo?.username} />
-                                                <ButtonsRow selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
-                                                <Mainfeed />
+                                                <ButtonsRow selectedPage={selectedPage} setSelectedPage={setSelectedPage} userName={otherUserInfo?.username} />
+
+                                                {isBlocked ? <Blocked userName={otherUserInfo?.username} /> :
+                                                    <ProfileFeed userName={otherUserInfo?.username} selectedPage={selectedPage} />
+                                                }
+
                                             </div>
 
                                             <div
@@ -226,7 +232,9 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
 
                                 </>
                             }
+
                         </div>
+
 
                     </>}
             </div>

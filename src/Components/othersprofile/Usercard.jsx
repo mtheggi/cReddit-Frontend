@@ -44,7 +44,7 @@ const UnfollowIcon = () => {
  */
 const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
     const { isLoggedIn } = useContext(UserContext);
-    const { setIsOpenedLoginMenu } = useContext(NavbarContext)
+    const { isOpenedLoginMenu, setIsOpenedLoginMenu } = useContext(NavbarContext)
     const [isFollow, setIsFollow] = useState(false);
     const [isOpenDots, setIsOpenDots] = useState(false);
     const [cakeDate, setCakeDate] = useState(null);
@@ -61,45 +61,53 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
         setIsFollow(isFollowed);
         setIsBlocked(isBlocked);
     }, [isLoggedIn, otherUserInfo])
-    const handleFollow = async () => {
+    const handleFollow = async (e) => {
+        e.stopPropagation();
+
         if (!isLoggedIn) {
             setIsOpenedLoginMenu(true);
-            return;
         }
-        setIsFollow((prev) => !prev);
-        if (!isFollow) {
-            const response = await postRequest(`${baseUrl}/user/follow/${otherUserInfo?.username}`, {});
-            if (response.status !== 200) {
-                setIsFollow((prev) => !prev);
+        if (isLoggedIn) {
+            setIsFollow((prev) => !prev);
+            if (!isFollow) {
+                const response = await postRequest(`${baseUrl}/user/follow/${otherUserInfo?.username}`, {});
+                if (response.status !== 200) {
+                    setIsFollow((prev) => !prev);
 
-            }
-        } else {
-            const response = await deleteRequest(`${baseUrl}/user/follow/${otherUserInfo?.username}`);
-            if (response.status !== 200) {
-                setIsFollow((prev) => !prev);
+                }
+            } else {
+                const response = await deleteRequest(`${baseUrl}/user/follow/${otherUserInfo?.username}`);
+                if (response.status !== 200) {
+                    setIsFollow((prev) => !prev);
 
+                }
             }
         }
     }
+    useEffect(() => {
+        console.log(isOpenedLoginMenu, "isOpenedLoginMenu");
+    }, [isOpenedLoginMenu])
 
-    const handleBlock = async () => {
+    const handleBlock = async (e) => {
+        e.stopPropagation();
         if (!isLoggedIn) {
             setIsOpenedLoginMenu(true);
-            return;
         }
-        setIsBlocked((prev) => !prev);
-        setIsOpenDots(false);
-        if (!isBlocked) {
-            const response = await postRequest(`${baseUrl}/user/Block/${otherUserInfo?.username}`, {});
-            if (response.status !== 200) {
-                setIsBlocked((prev) => !prev);
-                setIsOpenDots(true);
-            }
-        } else {
-            const response = await deleteRequest(`${baseUrl}/user/Block/${otherUserInfo?.username}`);
-            if (response.status !== 200) {
-                setIsBlocked((prev) => !prev);
+        if (isLoggedIn) {
+            setIsBlocked((prev) => !prev);
+            setIsOpenDots(false);
+            if (!isBlocked) {
+                const response = await postRequest(`${baseUrl}/user/Block/${otherUserInfo?.username}`, {});
+                if (response.status !== 200) {
+                    setIsBlocked((prev) => !prev);
+                    setIsOpenDots(true);
+                }
+            } else {
+                const response = await deleteRequest(`${baseUrl}/user/Block/${otherUserInfo?.username}`);
+                if (response.status !== 200) {
+                    setIsBlocked((prev) => !prev);
 
+                }
             }
         }
     }
@@ -165,14 +173,14 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
                 <div className="flex flex-row justify-start text-white">
                     {isBlocked ?
 
-                        <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={handleBlock} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 bg-reddit_Blocked hover:bg-reddit_Blocked_hover`}>
+                        <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={(e) => { handleBlock(e) }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 bg-reddit_Blocked hover:bg-reddit_Blocked_hover`}>
                             <UserMinusIcon className='h-5 w-5 text-white ' />
                             <p className="ml-2 font-bold" data-testid="follow-btn-text" > UnBlock  </p>
                         </button>
                         : <>
-                            <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={() => { handleFollow(); }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 ${isFollow ? `bg-reddit_blue hover:bg-reddit_light_blue` : `bg-black border-1 border-white`}`}>
-                                {isFollow ? <FollowIcon /> : <UnfollowIcon />}
-                                <p className="ml-2 font-bold" data-testid="follow-btn-text" >{isFollow ? "Follow" : "Unfollow "}</p>
+                            <button id="follow-btn-usercard" data-testid="follow-btn-usercard" onClick={(e) => { handleFollow(e); }} className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 ${!isFollow ? `bg-reddit_blue hover:bg-reddit_light_blue` : `bg-black border-1 border-white`}`}>
+                                {!isFollow ? <FollowIcon /> : <UnfollowIcon />}
+                                <p className="ml-2 font-bold" data-testid="follow-btn-text" >{!isFollow ? "Follow" : "Unfollow "}</p>
                             </button>
                             <button onClick={() => { navigate("/chat") }} id="chat-btn-usercard" className="flex flex-row bg-reddit_search hover:bg-reddit_search_light px-3 py-2 h-8 justify-start rounded-full text-sm items-center">
                                 <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 text-gray-300" />
