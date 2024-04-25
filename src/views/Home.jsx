@@ -9,7 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
-import PopularCarousel from "../Components/popular/PopularCarousel";
+// import PopularCarousel from "../Components/popular/PopularCarousel";
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const { isLoggedIn } = useContext(UserContext);
@@ -67,7 +67,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
       }
     };
   });
-
 
 
   useEffect(() => {
