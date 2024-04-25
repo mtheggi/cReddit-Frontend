@@ -282,9 +282,16 @@ const Post = ({
                                 <ArrowLeftIcon className='text-white w-6 h-6' />
                             </Link>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
-                        <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
-                            {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
-                        </p>
+
+                        <Link
+                            to={
+                                communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`
+                            }
+                        >
+                            <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
+                                {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
+                            </p>
+                        </Link>
                     </div>
 
                     <div className=' flex flex-row w-[32%] xs:w-[40%] items-center '>
@@ -386,8 +393,8 @@ const Post = ({
                                 <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
 
                                     <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
-                                            {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} />:
-                                            <img  src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full'  />}
+                                        {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
+                                            <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
                                     </div>
 
                                     {(
