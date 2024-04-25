@@ -5,7 +5,7 @@ const ProfileHead = ({ imgSrc, displayName, userName }) => {
 
             <div className="flex flex-col ml-4">
                 <h1 className="text-white text-2xl font-bold">{displayName}</h1>
-                <p className="text-gray-400 text-sm">u/{userName}</p>
+                <p className="text-gray-400 text-xl font-bold">u/{userName}</p>
             </div>
         </div>
     );

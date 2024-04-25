@@ -15,6 +15,7 @@ import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
 import { isMuiElement } from "@mui/material";
 import NSFW from "@/Components/NSFW/NSFW";
 import ProfileHead from "@/Components/othersprofile/ProfileHead";
+import ButtonsRow from "@/Components/othersprofile/ButtonsRow";
 
 const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const { isLoggedIn, userInfo } = useContext(UserContext);
@@ -24,6 +25,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     const [otherUserInfo, setOtherUserInfo] = useState(null);
     const [isNSFWAccount, setIsNSFWAccount] = useState(false);
     const [isBlocked, setIsBlocked] = useState(false);
+    const [selectedPage, setSelectedPage] = useState("overview");
     const recentRef = useRef();
     const mainfeedRef = useRef();
     const communiyCardRef = useRef();
@@ -52,6 +54,12 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
         if (!(typeof page === 'undefined' || page === 'submitted' || page === 'comments')) {
             setIsOthersProfile(false);
             return;
+        } else {
+            if (typeof page === 'undefined') {
+                setSelectedPage('overview');
+            } else {
+                setSelectedPage(page);
+            }
         }
         const checkValidUsername = async () => {
             setIsProfileLoading(true);
@@ -203,7 +211,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
 
                                             <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2' ref={mainfeedRef}>
                                                 <ProfileHead imgSrc={otherUserInfo?.profilePicture} displayName={otherUserInfo?.displayName} userName={otherUserInfo?.username} />
-
+                                                <ButtonsRow selectedPage={selectedPage} setSelectedPage={setSelectedPage} />
                                                 <Mainfeed />
                                             </div>
 
