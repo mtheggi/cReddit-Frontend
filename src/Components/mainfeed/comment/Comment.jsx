@@ -26,7 +26,7 @@ const Comment = ({ postId }) => {
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 setPage(prevPage => prevPage + 1);
-                console.log("Intersecting");
+               
             }
         });
         if (node) observer.current.observe(node);
@@ -86,8 +86,6 @@ const Comment = ({ postId }) => {
         setPostComments([]);
         setPage(1);
         setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-        console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
-        console.log("useEffect1");
     }, [selectedSort]);
 
 
@@ -110,7 +108,6 @@ const Comment = ({ postId }) => {
             }
         }
 
-        console.log("useEffect2");
         getSinglepostComments();
         prevSort.current = selectedSort;
     }, [page, isSortChanged]);

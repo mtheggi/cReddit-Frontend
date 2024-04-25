@@ -81,13 +81,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
 
 
     return (
-        <Link to={
-
-            location.pathname.includes("/comments/") ? '' :
-                (!communityName
-                    ? `/u/${username}/comments/${id}`
-                    : `/r/${communityName}/comments/${id}`)
-        }
+        <div
             onClick={() => {
 
                 if (location.pathname.includes("/comments/")) {
@@ -98,12 +92,18 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
                         smoothScroll(mainfeed, position, 300);
                     }
                 }
+                else {
+                    navigate(
+                        (!communityName
+                            ? `/u/${username}/comments/${id}`
+                            : `/r/${communityName}/comments/${id}`))
+                }
             }
             }
             id={"mainfeed_" + id + "_comment"} className="flex justify-center cursor-pointer flex-row items-center min-w-18 h-8 w-fit  bg-reddit_search hover:bg-reddit_search_light rounded-3xl">
             <ChatBubbleBottomCenterTextIcon className="h-6 w-6 mr-1 text-gray-300" />
             <span className="text-gray-300  text-sm mr-0.5"> {formatComments(commentCount)}</span>
-        </Link>
+        </div>
 
     );
 }
