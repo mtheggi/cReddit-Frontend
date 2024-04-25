@@ -22,7 +22,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     const [isProfileLoading, setIsProfileLoading] = useState(true);
     const [otherUserInfo, setOtherUserInfo] = useState(null);
     const [isNSFWAccount, setIsNSFWAccount] = useState(false);
-
+    const [isBlocked, setIsBlocked] = useState(false);
     const recentRef = useRef();
     const mainfeedRef = useRef();
     const communiyCardRef = useRef();
@@ -57,6 +57,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
             const response = await getRequest(`${baseUrl}/user/${username}`);
             if (response.status == 200) {
                 setOtherUserInfo(response.data);
+                setIsBlocked(response.data?.isBlocked);
             } else if (response.status == 401) {
                 // TODO : check NSFW 
                 setIsNSFWAccount(true);
@@ -207,7 +208,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
                                                 className="w-fit min-w-fit scrollbar_mod overflow-auto sticky top-0 h-[94vh]"
                                                 ref={recentRef}
                                             >
-                                                <Usercard otherUserInfo={otherUserInfo} />
+                                                <Usercard otherUserInfo={otherUserInfo} isBlocked={isBlocked} setIsBlocked={setIsBlocked} />
                                             </div>
                                         </div>
                                     </div>

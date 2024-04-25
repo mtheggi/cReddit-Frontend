@@ -42,13 +42,12 @@ const UnfollowIcon = () => {
  * @component
  * @returns {JSX.Element} The rendered Usercard component.
  */
-const Usercard = ({ otherUserInfo }) => {
+const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
     const { isLoggedIn } = useContext(UserContext);
     const { setIsOpenedLoginMenu } = useContext(NavbarContext)
     const [isFollow, setIsFollow] = useState(false);
     const [isOpenDots, setIsOpenDots] = useState(false);
     const [cakeDate, setCakeDate] = useState(null);
-    const [isBlocked, setIsBlocked] = useState(false);
     const openDots = useRef(null);
     const navigate = useNavigate();
     useEffect(() => {
