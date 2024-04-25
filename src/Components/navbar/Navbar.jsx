@@ -234,8 +234,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                     <Searchbar />
 
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
-
-
                         {!isLoggedIn && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
                             <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
                                 <span className="flex items-center justify-center ">
