@@ -30,7 +30,7 @@ function CommunityHeader({
   banner,
   members,
   isJoined = true,
-  isMuted = true,
+  isMuted = false,
 }) {
   console.log(name, icon, banner, members);
 
@@ -38,18 +38,20 @@ function CommunityHeader({
   const [muted, setMuted] = useState(isMuted);
 
   async function handleJoinSubreddit() {
+    console.log("Joining subreddit", name, joined);
     let res;
-    if (isJoined) {
+    if (joined) {
       res = await deleteRequest(`${baseUrl}/subreddit/${name}/join`);
     } else {
       res = await postRequest(`${baseUrl}/subreddit/${name}/join`);
     }
+
     if (res.status === 200 || res.status === 201) setJoined(!joined);
   }
 
   async function handleMuteSubreddit() {
     let res;
-    if (isMuted) {
+    if (muted) {
       res = await deleteRequest(`${baseUrl}/subreddit/${name}/mute`);
     } else {
       res = await postRequest(`${baseUrl}/subreddit/${name}/mute`);
@@ -124,27 +126,27 @@ function CommunityHeader({
           <button
             id="community-header__info__community__join__button"
             className={`rounded-3xl  ${
-              isJoined && "border border-gray-400"
-            } ml-2 ${!isJoined && "bg-blue-800"}`}
+              joined && "border border-gray-400"
+            } ml-2 ${!joined && "bg-blue-800"}`}
             onClick={handleJoinSubreddit}
           >
             <div className="flex flex-row items-center justify-center ml-3 mr-3 mt-2 mb-2">
               <p className="font-plex font-bold text-gray-300 text-sm">
-                {isJoined ? "Joined" : "Join"}
+                {joined ? "Joined" : "Join"}
               </p>
             </div>
           </button>
-          {isJoined && (
+          {joined && (
             <button
               id="community-header__info__community__mute__button"
               className={`rounded-3xl ml-2 ${
-                isMuted ? "bg-red-800" : "border border-gray-400"
+                muted ? "bg-red-800" : "border border-gray-400"
               }`}
               onClick={handleMuteSubreddit}
             >
               <div className="flex flex-row items-center justify-center ml-3 mr-3 mt-2 mb-2">
                 <p className="font-plex font-bold text-gray-300 text-sm">
-                  {isMuted ? "Muted" : "Mute"}
+                  {muted ? "Muted" : "Mute"}
                 </p>
               </div>
             </button>
