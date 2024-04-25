@@ -11,13 +11,17 @@ import { SidebarContext } from "@/context/SidebarContext";
 import Usercard from "@/Components/usercard/Usercard";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Loading from "@/Components/Loading/Loading";
-
+import { LocalConvenienceStoreOutlined } from "@mui/icons-material";
+import { isMuiElement } from "@mui/material";
+import NSFW from "@/Components/NSFW/NSFW";
 
 const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
-    const { isLoggedIn, user } = useContext(UserContext);
+    const { isLoggedIn, userInfo } = useContext(UserContext);
     const [isOthersProfile, setIsOthersProfile] = useState(true);
+    const [ismyProfile, setIsMyProfile] = useState(false);
     const [isProfileLoading, setIsProfileLoading] = useState(true);
     const [otherUserInfo, setOtherUserInfo] = useState(null);
+    const [isNSFWAccount, setIsNSFWAccount] = useState(true);
 
     const recentRef = useRef();
     const mainfeedRef = useRef();
@@ -37,9 +41,10 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     useEffect(() => {
         const username = urlParameters.username;
         const page = urlParameters.page;
-        if (user && username == user.username) {
+        if (userInfo && username === userInfo.username) {
             // if username == user.username , then it should be my profile not others . 
             // to view my profile , i should be loggedin , so user is not null, and username in the route is equal to mine .             
+            setIsMyProfile(true);
             setIsOthersProfile(false);
             return;
         }
@@ -50,8 +55,12 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
         const checkValidUsername = async () => {
             setIsProfileLoading(true);
             const response = await getRequest(`${baseUrl}/user/${username}`);
+
+
             if (response.status == 200) {
                 setOtherUserInfo(response.data);
+            } else if (response.status == 401) {
+                setIsNSFWAccount(true);
             } else {
                 setIsOthersProfile(false);
             }
@@ -62,9 +71,15 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     }, [location])
 
     useEffect(() => {
+
         if (!isOthersProfile) {
-            console.log("invalid route");
-            navigate('/404')
+            if (ismyProfile) {
+                // should navigate to my profile
+            } else {
+                console.log("invalid route");
+                navigate('/404')
+            }
+
         }
     }, [isOthersProfile])
 
@@ -140,7 +155,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
                 }
             }, 440);
         };
-        if (!isProfileLoading) {
+        if (!isProfileLoading && !isNSFWAccount) {
             recentRef.current.addEventListener("scroll", handleScroll);
             sidebarRef.current.addEventListener("scroll", handleScroll);
             mainfeedRef.current.addEventListener("scroll", handleScroll);
@@ -158,7 +173,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
                     mainfeedRef.current.removeEventListener('scroll', handleScroll);
                 }
             }
-            if (!isProfileLoading) {
+            if (!isProfileLoading && !isNSFWAccount) {
                 cleanup();
             }
 
@@ -168,40 +183,42 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     return (
         <>
 
-            <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
+            <div className={"w-full mt-14 h-full flex flex-row overflow-hidden " + (isNSFWAccount ? "justify-center items-center" : "")}>
+                {isNSFWAccount ? <NSFW /> :
+                    <>
+                        <div className={`flex flex-row w-full xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
 
-                <div className={`flex flex-row w-full xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
-
-                    <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
-                        <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
-                    </div>
-                    <div className="">
-                        {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
-                    </div>
-                    {isProfileLoading ? <Loading /> :
-                        <>
-                            <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-                                <div className="flex flex-row w-fit">
-
-
-                                    <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
-                                        <Mainfeed />
-                                    </div>
-
-                                    <div
-                                        className="w-fit min-w-fit scrollbar_mod overflow-auto sticky top-0 h-[94vh]"
-                                        ref={recentRef}
-                                    >
-                                        {/* <Recent userHistoryRes={userHistoryRes} /> */}
-                                        <Usercard />
-                                    </div>
-                                </div>
+                            <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+                                <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
                             </div>
+                            <div className="">
+                                {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
+                            </div>
+                            {isProfileLoading ? <Loading /> :
+                                <>
+                                    <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
+                                        <div className="flex flex-row w-fit">
 
-                        </>
-                    }
 
-                </div>
+                                            <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
+                                                <Mainfeed />
+                                            </div>
+
+                                            <div
+                                                className="w-fit min-w-fit scrollbar_mod overflow-auto sticky top-0 h-[94vh]"
+                                                ref={recentRef}
+                                            >
+                                                {/* <Recent userHistoryRes={userHistoryRes} /> */}
+                                                <Usercard />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </>
+                            }
+                        </div>
+
+                    </>}
             </div>
         </>
     );
