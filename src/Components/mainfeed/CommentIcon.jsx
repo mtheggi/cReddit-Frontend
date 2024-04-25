@@ -83,13 +83,13 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
     return (
         <Link to={
 
-            location.pathname.includes("/comments/") ?'':
-            (!communityName
-                ? `u/${username}/comments/${id}`
-                : `r/${communityName}/comments/${id}`)
+            location.pathname.includes("/comments/") ? '' :
+                (!communityName
+                    ? `/u/${username}/comments/${id}`
+                    : `/r/${communityName}/comments/${id}`)
         }
             onClick={() => {
-               
+
                 if (location.pathname.includes("/comments/")) {
                     const element = document.getElementById('mainfeed_comment_category_dropdown');
                     const mainfeed = document.getElementById('mainfeed');

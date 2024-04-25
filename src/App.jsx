@@ -18,6 +18,7 @@ import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
+import OthersProfile from "./views/OthersProfile";
 
 
 function App() {
@@ -111,6 +112,17 @@ function App() {
             path="/*"
             element={
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+            }
+          />
+          <Route
+            path="/user/:username/:page?"
+            element={
+              <SidebarContextProvider>
+                <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
             }
           />
         </Routes>
