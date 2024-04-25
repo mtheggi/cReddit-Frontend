@@ -19,6 +19,7 @@ import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
+import Chat from "./views/Chat";
 
 
 function App() {
@@ -125,6 +126,8 @@ function App() {
               </SidebarContextProvider>
             }
           />
+          <Route path="/chat" element={<Chat />} />
+
         </Routes>
       </div>
     </Router>

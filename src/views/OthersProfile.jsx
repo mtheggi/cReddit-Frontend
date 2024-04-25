@@ -21,7 +21,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
     const [ismyProfile, setIsMyProfile] = useState(false);
     const [isProfileLoading, setIsProfileLoading] = useState(true);
     const [otherUserInfo, setOtherUserInfo] = useState(null);
-    const [isNSFWAccount, setIsNSFWAccount] = useState(true);
+    const [isNSFWAccount, setIsNSFWAccount] = useState(false);
 
     const recentRef = useRef();
     const mainfeedRef = useRef();
@@ -55,11 +55,10 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
         const checkValidUsername = async () => {
             setIsProfileLoading(true);
             const response = await getRequest(`${baseUrl}/user/${username}`);
-
-
             if (response.status == 200) {
                 setOtherUserInfo(response.data);
             } else if (response.status == 401) {
+                // TODO : check NSFW 
                 setIsNSFWAccount(true);
             } else {
                 setIsOthersProfile(false);
@@ -74,7 +73,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
 
         if (!isOthersProfile) {
             if (ismyProfile) {
-                // should navigate to my profile
+                // TODO : navigate to my profile
             } else {
                 console.log("invalid route");
                 navigate('/404')
@@ -208,8 +207,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
                                                 className="w-fit min-w-fit scrollbar_mod overflow-auto sticky top-0 h-[94vh]"
                                                 ref={recentRef}
                                             >
-                                                {/* <Recent userHistoryRes={userHistoryRes} /> */}
-                                                <Usercard />
+                                                <Usercard otherUserInfo={otherUserInfo} />
                                             </div>
                                         </div>
                                     </div>

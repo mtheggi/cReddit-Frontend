@@ -18,7 +18,9 @@ import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import NotificationList from '../notifications/NotificationList'
-import { useNotifications } from '../notifications/NotificationContext'; 
+import { useNotifications } from '../notifications/NotificationContext';
+import { NavbarContext } from '@/context/NavbarContext';
+
 
 
 
@@ -32,12 +34,13 @@ import { useNotifications } from '../notifications/NotificationContext';
  * @returns {JSX.Element} The Navbar component.
  * */
 const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
-    const {isLoggedIn, setIsLoggedIn} = useContext(UserContext);
-    const {userProfilePicture, setUserProfilePicture} = useContext(UserContext);
-    const {user, setUser} = useContext(UserContext);
+    const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+    const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
+    const { isOpenedLoginMenu, setIsOpenedLoginMenu } = useContext(NavbarContext);
+
+    const { user, setUser } = useContext(UserContext);
 
     const [isOpenProfileMenu, setIsOpenProfileMenu] = useState(false);
-    const [isOpenedLoginMenu, setIsOpenedLoginMenu] = useState(false);
     const [isOpenedSignupMenu, setIsOpenedSignupMenu] = useState(false);
     const [isOpenedForgotUsername, setIsOpenedForgotUsername] = useState(false);
     const [isOpenedForgotPass, setIsOpenedForgotPass] = useState(false);
@@ -49,7 +52,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const [showInboxTooltip, setShowInboxTooltip] = useState(false);
     const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
 
-    
+
     const profileMenuRef = useRef();
     const profileMenuRefExpanded = useRef();
     const loginMenuRef = useRef();
@@ -68,44 +71,44 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     useEffect(() => {
         const newNotifications = [
             {
-              key: "1",
-              title: "u/Abdelaal replied to your comment in r/cReddit",
-              description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
-              date: "4/11/2024",
-              time: "23:45",
-              image: avatar,
+                key: "1",
+                title: "u/Abdelaal replied to your comment in r/cReddit",
+                description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
+                date: "4/11/2024",
+                time: "23:45",
+                image: avatar,
             },
             {
-              key: "2",
-              title: "u/Malek replied to your post in r/CCE",
-              description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
-              date: "4/11/2024",
-              time: "23:30",
-              image: avatar,
+                key: "2",
+                title: "u/Malek replied to your post in r/CCE",
+                description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
+                date: "4/11/2024",
+                time: "23:30",
+                image: avatar,
             },
             {
-              key: "3",
-              title: "u/Maro replied to your post in r/APT",
-              description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
-              date: "4/11/2024",
-              time: "20:10",
-              image: avatar,
+                key: "3",
+                title: "u/Maro replied to your post in r/APT",
+                description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
+                date: "4/11/2024",
+                time: "20:10",
+                image: avatar,
             },
             {
-              key: "4",
-              title: "u/Bassel replied to your comment in r/Front",
-              description: "Notification Description 4",
-              date: "4/5/2024",
-              time: "11:11",
-              image: avatar,
+                key: "4",
+                title: "u/Bassel replied to your comment in r/Front",
+                description: "Notification Description 4",
+                date: "4/5/2024",
+                time: "11:11",
+                image: avatar,
             },
             {
-              key: "5",
-              title: "u/Heggi replied to your comment in r/Pattern",
-              description: "Notification Description 5",
-              date: "4/6/2024",
-              time: "18:50",
-              image: avatar,
+                key: "5",
+                title: "u/Heggi replied to your comment in r/Pattern",
+                description: "Notification Description 5",
+                date: "4/6/2024",
+                time: "18:50",
+                image: avatar,
             },
         ];
 
@@ -172,7 +175,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
         };
     });
     const location = useLocation();
-    const words = ['/submit', '/settings']; 
+    const words = ['/submit', '/settings'];
 
     const urlContainsWord = words.some(word => location.pathname.includes(word));
 
@@ -181,23 +184,23 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
      * @function handleMouseEnterBellIcon
      * */
     const handleMouseEnterBellIcon = () => {
-        setShowInboxTextTransition(true); 
-        
+        setShowInboxTextTransition(true);
+
         setTimeout(() => {
-          setShowInboxTooltip(true); 
-        }, 100); 
+            setShowInboxTooltip(true);
+        }, 100);
     };
-      
+
     /**
      * Function to handle mouse leave event on the bell icon.
      * @function handleMouseLeaveBellIcon
      * */
     const handleMouseLeaveBellIcon = () => {
         setShowInboxTooltip(false);
-        
+
         setTimeout(() => {
-          setShowInboxTextTransition(false);
-        }, 100); 
+            setShowInboxTextTransition(false);
+        }, 100);
     };
 
 
@@ -207,7 +210,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
             <header className="flex flex-row w-full bg-reddit_navbar p-2 items-center">
                 {!urlContainsWord && (
-                    <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${location.pathname=="/best/communities"?"hidden":"xl:hidden"}`}>
+                    <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${location.pathname == "/best/communities" ? "hidden" : "xl:hidden"}`}>
                         <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
                     </div>
                 )}
@@ -216,7 +219,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                 <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
                     <Link id='navbar_reddit' className='w-fit h-fit flex mr-2 xs:mr-0 items-center' to="">
                         <img src={redditLogo} alt="Logo" className="w-8  h-8 min-w-8" />
-                        
+
                         <svg className="h-[22px] ml-2 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
                             <g className=' fill-white'>
                                 <path d="m71.62,45.92l-12.01,28.56c-1.51-.76-5.11-1.61-8.51-1.61s-6.81.85-10.12,2.46c-6.53,3.31-11.35,9.93-11.35,19.48v52.3H-.26V45.35h29.04v14.28h.57c6.81-9.08,17.21-15.79,30.74-15.79,4.92,0,9.65.95,11.54,2.08Z"></path>
@@ -337,31 +340,31 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 </Link>
 
                                 <div className="flex relative justify-center items-center w-fit h-fit">
-                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative" 
-                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false);}} 
+                                    <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative"
+                                        onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }}
                                         onMouseEnter={handleMouseEnterBellIcon}
                                         onMouseLeave={handleMouseLeaveBellIcon}
                                     >
                                         <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
                                             <BellIcon className="h-7 w-6 text-gray-300" />
                                         </div>
-                                        {showInboxTextTransition  && (
-                                            <span 
-                                                style={{ 
-                                                position: 'absolute',
-                                                zIndex: 100,
-                                                bottom: '-35px',
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
-                                                backgroundColor: '#e0e0e0',
-                                                color: '#333',
-                                                fontSize: '0.75rem',
-                                                fontWeight: 'bold',
-                                                padding: '0.25rem 0.5rem',
-                                                borderRadius: '4px',
-                                                whiteSpace: 'nowrap',
-                                                opacity: showInboxTooltip ? 1 : 0,
-                                                transition: 'opacity 1s linear',
+                                        {showInboxTextTransition && (
+                                            <span
+                                                style={{
+                                                    position: 'absolute',
+                                                    zIndex: 100,
+                                                    bottom: '-35px',
+                                                    left: '50%',
+                                                    transform: 'translateX(-50%)',
+                                                    backgroundColor: '#e0e0e0',
+                                                    color: '#333',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 'bold',
+                                                    padding: '0.25rem 0.5rem',
+                                                    borderRadius: '4px',
+                                                    whiteSpace: 'nowrap',
+                                                    opacity: showInboxTooltip ? 1 : 0,
+                                                    transition: 'opacity 1s linear',
                                                 }}
                                             >
                                                 Open inbox
@@ -370,17 +373,17 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
 
                                     {isOpenBellMenu && (
-                                        <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded}/>
+                                        <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} />
                                     )}
                                 </div>
 
 
 
                                 <div className="flex justify-center items-center w-fit h-fit">
-                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
+                                    <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
                                         <div className='relative w-8 h-8 rounded-full'>
                                             <img src={userProfilePicture} alt="" className="block object-cover w-full h-full rounded-full" />
-                                            
+
                                             <div className='w-[10px] h-[10px] absolute left-[24px] bottom-[0px] border-[2px] border-[#0C1416] -mt-[8px] rounded-full bg-[#55BD45]'>
                                             </div>
                                         </div>
