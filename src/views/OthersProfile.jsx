@@ -69,6 +69,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
             if (response.status == 200) {
                 setOtherUserInfo(response.data);
                 setIsBlocked(response.data?.isBlocked);
+                setIsNSFWAccount((!response.data?.isNSFW && response.data?.showAdultContent));
             } else if (response.status == 401) {
                 // TODO : check NSFW 
                 setIsNSFWAccount(true);
@@ -195,7 +196,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
         <>
 
             <div className={"w-full mt-14 h-full flex flex-row overflow-hidden " + (isNSFWAccount ? "justify-center items-center" : "")}>
-                {isNSFWAccount ? <NSFW /> :
+                {isNSFWAccount ? <NSFW setOver18={setIsNSFWAccount} /> :
                     <>
                         <div className={`flex flex-row w-full xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}>
 

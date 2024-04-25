@@ -15,7 +15,7 @@ const NSFW = ({ setOver18 }) => {
             </p>
             <div className="w-full flex flex-col xs:flex-col md:flex-row justify-evenly items-center mt-5">
                 <button id="NSFW-go-home" data-testid="NSFW-go-home" onClick={() => { navigate("/") }} className="mb-2 w-40 h-10 bg-reddit_search text-white rounded-3xl font-bold">Go to Home</button>
-                <button id="NSFW-over18" data-testid="NSFW-go-home" onClick={() => setOver18(true)} className="mb-2 w-40 h-10 bg-reddit_blue text-white rounded-3xl font-bold">Yes, I am over 18 </button>
+                <button id="NSFW-over18" data-testid="NSFW-go-home" onClick={() => setOver18(false)} className="mb-2 w-40 h-10 bg-reddit_blue text-white rounded-3xl font-bold">Yes, I am over 18 </button>
             </div>
         </div>
     );

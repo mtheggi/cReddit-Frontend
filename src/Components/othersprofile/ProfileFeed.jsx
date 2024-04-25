@@ -303,7 +303,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
             </div>
 
 
-            {feedLoading && page == 1 ? <Loading /> :
+            {feedLoading && page == 1 ? (selectedPage !== 'comments' ? <Loading /> : <></>) :
                 <>
                     {!isSinglePostSelected && selectedPage !== 'comments' && posts.map((post, i) => {
                         if (posts.length === i + 1) {
@@ -317,7 +317,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
             }
 
 
-            {(feedLoading && page == 1) ? <Loading /> :
+            {(feedLoading && page == 1) ? (selectedPage === 'comments' ? <Loading /> : <></>) :
                 <>
                     {selectedPage === 'comments' &&
                         comments.map((comment, index) => {
