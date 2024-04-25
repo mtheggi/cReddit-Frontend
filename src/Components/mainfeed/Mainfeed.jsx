@@ -27,7 +27,7 @@ const Mainfeed = () => {
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [selectedSort, setSelectedSort] = useState(() => {
-    const storedSort = localStorage.getItem('homeSelectedSort');
+  const storedSort = localStorage.getItem('homeSelectedSort');
     if (storedSort) {
       return storedSort;
     } else {
@@ -56,6 +56,8 @@ const Mainfeed = () => {
 
   }, [feedLoading, hasMore]);
 
+  let existingPost = null;
+
 
 
   /**
@@ -67,7 +69,7 @@ const Mainfeed = () => {
    */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
-    const existingPost = posts.find(post => post._id === selectedPostId);
+    existingPost = posts.find(post => post._id === selectedPostId);
     if (existingPost) {
       setSelectedPost(existingPost);
     } else {
@@ -104,6 +106,10 @@ const Mainfeed = () => {
 
 
   useEffect(() => {
+    
+    if (existingPost)
+    return;
+
     const getHomeFeed = async () => {
       try {
         setHasMore(true);
