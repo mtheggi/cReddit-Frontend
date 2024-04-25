@@ -1,6 +1,5 @@
 import Separator from '../sidebar/Nav-Icons/Separator';
 import RecentRow from './RecentRow';
-import Usercard from '../usercard/Usercard';
 import { getRequest, deleteRequest } from '@/services/Requests';
 import { useEffect, useState, useContext } from 'react';
 import { baseUrl } from '@/constants';
@@ -29,12 +28,12 @@ const Recent = ({ userHistoryRes }) => {
         }
     }, [isLoggedIn, userHistoryRes]);
 
-   /**
-     * Function to handle clearing of recent posts.
-     * 
-     * @async
-     * @function handleClearRecentPosts
-     */
+    /**
+      * Function to handle clearing of recent posts.
+      * 
+      * @async
+      * @function handleClearRecentPosts
+      */
     async function handleClearRecentPosts() {
         const originalPosts = recentPosts;
         setRecentPosts([]);
