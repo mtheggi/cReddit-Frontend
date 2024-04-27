@@ -96,7 +96,6 @@ const Mainfeed = () => {
     setPosts([]);
     setPage(1);
     setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-    console.log("selectedSort changed");
   }, [selectedSort, isLoggedIn]);
 
 
@@ -104,7 +103,6 @@ const Mainfeed = () => {
 
   useEffect(() => {
 
-    console.log("existingpost",existingPost.current);
     if (existingPost.current)
     {
     existingPost.current = null;
@@ -133,7 +131,6 @@ const Mainfeed = () => {
       getHomeFeed();
       prevSort.current = selectedSort;
     }
-    console.log("page changed");
   }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
 
 
