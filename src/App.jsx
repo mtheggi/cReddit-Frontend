@@ -5,6 +5,7 @@ import "./index.css";
 import Navbar from "./Components/navbar/Navbar";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
+import Search from "./views/Search"
 import { useContext, useState, useRef } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -20,6 +21,7 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
+
 
 
 function App() {
@@ -109,12 +111,7 @@ function App() {
             }
           />
           <Route path="/r/:name" element={<Community />} />
-          <Route
-            path="/*"
-            element={
-              <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
-            }
-          />
+  
           <Route
             path="/user/:username/:page?"
             element={
@@ -126,7 +123,24 @@ function App() {
               </SidebarContextProvider>
             }
           />
+          <Route
+            path="/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
           <Route path="/chat" element={<Chat />} />
+          <Route
+            path="/*"
+            element={
+              <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+            }
+            />
 
         </Routes>
       </div>
