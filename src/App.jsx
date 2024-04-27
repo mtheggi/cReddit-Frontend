@@ -18,7 +18,9 @@ import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
-
+import OthersProfile from "./views/OthersProfile";
+import Chat from "./views/Chat";
+import MyProfile from "./views/MyProfile";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -40,8 +42,9 @@ function App() {
         )}
         {!isNotFound && (
           <div
-            className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
-              }`}
+            className={`fixed inset-0 bg-black opacity-50 z-10 ${
+              isVisibleLeftSidebar ? "block" : "hidden"
+            }`}
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
@@ -113,6 +116,31 @@ function App() {
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
             }
           />
+          <Route
+            path="/user/:username/:page?"
+            element={
+              <SidebarContextProvider>
+                <OthersProfile
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="/my-user/:username/:page?"
+            element={
+              <SidebarContextProvider>
+                <MyProfile
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route path="/chat" element={<Chat />} />
         </Routes>
       </div>
     </Router>
