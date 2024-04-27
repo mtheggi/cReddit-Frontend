@@ -128,7 +128,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
     return (<>
         <div className='bg-reddit_darkRecent hidden lg:flex flex-col h-fit p-0  mb-10 rounded-2xl w-90 xl:w-80 ml-3 mt-9 mr-auto'>
             {!isBlocked &&
-                <img src={otherUserInfo?.banner} className="object-cover h-30 rounded-tl-xl rounded-tr-xl" />}
+                <img src={otherUserInfo?.banner} className="object-cover h-30 rounded-t-2xl " />}
 
             <div className="hidden lg:flex flex-col h-fit p-4 w-90 xl:w-80">
                 <div className="flex flex-row justify-between mb-3">

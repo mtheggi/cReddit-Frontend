@@ -174,7 +174,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
       <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
 
-        <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-gray-700 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
+        <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
           <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
         </div>
         <div className="">
@@ -182,14 +182,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         </div>
 
         <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-          {/*           
-          {location.pathname.includes("/popular") &&
-            <div className="max-w-[1190px] ml-2 block min-h-[210px] mt-4 flex flex-col justify-center">
-              <PopularCarousel />
-            </div>} */}
-
           <div className="flex flex-row w-fit">
-            <div className='w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2 ' ref={mainfeedRef}>
+            <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
               <Mainfeed />
             </div>
 

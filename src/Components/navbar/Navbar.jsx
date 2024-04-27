@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Bars3Icon, BellIcon, ChatBubbleOvalLeftEllipsisIcon, PlusIcon, } from '@heroicons/react/24/outline'
 import { useState, useEffect, useRef, useContext } from 'react';
 import avatar from '../../assets/avatar.png';
-import Searchbar from '../searchbar/Searchbar';
+import Searchbar from '../search/Searchbar';
 import Separator from '../sidebar/Nav-Icons/Separator';
 import Setting from '../settings/Setting';
 import ForgetPass from '../authentication/reset_components/ForgetPass';
