@@ -13,7 +13,7 @@ import SearchFeedComments from "./SearchFeedComments";
 
 
 
-const SearchFeed = () => {
+const SearchFeed = ({isSafe, setIsSafe}) => {
     const location = useLocation();
     const [peopleSearchResults, setPeopleSearchResults] = useState([]);
     const [communitiesSearchResults, setCommunitiesSearchResults] = useState([]);
@@ -26,6 +26,7 @@ const SearchFeed = () => {
     const [page, setPage] = useState(1);
     const [pathChanged, setPathChanged] = useState(0);
     const prevPath = useRef(location.pathname);
+    const prevSafe=useRef(isSafe);
 
     const observer = useRef();
     const lastElementRef = useCallback(node => {
@@ -55,9 +56,9 @@ const SearchFeed = () => {
         setPostsSearchResults([]);
 
         setPage(1);
-        setPathChanged(prev => (prevPath.current === location.pathname ? prev : prev + 1));
+        setPathChanged(prev => (prevPath.current !== location.pathname || prevSafe!==isSafe ? prev+1 : prev ));
         console.log("empty results");
-    }, [location.pathname]);
+    }, [location.pathname, isSafe]);
 
 
 
@@ -69,7 +70,7 @@ const SearchFeed = () => {
             try {
                 setHasMore(true);
                 setIsLoading(true);
-                const response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&autocomplete=false`);
+                const response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=false`);
                 if (response.status == 200 || response.status == 201) {
                     if (type == "people") {
                         setPeopleSearchResults(prevResults => [...prevResults, ...response.data]);
@@ -97,7 +98,7 @@ const SearchFeed = () => {
         if (location.pathname.includes("search") && (location.pathname.endsWith("/people") || location.pathname.endsWith("/communities") || location.pathname.endsWith("/posts") || location.pathname.endsWith("/comments"))) {
             getSearchResults(query);
             prevPath.current = location.pathname;
-            console.log("get new results");
+            prevSafe.current=isSafe;
         }
     }, [page, pathChanged]);
 

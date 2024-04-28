@@ -19,6 +19,15 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
   const searchFeed = useRef();
   const communiyCardRef = useRef();
 
+  const [isSafeSearch, setIsSafeSearch] = useState(() => {
+    const saved = localStorage.getItem('isSafeSearch');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem('isSafeSearch', JSON.stringify(isSafeSearch));
+  }, [isSafeSearch]);
+
 
   const {
     isCommunityOpen,
@@ -122,11 +131,11 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
 
         <div ref={searchFeed} id="searchfeed" className="flex-col w-full h-full items-center flex overflow-auto scrollbar_mod_mf">
           <div className="flex-col w-fit max-w-[1150px]">
-              <SearchResultsOptions/>
+              <SearchResultsOptions isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
 
             <div className="flex flex-row w-fit">
               <div className='w-fit px-3 max-w-[1150px] -mt-2 flex flex-row flex-grow lg:flex-grow-0 ' ref={mainfeedRef}>
-                <SearchFeed />
+                <SearchFeed isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
               </div>
 
               

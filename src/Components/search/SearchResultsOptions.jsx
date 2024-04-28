@@ -3,7 +3,7 @@ import { ChevronDoubleDownIcon, ChevronDownIcon } from "@heroicons/react/24/outl
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { useContext, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-const SearchResultsOptions = () => {
+const SearchResultsOptions = ({isSafe, setIsSafe}) => {
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -45,7 +45,7 @@ const SearchResultsOptions = () => {
                 <div id="ismature_switch_btn_search" className="flex flex-row lg:items-center h-[40px] lg:h-[80px] lg:ml-auto mr-7 font-light w-[140px]">
                     <h1 className="mr-[20px] text-white text-[14px]">Safe Search</h1>
                     <div className="-mt-2.5">
-                        <SwitchButton />
+                        <SwitchButton isSwitched={isSafe} setIsSwitched={setIsSafe} />
                     </div>
                 </div>
 
