@@ -62,7 +62,7 @@ function CommunityHeader({
   return (
     <div
       id="community-header"
-      className="w-full flex flex-col items-center justify-start mt-2 mb-3"
+      className="w-full flex flex-col items-center justify-start mt-2 mb-2"
     >
       <div
         id="community-header__banner"

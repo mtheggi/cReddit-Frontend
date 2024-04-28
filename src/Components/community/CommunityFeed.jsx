@@ -210,7 +210,7 @@ const CommunityFeed = ({ subredditName }) => {
       className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1  overflow-hidden "
     >
       {!isSinglePostSelected && (
-        <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
+        <div className="flex items-center h-10 min-h-10 mb-2 mt-1 px-2 w-full">
           <div
             id="commfeed_category_dropdown"
             ref={menuRefCateg}

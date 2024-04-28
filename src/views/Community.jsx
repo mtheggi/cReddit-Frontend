@@ -201,17 +201,17 @@ const Community = ({
           )}
         </div>
 
-        <div className="flex flex-col w-full items-center">
+        <div className="flex flex-col w-full overflow-auto scrollbar_mod_mf  items-center">
         <div
           id={`community_page__content`}
-          className="w-fit flex flex-col max-w-[1100px] mx-2 overflow-auto scrollbar_mod_mf overflow-x-hidden" >
+          className="w-fit flex flex-col max-w-[1100px] mx-2" >
      
           {subreddit && <CommunityHeader {...subreddit} />}
          
           <div className="w-full flex flex-row">
             <div
               id="community_page__content__mainfeed"
-              className="w-fit px-1 mt-2 flex flex-row flex-grow lg:flex-grow-0  "
+              className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
               ref={mainfeedRef}
             >
               {subreddit && <CommunityFeed subredditName={subreddit.name} />}
