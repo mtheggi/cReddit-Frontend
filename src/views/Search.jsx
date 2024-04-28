@@ -28,46 +28,6 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
     sidebarRef,
   } = useContext(SidebarContext);
 
-  // const navigate = useLocation();
-  // const [searchfeedScroll, setsearchfeedScroll] = useState(0);
-  // const prevPath = useRef(navigate.pathname);
-
-
-  // useEffect(() => {
-  //   if (navigate.pathname.includes("/comments/")) {
-  //     localStorage.setItem('searchfeedScroll', searchfeedScroll);
-  //     console.log('scroll saved', searchfeedScroll);
-  //   }
-  //   else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/")) {
-  //     setTimeout(() => {
-  //       searchFeed.current.scrollTop = localStorage.getItem('searchfeedScroll');
-  //     }, 10);
-  //   }
-  //   prevPath.current = navigate.pathname;
-  // }, [navigate.pathname]);
-
-
-
-  // useEffect(() => {
-  //   const mainfeedElement = document.getElementById("searchfeed");
-
-  //   const handleScroll = () => {
-
-  //     setsearchfeedScroll(mainfeedElement.scrollTop);
-  //   };
-
-  //   if (mainfeedElement) {
-  //     mainfeedElement.addEventListener("scroll", handleScroll);
-  //   }
-
-  //   return () => {
-  //     if (mainfeedElement) {
-  //       mainfeedElement.removeEventListener("scroll", handleScroll);
-  //     }
-  //   };
-  // });
-
-
 
   useEffect(() => {
     let handleClickOutside = (e) => {

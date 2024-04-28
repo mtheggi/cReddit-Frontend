@@ -134,7 +134,7 @@ const CommunityFeed = ({ subredditName }) => {
     if (
       !hasScrolledToEnd &&
       commfeedElement.scrollTop + commfeedElement.clientHeight >=
-        commfeedElement.scrollHeight - threshold
+      commfeedElement.scrollHeight - threshold
     ) {
       setPage((prevPage) => prevPage + 1);
       setHasScrolledToEnd(true);
@@ -218,9 +218,8 @@ const CommunityFeed = ({ subredditName }) => {
           >
             <div
               onClick={() => setIsOpenCateg((prev) => !prev)}
-              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${
-                isOpenCateg ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
+              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenCateg ? "bg-reddit_search_light" : ""
+                } justify-center items-center cursor-pointer`}
             >
               <p className="text-gray-500 font-semibold text-xs no-select ">
                 {selectedSort}
@@ -292,9 +291,8 @@ const CommunityFeed = ({ subredditName }) => {
             <div
               id="commfeed_view_type"
               onClick={() => setIsOpenView((prev) => !prev)}
-              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${
-                isOpenView ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
+              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
+                } justify-center items-center cursor-pointer`}
             >
               <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
               <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
@@ -328,9 +326,8 @@ const CommunityFeed = ({ subredditName }) => {
         </div>
       )}
       <div
-        className={`${
-          isSinglePostSelected ? "hidden" : ""
-        } h-1 px-2.5 flex w-full`}
+        className={`${isSinglePostSelected ? "hidden" : ""
+          } h-1 px-2.5 flex w-full`}
       >
         <Separator />
       </div>
@@ -373,15 +370,17 @@ const CommunityFeed = ({ subredditName }) => {
       {
         <div className="w-full max-h-15 mt-10">
           {loading && !isSinglePostSelected && !feedLoading && <Loading />}
-          <div className="relative w-full h-full">
-            <div className="text-gray-400 text-sm mt-1.5">
-              <p className=" text-transparent">
-                Tabgo corpus texo. Cicuta dsdsdsdddddddddddddsdsdsds
-                dsdsdsddsdsdsdsffffffffffff in quaerat caveo corpus bellicus.
-                Voluptates terror via curis deludo supra somniculosus bibo.
-              </p>
+          {
+            <div className="w-full h-6 mt-2">
+              <div className="relative w-full h-full">
+                <div className="text-gray-400 text-sm mt-1.5">
+                  <p className=" text-transparent">
+                    Tabgo corpus texo. Cicuta dsdsdsdddddddddddddsdsdsds dsdsdsddsdsdsdsffffffffffff in quaerat caveo corpus bellicus. Voluptates terror via curis deludo supra somniculosus bibo.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
       }
     </div>

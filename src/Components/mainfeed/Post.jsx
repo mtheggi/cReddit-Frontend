@@ -1,7 +1,7 @@
 import Share from "./Share";
 import CommentIcon from "./CommentIcon";
 import Vote from "./Vote";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import {
   deleteRequest,
   getRequest,
@@ -483,7 +483,9 @@ const Post = ({
                 )}
               </div>
             </div>
-          )}
+          }
+
+          
 
           {type == "Poll" && (
             <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">

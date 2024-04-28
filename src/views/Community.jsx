@@ -172,10 +172,10 @@ const Community = ({
   return (
     <div
       id="community_page"
-      className="w-full mt-14 h-full flex flex-row justify-center overflow-hidden scrollbar_mod"
+      className="w-full mt-14 h-full flex flex-row overflow-hidden scrollbar_mod"
     >
       <div
-        className={`flex flex-row w-fit xl:ml-4 lg:mr-5 min-w-60  xl:mr-2% mxl:mr-4 h-full`}
+        className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}
       >
         <div
           ref={sidebarRef}
@@ -183,7 +183,7 @@ const Community = ({
             isVisibleLeftSidebar
               ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
               : "hidden xl:flex"
-          } z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+          } z-20  w-[290px] min-w-[270px] border-r  border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
         >
           <Sidebar
             setIsCommunityOpen={setIsCommunityOpen}
@@ -200,15 +200,18 @@ const Community = ({
             />
           )}
         </div>
+
+        <div className="flex flex-col w-full items-center">
         <div
           id={`community_page__content`}
-          className="w-full flex flex-col max-w-6xl overflow-auto scrollbar_mod_mf overflow-x-hidden"
-        >
+          className="w-fit flex flex-col max-w-[1100px] mx-2 overflow-auto scrollbar_mod_mf overflow-x-hidden" >
+     
           {subreddit && <CommunityHeader {...subreddit} />}
-          <div className="w-full flex flex-row  max-w-5xl">
+         
+          <div className="w-full flex flex-row">
             <div
               id="community_page__content__mainfeed"
-              className="w-fit mxl:px-4 max-w-[900px] mt-2 flex flex-row flex-grow lg:flex-grow-0 xl:ml-0  mx-1 lg:mx-2 "
+              className="w-fit px-1 mt-2 flex flex-row flex-grow lg:flex-grow-0  "
               ref={mainfeedRef}
             >
               {subreddit && <CommunityFeed subredditName={subreddit.name} />}
@@ -223,6 +226,7 @@ const Community = ({
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

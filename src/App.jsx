@@ -89,7 +89,7 @@ function App() {
             }
           />
           {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
-          {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
+          {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
           <Route
             path="/notifications"
             element={

@@ -112,36 +112,31 @@ const DropDownMenu = ({
             <span className="items-center" style={{ pointerEvents: "none" }}>
               <ChevronDownIcon
                 data-testid="chvronUP"
-                className={`h-5 w-5 mr-2  text-gray-300 transition-transform duration-[300ms] ${
-                  isDropped ? "rotate" : ""
-                }`}
+                className={`h-5 w-5 mr-2  text-gray-300 transition-transform duration-[300ms] ${isDropped ? "rotate" : ""
+                  }`}
               />
             </span>
           </div>
         </div>
       </div>
 
-            </div >
 
-
-
-            <div className={`overflow-hidden mb-2 space-y-1 transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
-                {recentSubreddits && recentSubreddits.map((subreddit, index) => {
-                    if (!subreddit.name) {
-                        return null;
-                    }
-                    return (
-                        <NavIcon key={index} href={`/r/${subreddit.name}`} text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} >
-                            <img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' />
-                        </NavIcon>
-                    );
-                })}
-            </div>
+      <div className={`overflow-hidden mb-2 space-y-1 transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
+        {recentSubreddits && recentSubreddits.map((subreddit, index) => {
+          if (!subreddit.name) {
+            return null;
+          }
+          return (
+            <NavIcon key={index} href={`/r/${subreddit.name}`} text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} >
+              <img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' />
+            </NavIcon>
+          );
+        })}
+      </div>
 
       <div
-        className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${
-          isDropped && isCommunity ? "max-h-[600px] opacity-100" : ""
-        }`}
+        className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isCommunity ? "max-h-[600px] opacity-100" : ""
+          }`}
       >
         <CreateCommunityIcon
           setIsCommunityOpen={setIsCommunityOpen}
@@ -164,9 +159,8 @@ const DropDownMenu = ({
       </div>
 
       <div
-        className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${
-          isDropped && isResources ? "max-h-[1000px] opacity-100" : ""
-        }`}
+        className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isResources ? "max-h-[1000px] opacity-100" : ""
+          }`}
       >
         <NavIcon id={toSnakeCase("About Reddit")} href="#" text="About Reddit">
           {" "}
