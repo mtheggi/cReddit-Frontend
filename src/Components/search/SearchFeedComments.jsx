@@ -1,10 +1,11 @@
 
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 
 const SearchFeedComments = ({
     _id,
-    postId,
+    postID,
     postTitle,
     postUsername,
     postVotes,
@@ -24,6 +25,7 @@ const SearchFeedComments = ({
 
 
 }) => {
+    const navigate = useNavigate();
 
     function formatVotes(num) {
         let absoluteNum = Math.abs(num);
@@ -46,9 +48,9 @@ const SearchFeedComments = ({
 
         <div onClick={() => {
             if (communityName == null) {
-                navigate(`/u/${postUsername}/comments/${postId}`)
+                navigate(`/u/${postUsername}/comments/${postID}`)
             } else {
-                navigate(`/r/${communityName}/comments/${postId}`)
+                navigate(`/r/${communityName}/comments/${postID}`)
             }
         }} ref={lastElementRef} className="h-fit w-full flex flex-row pl-3 pr-2 py-[17px] rounded-xl items-center cursor-pointer border-[#2F383B] hover:bg-reddit_hover">
             <div className="w-full flex-col flex ">
