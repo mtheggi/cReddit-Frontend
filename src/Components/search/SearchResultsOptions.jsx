@@ -15,7 +15,7 @@ const SearchResultsOptions = () => {
     }
     return (
         <div className="flex-col ml-5 flex">
-            <div id="results_options" className="flex-col flex md:flex-row w-full mt-2.5 h-fit ">
+            <div id="results_options" className="flex-col flex lg:flex-row w-full mt-2.5 h-fit ">
                 <div className="flex flex-row w-fit h-[80px] items-center">
                     <h1 className="text-[12px] font-medium text-[#82949B] mr-4 ">SEARCH RESULTS</h1>
 
@@ -35,10 +35,14 @@ const SearchResultsOptions = () => {
                         <div onClick={() => changePath('people')} className={`w-18 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("people") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
                             <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">People</h1>
                         </div>
+
+                        <div onClick={() => changePath('hashtags')} className={`w-22 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("hashtags") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
+                            <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">hashtags</h1>
+                        </div>
                     </div>
                 </div>
 
-                <div id="ismature_switch_btn_search" className="flex flex-row md:items-center h-[40px] md:h-[80px] md:ml-auto mr-7 font-light w-[140px]">
+                <div id="ismature_switch_btn_search" className="flex flex-row lg:items-center h-[40px] lg:h-[80px] lg:ml-auto mr-7 font-light w-[140px]">
                     <h1 className="mr-[20px] text-white text-[14px]">Safe Search</h1>
                     <div className="-mt-2.5">
                         <SwitchButton />
@@ -50,7 +54,7 @@ const SearchResultsOptions = () => {
 
 
             {!location.pathname.endsWith("/people") && !location.pathname.endsWith("/communities") ?
-                <div className="flex-row flex md:-mt-1.5 items-center">
+                <div className="flex-row flex lg:-mt-1.5 items-center">
 
                     <div className="flex flex-row min-w-fit items-center mr-10">
                         <h1 className="text-[#637278] mr-4 text-[12px]">Sort by: </h1>

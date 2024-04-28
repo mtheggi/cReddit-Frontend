@@ -6,6 +6,7 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { deleteRequest, getRequest, patchRequest, postRequest } from '@/services/Requests';
 import { BookmarkIcon, EllipsisHorizontalIcon, EyeSlashIcon, FlagIcon, ExclamationTriangleIcon, ArrowLeftIcon, EyeIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../constants";
+import { useNavigate } from 'react-router-dom';
 
 
 import moment from "moment";
@@ -63,6 +64,7 @@ const Post = ({
     const [saved, setSaved] = useState(isSaved);
     const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
     const { isLoggedIn } = useContext(UserContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setEditedPollOptions(pollOptions);
@@ -280,9 +282,9 @@ const Post = ({
                         className="flex items-center w-fit"
                     >
                         {isSinglePostSelected &&
-                            <Link to="/" className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                            <div onClick={()=>navigate(-1)} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
                                 <ArrowLeftIcon className='text-white w-6 h-6' />
-                            </Link>}
+                            </div>}
                         <img src={profilePicture} alt="Logo" className={`${isSinglePostSelected ? 'w-8 h-8' : 'w-6 h-6'} rounded-full `} />
 
                         <Link

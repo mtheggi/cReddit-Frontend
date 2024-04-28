@@ -7,6 +7,8 @@ import Separator from "../sidebar/Nav-Icons/Separator";
 import SearchFeedCommunitiesRow from "./SearchFeedCommunitiesRow";
 import SearchFeedPosts from "./SearchFeedPosts";
 import Loading from "../Loading/Loading";
+import NoResults from "./NoResults";
+import SearchFeedComments from "./SearchFeedComments";
 
 
 
@@ -44,13 +46,13 @@ const SearchFeed = () => {
     useEffect(() => {
 
         // if (type == 'people')
-            setPeopleSearchResults([]);
+        setPeopleSearchResults([]);
         // else if (type == 'communities')
-            setCommunitiesSearchResults([]);
+        setCommunitiesSearchResults([]);
         // else if (type == 'comments')
-            setCommentsSearchResults([]);
+        setCommentsSearchResults([]);
         // else if (type == 'posts')
-            setPostsSearchResults([]);
+        setPostsSearchResults([]);
 
         setPage(1);
         setPathChanged(prev => (prevPath.current === location.pathname ? prev : prev + 1));
@@ -112,18 +114,26 @@ const SearchFeed = () => {
 
             <div id="search_content_map" className="flex-col max-w-[745px] flex">
                 {location.pathname.endsWith("/people") &&
-                    peopleSearchResults.map((person, index) => {
-                        if (peopleSearchResults.length === index + 1) {
-                            return <SearchFeedPeopleRow key={index} {...person} lastElementRef={lastElementRef} />
-                        }
-                        else {
-                            return <SearchFeedPeopleRow key={index} {...person} />
-                        }
+                    (( page == 1 && !isLoading && !hasMore && peopleSearchResults.length == 0)
+                        ? <NoResults query={query}/>
+                        :
+                        peopleSearchResults.map((person, index) => {
+                            if (peopleSearchResults.length === index + 1) {
+                                return <SearchFeedPeopleRow key={index} {...person} lastElementRef={lastElementRef} />
+                            }
+                            else {
+                                return <SearchFeedPeopleRow key={index} {...person} />
+                            }
 
-                    })
+                        })
+                    )
+
+
                 }
 
-                {location.pathname.endsWith("/communities") &&
+                {location.pathname.endsWith("/communities") && (( page == 1 && !isLoading && !hasMore && communitiesSearchResults.length == 0)
+                    ? <NoResults query={query}/>
+                    :
                     communitiesSearchResults.map((community, index) => {
                         if (communitiesSearchResults.length === index + 1) {
                             return <SearchFeedCommunitiesRow key={index} {...community} lastElementRef={lastElementRef} />
@@ -132,20 +142,25 @@ const SearchFeed = () => {
                             return <SearchFeedCommunitiesRow key={index} {...community} />
                         }
                     })
+                )
                 }
 
-                {location.pathname.endsWith("/posts") &&
-                    postsSearchResults.map((post, index) => {
-                        if (postsSearchResults.length === index + 1) {
-                            return <SearchFeedPosts key={index} {...post} lastElementRef={lastElementRef} />
-                        }
-                        else {
-                            return <SearchFeedPosts key={index} {...post} />
-                        }
-                    })
+                {location.pathname.endsWith("/posts") && 
+                    ((page == 1 && !isLoading && !hasMore && postsSearchResults.length == 0)
+                        ? <NoResults query={query}/>
+                        :
+                        postsSearchResults.map((post, index) => {
+                            if (postsSearchResults.length === index + 1) {
+                                return <SearchFeedPosts key={index} {...post} lastElementRef={lastElementRef} />
+                            }
+                            else {
+                                return <SearchFeedPosts key={index} {...post} />
+                            }
+                        })
+                    )
                 }
 
-                {/* {location.pathname.endsWith("/comments") &&
+                {location.pathname.endsWith("/comments") &&
                     commentsSearchResults.map((comment, index) => {
                         if (commentsSearchResults.length === index + 1) {
                             return <SearchFeedComments key={index} {...comment} lastElementRef={lastElementRef} />
@@ -154,12 +169,12 @@ const SearchFeed = () => {
                             return <SearchFeedComments key={index} {...comment} />
                         }
                     })
-                } */}
+                }
 
             </div>
 
             {isLoading && hasMore &&
-                <div className={`w-full ${page==1?'h-screen -mt-[130px]': 'h-30'} flex flex-row justify-center items-center`}>
+                <div className={`w-full ${page == 1 ? 'h-screen -mt-[130px]' : 'h-30'} flex flex-row justify-center items-center`}>
                     <Loading />
                 </div>
             }

@@ -21,6 +21,7 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
+import Plus18 from "./Components/NSFW/Plus18";
 
 
 
@@ -139,6 +140,7 @@ function App() {
             path="/*"
             element={
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+   
             }
             />
 
