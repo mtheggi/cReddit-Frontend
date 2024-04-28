@@ -30,15 +30,16 @@ const CommunityFeed = ({ subredditName }) => {
   const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
-  const { isLoggedIn } = useContext(UserContext);
   const [page, setPage] = useState(1);
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [homeFeedScroll, setHomeFeedScroll] = useState(0);
+  const [isSortChanged, setIsSortChanged] = useState(0);
   const commfeedRef = useRef();
+  const existingPost = useRef(null);
+
 
   const [selectedSort, setSelectedSort] = useState(() => {
     const storedSort = localStorage.getItem("homeSelectedSort");
@@ -49,13 +50,30 @@ const CommunityFeed = ({ subredditName }) => {
       return "Best";
     }
   });
-  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+
   const [feedLoading, setIsFeedLoading] = useState(false);
 
   const menuRefCateg = useRef();
   const menuRefView = useRef();
   const navigate = useLocation();
-  const prevSelectedSort = useRef(selectedSort);
+  const prevSort = useRef(selectedSort);
+
+
+
+  const observer = useRef();
+  const lastPostRef = useCallback(node => {
+    if (feedLoading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+        console.log("fetching more posts");
+      }
+    });
+    if (node) observer.current.observe(node);
+
+  }, [feedLoading, hasMore]);
+
 
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
@@ -71,44 +89,57 @@ const CommunityFeed = ({ subredditName }) => {
     setLoadingPost(false);
   };
 
-  useEffect(() => {
-    let isSortChanged = prevSelectedSort.current !== selectedSort;
-    let pageNum = isSortChanged ? 1 : page;
-    const getHomeFeed = async () => {
-      setLoading(true);
-      setError(false);
-      if (pageNum === 1) {
-        setIsFeedLoading(true);
-      }
 
+
+  useEffect(() => {
+    setPosts([]);
+    setPage(1);
+    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+  }, [selectedSort]);
+
+
+
+
+  useEffect(() => {
+
+    if (existingPost.current) {
+      existingPost.current = null;
+      return;
+    }
+
+    const getHomeFeed = async () => {
       try {
-        const response = await getRequest(
-          `${baseUrl}/subreddit/${subredditName}/posts?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`
-        );
-        console.log(response.data);
-        if (response.status == 200 || response.status == 201) {
-          if (isSortChanged) {
-            setPosts(response.data);
-          } else {
-            setPosts((prevPosts) => [...prevPosts, ...response.data]);
-          }
-          setHasMore(response.data.length > 0);
-          setIsFeedLoading(false);
+        setHasMore(true);
+        setIsFeedLoading(true);
+        console.log("fetching home feed");
+        const response = await getRequest(`${baseUrl}/subreddit/${subredditName}/posts?page=${page}&limit=15&sort=${selectedSort.toLowerCase()}`);
+        const status = response.status;
+        const data = response.data;
+        if (status === 200 || status === 201) {
+          setPosts(prevComments => [...prevComments, ...data]);
+          setHasMore(data.length > 0);
         } else {
-          setError(true);
+          throw new Error('Error fetching comments');
         }
       } catch (error) {
-        setError(true);
+
       } finally {
-        setLoading(false);
+        setIsFeedLoading(false);
       }
-    };
+    }
 
     if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
-      prevSelectedSort.current = selectedSort;
+      prevSort.current = selectedSort;
     }
-  }, [isLoggedIn, navigate.pathname, page, selectedSort]);
+  }, [page, isSortChanged, navigate.pathname]);
+
+
+
+
+
+
+
 
   useEffect(() => {
     const url = navigate.pathname;
@@ -123,41 +154,7 @@ const CommunityFeed = ({ subredditName }) => {
     }
   }, [navigate.pathname]);
 
-  /**
-   * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
-   * it increments the page number to load more posts.
-   * @callback handleScroll
-   */
-  const handleScroll = useCallback(() => {
-    const commfeedElement = document.getElementById("community-feed");
-    const threshold = 10;
-    if (
-      !hasScrolledToEnd &&
-      commfeedElement.scrollTop + commfeedElement.clientHeight >=
-      commfeedElement.scrollHeight - threshold
-    ) {
-      setPage((prevPage) => prevPage + 1);
-      setHasScrolledToEnd(true);
-    } else if (
-      commfeedElement.scrollTop + commfeedElement.clientHeight <
-      commfeedElement.scrollHeight
-    ) {
-      setHasScrolledToEnd(false);
-    }
-  }, [hasScrolledToEnd]);
 
-  useEffect(() => {
-    const commfeedElement = document.getElementById("community-feed");
-
-    if (commfeedElement) {
-      commfeedElement.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (commfeedElement) {
-        commfeedElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [handleScroll]);
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -332,25 +329,37 @@ const CommunityFeed = ({ subredditName }) => {
         <Separator />
       </div>
 
-      {feedLoading ? (
+      {feedLoading && page==1 ? (
         <Loading />
       ) : (
         <>
           {!isSinglePostSelected &&
-            posts.map((post, i) => (
-              <Post
-                id={post._id}
-                key={i}
-                setPosts={setPosts}
-                isSinglePostSelected={isSinglePostSelected}
-                {...post}
-                inSubreddit={true}
-              />
-            ))}
+            posts.map((post, i) => {
+              if (posts.length === i + 1) {
+                return <Post
+                  id={post._id}
+                  key={i}
+                  setPosts={setPosts}
+                  isSinglePostSelected={isSinglePostSelected}
+                  {...post}
+                  inSubreddit={true}
+                  lastPostRef={lastPostRef}
+                />
+              }
+              else {
+                return <Post
+                  id={post._id}
+                  key={i}
+                  setPosts={setPosts}
+                  isSinglePostSelected={isSinglePostSelected}
+                  {...post}
+                  inSubreddit={true}
+                />
+              }
+            })}
         </>
       )}
 
-      {/* {isSinglePostSelected && loadingPost && <Loading />} */}
 
       {isSinglePostSelected &&
         (loadingPost ? (
@@ -369,7 +378,7 @@ const CommunityFeed = ({ subredditName }) => {
 
       {
         <div className="w-full max-h-15 mt-10">
-          {loading && !isSinglePostSelected && !feedLoading && <Loading />}
+          { feedLoading && page!=1 && <Loading />}
           {
             <div className="w-full h-6 mt-2">
               <div className="relative w-full h-full">

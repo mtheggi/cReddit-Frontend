@@ -298,7 +298,7 @@ const Post = ({
   return currentIsHidden ? (
     <HiddenPost id={id} handleHidePost={handleHidePost} />
   ) : (
-    <div
+    <div ref={lastPostRef}
       id={"mainfeed_" + id + "_full"}
       className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : "hover:bg-reddit_hover"
         } ${isOpenDots ? "bg-reddit_hover" : ""
