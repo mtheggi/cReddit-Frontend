@@ -46,8 +46,8 @@ const CommunityFeed = ({ subredditName }) => {
     if (storedSort) {
       return storedSort;
     } else {
-      localStorage.setItem("homeSelectedSort", "Best");
-      return "Best";
+      localStorage.setItem("homeSelectedSort", "New");
+      return "New";
     }
   });
 
@@ -225,23 +225,11 @@ const CommunityFeed = ({ subredditName }) => {
             </div>
 
             {isOpenCateg && (
-              <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
+              <div className=" w-20 h-48 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
                 <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                   <p className="no-select">Sort by</p>
                 </div>
 
-                <div
-                  onClick={() => {
-                    setSelectedSort("Best");
-                    setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Best");
-                  }}
-                  id="commfeed_category_best"
-                  href=""
-                  className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                >
-                  <p className="no-select">Best</p>
-                </div>
 
                 <div
                   onClick={() => {
