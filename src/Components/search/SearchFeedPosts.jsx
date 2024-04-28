@@ -87,7 +87,7 @@ const SearchFeedPosts = ({
 
                 {type == "Images & Video" &&
                     <div className="ml-auto overflow-clip rounded-lg relative w-[135px] min-w-[135px] h-[95px]"  >
-                        {!content.endsWith(".mp4") ? <img src={content} alt="" className={`h-full absolute w-full object-cover rounded-lg ${(isSpoiler || isNSFW) && "blur-xl"}`} /> : <video src={content} className={`h-full w-full rounded-lg`} controls></video>}
+                        {!content.endsWith(".mp4") ? <img src={content} alt="" className={`h-full absolute w-full object-cover rounded-lg ${(isSpoiler || isNSFW) && "blur-xl"}`} /> : <video src={content} className={`h-full w-full rounded-lg ${(isSpoiler || isNSFW) && "blur-xl"}`} controls></video>}
                     </div>}
 
             </div>
