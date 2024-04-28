@@ -5,6 +5,7 @@ export const UserContext = createContext();
 
 export const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [userInfo, setUserInfo] = useState(null);
     const [userProfilePicture, setUserProfilePicture] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +30,7 @@ export const UserContextProvider = ({ children }) => {
             if (response && response.status === 200) {
                 setUser(response.data.username);
                 setUserProfilePicture(response.data.profilePicture);
-
+                setUserInfo(response.data);
             } else {
                 setUser(null);
             }
@@ -41,6 +42,7 @@ export const UserContextProvider = ({ children }) => {
     return <UserContext.Provider value={{
         user,
         setUser,
+        userInfo,
         isLoggedIn,
         setIsLoggedIn,
         userProfilePicture,

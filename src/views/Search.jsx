@@ -9,13 +9,14 @@ import { UserContext } from "@/context/UserContext";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
-// import PopularCarousel from "../Components/popular/PopularCarousel";
+import SearchFeed from "@/Components/search/SearchFeed";
 
-const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+import SearchResultsOptions from "@/Components/search/SearchResultsOptions";
+
+const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const { isLoggedIn } = useContext(UserContext);
-  const recentRef = useRef();
   const mainfeedRef = useRef();
-  const homefeedRef = useRef();
+  const searchFeed = useRef();
   const communiyCardRef = useRef();
 
 
@@ -24,61 +25,48 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     setIsCommunityOpen,
     communityButtonRef,
     userHistoryRes,
-    setUserHistoryRes,
     sidebarRef,
   } = useContext(SidebarContext);
 
-  const navigate = useLocation();
-  const [homeFeedScroll, setHomeFeedScroll] = useState(0);
-  const prevPath = useRef (navigate.pathname);
+  // const navigate = useLocation();
+  // const [searchfeedScroll, setsearchfeedScroll] = useState(0);
+  // const prevPath = useRef(navigate.pathname);
 
 
-  useEffect(() => {
-    if (navigate.pathname.includes("/comments/")) {
-      localStorage.setItem('homeFeedScroll', homeFeedScroll);
-      console.log('scroll saved', homeFeedScroll);
-    }
-    else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/"))
-    {
-      setTimeout(() => {
-        homefeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-      }, 10);
-    }
-    prevPath.current = navigate.pathname;
-  }, [navigate.pathname]);
+  // useEffect(() => {
+  //   if (navigate.pathname.includes("/comments/")) {
+  //     localStorage.setItem('searchfeedScroll', searchfeedScroll);
+  //     console.log('scroll saved', searchfeedScroll);
+  //   }
+  //   else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/")) {
+  //     setTimeout(() => {
+  //       searchFeed.current.scrollTop = localStorage.getItem('searchfeedScroll');
+  //     }, 10);
+  //   }
+  //   prevPath.current = navigate.pathname;
+  // }, [navigate.pathname]);
 
 
 
-  useEffect(() => {
-    const mainfeedElement = document.getElementById("homefeed");
+  // useEffect(() => {
+  //   const mainfeedElement = document.getElementById("searchfeed");
 
-    const handleScroll = () => {
+  //   const handleScroll = () => {
 
-      setHomeFeedScroll(mainfeedElement.scrollTop);
-    };
+  //     setsearchfeedScroll(mainfeedElement.scrollTop);
+  //   };
 
-    if (mainfeedElement) {
-      mainfeedElement.addEventListener("scroll", handleScroll);
-    }
+  //   if (mainfeedElement) {
+  //     mainfeedElement.addEventListener("scroll", handleScroll);
+  //   }
 
-    return () => {
-      if (mainfeedElement) {
-        mainfeedElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  });
+  //   return () => {
+  //     if (mainfeedElement) {
+  //       mainfeedElement.removeEventListener("scroll", handleScroll);
+  //     }
+  //   };
+  // });
 
-
-  useEffect(() => {
-    async function getHistory() {
-      const response = await getRequest(`${baseUrl}/user/history?limit=10`);
-      setUserHistoryRes(response);
-      if (response.status == 200 || response.status == 201)
-        localStorage.setItem("userHistory", JSON.stringify(response.data));
-      else localStorage.setItem("userHistory", null);
-    }
-    getHistory();
-  }, [isLoggedIn]);
 
 
   useEffect(() => {
@@ -128,9 +116,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
     const handleScroll = () => {
       clearTimeout(timer);
 
-      if (!recentRef.current.classList.contains("scrolling")) {
-        recentRef.current.classList.add("scrolling");
-      }
 
       if (!sidebarRef.current.classList.contains("scrolling")) {
         sidebarRef.current.classList.add("scrolling");
@@ -141,9 +126,6 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
       }
 
       timer = setTimeout(function () {
-        if (recentRef.current.classList.contains("scrolling")) {
-          recentRef.current.classList.remove("scrolling");
-        }
         if (sidebarRef.current.classList.contains("scrolling")) {
           sidebarRef.current.classList.remove("scrolling");
         }
@@ -153,14 +135,11 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
       }, 440);
     };
 
-    recentRef.current.addEventListener("scroll", handleScroll);
     sidebarRef.current.addEventListener("scroll", handleScroll);
     mainfeedRef.current.addEventListener("scroll", handleScroll);
 
     return () => {
-      if (recentRef.current) {
-        recentRef.current.removeEventListener('scroll', handleScroll);
-      }
+
       if (sidebarRef.current) {
         sidebarRef.current.removeEventListener('scroll', handleScroll);
       }
@@ -171,8 +150,8 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   });
   return (
 
-    <div className="w-full mt-14 h-full flex flex-row overflow-hidden">
-      <div className={`flex flex-row w-full xl:ml-4 min-w-60 h-full`}>
+    <div className="w-full mt-14 h-full flex flex-row overflow-hidden min-w-[570px]">
+      <div className={`flex flex-row w-full xl:ml-4 min-w-[570px] h-full`}>
 
         <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
           <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
@@ -181,15 +160,16 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
           {isCommunityOpen && <CreateCommunity setIsCommunityOpen={setIsCommunityOpen} communityCardRef={communiyCardRef} />}
         </div>
 
-        <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-          <div className="flex flex-row w-fit">
-            <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-              <Mainfeed />
-            </div>
+        <div ref={searchFeed} id="searchfeed" className="flex-col w-full h-full items-center flex overflow-auto scrollbar_mod_mf">
+          <div className="flex-col w-fit max-w-[1150px]">
+              <SearchResultsOptions/>
 
-            <div
-              className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-              <Recent userHistoryRes={userHistoryRes} />
+            <div className="flex flex-row w-fit">
+              <div className='w-fit px-3 max-w-[1150px] -mt-2 flex flex-row flex-grow lg:flex-grow-0 ' ref={mainfeedRef}>
+                <SearchFeed />
+              </div>
+
+              
             </div>
           </div>
         </div>
@@ -199,4 +179,4 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   );
 };
 
-export default Home;
+export default Search;

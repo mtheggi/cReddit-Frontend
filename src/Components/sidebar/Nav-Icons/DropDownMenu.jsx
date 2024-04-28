@@ -121,32 +121,22 @@ const DropDownMenu = ({
         </div>
       </div>
 
-      <div
-        className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${
-          isDropped && isRecent ? "max-h-[600px] opacity-100" : ""
-        }`}
-      >
-        {recentSubreddits &&
-          recentSubreddits.map((subreddit, index) => {
-            if (!subreddit.name) {
-              return null;
-            }
-            return (
-              <NavIcon
-                key={index}
-                href="#"
-                text={`r/${subreddit.name}`}
-                id={`sidebar_recent_icon${index}`}
-              >
-                <img
-                  src={subreddit.icon}
-                  alt={`${subreddit.name} community`}
-                  className="h-[30px] w-[32px] rounded-full"
-                />
-              </NavIcon>
-            );
-          })}
-      </div>
+            </div >
+
+
+
+            <div className={`overflow-hidden mb-2 space-y-1 transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
+                {recentSubreddits && recentSubreddits.map((subreddit, index) => {
+                    if (!subreddit.name) {
+                        return null;
+                    }
+                    return (
+                        <NavIcon key={index} href={`/r/${subreddit.name}`} text={`r/${subreddit.name}`} id={`sidebar_recent_icon${index}`} >
+                            <img src={subreddit.icon} alt={`${subreddit.name} community`} className='h-[30px] w-[32px] rounded-full' />
+                        </NavIcon>
+                    );
+                })}
+            </div>
 
       <div
         className={`overflow-hidden transition-all duration-[300ms] max-h-0 opacity-0 ${

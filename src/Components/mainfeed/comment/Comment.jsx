@@ -1,47 +1,48 @@
 import AddComment from "./AddComment";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import PostComment from "./PostComment";
 import { ChevronDownIcon, ViewColumnsIcon } from '@heroicons/react/24/outline';
 import { baseUrl } from "../../../constants";
 import { getRequest } from "../../../services/Requests";
 import NoComments from "./NoComments";
-import { submitComment } from "./CommentUtils";
 import Loading from "@/Components/Loading/Loading";
 
 const Comment = ({ postId }) => {
-
     const menuRefCateg = useRef();
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
     const [isCommenting, setIsCommenting] = useState(false);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
+    const [paginationError, setPaginationError] = useState(false);
+    const [isPaginationLoading, setIsPaginationLoading] = useState(true);
+    const [loadingAddComment, setLoadingAddComment] = useState(false);
+    const [isSortChanged, setIsSortChanged] = useState(0);
+    const observer = useRef();
+
+    const lastCommentElementRef = useCallback(node => {
+        if (isPaginationLoading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                setPage(prevPage => prevPage + 1);
+               
+            }
+        });
+        if (node) observer.current.observe(node);
+
+    }, [isPaginationLoading, hasMore]);
+
     const [selectedSort, setSelectedSort] = useState(() => {
         const storedSort = localStorage.getItem('commentsSelectedSort');
         if (storedSort) {
             return storedSort;
         } else {
-            localStorage.setItem('commentsSelectedSort', 'Best');
-            return 'Best';
+            localStorage.setItem('commentsSelectedSort', 'New');
+            return 'New';
         }
     });
-    const [isLoading, setIsLoading] = useState(false);
-
-    const onAddComment = () => {
-        setIsCommenting(false);
-    }
-
-    useEffect(() => {
-        const getSinglepostComments = async (selectedPostId) => {
-            setIsLoading(true);
-            const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?limit=50&sort=${selectedSort.toLowerCase()}`)
-            if (response.status == 200 || response.status == 201) {
-                setPostComments([...response.data]);
-            }
-            setIsLoading(false);
-        }
-
-        getSinglepostComments(postId);
-    }, [selectedSort]);
-
+    const prevSort = useRef(selectedSort);
 
     useEffect(() => {
         let closeDropdown = (e) => {
@@ -74,7 +75,42 @@ const Comment = ({ postId }) => {
                 mainfeedElement.removeEventListener("scroll", handleScroll);
             }
         };
-    }, []);
+    });
+
+    const fetchComments = async (postId, page, sort) => {
+        const response = await getRequest(`${baseUrl}/post/${postId}/comments?page=${page}&limit=5&sort=${sort.toLowerCase()}`);
+        return response;
+    }
+
+    useEffect(() => {
+        setPostComments([]);
+        setPage(1);
+        setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    }, [selectedSort]);
+
+
+    useEffect(() => {
+        const getSinglepostComments = async () => {
+            try {
+                setHasMore(true);
+                setIsPaginationLoading(true);
+                const { status, data } = await fetchComments(postId, page, selectedSort);
+                if (status === 200 || status === 201) {
+                    setPostComments(prevComments => [...prevComments, ...data]);
+                    setHasMore(data.length >= 5);
+                } else {
+                    throw new Error('Error fetching comments');
+                }
+            } catch (error) {
+                setPaginationError(true);
+            } finally {
+                setIsPaginationLoading(false);
+            }
+        }
+
+        getSinglepostComments();
+        prevSort.current = selectedSort;
+    }, [page, isSortChanged]);
 
 
 
@@ -97,21 +133,22 @@ const Comment = ({ postId }) => {
                     </div>
 
                     {isOpenCateg && (
-                        <div id="tempID" className=" w-20 h-60 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
+                        <div id="tempID" className=" w-20 h-48 z-20 bg-reddit_search absolute mt-2.5 -ml-1 text-white text-sm pt-2.5  rounded-lg  font-extralight flex flex-col">
                             <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                                 <p className="no-select">Sort by</p>
                             </div>
-
+{/* 
                             <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
                                 id="mainfeed_category_best"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
                                 <p className="no-select">Best</p>
-                            </div>
+                            </div> */}
+
 
                             <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
-                                id="mainfeed_category_hot"
+                                id="mainfeed_category_top"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
@@ -127,7 +164,7 @@ const Comment = ({ postId }) => {
                             </div>
 
                             <div onClick={() => { setSelectedSort("Old"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Old"); }}
-                                id="mainfeed_category_top"
+                                id="mainfeed_category_old"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
                             >
@@ -138,31 +175,46 @@ const Comment = ({ postId }) => {
                 </div>
                 <AddComment postId={postId}
                     setPostComments={setPostComments}
-                    onAddComment={onAddComment} isCommenting={isCommenting}
+                    isCommenting={isCommenting}
                     setIsCommenting={setIsCommenting}
-                    selectedSort={selectedSort}
-                    setIsLoading={setIsLoading} />
+                    setIsPaginationLoading={setIsPaginationLoading}
+                    setLoadingAddComment={setLoadingAddComment}
+                />
 
                 {
-                    !isLoading ? (
-                        <>
-                            {postComments.map((comment, index) => (
-                                <PostComment
+
+                    <>
+                        { !loadingAddComment &&  postComments.map((comment, index) => {
+                            if (postComments.length === index + 1) {
+                                return <PostComment
+                                    key={index}
+                                    id={comment._id}
+                                    {...comment}
+                                    lastCommentElementRef={lastCommentElementRef}
+                                />
+                            }
+                            else {
+                                return <PostComment
                                     key={index}
                                     id={comment._id}
                                     {...comment}
                                 />
-                            ))}
+                            }
+                        })}
 
-                            {postComments.length === 0 && (
-                                <NoComments />
+                        {(hasMore && isPaginationLoading || loadingAddComment) && <div className="w-full flex flex-row h-full mt-8">
+                            {(
+                                <Loading />
                             )}
-                        </>
-                    ) : (
-                        <div className="w-full flex flex-row h-full mt-4">
-                            <Loading />
-                        </div>
-                    )}
+                        </div>}
+
+                        {
+                            page === 1 && !hasMore && postComments.length === 0 &&
+                            <NoComments />
+                        }
+
+                    </>
+                }
             </div>
         </div>
 
