@@ -68,12 +68,13 @@ const IOSSwitch = styled((props) => (
  * @param {function} props.setIsSwitched - Function to update the state of the switch.
  * @returns {JSX.Element} - SwitchButton component.
  */
-const SwitchButton = ({ isSwtched, setIsSwitched }) => {
+const SwitchButton = ({ isSwitched, setIsSwitched }) => {
     return (<>
         <FormControlLabel
-            control={<IOSSwitch sx={{ mt: 1, mb: 0, mr: -2 }} />}
+        
+            control={<IOSSwitch checked={isSwitched} sx={{ mt: 1, mb: 0, mr: -2 }} />}
             label=""
-            onClick={() => setIsSwitched(!isSwtched)}
+            onClick={() => setIsSwitched(prev=>!prev)}
         />
 
     </>

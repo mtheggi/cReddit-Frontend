@@ -16,17 +16,15 @@ import PostComment from "./PostComment";
  * @param {string} props.postId - The ID of the post to add a comment to.
  * @param {boolean} props.isCommenting - Whether the user is currently adding a comment.
  * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
- * @param {Function} props.onAddComment - A function to call when a comment is added.
  */
 
 function CommentSection({
   postId,
   isCommenting,
   setIsCommenting,
-  onAddComment,
   setPostComments,
-  selectedSort,
-  setIsLoading
+  setIsPaginationLoading,
+  setLoadingAddComment
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -58,13 +56,6 @@ function CommentSection({
     setImage(e.target.files[0]);
   }
 
-  const getSinglePostComments = async (selectedPostId) => {
-    const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
-    if (response.status == 200 || response.status == 201) {
-      setPostComments(response.data);
-    }
-  }
-
 
   useEffect(() => {
     if (isCommenting) {
@@ -72,18 +63,21 @@ function CommentSection({
     }
   }, [isCommenting]);
 
-  async function addComment() {
+
+  const addComment = async() => {
+    setIsPaginationLoading(true);
+    setLoadingAddComment(true);
     if (!(image || (comment && comment.trim() !== ""))) return;
-    setIsLoading(true);
     const newComment = await submitComment(postId, image, comment);
     if (!newComment) return;
-    setIsLoading(false);
-    onAddComment(newComment);
-    await getSinglePostComments(postId);
+    setPostComments(prev=>[newComment, ...prev]);
+    setIsPaginationLoading(false);
+    setLoadingAddComment(false);
     setComment("");
     setImage(null);
     setIsCommenting(false);
   }
+
   const dropzoneRef = useRef();
 
   return (
@@ -134,7 +128,7 @@ function CommentSection({
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
           <div id="submit_comment"
-            onClick={addComment}
+            onClick={()=>addComment()}
             className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(image || (comment && comment.trim() !== "")) ? "cursor-pointer" : "cursor-not-allowed"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}

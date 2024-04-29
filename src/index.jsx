@@ -6,6 +6,7 @@ import { Client_ID, NODE_ENV } from './constants.js'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { UserContextProvider } from './context/UserContext.jsx'
 import { ServerContextProvider } from './context/ServerContext.jsx'
+import { NavbarContextProvider } from './context/NavbarContext.jsx';
 import { StrictMode } from 'react';
 import { NotificationProvider } from './Components/notifications/NotificationContext';
 axios.interceptors.request.use(config => {
@@ -27,15 +28,17 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
 
     <GoogleOAuthProvider clientId={Client_ID} >
-      <NotificationProvider>
-        <ServerContextProvider>
-          <UserContextProvider>
-            <StrictMode>
+      <NavbarContextProvider>
+        <NotificationProvider>
+          <ServerContextProvider>
+            <UserContextProvider>
+
               <App />
-            </StrictMode>
-          </UserContextProvider>
-        </ServerContextProvider>
-      </NotificationProvider>
+
+            </UserContextProvider>
+          </ServerContextProvider>
+        </NotificationProvider>
+      </NavbarContextProvider>
     </GoogleOAuthProvider >,
   )
 })

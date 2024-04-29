@@ -5,6 +5,7 @@ import "./index.css";
 import Navbar from "./Components/navbar/Navbar";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
+import Search from "./views/Search"
 import { useContext, useState, useRef } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -20,7 +21,9 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
-import MyProfile from "./views/MyProfile";
+import Plus18 from "./Components/NSFW/Plus18";
+
+
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -42,9 +45,8 @@ function App() {
         )}
         {!isNotFound && (
           <div
-            className={`fixed inset-0 bg-black opacity-50 z-10 ${
-              isVisibleLeftSidebar ? "block" : "hidden"
-            }`}
+            className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
+              }`}
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
@@ -86,7 +88,7 @@ function App() {
             }
           />
           {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
-          {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
+          {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
           <Route
             path="/notifications"
             element={
@@ -109,23 +111,47 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route path="/r/:name" element={<Community />} />
           <Route
-            path="/*"
-            element={
-              <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
-            }
-          />
-          <Route
-            path="/user/:username/:page?"
+            path="/r/:name"
             element={
               <SidebarContextProvider>
-                <OthersProfile
+                <Community
                   isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                 />
               </SidebarContextProvider>
+            }
+          />
+
+          <Route
+            path="/user/:username/:page?"
+            element={
+              <SidebarContextProvider>
+                <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route path="/chat" element={<Chat />} />
+          <Route
+            path="/*"
+            element={
+              <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+
             }
           />
           <Route
@@ -140,7 +166,6 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route path="/chat" element={<Chat />} />
         </Routes>
       </div>
     </Router>
