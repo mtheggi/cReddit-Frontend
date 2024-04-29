@@ -20,10 +20,7 @@ const SearchFeedComments = ({
     commentCount,
     commentPicture,
     content,
-    type,
     lastElementRef
-
-
 }) => {
     const navigate = useNavigate();
 
