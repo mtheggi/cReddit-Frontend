@@ -14,7 +14,7 @@ const ThreadsIcon = () => {
     const [isOpenThreads, setIsOpenThreads] = useState(false);
 
     return (
-        <div className={`flex flex-row h-[50px] p-3 justify-between hover:bg-reddit_dark_Chat_hover ${isOpenThreads ? "bg-reddit_dark_Chat_hover" : ""}`}
+        <div id="open-threads" data-testid="open-threads" className={`flex flex-row h-[50px] p-3 justify-between hover:bg-reddit_dark_Chat_hover ${isOpenThreads ? "bg-reddit_dark_Chat_hover" : ""}`}
             onClick={() => { setIsOpenThreads(prev => !prev) }}
         >
             <div className="flex flex-row w-[100px] justify-between items-center" >
