@@ -36,8 +36,8 @@ const ProfileFeed = ({ userName, selectedPage }) => {
         if (storedSort) {
             return storedSort;
         } else {
-            localStorage.setItem('homeSelectedSort', 'Best');
-            return 'Best';
+            localStorage.setItem('homeSelectedSort', 'New');
+            return 'New';
         }
     });
     const [page, setPage] = useState(1);
@@ -258,15 +258,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                             <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                                 <p className="no-select">Sort by</p>
                             </div>
-                            {selectedPage !== 'comments' && (
-                                <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Best"); }}
-                                    id="mainfeed_category_best"
-                                    href=""
-                                    className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                                >
-                                    <p className="no-select">Best</p>
-                                </div>)
-                            }
+                      
 
                             <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
                                 id="mainfeed_category_hot"
