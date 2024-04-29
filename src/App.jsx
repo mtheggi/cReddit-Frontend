@@ -22,6 +22,7 @@ import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import Plus18 from "./Components/NSFW/Plus18";
+import MyProfile from "./views/MyProfile";
 
 
 

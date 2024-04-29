@@ -33,6 +33,7 @@ const MyProfile = ({
   const [isNSFWAccount, setIsNSFWAccount] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const [selectedPage, setSelectedPage] = useState("overview");
+  const [isNotFound, setIsNotFound] = useState(false);
   const recentRef = useRef();
   const mainfeedRef = useRef();
   const communiyCardRef = useRef();
@@ -51,13 +52,14 @@ const MyProfile = ({
   useEffect(() => {
     const username = urlParameters.username;
     const page = urlParameters.page;
-    if (userInfo && username === userInfo.username) {
-      // if username == user.username , then it should be my profile not others .
-      // to view my profile , i should be loggedin , so user is not null, and username in the route is equal to mine .
-      setIsMyProfile(true);
-      setIsOthersProfile(false);
-      return;
+    if (isLoggedIn) {
+      if (!(userInfo && username === userInfo.username)) {
+        navigate(`/user/${username}`);
+      }
+    } else {
+      navigate(`/user/${username}`);
     }
+
     if (
       !(
         typeof page === "undefined" ||
@@ -91,7 +93,7 @@ const MyProfile = ({
         // TODO : check NSFW
         setIsNSFWAccount(true);
       } else {
-        setIsOthersProfile(false);
+        setIsNotFound(true);
       }
       setIsProfileLoading(false);
     };
@@ -100,16 +102,11 @@ const MyProfile = ({
   }, [location]);
 
   useEffect(() => {
-    const username = urlParameters.username;
-    if (!isOthersProfile) {
-      if (ismyProfile) {
-        navigate(`/my-user/${username}`);
-      } else {
-        console.log("invalid route");
-        navigate(`/user/${username}`);
-      }
+    if (isNotFound) {
+      navigate('/404');
     }
-  }, [isOthersProfile]);
+
+  }, [isNotFound]);
 
   useEffect(() => {
     let handleClickOutside = (e) => {
@@ -223,11 +220,10 @@ const MyProfile = ({
             >
               <div
                 ref={sidebarRef}
-                className={`h-full ${
-                  isVisibleLeftSidebar
-                    ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
-                    : "hidden xl:flex"
-                } z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+                className={`h-full ${isVisibleLeftSidebar
+                  ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
+                  : "hidden xl:flex"
+                  } z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
               >
                 <Sidebar
                   setIsCommunityOpen={setIsCommunityOpen}
@@ -253,28 +249,24 @@ const MyProfile = ({
                       ref={mainfeedRef}
                     >
                       <MyProfileHead
-                        imgSrc={otherUserInfo?.profilePicture}
-                        displayName={otherUserInfo?.displayName}
-                        userName={otherUserInfo?.username}
+                        imgSrc={userInfo?.profilePicture}
+                        displayName={userInfo?.displayName}
+                        userName={userInfo?.username}
                       />
                       <MyButtonsRow
                         selectedPage={selectedPage}
                         setSelectedPage={setSelectedPage}
-                        userName={otherUserInfo?.username}
+                        userName={userInfo?.username}
                       />
 
-                      {isProfileLoading ? (
-                        isBlocked ? (
-                          <Blocked userName={otherUserInfo?.username} />
-                        ) : (
-                          <MyProfileFeed
-                            userName={otherUserInfo?.username}
-                            selectedPage={selectedPage}
-                          />
-                        )
-                      ) : (
+                      {!isProfileLoading ? (
+                        <MyProfileFeed
+                          userName={userInfo?.username}
+                          selectedPage={selectedPage}
+                        />
+                      ) :
                         <Loading />
-                      )}
+                      }
                     </div>
 
                     <div
@@ -282,7 +274,7 @@ const MyProfile = ({
                       ref={recentRef}
                     >
                       <MyUsercard
-                        otherUserInfo={otherUserInfo}
+                        otherUserInfo={userInfo}
                         isBlocked={isBlocked}
                         setIsBlocked={setIsBlocked}
                       />

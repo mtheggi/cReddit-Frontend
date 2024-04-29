@@ -1,3 +1,4 @@
+import React from 'react';
 const MyProfileHead = ({ imgSrc, displayName, userName }) => {
   return (
     <div className="flex w-full flex-row items-center justify-start h-22 p-4 mt-4">
