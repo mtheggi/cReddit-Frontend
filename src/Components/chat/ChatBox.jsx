@@ -2,6 +2,7 @@ import { useState } from "react";
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { Cog6ToothIcon, CameraIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import InputEmoji from "react-input-emoji"
+import Message from "./Message";
 const ChatBox = () => {
     const [isOpenSetting, setIsOpenSetting] = useState(false);
     const [textMessage, setTextMessage] = useState("");
@@ -27,8 +28,12 @@ const ChatBox = () => {
             </div>
             <Separator />
 
-            {/* ChatBox chat Messages */}
-
+            <Message Message="Hello" isFirstMessage={true} />
+            <Message Message="can you get me a new piece of shit" isFirstMessage={false} />
+            <Message Message="Yes, I can eat shit" isFirstMessage={false} />
+            <Message Message="can I fix him" isFirstMessage={true} />
+            <Message Message="I need to get married" isFirstMessage={false} />
+            <Message Message="Hello" isFirstMessage={false} />
 
 
             <div className="flex flex-row p-1 justify-center items-center">
