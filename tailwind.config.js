@@ -40,6 +40,7 @@ export default {
         reddit_light_undo: "#223237",
         reddit_Blocked: "#e5b60b",
         reddit_Blocked_hover: "#fadb61",
+        reddit_dark_Chat: "#080808"
       },
       gridTemplateColumns: {
         16: "repeat(16, minmax(0, 1fr))",

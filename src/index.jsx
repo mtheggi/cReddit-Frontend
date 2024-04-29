@@ -9,6 +9,7 @@ import { ServerContextProvider } from './context/ServerContext.jsx'
 import { NavbarContextProvider } from './context/NavbarContext.jsx';
 import { StrictMode } from 'react';
 import { NotificationProvider } from './Components/notifications/NotificationContext';
+import { ChatContextProvider } from './context/ChatContext.jsx';
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
   return config;
@@ -28,17 +29,19 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
 
     <GoogleOAuthProvider clientId={Client_ID} >
-      <NavbarContextProvider>
-        <NotificationProvider>
-          <ServerContextProvider>
-            <UserContextProvider>
+      <ChatContextProvider>
+        <NavbarContextProvider>
+          <NotificationProvider>
+            <ServerContextProvider>
+              <UserContextProvider>
 
-              <App />
+                <App />
 
-            </UserContextProvider>
-          </ServerContextProvider>
-        </NotificationProvider>
-      </NavbarContextProvider>
+              </UserContextProvider>
+            </ServerContextProvider>
+          </NotificationProvider>
+        </NavbarContextProvider>
+      </ChatContextProvider>
     </GoogleOAuthProvider >,
   )
 })
