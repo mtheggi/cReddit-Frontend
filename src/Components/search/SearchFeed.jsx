@@ -9,16 +9,18 @@ import SearchFeedPosts from "./SearchFeedPosts";
 import Loading from "../Loading/Loading";
 import NoResults from "./NoResults";
 import SearchFeedComments from "./SearchFeedComments";
+import SearchFeedHashtags from "./SearchFeedHashtags";
 
 
 
 
-const SearchFeed = ({isSafe, setIsSafe}) => {
+const SearchFeed = ({ isSafe, setIsSafe }) => {
     const location = useLocation();
     const [peopleSearchResults, setPeopleSearchResults] = useState([]);
     const [communitiesSearchResults, setCommunitiesSearchResults] = useState([]);
     const [commentsSearchResults, setCommentsSearchResults] = useState([]);
     const [postsSearchResults, setPostsSearchResults] = useState([]);
+    const [hashtagsSearchResults, setHashtagsSearchResults] = useState([]);
     const { query } = useParams();
     const { type } = useParams();
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +28,7 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
     const [page, setPage] = useState(1);
     const [pathChanged, setPathChanged] = useState(0);
     const prevPath = useRef(location.pathname);
-    const prevSafe=useRef(isSafe);
+    const prevSafe = useRef(isSafe);
 
     const observer = useRef();
     const lastElementRef = useCallback(node => {
@@ -44,21 +46,31 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
 
 
 
+
     useEffect(() => {
-
-        // if (type == 'people')
         setPeopleSearchResults([]);
-        // else if (type == 'communities')
         setCommunitiesSearchResults([]);
-        // else if (type == 'comments')
         setCommentsSearchResults([]);
-        // else if (type == 'posts')
         setPostsSearchResults([]);
-
+        setHashtagsSearchResults([]);
         setPage(1);
-        setPathChanged(prev => (prevPath.current !== location.pathname || prevSafe!==isSafe ? prev+1 : prev ));
-        console.log("empty results");
-    }, [location.pathname, isSafe]);
+        setPathChanged(prev => (prevPath.current !== location.pathname ? prev + 1 : prev));
+        console.log("deleted")
+    }, [location.pathname]);
+
+
+    useEffect(() => {
+        if (prevSafe.current != isSafe) {
+            setPeopleSearchResults([]);
+            setCommunitiesSearchResults([]);
+            setCommentsSearchResults([]);
+            setPostsSearchResults([]);
+            setHashtagsSearchResults([]);
+            setPage(1);
+            setPathChanged(prev => (prevPath.current !== location.pathname ? prev + 1 : prev));
+            console.log("deleted")
+        }
+    }, [isSafe])
 
 
 
@@ -70,7 +82,7 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
             try {
                 setHasMore(true);
                 setIsLoading(true);
-                const response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=false`);
+                const response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=true`);
                 if (response.status == 200 || response.status == 201) {
                     if (type == "people") {
                         setPeopleSearchResults(prevResults => [...prevResults, ...response.data]);
@@ -86,7 +98,10 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
                     else if (type == "comments") {
                         setCommentsSearchResults(prevResults => [...prevResults, ...response.data]);
                     }
-                    setHasMore(response.data.length >= 9);
+                    else if (type == "hashtags") {
+                        setHashtagsSearchResults(prevResults => [...prevResults, ...response.data]);
+                    }
+                    setHasMore(response.data.length > 0);
                 }
             } catch (error) {
 
@@ -95,10 +110,11 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
                 setIsLoading(false);
             }
         }
-        if (location.pathname.includes("search") && (location.pathname.endsWith("/people") || location.pathname.endsWith("/communities") || location.pathname.endsWith("/posts") || location.pathname.endsWith("/comments"))) {
+        if (location.pathname.includes("search") && (location.pathname.endsWith("/people") || location.pathname.endsWith("/communities") || location.pathname.endsWith("/posts") || location.pathname.endsWith("/comments") || location.pathname.endsWith("/hashtags"))) {
             getSearchResults(query);
             prevPath.current = location.pathname;
-            prevSafe.current=isSafe;
+            prevSafe.current = isSafe;
+            console.log("fetched")
         }
     }, [page, pathChanged]);
 
@@ -115,8 +131,8 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
 
             <div id="search_content_map" className="flex-col max-w-[745px] flex">
                 {location.pathname.endsWith("/people") &&
-                    (( page == 1 && !isLoading && !hasMore && peopleSearchResults.length == 0)
-                        ? <NoResults query={query}/>
+                    ((page == 1 && !isLoading && !hasMore && peopleSearchResults.length == 0)
+                        ? <NoResults query={query} />
                         :
                         peopleSearchResults.map((person, index) => {
                             if (peopleSearchResults.length === index + 1) {
@@ -132,8 +148,8 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
 
                 }
 
-                {location.pathname.endsWith("/communities") && (( page == 1 && !isLoading && !hasMore && communitiesSearchResults.length == 0)
-                    ? <NoResults query={query}/>
+                {location.pathname.endsWith("/communities") && ((page == 1 && !isLoading && !hasMore && communitiesSearchResults.length == 0)
+                    ? <NoResults query={query} />
                     :
                     communitiesSearchResults.map((community, index) => {
                         if (communitiesSearchResults.length === index + 1) {
@@ -146,9 +162,9 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
                 )
                 }
 
-                {location.pathname.endsWith("/posts") && 
+                {location.pathname.endsWith("/posts") &&
                     ((page == 1 && !isLoading && !hasMore && postsSearchResults.length == 0)
-                        ? <NoResults query={query}/>
+                        ? <NoResults query={query} />
                         :
                         postsSearchResults.map((post, index) => {
                             if (postsSearchResults.length === index + 1) {
@@ -168,6 +184,17 @@ const SearchFeed = ({isSafe, setIsSafe}) => {
                         }
                         else {
                             return <SearchFeedComments key={index} {...comment} />
+                        }
+                    })
+                }
+
+                {location.pathname.endsWith("/hashtags") &&
+                    hashtagsSearchResults.map((hashtag, index) => {
+                        if (hashtagsSearchResults.length === index + 1) {
+                            return <SearchFeedHashtags key={index} {...hashtag} lastElementRef={lastElementRef} />
+                        }
+                        else {
+                            return <SearchFeedHashtags key={index} {...hashtag} />
                         }
                     })
                 }
