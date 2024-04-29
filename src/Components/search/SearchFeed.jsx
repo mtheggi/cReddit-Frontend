@@ -101,7 +101,7 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
                     else if (type == "hashtags") {
                         setHashtagsSearchResults(prevResults => [...prevResults, ...response.data]);
                     }
-                    setHasMore(response.data.length > 0);
+                    setHasMore(response.data.length >= 9);
                 }
             } catch (error) {
 
@@ -131,7 +131,7 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
 
             <div id="search_content_map" className="flex-col max-w-[745px] flex">
                 {location.pathname.endsWith("/people") &&
-                    ((page == 1 && !isLoading && !hasMore && peopleSearchResults.length == 0)
+                    ((page == 1 && !isLoading && !hasMore && peopleSearchResults.length === 0)
                         ? <NoResults query={query} />
                         :
                         peopleSearchResults.map((person, index) => {
@@ -148,7 +148,7 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
 
                 }
 
-                {location.pathname.endsWith("/communities") && ((page == 1 && !isLoading && !hasMore && communitiesSearchResults.length == 0)
+                {location.pathname.endsWith("/communities") && ((page == 1 && !isLoading && !hasMore && communitiesSearchResults.length === 0)
                     ? <NoResults query={query} />
                     :
                     communitiesSearchResults.map((community, index) => {
@@ -163,7 +163,7 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
                 }
 
                 {location.pathname.endsWith("/posts") &&
-                    ((page == 1 && !isLoading && !hasMore && postsSearchResults.length == 0)
+                    ((page == 1 && !isLoading && !hasMore && postsSearchResults.length === 0)
                         ? <NoResults query={query} />
                         :
                         postsSearchResults.map((post, index) => {
@@ -178,25 +178,33 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
                 }
 
                 {location.pathname.endsWith("/comments") &&
-                    commentsSearchResults.map((comment, index) => {
-                        if (commentsSearchResults.length === index + 1) {
-                            return <SearchFeedComments key={index} {...comment} lastElementRef={lastElementRef} />
-                        }
-                        else {
-                            return <SearchFeedComments key={index} {...comment} />
-                        }
-                    })
+                    ((page == 1 && !isLoading && !hasMore && commentsSearchResults.length === 0)
+                        ? <NoResults query={query} />
+                        :
+                        commentsSearchResults.map((comment, index) => {
+                            if (commentsSearchResults.length === index + 1) {
+                                return <SearchFeedComments key={index} {...comment} lastElementRef={lastElementRef} />
+                            }
+                            else {
+                                return <SearchFeedComments key={index} {...comment} />
+                            }
+                        })
+                    )
                 }
 
                 {location.pathname.endsWith("/hashtags") &&
-                    hashtagsSearchResults.map((hashtag, index) => {
-                        if (hashtagsSearchResults.length === index + 1) {
-                            return <SearchFeedHashtags key={index} {...hashtag} lastElementRef={lastElementRef} />
-                        }
-                        else {
-                            return <SearchFeedHashtags key={index} {...hashtag} />
-                        }
-                    })
+                    ((page == 1 && !isLoading && !hasMore && hashtagsSearchResults.length === 0)
+                        ? <NoResults query={query} />
+                        :
+                        hashtagsSearchResults.map((hashtag, index) => {
+                            if (hashtagsSearchResults.length === index + 1) {
+                                return <SearchFeedHashtags key={index} {...hashtag} lastElementRef={lastElementRef} />
+                            }
+                            else {
+                                return <SearchFeedHashtags key={index} {...hashtag} />
+                            }
+                        })
+                    )
                 }
 
             </div>

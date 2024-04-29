@@ -12,12 +12,17 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
     const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'Relevance');
     const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
     const [isOpenSortType, setIsOpenSortType] = useState(false);
+    const [isOpenSortTime, setIsOpenSortTime] = useState(false);
     const sortTypeRef = useRef();
+    const sortTimeRef = useRef();
 
     useEffect(() => {
         let closeDropdown = (e) => {
             if (sortTypeRef.current && !sortTypeRef.current.contains(e.target)) {
                 setIsOpenSortType(false);
+            }
+            if (sortTimeRef.current && !sortTimeRef.current.contains(e.target)) {
+                setIsOpenSortTime(false);
             }
         };
         document.addEventListener("click", closeDropdown);
@@ -38,12 +43,12 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
         navigate(newPathname);
     }
     return (
-        <div className="flex-col ml-5 flex">
-            <div id="results_options" className="flex-col flex lg:flex-row w-full mt-2.5 h-fit ">
-                <div className="flex flex-row w-fit h-[80px] items-center">
-                    <h1 className="text-[12px] font-medium text-[#82949B] mr-4 ">SEARCH RESULTS</h1>
+        <div className="flex-col ml-[20px] mr-2 flex">
+            <div id="results_options" className="flex-col flex lg:flex-row w-full mt-2.5 h-fit">
+                <div className="flex flex-row  w-full md:w-fit h-[100px] mmsm:h-[80px] mmsm:items-center">
+                    <h1 className="text-[12px] md:block hidden font-medium text-[#82949B] mr-4 ">SEARCH RESULTS</h1>
 
-                    <div className="flex space-x-6 overflow-x-auto flex-row">
+                    <div className="flex space-x-7  md:space-x-6 md:w-fit w-full xs:justify-between md:justify-start overflow-x-auto flex-wrap flex-row">
                         <div onClick={() => changePath('posts')} className={`w-16 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("posts") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
                             <h1 id="posts_option" className="text-[14px] font-medium text-gray-200">Posts</h1>
                         </div>
@@ -81,42 +86,47 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
                 <div className="flex-row flex lg:-mt-1.5 items-center">
 
                     <div className="flex flex-row min-w-fit items-center mr-10">
-                        <h1 className="text-[#637278] mr-4 text-[12px]">Sort by: </h1>
 
-                        <div onClick={()=>{e.stopPropagation(); setIsOpenSortType(prev => !prev)}} className={`flex relative flex-row justify-center items-center w-[122px] h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl`}>
+                        <div ref={sortTypeRef} className="flex relative flex-row min-w-fit items-center ">
+                            <h1 className="text-[#637278] mr-4 min-w-fit text-[12px]">Sort by: </h1>
 
-                            {sortType == "Relevance" &&
-                                <svg rpl="" fill="#82949B" height="16" icon_name="best-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M16 10.011v-.445A10.264 10.264 0 0 0 10.273.221L10 .087l-.273.134A10.263 10.263 0 0 0 4 9.566v.445a3.727 3.727 0 0 0-3 3.7v3.141A1.14 1.14 0 0 0 2.125 18h15.75A1.14 1.14 0 0 0 19 16.852v-3.141a3.727 3.727 0 0 0-3-3.7ZM2.25 16.75v-3.039A2.493 2.493 0 0 1 4 11.3v5.45H2.25Zm12.5 0h-9.5V9.566A9.037 9.037 0 0 1 10 1.483a9.037 9.037 0 0 1 4.75 8.083v7.184Zm3 0H16V11.3a2.493 2.493 0 0 1 1.75 2.416v3.034ZM7 18.75h6V20H7v-1.25ZM7 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm4.75 0a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z"></path>
+                            <div onClick={() => { setIsOpenSortType(prev => !prev) }} className={`flex  flex-row justify-center items-center ${sortType == "Most Comments" ? 'w-[145px]' : 'w-[122px] '} h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl`}>
+
+                                {sortType == "Relevance" &&
+                                    <svg rpl="" fill="#82949B" height="16" icon_name="best-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M16 10.011v-.445A10.264 10.264 0 0 0 10.273.221L10 .087l-.273.134A10.263 10.263 0 0 0 4 9.566v.445a3.727 3.727 0 0 0-3 3.7v3.141A1.14 1.14 0 0 0 2.125 18h15.75A1.14 1.14 0 0 0 19 16.852v-3.141a3.727 3.727 0 0 0-3-3.7ZM2.25 16.75v-3.039A2.493 2.493 0 0 1 4 11.3v5.45H2.25Zm12.5 0h-9.5V9.566A9.037 9.037 0 0 1 10 1.483a9.037 9.037 0 0 1 4.75 8.083v7.184Zm3 0H16V11.3a2.493 2.493 0 0 1 1.75 2.416v3.034ZM7 18.75h6V20H7v-1.25ZM7 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm4.75 0a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z"></path>
+                                    </svg>}
+
+                                {sortType == "Hot" && <svg rpl="" fill="#82949B" height="17" icon-name="hot-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10.328.454 9.956.311l-.283.143C8.785.9 1 5.056 1 12.225c0 4.243 3.957 7.7 8.849 7.768A.979.979 0 0 0 9.99 20H10c4.962 0 9-3.488 9-7.775C19 5.056 11.215.9 10.328.454ZM12.5 17.789a3.699 3.699 0 0 1-2.854.945 3.48 3.48 0 0 1-2.457-1.37 3.945 3.945 0 0 1-.764-3.052c.441-2.639 2.75-4.38 3.576-4.926.928.611 3.65 2.674 3.65 5.818a3.469 3.469 0 0 1-1.151 2.585Zm1.64-.057c.49-.754.753-1.633.76-2.532 0-4.268-4.069-6.79-4.537-7.066l-.415-.184-.315.187c-.638.377-3.852 2.436-4.442 5.964A5.18 5.18 0 0 0 6 17.8a6.4 6.4 0 0 1-3.75-5.575c0-5.969 6.4-9.788 7.75-10.53 1.352.741 7.75 4.56 7.75 10.53a6.366 6.366 0 0 1-3.611 5.507h.001Z"></path>
                                 </svg>}
 
-                            {sortType == "Hot" && <svg rpl="" fill="#82949B" height="17" icon-name="hot-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10.328.454 9.956.311l-.283.143C8.785.9 1 5.056 1 12.225c0 4.243 3.957 7.7 8.849 7.768A.979.979 0 0 0 9.99 20H10c4.962 0 9-3.488 9-7.775C19 5.056 11.215.9 10.328.454ZM12.5 17.789a3.699 3.699 0 0 1-2.854.945 3.48 3.48 0 0 1-2.457-1.37 3.945 3.945 0 0 1-.764-3.052c.441-2.639 2.75-4.38 3.576-4.926.928.611 3.65 2.674 3.65 5.818a3.469 3.469 0 0 1-1.151 2.585Zm1.64-.057c.49-.754.753-1.633.76-2.532 0-4.268-4.069-6.79-4.537-7.066l-.415-.184-.315.187c-.638.377-3.852 2.436-4.442 5.964A5.18 5.18 0 0 0 6 17.8a6.4 6.4 0 0 1-3.75-5.575c0-5.969 6.4-9.788 7.75-10.53 1.352.741 7.75 4.56 7.75 10.53a6.366 6.366 0 0 1-3.611 5.507h.001Z"></path>
-                            </svg>}
+                                {sortType == "New" && <svg rpl="" fill="#82949B" height="17" icon-name="new-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 20a1.143 1.143 0 0 1-1.007-.6l-1.281-2.36-2.424 1.16a1.145 1.145 0 0 1-1.63-1.184l.353-2.662-2.641-.492a1.144 1.144 0 0 1-.622-1.915L2.6 10 .748 8.053a1.145 1.145 0 0 1 .623-1.916l2.64-.488-.352-2.662A1.145 1.145 0 0 1 5.288 1.8l2.424 1.16L8.992.6a1.19 1.19 0 0 1 2.014 0l1.281 2.36 2.424-1.16a1.145 1.145 0 0 1 1.63 1.184l-.353 2.662 2.642.489a1.145 1.145 0 0 1 .622 1.915L17.4 10l1.85 1.947a1.145 1.145 0 0 1-.623 1.916l-2.64.488.351 2.662a1.144 1.144 0 0 1-1.627 1.187l-2.424-1.16-1.28 2.36A1.142 1.142 0 0 1 10 20Zm-2.244-4.242a1.144 1.144 0 0 1 1.007.6L10 18.636l1.236-2.279a1.147 1.147 0 0 1 1.5-.488l2.34 1.116-.34-2.569a1.146 1.146 0 0 1 .93-1.277l2.546-.47-1.785-1.88a1.146 1.146 0 0 1 0-1.578l1.785-1.88-2.547-.471a1.142 1.142 0 0 1-.928-1.276l.338-2.569-2.338 1.116a1.149 1.149 0 0 1-1.5-.488L10 1.364 8.763 3.643a1.147 1.147 0 0 1-1.5.488l-2.34-1.116.34 2.569a1.146 1.146 0 0 1-.93 1.277l-2.546.47 1.786 1.88a1.146 1.146 0 0 1 0 1.578l-1.786 1.88 2.548.471a1.142 1.142 0 0 1 .928 1.276l-.34 2.569 2.34-1.116c.154-.073.322-.11.493-.111Z"></path>
+                                </svg>}
 
-                            {sortType == "New" && <svg rpl="" fill="#82949B" height="17" icon-name="new-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 20a1.143 1.143 0 0 1-1.007-.6l-1.281-2.36-2.424 1.16a1.145 1.145 0 0 1-1.63-1.184l.353-2.662-2.641-.492a1.144 1.144 0 0 1-.622-1.915L2.6 10 .748 8.053a1.145 1.145 0 0 1 .623-1.916l2.64-.488-.352-2.662A1.145 1.145 0 0 1 5.288 1.8l2.424 1.16L8.992.6a1.19 1.19 0 0 1 2.014 0l1.281 2.36 2.424-1.16a1.145 1.145 0 0 1 1.63 1.184l-.353 2.662 2.642.489a1.145 1.145 0 0 1 .622 1.915L17.4 10l1.85 1.947a1.145 1.145 0 0 1-.623 1.916l-2.64.488.351 2.662a1.144 1.144 0 0 1-1.627 1.187l-2.424-1.16-1.28 2.36A1.142 1.142 0 0 1 10 20Zm-2.244-4.242a1.144 1.144 0 0 1 1.007.6L10 18.636l1.236-2.279a1.147 1.147 0 0 1 1.5-.488l2.34 1.116-.34-2.569a1.146 1.146 0 0 1 .93-1.277l2.546-.47-1.785-1.88a1.146 1.146 0 0 1 0-1.578l1.785-1.88-2.547-.471a1.142 1.142 0 0 1-.928-1.276l.338-2.569-2.338 1.116a1.149 1.149 0 0 1-1.5-.488L10 1.364 8.763 3.643a1.147 1.147 0 0 1-1.5.488l-2.34-1.116.34 2.569a1.146 1.146 0 0 1-.93 1.277l-2.546.47 1.786 1.88a1.146 1.146 0 0 1 0 1.578l-1.786 1.88 2.548.471a1.142 1.142 0 0 1 .928 1.276l-.34 2.569 2.34-1.116c.154-.073.322-.11.493-.111Z"></path>
-                            </svg>}
+                                {sortType == "Top" && <svg rpl="" fill="#82949B" height="17" icon-name="top-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.875 11H13V7h2.242a.725.725 0 0 0 .513-1.238L10.5.628l-.257-.212-.589.029L4.21 5.764A.726.726 0 0 0 4.725 7H7v4H2.125A1.118 1.118 0 0 0 1 12.107v5.786A1.118 1.118 0 0 0 2.125 19h15.75A1.118 1.118 0 0 0 19 17.893v-5.786A1.118 1.118 0 0 0 17.875 11ZM2.25 17.75v-5.5H7v5.5H2.25Zm9.5-12v12h-3.5v-12H5.992l3.992-3.866 3.991 3.866H11.75Zm6 12H13v-5.5h4.75v5.5Z"></path>
+                                </svg>
+                                }
 
-                            {sortType == "Top" && <svg rpl="" fill="#82949B" height="17" icon-name="top-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.875 11H13V7h2.242a.725.725 0 0 0 .513-1.238L10.5.628l-.257-.212-.589.029L4.21 5.764A.726.726 0 0 0 4.725 7H7v4H2.125A1.118 1.118 0 0 0 1 12.107v5.786A1.118 1.118 0 0 0 2.125 19h15.75A1.118 1.118 0 0 0 19 17.893v-5.786A1.118 1.118 0 0 0 17.875 11ZM2.25 17.75v-5.5H7v5.5H2.25Zm9.5-12v12h-3.5v-12H5.992l3.992-3.866 3.991 3.866H11.75Zm6 12H13v-5.5h4.75v5.5Z"></path>
-                            </svg>
-                            }
+                                {sortType == "Most Comments" && <svg rpl="" fill="#82949B" height="17" icon-name="rising-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3.554 17.826a1.124 1.124 0 0 1-.8-.33L.435 15.175a1.131 1.131 0 0 1 0-1.6l6.008-6.008a1.643 1.643 0 0 1 2.315 0l1.878 1.879 2.8-2.8-1.412-1.406A.726.726 0 0 1 12.54 4h6.736a.727.727 0 0 1 .726.727v6.735a.727.727 0 0 1-1.239.516l-1.41-1.411-5.56 5.56a1.64 1.64 0 0 1-2.313 0L7.6 14.248 4.354 17.5c-.213.21-.5.328-.8.326ZM1.4 14.376l2.151 2.151 4.05-4.047 2.76 2.763a.389.389 0 0 0 .547 0L17.352 8.8l1.4 1.4V5.25h-4.951l1.4 1.4-4.567 4.566-2.76-2.765a.391.391 0 0 0-.547 0L1.4 14.376Z"></path>
+                                </svg>}
 
-                            {sortType == "Most Comments" && <svg rpl="" fill="#82949B" height="17" icon-name="rising-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M3.554 17.826a1.124 1.124 0 0 1-.8-.33L.435 15.175a1.131 1.131 0 0 1 0-1.6l6.008-6.008a1.643 1.643 0 0 1 2.315 0l1.878 1.879 2.8-2.8-1.412-1.406A.726.726 0 0 1 12.54 4h6.736a.727.727 0 0 1 .726.727v6.735a.727.727 0 0 1-1.239.516l-1.41-1.411-5.56 5.56a1.64 1.64 0 0 1-2.313 0L7.6 14.248 4.354 17.5c-.213.21-.5.328-.8.326ZM1.4 14.376l2.151 2.151 4.05-4.047 2.76 2.763a.389.389 0 0 0 .547 0L17.352 8.8l1.4 1.4V5.25h-4.951l1.4 1.4-4.567 4.566-2.76-2.765a.391.391 0 0 0-.547 0L1.4 14.376Z"></path>
-                            </svg>}
+                                <h1 id="sort_options" className="text-[12px] ml-2 text-[#83959B]">{sortType}</h1>
+                                <ChevronDownIcon className="w-4 text-gray-400 ml-1 h-4" />
 
-                            <h1 id="sort_options" className="text-[12px] ml-2 text-[#83959B]">{sortType}</h1>
-                            <ChevronDownIcon className="w-4 text-gray-400 ml-1 h-4" />
 
+
+                            </div>
 
                             {isOpenSortType && (
-                                <div ref={sortTypeRef} className=" w-[185px] h-60 bg-[#0E1A1C] absolute mt-72 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
+                                <div className=" w-[185px] h-60 bg-[#0E1A1C] absolute mt-70 ml-7 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
 
 
-                                    <div onClick={() => {setSortType("Relevance"); setIsOpenSortType(false); }}
-                                        id="mainfeed_category_best"
+                                    <div onClick={() => { setSortType("Relevance"); setIsOpenSortType(false); }}
+                                        id="search_relevance"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "Relevance" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
@@ -127,7 +137,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
                                     </div>
 
                                     <div onClick={() => { setSortType("Hot"); setIsOpenSortType(false); }}
-                                        id="mainfeed_category_hot"
+                                        id="search_hot"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "Hot" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
@@ -139,7 +149,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
                                     </div>
 
                                     <div onClick={() => { setSortType("New"); setIsOpenSortType(false); }}
-                                        id="mainfeed_category_new"
+                                        id="search_new"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "New" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
                                     >
@@ -150,7 +160,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
                                     </div>
 
                                     <div onClick={() => { setSortType("Top"); setIsOpenSortType(false); }}
-                                        id="mainfeed_category_top"
+                                        id="search_top"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "Top" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
                                     >
@@ -162,7 +172,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
 
 
                                     <div onClick={() => { setSortType("Most Comments"); setIsOpenSortType(false); }}
-                                        id="mainfeed_category_most_comments"
+                                        id="search_rising"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "Most Comments" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
@@ -174,26 +184,91 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
 
                                 </div>
                             )}
+
                         </div>
 
 
+                        <div className="relative">
+                            <div ref={sortTimeRef} onClick={() => setIsOpenSortTime(prev => !prev)} className="flex flex-row ml-4 justify-center items-center w-[140px] h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl">
+                                <svg rpl="" fill="#82949B" height="16" icon_name="calendar-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.374 2H16V.25h-1.25V2h-9.5V.251H4V2H2.626A1.627 1.627 0 0 0 1 3.626v13.748A1.627 1.627 0 0 0 2.626 19h14.748A1.627 1.627 0 0 0 19 17.374V3.626A1.627 1.627 0 0 0 17.374 2ZM2.626 3.25H4v1h1.25v-1h9.5v1H16v-1h1.374a.377.377 0 0 1 .376.376V7H2.25V3.626a.377.377 0 0 1 .376-.376Zm14.748 14.5H2.626a.377.377 0 0 1-.376-.376V8.25h15.5v9.124a.378.378 0 0 1-.376.376Z"></path>
+                                </svg>
+                                <h1 id="sort_time" className="text-[12px] ml-2 text-[#83959B]">{sortTime}</h1>
+                                <ChevronDownIcon className="w-4 text-gray-400 ml-1 h-4" />
+                            </div>
 
-                        <div className="flex flex-row ml-4 justify-center items-center w-[110px] h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl">
-                            <svg rpl="" fill="#82949B" height="16" icon_name="calendar-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M17.374 2H16V.25h-1.25V2h-9.5V.251H4V2H2.626A1.627 1.627 0 0 0 1 3.626v13.748A1.627 1.627 0 0 0 2.626 19h14.748A1.627 1.627 0 0 0 19 17.374V3.626A1.627 1.627 0 0 0 17.374 2ZM2.626 3.25H4v1h1.25v-1h9.5v1H16v-1h1.374a.377.377 0 0 1 .376.376V7H2.25V3.626a.377.377 0 0 1 .376-.376Zm14.748 14.5H2.626a.377.377 0 0 1-.376-.376V8.25h15.5v9.124a.378.378 0 0 1-.376.376Z"></path>
-                            </svg>
-                            <h1 id="sort_options" className="text-[12px] ml-2 text-[#83959B]">{sortTime}</h1>
-                            <ChevronDownIcon className="w-4 text-gray-400 ml-1 h-4" />
+                            {isOpenSortTime && (
+
+                                <div className=" w-[185px] h-68 bg-[#0E1A1C] absolute mt-[2px] -ml-4 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
+
+                                    <div onClick={() => { setSortTime("All Time"); setIsOpenSortTime(false); }}
+                                        id="search_all_time"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "All Time" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                    >
+                                       
+                                        <p className="no-select ml-3">All Time</p>
+                                    </div>
+
+                                    <div onClick={() => { setSortTime("Past Year"); setIsOpenSortTime(false); }}
+                                        id="search_past_year"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "Past Year" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                    >
+                                        <p className="no-select ml-3">Past Year</p>
+                                    </div>
+
+                                    <div onClick={() => { setSortTime("Past Month"); setIsOpenSortTime(false); }}
+                                        id="search_past_month"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "Past Month" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
+                                    >
+                                    
+                                        <p className="no-select ml-3">Past Month</p>
+                                    </div>
+
+                                    <div onClick={() => { setSortTime("Past Week"); setIsOpenSortTime(false); }}
+                                        id="search_past_week"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "Past Week" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
+                                    >
+                                      
+                                        <p className="no-select ml-3">Past Week</p>
+                                    </div>
+
+
+                                    <div onClick={() => { setSortTime("Past 24 Hours"); setIsOpenSortTime(false); }}
+                                        id="search_past_24_hours"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "Past 24 Hours" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                    >
+                                        
+                                        <p className="no-select ml-3">Past 24 Hours</p>
+                                    </div>
+
+                                    <div onClick={() => { setSortTime("Past Hour"); setIsOpenSortTime(false); }}
+                                        id="search_past_hour"
+                                        href=""
+                                        className={`w-full pl-[28px] ${sortTime == "Past Hour" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                    >
+                                        
+                                        <p className="no-select ml-3">Past Hour</p>
+                                    </div>
+
+                                </div>
+
+                            )}
                         </div>
+
                     </div>
 
-                    <div className="w-full flex flex-row items-center pr-6 ">
+                    <div className="w-full flex flex-row items-center pr-3 ">
                         <hr className="w-full h-[0.5px] text-gray-400" />
                     </div>
 
                 </div> :
                 <div className="mt-[10px] h-4">
-                    <div className="w-full flex flex-row items-center pr-6 ">
+                    <div className="w-full flex flex-row items-center pr-3 ">
                         <hr className="w-full h-[0.5px] text-gray-400" />
                     </div>
                 </div>}

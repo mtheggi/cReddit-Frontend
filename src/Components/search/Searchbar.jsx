@@ -93,8 +93,8 @@ const Searchbar = () => {
 
         <div className="flex-col w-full items-center flex relative">
 
-            <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-full mr-2 xl:max-w-[600px] xl:mr-12 z-20 ${isFocused ? 'xs:bg-[#0E1A1C]' : 'xs:bg-reddit_search'} justify-center sm:justify-start cursor-pointer sm:cursor-default h-10 min-h-10 items-center flex xs:flex-grow rounded-full hover:bg-reddit_search_light xs:px-3 `}>
-                <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
+            <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-[42px]  ml-auto xs:ml-0 xs:w-full max-w-[600px] xl:mr-12 z-20 ${isFocused ? 'xs:bg-[#0E1A1C]' : 'xs:bg-reddit_search'} justify-center xs:justify-start cursor-pointer sm:cursor-default h-9 min-h-9 items-center flex xs:flex-grow rounded-full hover:bg-reddit_search_light xs:px-3 `}>
+                <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-6 w-7 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
                 <input ref={inputRef} onClick={() => setIsFocused(true)} onChange={(e) => { getSearchResults(e.target.value); setSearchValue(e.target.value); }} id='navbar_searchbar_input' type="text" autoComplete='off' className={`group-hover:bg-reddit_search_light ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'} h-7 w-11/12 text-sm hidden xs:block font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder={placeholder} />
 
                 {searchValue != "" && <div onClick={() => { setSearchValue(""); setCommunityResults([]); inputRef.current.value = ""; setUserResults([]) }} className='w-[26px] h-[26px] hover:bg-reddit_search_light rounded-full cursor-pointer flex flex-row items-center justify-center'>
@@ -102,7 +102,7 @@ const Searchbar = () => {
                 </div>}
             </form>
 
-            <div className={`absolute -ml-[8px] xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  rounded-b-3xl w-full h-fit top-[20px] `}>
+            <div className={`absolute  max-w-[600px] xl:mr-12 bg-[#0F1A1C] ${isFocused ? 'xs:block' : 'hidden'}  rounded-b-3xl w-full h-fit top-[20px] `}>
                 <div className="flex-col flex h-fit w-full">
                     {communityResults.length != 0 && <h1 className='text-gray-400 px-3 mt-10 mb-[6px] text-[14px] font-semibold'>Communities</h1>}
                     {communityResults.map((community, index) => {
