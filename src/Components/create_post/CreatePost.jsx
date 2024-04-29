@@ -4,6 +4,7 @@ import CreateCommunity from '../createCommunity/CreateCommunity';
 import { postRequest, getRequest, postRequestImg } from "../../services/Requests";
 import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
 import Post from './Post';
 import { baseUrl } from "../../constants";
@@ -42,12 +43,26 @@ const CreatePost = () => {
     const voteMenuRef = useRef();
     const commNameInputRef = useRef();
     const navigate = useNavigate();
+    const location = useLocation();
+
     let initialHeight = '38px';
     let communityName = "";
 
     useEffect(() => {
         getJoinedSubreddits();
 
+    }, []);
+
+    useEffect(() => {
+        if(location.pathname.includes('/r/'))
+        {
+            let pathParts = location.pathname.split('/');
+            commNameInputRef.current.value = `r/${pathParts[3]}`;
+        }
+        else
+        {
+            commNameInputRef.current.value = "";
+        }
     }, []);
 
     useEffect(() => {
