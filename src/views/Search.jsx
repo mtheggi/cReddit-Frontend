@@ -119,8 +119,8 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
   });
   return (
 
-    <div className="w-full mt-14 h-full flex flex-row overflow-hidden min-w-[570px]">
-      <div className={`flex flex-row w-full xl:ml-4 min-w-[570px] h-full`}>
+    <div className="w-full mt-14 h-full flex min-w-[366px] flex-row overflow-hidden">
+      <div className={`flex flex-row w-full xl:ml-4  h-full`}>
 
         <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
           <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
