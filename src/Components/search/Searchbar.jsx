@@ -28,12 +28,22 @@ const Searchbar = () => {
         setSearchHistory(JSON.parse(localStorage.getItem('searchHistory') || '[]'));
     }, []);
 
-    useEffect(()=>{
-        const pathParts = location.pathname.split('/');
-        if (pathParts[1] === 'search' && pathParts[2].trim!="") {
-            inputRef.current.value=pathParts[2];
+    useEffect(() => {
+        if (location.pathname.includes('/search/')) 
+        {
+            const pathParts = location.pathname.split('/');
+            if (pathParts[1] === 'search' && pathParts[2].trim != "") {
+                inputRef.current.value = pathParts[2];
+            }
         }
-    },[])
+        else
+        {
+            inputRef.current.value = "";
+            setSearchValue("");
+        }
+    }, [location.pathname])
+
+
 
     const getSearchResults = async (query) => {
         if (query.length == 0)
@@ -111,10 +121,10 @@ const Searchbar = () => {
 
                 <Separator />
 
-                {searchValue!="" && <div onClick={() => {
+                {searchValue != "" && <div onClick={() => {
                     goToSearchPage(searchValue);
                 }}
-                 className={`flex flex-row w-full hover:bg-reddit_hover rounded-b-3xl h-[45px] px-[22px] cursor-pointer items-center ${communityResults.length==0 && userResults.length==0 ?'mt-[28px]':''}`}>
+                    className={`flex flex-row w-full hover:bg-reddit_hover rounded-b-3xl h-[45px] px-[22px] cursor-pointer items-center ${communityResults.length == 0 && userResults.length == 0 ? 'mt-[28px]' : ''}`}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
                     <h1 className='text-gray-300 text-[14px] ml-1 font-light'>Search for "{searchValue}"</h1>
                 </div>}
