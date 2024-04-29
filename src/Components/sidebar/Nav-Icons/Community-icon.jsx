@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import propsTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 EmptyStart.propTypes = {
     color: propsTypes.string
@@ -53,11 +54,11 @@ function EmptyStart({ color, isBookmarked }) {
  * @returns {JSX.Element} The rendered community icon component.
  */
 
-const CommunityIcon = ({ text, divId, bookmarkId, icon }) => {
+const CommunityIcon = ({ text, divId, bookmarkId, icon, href }) => {
 
     const [isBookmarked, setIsHisBookmarkedover] = useState(false)
     return (
-        <div id={divId} data-testid={divId} className="testClass flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
+        <Link to={href} id={divId} data-testid={divId} className="testClass flex h-[48px] flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
             <div className="flex flex-row items-center justify-start">
                 <img src={icon} className="h-[30px] w-[32px] rounded-full" alt="randomImgs" />
                 <span className="text-gray-200 text-[13px] tracking-wider letter font-normal ml-3">{text}</span>
@@ -67,7 +68,7 @@ const CommunityIcon = ({ text, divId, bookmarkId, icon }) => {
                 <span className="h-5 w-5 flex justify-center items-center " role="button"> <EmptyStart color={"white"} isBookmarked={isBookmarked} /> </span>
             </div>
 
-        </div>
+        </Link>
     );
 }
 CommunityIcon.propTypes = {

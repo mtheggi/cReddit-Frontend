@@ -38,14 +38,14 @@ const Sidebar = ({
 
       {isLoggedIn && (
         <>
-          <Separator />
+          <Separator color={500} />
           <DropDownMenu
             MenuHeader="RECENT"
             id="sidebar_recent"
             code="dd_recents"
             userHistoryRes={userHistoryRes}
           />
-          <Separator />
+          <Separator color={500} />
           <DropDownMenu
             MenuHeader="COMMUNITIES"
             id="sidebar_communities"
@@ -56,13 +56,13 @@ const Sidebar = ({
           />
         </>
       )}
-      <Separator />
+      <Separator color={500} />
       <DropDownMenu
         MenuHeader="RESOURCES"
         id="sidebar_resources"
         code="dd_resources"
       />
-      <Separator />
+      <Separator color={500} />
     </div>
   );
 };

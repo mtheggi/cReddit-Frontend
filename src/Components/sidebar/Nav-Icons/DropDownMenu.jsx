@@ -121,7 +121,7 @@ const DropDownMenu = ({
       </div>
 
 
-      <div className={`overflow-hidden mb-2 space-y-1 transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
+      <div className={`overflow-hidden  space-y-1 transition-all duration-[300ms] max-h-0 opacity-0 ${isDropped && isRecent ? 'max-h-[600px] opacity-100' : ''}`}>
         {recentSubreddits && recentSubreddits.map((subreddit, index) => {
           if (!subreddit.name) {
             return null;
@@ -153,6 +153,7 @@ const DropDownMenu = ({
                 text={`r/${subreddit.name}`}
                 divId={`sidebar_community_icon${index}`}
                 bookmarkId={`sidebar_community_bookmark${index}`}
+                href={`/r/${subreddit.name}`}
               />
             );
           })}
@@ -181,7 +182,7 @@ const DropDownMenu = ({
         <NavIcon id={toSnakeCase("Press")} href="#" text="Press">
           <MicrophoneIcon className="h-6 w-6 mr-2  text-gray-50" />
         </NavIcon>
-        <Separator />
+        <Separator color={500} />
         <NavIcon
           id={toSnakeCase("Communties")}
           href="/best/communities"
@@ -199,7 +200,7 @@ const DropDownMenu = ({
         <NavIcon id={toSnakeCase("Topics")} href="#" text="Topics">
           <RectangleGroupIcon className="h-6 w-6 mr-2  text-gray-50" />
         </NavIcon>
-        <Separator />
+        <Separator color={500}  />
         <NavIcon
           id={toSnakeCase("Content Policy")}
           href="#"
