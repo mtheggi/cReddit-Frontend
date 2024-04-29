@@ -1,6 +1,7 @@
 import useChat from "@/Components/chat/Effects/useChat";
 import ChatSide from "@/Components/chat/ChatSide";
 import { useEffect } from "react";
+import ChatBox from "@/Components/chat/ChatBox";
 
 const Chat = ({ setIsChat }) => {
     useChat(setIsChat);
@@ -12,7 +13,7 @@ const Chat = ({ setIsChat }) => {
                 <ChatSide />
             </div>
             <div className="w-full  h-screen ">
-                {/* <ChatMain /> */}
+                <ChatBox />
             </div>
         </div>
 

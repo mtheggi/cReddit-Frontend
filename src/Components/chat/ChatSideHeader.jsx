@@ -1,3 +1,5 @@
+import { ChatContext } from "@/context/ChatContext";
+import { useContext } from "react";
 
 
 
@@ -13,12 +15,13 @@ const AddChatIcon = () => {
     );
 }
 const ChatSideHeader = () => {
+    const { setIsAddChat } = useContext(ChatContext);
     return (
 
         <div className="flex flex-row h-15 p-3 justify-between">
             <p className="text-white font-bold text-lg"> Chats</p>
             <div id="add-chat" data-testid="add-chat" className="flex flex-row justify-center items-center w-9 h-9 -mt-[5px] rounded-full hover:bg-reddit_hover cursor-pointer"
-                onClick={() => { console.log("Add Chat") }}
+                onClick={() => { setIsAddChat(prev => !prev) }}
             >
                 <AddChatIcon />
             </div>
