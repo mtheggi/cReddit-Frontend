@@ -28,9 +28,12 @@ const ChatBox = () => {
             <Separator />
 
             {/* ChatBox chat Messages */}
+
+
+
             <div className="flex flex-row p-1 justify-center items-center">
 
-                <CameraIcon className="h-7 w-7 text-gray-500 " />
+                <CameraIcon className="h-7 w-7 ml-1 text-gray-500 cursor-pointer" />
 
                 <InputEmoji placeholder="send message"
                     type="text"
@@ -39,9 +42,10 @@ const ChatBox = () => {
                     borderColor="transparent"
                     background="#1A282C"
                     placeholderColor="#415054"
+                    color="#ffff"
 
                 />
-                <PaperAirplaneIcon className="h-7 w-7 text-gray-500 " />
+                <PaperAirplaneIcon className="h-7 w-7 text-gray-500 cursor-pointer" />
 
             </ div>
 
