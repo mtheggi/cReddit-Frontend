@@ -28,7 +28,6 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     const { isLoggedIn } = useContext(UserContext);
     const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
     const [loadingPost, setLoadingPost] = useState(false);
-    const [homeFeedScroll, setHomeFeedScroll] = useState(0);
     const mainfeedRef = useRef();
 
     const [selectedSort, setSelectedSort] = useState(() => {
@@ -198,7 +197,6 @@ const ProfileFeed = ({ userName, selectedPage }) => {
 
         const handleScroll = () => {
             const scrollThreshold = 58;
-            setHomeFeedScroll(mainfeedElement.scrollTop);
             if (mainfeedElement.scrollTop > scrollThreshold) {
                 setIsOpenCateg(false);
                 setIsOpenView(false);
@@ -218,16 +216,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     });
 
 
-    useEffect(() => {
-        if (navigate.pathname.includes("/comments/")) {
-            localStorage.setItem('homeFeedScroll', homeFeedScroll);
-        }
-        else {
-            setTimeout(() => {
-                mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-            }, 10);
-        }
-    }, [navigate.pathname]);
+  
 
 
     return (
