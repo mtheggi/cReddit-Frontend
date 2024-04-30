@@ -59,7 +59,7 @@ const Community = ({
     communityButtonRef,
     userHistoryRes,
     setUserHistoryRes,
-    sidebarRef,
+    sidebarRef
   } = useContext(SidebarContext);
 
   useEffect(() => {
@@ -228,7 +228,7 @@ const Community = ({
                 className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
                 ref={mainfeedRef}
               >
-                {subreddit && <CommunityFeed subredditName={subreddit.name} />}
+                {subreddit && <CommunityFeed subredditName={subreddit.name} isMember={subreddit.isMember} />}
               </div>
 
               <div

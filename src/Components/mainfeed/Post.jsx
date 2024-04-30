@@ -27,6 +27,7 @@ import HiddenPost from "./HiddenPost";
 import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
+import ReactMarkdown from 'react-markdown'
 
 
 
@@ -60,7 +61,6 @@ const Post = ({
   isSaved,
   isSinglePostSelected,
   setPosts,
-  inSubreddit,
   lastPostRef
 }) => {
   const menuRefDots = useRef();
@@ -295,10 +295,25 @@ const Post = ({
     }
   };
 
+  const components = {
+    text: ({ value }) => {
+      const isUnderlined = value.startsWith('++') && value.endsWith('++');
+      if (isUnderlined) {
+        const text = value.slice(2, -2);
+        return <u>{text}</u>;
+      }
+      return value;
+    },
+    code: ({ language, value }) => {
+      return <SyntaxHighlighter style={dark} language={language} children={value} />
+    }
+  };
+
   return currentIsHidden ? (
     <HiddenPost id={id} handleHidePost={handleHidePost} />
   ) : (
-    <div ref={lastPostRef}
+    <div
+      ref={lastPostRef}
       id={"mainfeed_" + id + "_full"}
       className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : "hover:bg-reddit_hover"
         } ${isOpenDots ? "bg-reddit_hover" : ""
@@ -341,8 +356,8 @@ const Post = ({
         </div>
 
         <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-          {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-            <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
+          {(communityName !== null) && !isSubbredditJoined && !location.pathname.includes("/r/") && !location.pathname.includes("/user/") && !location.pathname.includes("/my-user/") && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+            <h1 className='text-[12px] font-medium text-white'>Join</h1>
           </div>}
           <div
             id={"mainfeed_" + id + "_menu"}
@@ -449,7 +464,7 @@ const Post = ({
 
           {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
             <>
-              {type != "Link" ? (<p style={{ wordBreak: 'break-all' }}>{content}</p>) :
+              {type != "Link" ? (<ReactMarkdown components={components} style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
                 (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
             </>
           </div>}
@@ -485,7 +500,7 @@ const Post = ({
             </div>
           }
 
-          
+
 
           {type == "Poll" && (
             <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
@@ -535,8 +550,8 @@ const Post = ({
                                   width: `${getVoteWidth(option.votes)}`,
                                 }}
                                 className={` ${option.votes == getMaxVotes(editedPollOptions)
-                                    ? "bg-[#33464C]"
-                                    : "bg-reddit_search_light"
+                                  ? "bg-[#33464C]"
+                                  : "bg-reddit_search_light"
                                   }  items-center h-8 rounded-[5px] flex flex-row`}
                               >
                                 <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
@@ -560,8 +575,8 @@ const Post = ({
                       <div
                         onClick={handleVote}
                         className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
-                            ? "bg-black cursor-pointer"
-                            : "bg-[#1C1E20] cursor-not-allowed"
+                          ? "bg-black cursor-pointer"
+                          : "bg-[#1C1E20] cursor-not-allowed"
                           } text-[13px] text-white`}
                       >
                         <h1>Vote</h1>

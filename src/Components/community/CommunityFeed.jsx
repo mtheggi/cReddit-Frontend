@@ -25,7 +25,7 @@ import Comment from "../mainfeed/comment/Comment";
  *
  * @returns {React.Element} The rendered component.
  */
-const CommunityFeed = ({ subredditName }) => {
+const CommunityFeed = ({ subredditName, isMember }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
@@ -290,7 +290,7 @@ const CommunityFeed = ({ subredditName }) => {
                   setPosts={setPosts}
                   isSinglePostSelected={isSinglePostSelected}
                   {...post}
-                  inSubreddit={true}
+                  isJoined={isMember}
                   lastPostRef={lastPostRef}
                 />
               }
@@ -301,7 +301,7 @@ const CommunityFeed = ({ subredditName }) => {
                   setPosts={setPosts}
                   isSinglePostSelected={isSinglePostSelected}
                   {...post}
-                  inSubreddit={true}
+                  isJoined={isMember}
                 />
               }
             })}

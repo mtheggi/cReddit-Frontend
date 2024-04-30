@@ -181,6 +181,9 @@ const Searchbar = ({ isSearchInMobile }) => {
                                 if (item[0].startsWith('u/')) {
                                     navigate('user/' + item[0].slice(2) + '/')
                                 }
+                                else if (item[0].startsWith('r/')) {
+                                    navigate('r/' + item[0].slice(2) + '/')
+                                }
                                 setIsFocused(false);
                             }}
                                 key={index} className={`h-[50px] w-full ${index == 0 ? 'mt-8' : ''} ${index == array.length - 1 ? 'rounded-b-3xl' : ''} px-[26px] flex flex-row items-center hover:bg-reddit_hover cursor-pointer`} >
