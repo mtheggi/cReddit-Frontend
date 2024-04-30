@@ -1,4 +1,4 @@
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { getRequest } from '@/services/Requests';
 import SearchFeedPeopleRow from "./SearchFeedPeopleRow";
@@ -14,7 +14,7 @@ import SearchFeedHashtags from "./SearchFeedHashtags";
 
 
 
-const SearchFeed = ({ isSafe, setIsSafe }) => {
+const SearchFeed = ({ isSafe, sortTime, sortType }) => {
     const location = useLocation();
     const [peopleSearchResults, setPeopleSearchResults] = useState([]);
     const [communitiesSearchResults, setCommunitiesSearchResults] = useState([]);
@@ -27,8 +27,11 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(1);
     const [pathChanged, setPathChanged] = useState(0);
+    const navigate = useNavigate();
     const prevPath = useRef(location.pathname);
     const prevSafe = useRef(isSafe);
+    const prevSortTime = useRef(sortTime);
+    const prevSortType = useRef(sortType);
 
     const observer = useRef();
     const lastElementRef = useCallback(node => {
@@ -45,17 +48,16 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
 
 
 
-
-
     useEffect(() => {
-        setPeopleSearchResults([]);
-        setCommunitiesSearchResults([]);
-        setCommentsSearchResults([]);
-        setPostsSearchResults([]);
-        setHashtagsSearchResults([]);
-        setPage(1);
-        setPathChanged(prev => (prevPath.current !== location.pathname ? prev + 1 : prev));
-        console.log("deleted")
+        if (prevPath.current != location.pathname) {
+            setPeopleSearchResults([]);
+            setCommunitiesSearchResults([]);
+            setCommentsSearchResults([]);
+            setPostsSearchResults([]);
+            setHashtagsSearchResults([]);
+            setPage(1);
+            setPathChanged(prev => prev + 1);
+        }
     }, [location.pathname]);
 
 
@@ -67,10 +69,35 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
             setPostsSearchResults([]);
             setHashtagsSearchResults([]);
             setPage(1);
-            setPathChanged(prev => (prevPath.current !== location.pathname ? prev + 1 : prev));
-            console.log("deleted")
+            setPathChanged(prev => prev + 1);
         }
     }, [isSafe])
+
+
+    useEffect(() => {
+        if (prevSortTime.current != sortTime) {
+            setPeopleSearchResults([]);
+            setCommunitiesSearchResults([]);
+            setCommentsSearchResults([]);
+            setPostsSearchResults([]);
+            setHashtagsSearchResults([]);
+            setPage(1);
+            setPathChanged(prev => prev + 1);
+        }
+    }, [sortTime])
+
+
+    useEffect(() => {
+        if (prevSortType.current != sortType) {
+            setPeopleSearchResults([]);
+            setCommunitiesSearchResults([]);
+            setCommentsSearchResults([]);
+            setPostsSearchResults([]);
+            setHashtagsSearchResults([]);
+            setPage(1);
+            setPathChanged(prev => prev + 1);
+        }
+    }, [sortType])
 
 
 
@@ -82,7 +109,39 @@ const SearchFeed = ({ isSafe, setIsSafe }) => {
             try {
                 setHasMore(true);
                 setIsLoading(true);
-                const response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=true`);
+                let response;
+
+
+                if ((location.pathname.includes("/my-user/") || location.pathname.includes("/user/") || location.pathname.includes("/r/")) && location.pathname.includes("/search")) {
+                    if (type == "posts" || type == "comments" || type == "hashtags") {
+
+                        if(location.pathname.includes("/my-user/") || location.pathname.includes("/user/") )
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&user=${location.pathname.split("/")[4]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
+
+                        else if (location.pathname.includes("/r/"))
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&community=${location.pathname.split("/")[4]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
+                    
+                    }
+                    else {
+                        navigate("/not-found");
+                    }
+                }
+                else
+                {
+                    if (type == "posts" || type == "comments" || type == "hashtags") {
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
+                    }
+                    else {
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&autocomplete=false`);
+                    }
+
+                }
+
+
+
+
+
+
                 if (response.status == 200 || response.status == 201) {
                     if (type == "people") {
                         setPeopleSearchResults(prevResults => [...prevResults, ...response.data]);

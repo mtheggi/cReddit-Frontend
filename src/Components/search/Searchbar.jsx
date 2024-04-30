@@ -14,7 +14,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
  * @returns {JSX.Element} The Searchbar component.
  *  */
 const Searchbar = () => {
-    const [placeholder, setPlaceholder] = useState('Search Reddit');
+    const [placeholder, setPlaceholder] = useState('Search in Reddit');
     const [userResults, setUserResults] = useState([]);
     const [communityResults, setCommunityResults] = useState([]);
     const [searchValue, setSearchValue] = useState("");
@@ -29,24 +29,47 @@ const Searchbar = () => {
     }, []);
 
     useEffect(() => {
-        if (location.pathname.includes('/search/')) 
-        {
+
+        if ((location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user/')) && location.pathname.includes('/search/')) {
+            const pathParts = location.pathname.split('/');
+            console.log(pathParts);
+            if (pathParts[1] === 'user' || pathParts[1] === 'r' || pathParts[1] === 'my-user') {
+                inputRef.current.value = pathParts[4];
+                setSearchValue(pathParts[4]);
+            }
+        }
+        else if (location.pathname.includes('/search/')) {
             const pathParts = location.pathname.split('/');
             if (pathParts[1] === 'search' && pathParts[2].trim != "") {
                 inputRef.current.value = pathParts[2];
+                setSearchValue(pathParts[2]);
             }
         }
-        else
-        {
+        else {
             inputRef.current.value = "";
             setSearchValue("");
         }
     }, [location.pathname])
 
+    useEffect(() => {
+        if (location.pathname.includes('/user/')) {
+            setPlaceholder('Search in u/' + location.pathname.split('/')[2]);
+        }
+        else if (location.pathname.includes('/r/')) {
+            setPlaceholder('Search in r/' + location.pathname.split('/')[2]);
+        }
+        else if (location.pathname.includes('/my-user/')) {
+            setPlaceholder('Search in my user');
+        }
+        else {
+            setPlaceholder('Search in Reddit');
+        }
+    }, [location.pathname]);
+
 
 
     const getSearchResults = async (query) => {
-        if (query.length == 0)
+        if (query.length == 0 || query.trim() == "" || location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user'))
             return;
         const communitiesResponse = await getRequest(`${baseUrl}/search/communities?page=1&limit=5&query=${query}&autocomplete=true`);
         if (communitiesResponse.status == 200 || communitiesResponse.status == 201) {
@@ -85,7 +108,14 @@ const Searchbar = () => {
     const goToSearchPage = (query) => {
         if (query.trim() == "")
             return;
-        navigate(`/search/${query}/posts`);
+        if (location.pathname.includes('/user/'))
+            navigate(`/user/${location.pathname.split('/')[2]}/search/${query}/posts`);
+        else if (location.pathname.includes('/r/'))
+            navigate(`/r/${location.pathname.split('/')[2]}/search/${query}/posts`);
+        else if (location.pathname.includes('/my-user/'))
+            navigate(`/my-user/${location.pathname.split('/')[2]}/search/${query}/posts`);
+        else
+            navigate(`/search/${query}/posts`);
         setIsFocused(false);
     }
 
@@ -93,8 +123,19 @@ const Searchbar = () => {
 
         <div className="flex-col w-full items-center flex relative">
 
-            <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-[42px]  ml-auto xs:ml-0 xs:w-full max-w-[600px] xl:mr-12 z-20 ${isFocused ? 'xs:bg-[#0E1A1C]' : 'xs:bg-reddit_search'} justify-center xs:justify-start cursor-pointer sm:cursor-default h-9 min-h-9 items-center flex xs:flex-grow rounded-full hover:bg-reddit_search_light xs:px-3 `}>
+            <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-[42px]  ml-auto xs:ml-0 xs:w-full max-w-[600px] xl:mr-12 z-20 ${isFocused ? 'xs:bg-[#0E1A1C]' : 'xs:bg-reddit_search'} justify-center xs:justify-start cursor-pointer sm:cursor-default h-9 min-h-10 items-center flex xs:flex-grow rounded-full hover:bg-reddit_search_light xs:px-3 `}>
                 <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-6 w-7 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
+
+                {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) &&
+                    <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
+
+                        {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] font-medium'>u/{location.pathname.split("/")[2]}</h1>}
+                        {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] font-medium'>r/{location.pathname.split("/")[2]}</h1>}
+
+                    </div>
+                }
+
+
                 <input ref={inputRef} onClick={() => setIsFocused(true)} onChange={(e) => { getSearchResults(e.target.value); setSearchValue(e.target.value); }} id='navbar_searchbar_input' type="text" autoComplete='off' className={`group-hover:bg-reddit_search_light ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'} h-7 w-11/12 text-sm hidden xs:block font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder={placeholder} />
 
                 {searchValue != "" && <div onClick={() => { setSearchValue(""); setCommunityResults([]); inputRef.current.value = ""; setUserResults([]) }} className='w-[26px] h-[26px] hover:bg-reddit_search_light rounded-full cursor-pointer flex flex-row items-center justify-center'>
@@ -129,7 +170,7 @@ const Searchbar = () => {
                     <h1 className='text-gray-300 text-[14px] ml-1 font-light'>Search for "{searchValue}"</h1>
                 </div>}
 
-                {searchValue == "" && <div className='flex flex-col w-full h-fit'>
+                {searchValue == "" && !(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) && <div className='flex flex-col w-full h-fit'>
                     {
                         [...searchHistory].reverse().map((item, index, array) => (
                             <div onClick={(e) => {

@@ -147,12 +147,44 @@ function App() {
               </SidebarContextProvider>
             }
           />
+           <Route
+            path="user/:username/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+           <Route
+            path="my-user/username/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+           <Route
+            path="r/:community/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
           <Route path="/chat" element={<Chat />} />
           <Route
             path="/*"
             element={
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
-   
             }
             />
 

@@ -14,6 +14,8 @@ import SearchFeed from "@/Components/search/SearchFeed";
 import SearchResultsOptions from "@/Components/search/SearchResultsOptions";
 
 const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+  const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'Relevance');
+  const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
   const { isLoggedIn } = useContext(UserContext);
   const mainfeedRef = useRef();
   const searchFeed = useRef();
@@ -131,11 +133,11 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
 
         <div ref={searchFeed} id="searchfeed" className="flex-col w-full h-full items-center flex overflow-auto scrollbar_mod_mf">
           <div className="flex-col w-fit max-w-[1150px]">
-              <SearchResultsOptions isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
+              <SearchResultsOptions sortTime={sortTime} setSortTime={setSortTime} sortType={sortType} setSortType={setSortType} isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
 
             <div className="flex flex-row w-fit">
               <div className='w-fit px-3 max-w-[1150px] -mt-2 flex flex-row flex-grow lg:flex-grow-0 ' ref={mainfeedRef}>
-                <SearchFeed isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
+                <SearchFeed  sortTime={sortTime} sortType={sortType} isSafe={isSafeSearch} />
               </div>
 
               

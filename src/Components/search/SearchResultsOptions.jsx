@@ -3,14 +3,11 @@ import { ChevronDoubleDownIcon, ChevronDownIcon } from "@heroicons/react/24/outl
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { useContext, useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
+const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTime, setSortType }) => {
 
     const navigate = useNavigate();
     const location = useLocation();
 
-
-    const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'Relevance');
-    const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
     const [isOpenSortType, setIsOpenSortType] = useState(false);
     const [isOpenSortTime, setIsOpenSortTime] = useState(false);
     const sortTypeRef = useRef();
@@ -53,17 +50,17 @@ const SearchResultsOptions = ({ isSafe, setIsSafe }) => {
                             <h1 id="posts_option" className="text-[14px] font-medium text-gray-200">Posts</h1>
                         </div>
 
-                        <div onClick={() => changePath('communities')} className={`w-28 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("communities") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
+                     {!(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  )&&  <div onClick={() => changePath('communities')} className={`w-28 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("communities") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
                             <h1 id="communities_option" className="text-[14px] font-medium text-gray-200 ">Communities</h1>
-                        </div>
+                        </div>}
 
                         <div onClick={() => changePath('comments')} className={`w-24 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("comments") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center   rounded-3xl cursor-pointer`}>
                             <h1 id="comments_option" className="text-[14px] font-medium text-gray-200 ">Comments</h1>
                         </div>
 
-                        <div onClick={() => changePath('people')} className={`w-18 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("people") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
+                    { !(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  ) &&  <div onClick={() => changePath('people')} className={`w-18 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("people") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
                             <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">People</h1>
-                        </div>
+                        </div>}
 
                         <div onClick={() => changePath('hashtags')} className={`w-22 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("hashtags") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
                             <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">hashtags</h1>
