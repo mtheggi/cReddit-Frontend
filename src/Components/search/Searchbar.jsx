@@ -131,8 +131,8 @@ const Searchbar = ({ isSearchInMobile }) => {
                     {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) &&
                         <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
 
-                            {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] font-medium'>u/{location.pathname.split("/")[2]}</h1>}
-                            {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] font-medium'>r/{location.pathname.split("/")[2]}</h1>}
+                            {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] truncate font-medium'>u/{location.pathname.split("/")[2]}</h1>}
+                            {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] truncate font-medium'>r/{location.pathname.split("/")[2]}</h1>}
 
                         </div>
                     }
