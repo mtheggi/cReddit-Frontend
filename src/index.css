@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* #1A282D : hovre bg*/ 
+/* #1A282D : hovre bg*/
 /* #0B1416 : bg */
 input#reset_username_email:-webkit-autofill,
 input#reset_username_email:-webkit-autofill:hover,
@@ -12,52 +12,74 @@ input#reset_username_email:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #1a282c inset !important;
   -webkit-text-fill-color: #dcdcdc !important;
 }
+
 ::-webkit-scrollbar {
-    width: 4px;
-    background-color: #0B1416;
-  }
-  
-  /* This will style the scrollbar thumb (the part you drag) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #757474; 
-    border-radius: 15px;
-  }
+  width: 4px;
+  background-color: #0B1416;
+}
+
+/* This will style the scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background-color: #757474;
+  border-radius: 15px;
+}
+
+/* PopularCarousel.css */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
 
 html {
   background-color: #0b1416;
 }
 
 .scrollbar_mod {
-  overflow-y: scroll; /* Show scrollbar */
+  overflow-y: scroll;
+  /* Show scrollbar */
 }
 
 /* For Chrome, Safari, and Opera */
 .scrollbar_mod::-webkit-scrollbar {
-  width: 4px; /* Width of the scrollbar */
+  width: 4px;
+  /* Width of the scrollbar */
 }
 
 .scrollbar_mod::-webkit-scrollbar-track {
-  background: transparent; /* Make the track transparent */
+  background: transparent;
+  /* Make the track transparent */
 }
 
 .scrollbar_mod::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0); /* Make the thumb transparent */
+  background-color: rgba(0, 0, 0, 0);
+  /* Make the thumb transparent */
 }
 
 .scrollbar_mod.scrolling::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the thumb when scrolling */
+  background-color: #888;
+  /* Color of the thumb when scrolling */
 }
 
 /* For Firefox */
 .scrollbar_mod {
-  scrollbar-width:thin; /* Make the scrollbar thin */
-  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
-  scrollbar-color: rgba(0, 0, 0, 0) transparent; /* Make the scrollbar transparent */
+  scrollbar-width: thin;
+  /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease;
+  /* Add transition to the thumb */
+  scrollbar-color: rgba(0, 0, 0, 0) transparent;
+  /* Make the scrollbar transparent */
 }
 
 .scrollbar_mod.scrolling {
-  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
-  transition: scrollbar-color  0.3s ease;
+  scrollbar-color: #3a3939 transparent;
+  /* Color of the scrollbar when scrolling */
+  transition: scrollbar-color 0.3s ease;
 }
 
 .no-select {
@@ -70,64 +92,76 @@ html {
 
 
 .scrollbar_mod_mf {
-  overflow-y: scroll; /* Show scrollbar */
+  overflow-y: scroll;
+  /* Show scrollbar */
 }
 
 /* For Chrome, Safari, and Opera */
 .scrollbar_mod_mf::-webkit-scrollbar {
-  width: 4px; /* Width of the scrollbar */
+  width: 4px;
+  /* Width of the scrollbar */
 }
 
 .scrollbar_mod_mf::-webkit-scrollbar-track {
-  background: transparent; /* Make the track transparent */
+  background: transparent;
+  /* Make the track transparent */
 }
 
 .scrollbar_mod_mf::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0); /* Make the thumb transparent */
+  background-color: rgba(0, 0, 0, 0);
+  /* Make the thumb transparent */
 }
 
 .scrollbar_mod_mf.scrolling::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the thumb when scrolling */
+  background-color: #888;
+  /* Color of the thumb when scrolling */
 }
 
 /* For Firefox */
 .scrollbar_mod_mf {
-  scrollbar-width:thin; /* Make the scrollbar thin */
-  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
-  scrollbar-color: #3a3939 transparent; 
+  scrollbar-width: thin;
+  /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease;
+  /* Add transition to the thumb */
+  scrollbar-color: #3a3939 transparent;
 }
 
 .scrollbar_mod_mf.scrolling {
-  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
-  transition: scrollbar-color  0.3s ease;
+  scrollbar-color: #3a3939 transparent;
+  /* Color of the scrollbar when scrolling */
+  transition: scrollbar-color 0.3s ease;
 }
 
 
 /* Custom CSS for striping every n cards */
 @layer utilities {
+
   /* Strip every 2 cards on medium screens and larger */
   @media (min-width: 640px) and (max-width: 1023px) {
-    .striped > div:nth-child(4n + 3),
-    .striped > div:nth-child(4n + 4) {
+
+    .striped>div:nth-child(4n + 3),
+    .striped>div:nth-child(4n + 4) {
       @apply bg-[#080808];
     }
   }
 
   /* Strip every 3 cards on large screens and larger */
   @media (min-width: 1024px) and (max-width: 1279px) {
-    .striped > div:nth-child(6n + 4),
-    .striped > div:nth-child(6n + 5),
-    .striped > div:nth-child(6n + 6) {
+
+    .striped>div:nth-child(6n + 4),
+    .striped>div:nth-child(6n + 5),
+    .striped>div:nth-child(6n + 6) {
       @apply bg-[#080808];
     }
   }
 
   /* Strip every 4 cards on x-large screens and larger */
   @media (min-width: 1280px) {
-    .striped > div:nth-child(8n + 5),
-    .striped > div:nth-child(8n + 6),
-    .striped > div:nth-child(8n + 7),
-    .striped > div:nth-child(8n + 8) {
+
+    .striped>div:nth-child(8n + 5),
+    .striped>div:nth-child(8n + 6),
+    .striped>div:nth-child(8n + 7),
+    .striped>div:nth-child(8n + 8) {
       @apply bg-[#080808];
     }
   }
@@ -143,26 +177,28 @@ html {
   padding: 2px;
 }
 
-.RichTextEditor__root___2QXK-{
-  background-color: #1A282B!important;
-  border: 0px solid grey!important;
+.RichTextEditor__root___2QXK- {
+  background-color: #1A282B !important;
+  border: 0px solid grey !important;
   color: white;
-  height: 250px!important;
+  height: 250px !important;
 }
 
-.ButtonWrap__root___1EO_R button, .Dropdown__root___3ALmx{
-  background-color: white!important;
+.ButtonWrap__root___1EO_R button,
+.Dropdown__root___3ALmx {
+  background-color: white !important;
   color: black;
 }
 
-.RichTextEditor__editor___1QqIU{
-  height: 195px!important;
-  font-size: 14px!important;
+.RichTextEditor__editor___1QqIU {
+  height: 195px !important;
+  font-size: 14px !important;
   color: #efeeee;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .rotate {
   transform: rotate(180deg);
-  transform-origin: center center; /* Center the rotation */
+  transform-origin: center center;
+  /* Center the rotation */
 }

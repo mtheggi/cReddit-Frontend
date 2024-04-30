@@ -27,7 +27,7 @@ const Mainfeed = () => {
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [selectedSort, setSelectedSort] = useState(() => {
-  const storedSort = localStorage.getItem('homeSelectedSort');
+    const storedSort = localStorage.getItem('homeSelectedSort');
     if (storedSort) {
       return storedSort;
     } else {
@@ -89,8 +89,16 @@ const Mainfeed = () => {
    * @returns {Promise} The response from the API.
    */
   const fetchPosts = async (page, selectedSort) => {
-    const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
-    return response;
+    if (location.pathname == "/popular") {
+      page += 1;
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
+    else 
+    {
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
   }
 
   useEffect(() => {
@@ -104,10 +112,9 @@ const Mainfeed = () => {
 
   useEffect(() => {
 
-    if (existingPost.current)
-    {
-    existingPost.current = null;
-    return;
+    if (existingPost.current) {
+      existingPost.current = null;
+      return;
     }
 
     const getHomeFeed = async () => {
