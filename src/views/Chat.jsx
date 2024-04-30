@@ -1,10 +1,14 @@
 import useChat from "@/Components/chat/Effects/useChat";
 import ChatSide from "@/Components/chat/ChatSide";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import ChatBox from "@/Components/chat/ChatBox";
+import { ChatContext } from "@/context/ChatContext";
+import CreateChannel from "@/Components/chat/CreateChannel";
 
 const Chat = ({ setIsChat }) => {
     useChat(setIsChat);
+    const { isAddChat } = useContext(ChatContext);
+    const { isChannelSelected } = useContext(ChatContext);
 
     console.log("chat component started");
     return (
@@ -12,9 +16,15 @@ const Chat = ({ setIsChat }) => {
             <div className="w-57 min-w-57 sm:w-77  sm:min-w-77  h-screen border-r border-gray-800">
                 <ChatSide />
             </div>
+
             <div className="w-full  h-screen ">
-                <ChatBox />
+                {isAddChat ? <CreateChannel /> :
+
+                    <ChatBox />
+
+                }
             </div>
+
         </div>
 
 
