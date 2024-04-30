@@ -16,7 +16,7 @@ const CreateCommunityIcon = ({ setIsCommunityOpen, communityButtonRef, setIsVisi
 
     return (
         <>
-            <div ref={communityButtonRef}
+            <button ref={communityButtonRef}
                 className="h-11 w-full SideIcon-Container text-sm font-light items-center flex flex-row mb-1.5 relative justify-start content-center rounded-lg pl-[16px] pr-4 py-2"
                 onClick={() => { setIsCommunityOpen(true); setIsVisibleLeftSidebar(false) }}
                 id="sidebar-create-community-icon"
@@ -26,7 +26,7 @@ const CreateCommunityIcon = ({ setIsCommunityOpen, communityButtonRef, setIsVisi
                 </span>
                 <span className="text-gray-50 ml-1">Create a community</span>
 
-            </div>
+            </button>
 
         </>
 
