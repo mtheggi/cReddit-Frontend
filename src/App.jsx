@@ -5,7 +5,7 @@ import "./index.css";
 import Navbar from "./Components/navbar/Navbar";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,31 +19,35 @@ import Community from "./views/Community";
 import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from './views/NotificationPage';
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
+import { generateToken, messaging } from "./firebase";
+import { onMessage } from 'firebase/messaging';
+import toast, {Toaster} from 'react-hot-toast'
 
 function App() {
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./firebase-messaging-sw.js')
-    .then((registration) => {
-        console.log("Service Worker Registered", registration);
-        return registration.update();
-    })
-    .then(() => {
-        console.log("Service Worker Updated");
-        return navigator.serviceWorker.ready;
-    })
-    .then((registration) => {
-        console.log("Service Worker is controlling the site", registration);
-    })
-    .catch((err) => {
-        console.error("Service Worker Registration Failed", err);
-    });
-}
 
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(function(registration) {
+        console.log('Service Worker Registered', registration);
+      })
+      .catch(function(err) {
+        console.log('Service Worker registration failed: ', err);
+      });
+  }
+  
+  useEffect (() => {
+    generateToken();
+    onMessage(messaging, (payload) => {
+      console.log(payload);
+      toast(payload.notification.body);
+    })
+  }, [])
 
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
   const { isLoading, isLoggedIn } = useContext(UserContext);
   const navbarRef = useRef();
+
   return (
     isLoading ? (
       <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
@@ -51,6 +55,7 @@ function App() {
       </div>
     ) : (
       <Router>
+        <Toaster position="top-right"/>
         <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
           {!isNotFound && (
             <Navbar

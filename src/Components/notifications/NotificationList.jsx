@@ -2,34 +2,6 @@ import { useState } from 'react';
 import NotificationItem from './NotificationItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
-import messaging from './firebase.js';
-import { getToken } from 'firebase/messaging';
-import { getMessaging, onMessage } from 'firebase/messaging';
-
-
-function requestNotificationPermission() {
-    Notification.requestPermission().then(permission => {
-        if (permission === "granted") {
-            console.log("Notification permission granted.");
-            retrieveToken();
-        } else {
-            console.error("Unable to get permission to notify.");
-        }
-    });
-}
-
-function retrieveToken() {
-    getToken(messaging, { vapidKey: 'BAOo40lVroFVeMDVgUI3WLjqaqM67vkgv-k-wFFBbepUpVePhK6mQLPM_uqbURL5LnzPo_Xc8j_czKQYmNgplUE' })
-    .then((currentToken) => {
-        if (currentToken) {
-            console.log('FCM Token:', currentToken);
-        } else {
-            console.log('No registration token available. Request permission to generate one.');
-        }
-    }).catch((err) => {
-        console.error('An error occurred while retrieving token. ', err);
-    });
-}
 
 /**
  * Component for displaying a list of notifications, handling different tabs and the ability to navigate to a detailed notifications page.
@@ -42,13 +14,6 @@ function retrieveToken() {
  * @returns {JSX.Element} A component that displays a list of notifications with interactive tabs and options.
  */
 const NotificationList = ({ notifications, isNewNotificationsPage, reference }) => {
-    requestNotificationPermission();
-    const messaging = getMessaging();
-onMessage(messaging, (payload) => {
-    console.log('Message received. ', payload);
-    // Process your message as required
-    alert("New message: " + payload.notification.body);
-});
     const [activeTab, setActiveTab] = useState('Notifications');
     const [seeAllHovered, setSeeAllHovered] = useState(false);
     const { setNotifications, removeNotification } = useNotifications();
