@@ -116,10 +116,10 @@ const SearchFeed = ({ isSafe, sortTime, sortType }) => {
                     if (type == "posts" || type == "comments" || type == "hashtags") {
 
                         if(location.pathname.includes("/my-user/") || location.pathname.includes("/user/") )
-                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&user=${location.pathname.split("/")[4]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&user=${location.pathname.split("/")[2]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
 
                         else if (location.pathname.includes("/r/"))
-                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&community=${location.pathname.split("/")[4]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
+                        response = await getRequest(`${baseUrl}/search/${type == "people" ? "users" : type}?page=${[page]}&limit=10&query=${query}&safeSearch=${isSafe}&community=${location.pathname.split("/")[2]}&autocomplete=false&sort=${sortType.toLowerCase()}&time=${sortTime.toLowerCase()}`);
                     
                     }
                     else {
@@ -136,12 +136,6 @@ const SearchFeed = ({ isSafe, sortTime, sortType }) => {
                     }
 
                 }
-
-
-
-
-
-
                 if (response.status == 200 || response.status == 201) {
                     if (type == "people") {
                         setPeopleSearchResults(prevResults => [...prevResults, ...response.data]);

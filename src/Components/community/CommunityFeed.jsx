@@ -27,7 +27,6 @@ import Comment from "../mainfeed/comment/Comment";
  */
 const CommunityFeed = ({ subredditName }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const [page, setPage] = useState(1);
@@ -161,9 +160,6 @@ const CommunityFeed = ({ subredditName }) => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
         setIsOpenCateg(false);
       }
-      if (menuRefView.current && !menuRefView.current.contains(e.target)) {
-        setIsOpenView(false);
-      }
     };
     document.addEventListener("click", closeDropdown);
 
@@ -174,7 +170,6 @@ const CommunityFeed = ({ subredditName }) => {
       setHomeFeedScroll(commfeedElement.scrollTop);
       if (commfeedElement.scrollTop > scrollThreshold) {
         setIsOpenCateg(false);
-        setIsOpenView(false);
       }
     };
 
@@ -272,42 +267,7 @@ const CommunityFeed = ({ subredditName }) => {
               </div>
             )}
           </div>
-          <div ref={menuRefView} className="relative">
-            <div
-              id="commfeed_view_type"
-              onClick={() => setIsOpenView((prev) => !prev)}
-              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
-                } justify-center items-center cursor-pointer`}
-            >
-              <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
-              <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-            </div>
-
-            {isOpenView && (
-              <div className=" w-30 h-33  bg-reddit_search absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-20 rounded-lg  font-extralight flex flex-col">
-                <div className="w-full pl-3  rounded-lg h-8 flex items-center font-medium">
-                  <p className="no-select">View</p>
-                </div>
-                <a
-                  id="commfeed_view_card"
-                  href=""
-                  className="w-full pl-6 hover:bg-reddit_hover h-11 flex items-center cursor-pointer"
-                >
-                  <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                  <p className="ml-2 no-select">Card</p>
-                </a>
-                <a
-                  id="commfeed_view_classic"
-                  href=""
-                  className="w-full pl-6 hover:bg-reddit_hover h-11 flex rounded-b-lg items-center cursor-pointer"
-                >
-                  <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                  {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
-                  <p className="ml-2 no-select">Classic</p>
-                </a>
-              </div>
-            )}
-          </div>
+        
         </div>
       )}
       <div
