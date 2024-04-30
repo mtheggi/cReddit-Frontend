@@ -239,7 +239,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                     <div className='flex items-center xs:ml-auto  mr-3 xl:mr-4'>
                         {!isLoggedIn && (<div className=' flex items-center w-fit h-full ml-2 xs:ml-0 xl:mr-4'>
-                            <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-reddit_upvote  hover:bg-orange-700 rounded-full w-17 mr-3 h-10 hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
+                            <div ref={loginButtonRef} onClick={() => setIsOpenedLoginMenu(true)} className=" bg-[#CC3600]  hover:bg-orange-700 rounded-3xl w-17 mr-3 h-[33px] hover:no-underline cursor-pointer items-center justify-center  inline-flex" href="" id="navbar_login_button">
                                 <span className="flex items-center justify-center ">
                                     <span className="flex items-center font-medium text-white text-sm ">Log In</span>
                                 </span>
@@ -255,7 +255,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                 </div>
                             )}
 
-                            <div ref={signupButtonRef} onClick={() => setIsOpenedSignupMenu(true)} className=" bg-reddit_downvote hover:bg-indigo-700 rounded-full w-17 mr-2 h-10 hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup_button">
+                            <div ref={signupButtonRef} onClick={() => setIsOpenedSignupMenu(true)} className=" bg-indigo-600 hover:bg-indigo-700 rounded-full w-17 mr-2  h-[33px] hover:no-underline cursor-pointer  items-center justify-center  inline-flex" href="" id="navbar_signup_button">
                                 <span className="flex items-center justify-center">
                                     <span className="flex items-center font-medium text-white text-sm ">Sign Up</span>
                                 </span>
