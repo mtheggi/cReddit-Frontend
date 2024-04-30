@@ -13,7 +13,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
  * @component
  * @returns {JSX.Element} The Searchbar component.
  *  */
-const Searchbar = () => {
+const Searchbar = ({ isSearchInMobile }) => {
     const [placeholder, setPlaceholder] = useState('Search in Reddit');
     const [userResults, setUserResults] = useState([]);
     const [communityResults, setCommunityResults] = useState([]);
@@ -24,6 +24,7 @@ const Searchbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+
     useEffect(() => {
         setSearchHistory(JSON.parse(localStorage.getItem('searchHistory') || '[]'));
     }, []);
@@ -32,7 +33,7 @@ const Searchbar = () => {
 
         if ((location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user/')) && location.pathname.includes('/search/')) {
             const pathParts = location.pathname.split('/');
-            console.log(pathParts);
+
             if (pathParts[1] === 'user' || pathParts[1] === 'r' || pathParts[1] === 'my-user') {
                 inputRef.current.value = pathParts[4];
                 setSearchValue(pathParts[4]);
@@ -121,29 +122,31 @@ const Searchbar = () => {
 
     return (
 
-        <div className="flex-col w-full items-center flex relative">
+        <div className={`flex-col w-full items-center flex ${isSearchInMobile?"":"relative"}   `}>
 
-            <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-[42px]  ml-auto xs:ml-0 xs:w-full max-w-[600px] xl:mr-12 z-20 ${isFocused ? 'xs:bg-[#0E1A1C]' : 'xs:bg-reddit_search'} justify-center xs:justify-start cursor-pointer sm:cursor-default h-9 min-h-10 items-center flex xs:flex-grow rounded-full hover:bg-reddit_search_light xs:px-3 `}>
-                <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-6 w-7 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
+            <div className={`${isSearchInMobile?'absolute top-[62px] left-[2px] pb-[7px] pt-[1.5px] w-[99%] bg-reddit_navbar':'max-w-[600px] w-full '} z-20`}>
+                <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group  ${isSearchInMobile ? 'w-[93%] xs:w-[95%] ml-3 ' : 'hidden mmd:flex w-full '} xl:mr-12 z-20 ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'}  justify-start cursor-default h-9 min-h-10 items-center flex mmd:flex-grow rounded-full hover:bg-reddit_search_light px-3 `}>
+                    <MagnifyingGlassIcon className=" text-gray-300 h-5 w-6  min-h-5 min-w-6  mr-1" />
 
-                {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) &&
-                    <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
+                    {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) &&
+                        <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
 
-                        {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] font-medium'>u/{location.pathname.split("/")[2]}</h1>}
-                        {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] font-medium'>r/{location.pathname.split("/")[2]}</h1>}
+                            {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] font-medium'>u/{location.pathname.split("/")[2]}</h1>}
+                            {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] font-medium'>r/{location.pathname.split("/")[2]}</h1>}
 
-                    </div>
-                }
+                        </div>
+                    }
 
 
-                <input ref={inputRef} onClick={() => setIsFocused(true)} onChange={(e) => { getSearchResults(e.target.value); setSearchValue(e.target.value); }} id='navbar_searchbar_input' type="text" autoComplete='off' className={`group-hover:bg-reddit_search_light ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'} h-7 w-11/12 text-sm hidden xs:block font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder={placeholder} />
+                    <input ref={inputRef} onClick={() => setIsFocused(true)} onChange={(e) => { getSearchResults(e.target.value); setSearchValue(e.target.value); }} id='navbar_searchbar_input' type="text" autoComplete='off' className={`group-hover:bg-reddit_search_light ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'} h-7 w-11/12 text-sm  font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder={placeholder} />
 
-                {searchValue != "" && <div onClick={() => { setSearchValue(""); setCommunityResults([]); inputRef.current.value = ""; setUserResults([]) }} className='w-[26px] h-[26px] hover:bg-reddit_search_light rounded-full cursor-pointer flex flex-row items-center justify-center'>
-                    <svg rpl="" className='text-black' fill="white" height="16" icon-name="clear-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 18.75A8.75 8.75 0 1 1 18.75 10 8.76 8.76 0 0 1 10 18.75Zm3.567-11.433L10.884 10l2.683 2.683-.884.884L10 10.884l-2.683 2.683-.884-.884L9.116 10 6.433 7.317l.884-.884L10 9.116l2.683-2.683.884.884Z"></path> </svg>
-                </div>}
-            </form>
+                    {searchValue != "" && <div onClick={() => { setSearchValue(""); setCommunityResults([]); inputRef.current.value = ""; setUserResults([]) }} className='w-[26px] h-[26px] hover:bg-reddit_search_light rounded-full cursor-pointer flex mmd:flex-row items-center justify-center'>
+                        <svg rpl="" className='text-black' fill="white" height="16" icon-name="clear-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 18.75A8.75 8.75 0 1 1 18.75 10 8.76 8.76 0 0 1 10 18.75Zm3.567-11.433L10.884 10l2.683 2.683-.884.884L10 10.884l-2.683 2.683-.884-.884L9.116 10 6.433 7.317l.884-.884L10 9.116l2.683-2.683.884.884Z"></path> </svg>
+                    </div>}
+                </form>
+            </div>
 
-            <div className={`absolute  max-w-[600px] xl:mr-12 bg-[#0F1A1C] ${isFocused ? 'xs:block' : 'hidden'}  rounded-b-3xl w-full h-fit top-[20px] `}>
+            <div className={`absolute  max-w-[600px]  bg-[#0F1A1C] ${isFocused ? 'mmd:block hidden' : 'hidden'}  rounded-b-3xl w-full h-fit top-[21px] `}>
                 <div className="flex-col flex h-fit w-full">
                     {communityResults.length != 0 && <h1 className='text-gray-400 px-3 mt-10 mb-[6px] text-[14px] font-semibold'>Communities</h1>}
                     {communityResults.map((community, index) => {

@@ -13,7 +13,7 @@ import SearchFeed from "@/Components/search/SearchFeed";
 
 import SearchResultsOptions from "@/Components/search/SearchResultsOptions";
 
-const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef, isSearchInMobile}) => {
   const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'Relevance');
   const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
   const { isLoggedIn } = useContext(UserContext);
@@ -121,7 +121,7 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
   });
   return (
 
-    <div className="w-full mt-14 h-full flex min-w-[366px] flex-row overflow-hidden">
+    <div className={`w-full ${isSearchInMobile?'mt-[108px] ':'mt-14 '} h-full flex min-w-[366px] flex-row overflow-hidden`}>
       <div className={`flex flex-row w-full xl:ml-4  h-full`}>
 
         <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
