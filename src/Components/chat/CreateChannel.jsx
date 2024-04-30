@@ -2,6 +2,8 @@ import SearchChat from "./SearchChat";
 
 const CreateChannel = () => {
     return (
+
+
         <div>
             <SearchChat />
 
