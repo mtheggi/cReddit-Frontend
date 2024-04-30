@@ -88,6 +88,18 @@ function App() {
               </SidebarContextProvider>
             }
           />
+               <Route
+            path={"/all"}
+            element={
+              <SidebarContextProvider>
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
           {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
           {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
           <Route
