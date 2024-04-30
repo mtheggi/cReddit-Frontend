@@ -295,19 +295,7 @@ const Post = ({
     }
   };
 
-  const components = {
-    text: ({ value }) => {
-      const isUnderlined = value.startsWith('++') && value.endsWith('++');
-      if (isUnderlined) {
-        const text = value.slice(2, -2);
-        return <u>{text}</u>;
-      }
-      return value;
-    },
-    code: ({ language, value }) => {
-      return <SyntaxHighlighter style={dark} language={language} children={value} />
-    }
-  };
+
 
   return currentIsHidden ? (
     <HiddenPost id={id} handleHidePost={handleHidePost} />
@@ -464,7 +452,7 @@ const Post = ({
 
           {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
             <>
-              {type != "Link" ? (<ReactMarkdown components={components} style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
+              {type != "Link" ? (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
                 (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
             </>
           </div>}
