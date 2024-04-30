@@ -1,7 +1,11 @@
-const CreateChannel = () => {
-    return (<div>
+import SearchChat from "./SearchChat";
 
-    </div>);
+const CreateChannel = () => {
+    return (
+        <div>
+            <SearchChat />
+
+        </div>);
 }
 
 export default CreateChannel;
