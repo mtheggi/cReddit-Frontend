@@ -45,11 +45,7 @@ export const postRequest = async (url, body) => {
 }
 
 export const postRequestImg = async (url, formData) => {
-    for (let pair of formData.entries()) {
-        if (pair[1] instanceof File && pair[1].type.startsWith('image/')) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-    }
+   
     return axios.post(url, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',

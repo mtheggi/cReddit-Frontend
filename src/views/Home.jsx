@@ -36,7 +36,7 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
       localStorage.setItem('homeFeedScroll', homeFeedScroll);
-      console.log('scroll saved', homeFeedScroll);
+
     }
     else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/")) {
       setTimeout(() => {

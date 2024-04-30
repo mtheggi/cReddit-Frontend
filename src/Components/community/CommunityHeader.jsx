@@ -32,13 +32,13 @@ function CommunityHeader({
   isJoined = true,
   isMuted = false,
 }) {
-  console.log(name, icon, banner, members);
+
 
   const [joined, setJoined] = useState(isJoined);
   const [muted, setMuted] = useState(isMuted);
 
   async function handleJoinSubreddit() {
-    console.log("Joining subreddit", name, joined);
+
     let res;
     if (joined) {
       res = await deleteRequest(`${baseUrl}/subreddit/${name}/join`);

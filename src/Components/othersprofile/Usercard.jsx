@@ -84,9 +84,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
             }
         }
     }
-    useEffect(() => {
-        console.log(isOpenedLoginMenu, "isOpenedLoginMenu");
-    }, [isOpenedLoginMenu])
+   
 
     const handleBlock = async (e) => {
         e.stopPropagation();

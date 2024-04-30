@@ -54,14 +54,14 @@ const ProfileFeed = ({ userName, selectedPage }) => {
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 setPage(prevPage => prevPage + 1);
-                console.log("Intersecting");
+
             }
         });
         if (node) observer.current.observe(node);
 
     }, [feedLoading, hasMore]);
 
-    console.log("selected page ", selectedPage)
+
 
     /**
      * Fetches a single post by its ID. If the post is already in the state, it uses that.
@@ -107,8 +107,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
         setPage(1);
         setComments([]);
         setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-        console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
-        console.log("useEffect1");
+     
     }, [selectedSort]);
 
 
@@ -134,7 +133,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
             }
         }
 
-        console.log("useEffect2");
+
 
         if (!navigate.pathname.includes("/comments/")) {
             getHomeFeed();
@@ -143,7 +142,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
     useEffect(() => {
         const getComments = async () => {
-            console.log("comments selected sort ", selectedSort)
+
             try {
                 setHasMore(true);
                 setIsFeedLoading(true);

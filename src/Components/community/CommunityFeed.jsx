@@ -66,7 +66,7 @@ const CommunityFeed = ({ subredditName }) => {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setPage(prevPage => prevPage + 1);
-        console.log("fetching more posts");
+
       }
     });
     if (node) observer.current.observe(node);
@@ -110,7 +110,7 @@ const CommunityFeed = ({ subredditName }) => {
       try {
         setHasMore(true);
         setIsFeedLoading(true);
-        console.log("fetching home feed");
+
         const response = await getRequest(`${baseUrl}/subreddit/${subredditName}/posts?page=${page}&limit=15&sort=${selectedSort.toLowerCase()}`);
         const status = response.status;
         const data = response.data;
