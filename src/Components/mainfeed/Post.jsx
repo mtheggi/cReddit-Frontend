@@ -319,21 +319,21 @@ const Post = ({
               <ArrowLeftIcon className="text-white w-6 h-6" />
             </div>
           )}
-          <img
-            src={profilePicture}
-            alt="Logo"
-            className={`${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"
-              } rounded-full `}
-          />
-          <Link
-            to={
-              communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`
-            }
+
+          <div className="flex flex-row cursor-pointer items-center"
+            onClick={(e) => {
+              navigate(communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`);
+            }}
           >
-            <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
+            <img
+              src={profilePicture}
+              alt="Logo"
+              className={`peer ${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"} rounded-full `}
+            />
+            <p className="text-gray-300 peer-hover:underline  font-semibold text-xs ml-2 hover:underline">
               {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
             </p>
-          </Link>
+          </div>
         </div>
 
         <div className=" flex flex-row w-[32%] xs:w-[40%] items-center ">
@@ -353,7 +353,6 @@ const Post = ({
           >
             <EllipsisHorizontalIcon
               onClick={(e) => {
-
                 setIsOpenDots((prev) => !prev);
               }}
               className="h-6 w-6 outline-none"
@@ -394,7 +393,13 @@ const Post = ({
         </div>
       </div>
 
-      <div className="mt-1 w-full h-fit flex flex-col">
+      <div onClick={() => {
+        if (communityName == null)
+          navigate(`/user/${username}/comments/${id}`);
+        else
+          navigate(`/r/${communityName}/comments/${id}`);
+      }
+      } className="mt-1 w-full cursor-pointer h-fit flex flex-col">
         {(isSpoiler || isNSFW) && (
           <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
             {isSpoiler && (
