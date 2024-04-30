@@ -225,7 +225,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
 
     return (
-        <div ref={navbarRef} className="flex  z-30 fixed flex-col w-full no-select">
+        <div ref={navbarRef} className="flex  z-20 fixed flex-col w-full no-select">
 
 
             <header className='w-full flex flex-col bg-reddit_navbar'>
