@@ -22,6 +22,7 @@ import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import { useLocation } from "react-router-dom";
+import ModTools from "./views/ModTools";
 
 
 
@@ -30,7 +31,7 @@ function App() {
   const [isNotFound, setIsNotFound] = useState(false);
   const { isLoading, isLoggedIn } = useContext(UserContext);
   const [isSearchInMobile, setIsSearchInMobile] = useState(false);
- 
+
   const navbarRef = useRef();
   return isLoading ? (
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
@@ -54,162 +55,166 @@ function App() {
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
-    
-          <Routes>
-            <Route
-              path={"/"}
-              element={
-                <SidebarContextProvider>
-                  <Home
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path={"/:param3/:param1/comments/:param2"}
-              element={
-                <SidebarContextProvider>
-                  <Home
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path={"/popular"}
-              element={
-                <SidebarContextProvider>
-                  <Home
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path={"/all"}
-              element={
-                <SidebarContextProvider>
-                  <Home
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
-            {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
-            <Route
-              path="/notifications"
-              element={
-                <NotificationPage
+
+        <Routes>
+          <Route
+            path={"/"}
+            element={
+              <SidebarContextProvider>
+                <Home
                   isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                 />
-              }
-            />
-            <Route path="/passwordrecovery" element={<PasswordRecovery />} />
-            <Route
-              path="/best/communities"
-              element={
-                <SidebarContextProvider>
-                  <TopCommunities
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path="/r/:name"
-              element={
-                <SidebarContextProvider>
-                  <Community
-                    isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path={"/:param3/:param1/comments/:param2"}
+            element={
+              <SidebarContextProvider>
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path={"/popular"}
+            element={
+              <SidebarContextProvider>
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path={"/all"}
+            element={
+              <SidebarContextProvider>
+                <Home
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
+          {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
+          <Route
+            path="/notifications"
+            element={
+              <NotificationPage
+                isVisibleLeftSidebar={isVisibleLeftSidebar}
+                setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                navbarRef={navbarRef}
+              />
+            }
+          />
+          <Route path="/passwordrecovery" element={<PasswordRecovery />} />
+          <Route
+            path="/best/communities"
+            element={
+              <SidebarContextProvider>
+                <TopCommunities
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="/r/:name"
+            element={
+              <SidebarContextProvider>
+                <Community
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
 
-            <Route
-              path="/user/:username/:page?"
-              element={
-                <SidebarContextProvider>
-                  <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path="/search/:query/:type"
-              element={
-                <SidebarContextProvider>
-                  <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                    isSearchInMobile={isSearchInMobile}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path="user/:username/search/:query/:type"
-              element={
-                <SidebarContextProvider>
-                  <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                    isSearchInMobile={isSearchInMobile}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path="my-user/username/search/:query/:type"
-              element={
-                <SidebarContextProvider>
-                  <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                    isSearchInMobile={isSearchInMobile}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route
-              path="r/:community/search/:query/:type"
-              element={
-                <SidebarContextProvider>
-                  <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
-                    setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                    navbarRef={navbarRef}
-                    isSearchInMobile={isSearchInMobile}
-                  />
-                </SidebarContextProvider>
-              }
-            />
-            <Route path="/chat" element={<Chat />} />
-            <Route
-              path="/*"
-              element={
-                <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
-              }
-            />
+          <Route
+            path="/user/:username/:page?"
+            element={
+              <SidebarContextProvider>
+                <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                  isSearchInMobile={isSearchInMobile}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="user/:username/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                  isSearchInMobile={isSearchInMobile}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="my-user/username/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                  isSearchInMobile={isSearchInMobile}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route
+            path="r/:community/search/:query/:type"
+            element={
+              <SidebarContextProvider>
+                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+                  navbarRef={navbarRef}
+                  isSearchInMobile={isSearchInMobile}
+                />
+              </SidebarContextProvider>
+            }
+          />
+          <Route path="/r/:communityName/mod/:page" element={
+            <ModTools/>
+          } />
 
-          </Routes>
-        </div>
+          <Route path="/chat" element={<Chat />} />
+          <Route
+            path="/*"
+            element={
+              <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+            }
+          />
+
+        </Routes>
+      </div>
 
     </Router>
   );
