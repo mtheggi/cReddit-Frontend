@@ -14,7 +14,7 @@ import SearchFeed from "@/Components/search/SearchFeed";
 import SearchResultsOptions from "@/Components/search/SearchResultsOptions";
 
 const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef, isSearchInMobile}) => {
-  const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'Relevance');
+  const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'New');
   const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
   const { isLoggedIn } = useContext(UserContext);
   const mainfeedRef = useRef();
