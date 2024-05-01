@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import ChatBox from "@/Components/chat/ChatBox";
 import { ChatContext } from "@/context/ChatContext";
 import CreateChannel from "@/Components/chat/CreateChannel";
-
+import LandingOnChat from "@/Components/chat/LandingOnChat";
 const Chat = ({ setIsChat }) => {
     useChat(setIsChat);
     const { isAddChat } = useContext(ChatContext);
@@ -19,9 +19,7 @@ const Chat = ({ setIsChat }) => {
 
             <div className="w-full  h-screen ">
                 {isAddChat ? <CreateChannel /> :
-
-                    <ChatBox />
-
+                    isChannelSelected ? <ChatBox /> : <LandingOnChat />
                 }
             </div>
 
