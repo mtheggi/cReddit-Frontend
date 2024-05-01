@@ -183,23 +183,55 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
 
           {
-            location.pathname === "/popular" &&
-            <div className=" w-full px-6 mt-[18px] lg:max-w-[1155px]">
-              <PopularCarousel />
-            </div>
+            location.pathname === "/" &&
+            <>
+              <div className="flex flex-row w-fit">
+                <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                  <Mainfeed mode={"home"} />
+                </div>
 
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                  <Recent userHistoryRes={userHistoryRes} />
+                </div>
+              </div>
+            </>
           }
 
-          <div className="flex flex-row w-fit">
-            <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-              <Mainfeed />
-            </div>
+{
+            location.pathname === "/popular" &&
+            <>
+              <div className=" w-full px-6 mt-[18px] lg:max-w-[1155px]">
+                <PopularCarousel />
+              </div>
+              <div className="flex flex-row w-fit">
+                <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                  <Mainfeed mode={"popular"}  />
+                </div>
 
-            <div
-              className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-              <Recent userHistoryRes={userHistoryRes} />
-            </div>
-          </div>
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                  <Recent userHistoryRes={userHistoryRes} />
+                </div>
+              </div>
+            </>
+          }
+{
+            location.pathname === "/all" &&
+            <>
+              <div className="flex flex-row w-fit">
+                <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                  <Mainfeed mode={"all"} />
+                </div>
+
+                <div
+                  className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                  <Recent userHistoryRes={userHistoryRes} />
+                </div>
+              </div>
+            </>
+          }
+
         </div>
       </div>
     </div>

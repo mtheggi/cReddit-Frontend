@@ -187,10 +187,10 @@ const CommunityFeed = ({ subredditName, isMember }) => {
 
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
-      localStorage.setItem("homeFeedScroll", homeFeedScroll);
+      localStorage.setItem("communityFeedScroll", homeFeedScroll);
     } else {
       setTimeout(() => {
-        commfeedRef.current.scrollTop = localStorage.getItem("homeFeedScroll");
+        commfeedRef.current.scrollTop = localStorage.getItem("communityFeedScroll");
       }, 10);
     }
   }, [navigate.pathname]);

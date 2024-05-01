@@ -18,7 +18,7 @@ import Comment from "./comment/Comment";
  * @component
  * @returns {JSX.Element} The rendered Mainfeed component.
  */
-const Mainfeed = () => {
+const Mainfeed = ({ mode }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
 
   const [posts, setPosts] = useState([]);
@@ -27,11 +27,13 @@ const Mainfeed = () => {
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
   const [selectedSort, setSelectedSort] = useState(() => {
-    const storedSort = localStorage.getItem('homeSelectedSort');
+  
+    const storedSort = localStorage.getItem(`${mode}SelectedSort`);
+
     if (storedSort) {
       return storedSort;
     } else {
-      localStorage.setItem('homeSelectedSort', 'Best');
+      localStorage.setItem(`${mode}SelectedSort`, 'Best');
       return 'Best';
     }
   });
@@ -94,8 +96,7 @@ const Mainfeed = () => {
       const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
       return response;
     }
-    else 
-    {
+    else {
       const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
       return response;
     }
@@ -163,7 +164,7 @@ const Mainfeed = () => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
         setIsOpenCateg(false);
       }
-    
+
     };
     document.addEventListener("click", closeDropdown);
 
@@ -206,7 +207,7 @@ const Mainfeed = () => {
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Best"); }}
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Best"); }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -214,7 +215,7 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Hot"); }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -222,7 +223,7 @@ const Mainfeed = () => {
                 <p className="no-select">Hot</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "New"); }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -230,7 +231,7 @@ const Mainfeed = () => {
                 <p className="no-select">New</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Top"); }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -241,7 +242,7 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
-       
+
 
       </div>}
       <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
