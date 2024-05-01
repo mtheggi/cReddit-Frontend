@@ -125,7 +125,7 @@ const Searchbar = ({ isSearchInMobile }) => {
 
         <div className={`flex-col w-full items-center flex ${isSearchInMobile?"":"relative"}   `}>
 
-            <div className={`${isSearchInMobile?'absolute top-[62px] left-[2px] pb-[7px] pt-[1.5px] w-[99%] bg-reddit_navbar':'max-w-[600px] w-full '} z-20`}>
+            <div className={`${isSearchInMobile?'absolute top-[56px] left-[2px] pb-[7px] pt-[1.5px] w-[99%] bg-reddit_navbar':'max-w-[600px] w-full '} z-20`}>
                 <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group  ${isSearchInMobile ? 'w-[93%] xs:w-[95%] ml-3 ' : 'hidden mmd:flex w-full '} xl:mr-12 z-20 ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'}  justify-start cursor-default h-9 min-h-10 items-center flex mmd:flex-grow rounded-full hover:bg-reddit_search_light px-3 `}>
                     <MagnifyingGlassIcon className=" text-gray-300 h-5 w-6  min-h-5 min-w-6  mr-1" />
 
