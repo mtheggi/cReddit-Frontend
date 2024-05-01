@@ -64,7 +64,7 @@ const Post = ({
   lastPostRef
 }) => {
   const menuRefDots = useRef();
-  const shareMenuRef=useRef();
+  const shareMenuRef = useRef();
   const [isOpenDots, setIsOpenDots] = useState(false);
   const [hoverJoin, setHoverJoin] = useState(false);
   const [editedPollOptions, setEditedPollOptions] = useState(pollOptions);
@@ -122,28 +122,28 @@ const Post = ({
 
   useEffect(() => {
     let closeDropdown = (e) => {
-      if (menuRefDots.current && !menuRefDots.current.contains(e.target)) 
+      if (menuRefDots.current && !menuRefDots.current.contains(e.target))
         setIsOpenDots(false);
 
-        if (shareMenuRef.current && !shareMenuRef.current.contains(e.target)) 
-          setIsShareMenuOpened(false);
+      if (shareMenuRef.current && !shareMenuRef.current.contains(e.target))
+        setIsShareMenuOpened(false);
 
     };
     document.addEventListener("click", closeDropdown);
 
     const scrollingElement = document.getElementById("homefeed");
-    
+
     const handleScroll = () => {
       const scrollThreshold = 30;
       if (!menuRefDots.current) {
         return;
       }
-      
+
       const rect = menuRefDots.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
-      
-      if ( rect.top < scrollThreshold || rect.bottom > viewportHeight - scrollThreshold) {
+
+      if (rect.top < scrollThreshold || rect.bottom > viewportHeight - scrollThreshold) {
         setIsOpenDots(false);
       }
 
@@ -151,7 +151,7 @@ const Post = ({
         return;
       }
       const rectShare = shareMenuRef.current.getBoundingClientRect();
-      if ( rectShare.top < scrollThreshold || rectShare.bottom > viewportHeight - scrollThreshold) {
+      if (rectShare.top < scrollThreshold || rectShare.bottom > viewportHeight - scrollThreshold) {
         setIsShareMenuOpened(false);
       }
     };
@@ -242,7 +242,8 @@ const Post = ({
    * @async
    * @function handleVote
    */
-  const handleVote = async () => {
+  const handleVote = async (e) => {
+    e.stopPropagation();
     if (!isOptionSelected) {
       return;
     }
@@ -529,6 +530,7 @@ const Post = ({
                   <div
                     id={"mainfeed_" + id + "_polloptions"}
                     className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
+                    onClick={(e) => {e.stopPropagation()}}
                   >
                     {editedPollOptions &&
                       editedPollOptions.map((option, index) => (
@@ -579,7 +581,7 @@ const Post = ({
                   <div className="flex flex-row w-full mt-3 items-center">
                     {!hasVoted && !hasExpired && (
                       <div
-                        onClick={handleVote}
+                        onClick={(e)=>handleVote(e)}
                         className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
                           ? "bg-black cursor-pointer"
                           : "bg-[#1C1E20] cursor-not-allowed"
@@ -631,10 +633,11 @@ const Post = ({
           {isShareMenuOpened && (
             <div className="flex-col absolute mt-[38px] flex w-[190px] z-20 h-fit py-1 space-y-1  bg-reddit_hover rounded-lg ">
 
-              <div onClick={(e)=>{e.stopPropagation(); setIsShareMenuOpened(false);
-                 navigator.clipboard.writeText(communityName?`creddit.tech/r/${communityName}/comments/${id}`:`creddit.tech/u/${username}/comments/${id}`).then(function() {
-                 
-                }, function(err) {
+              <div onClick={(e) => {
+                e.stopPropagation(); setIsShareMenuOpened(false);
+                navigator.clipboard.writeText(communityName ? `creddit.tech/r/${communityName}/comments/${id}` : `creddit.tech/u/${username}/comments/${id}`).then(function () {
+
+                }, function (err) {
                   console.error('Could not copy text: ', err);
                 });
               }} id="copy_link" className="w-full cursor-pointer pl-[14px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
@@ -646,8 +649,8 @@ const Post = ({
 
 
               <div id="cross_post" className="w-full cursor-pointer pl-[18px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#B7C5C8" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+                <svg rpl="" class="mt-[1px] ml-[4px]" fill="white" height="20" icon-name="crosspost-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m15.944 11.926-.888.879 1.925 1.945H12A4.873 4.873 0 0 1 7.138 10 4.873 4.873 0 0 1 12 5.25h4.971l-1.915 1.936.888.878L18.875 5.1a.727.727 0 0 0-.007-1.025l-2.929-2.9-.878.888L17.011 4H12a6.128 6.128 0 0 0-6.056 5.25H1v1.625h4.981A6.117 6.117 0 0 0 12 16h5l-1.94 1.92.878.89 2.929-2.9a.726.726 0 0 0 .006-1.025l-2.929-2.96Z"></path>
                 </svg>
 
                 <h1 className="text-gray-300 ml-3 text-[15px]">Cross Post</h1>
