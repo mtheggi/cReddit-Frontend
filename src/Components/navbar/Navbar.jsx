@@ -226,14 +226,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
     return (
         <div ref={navbarRef} className="flex  z-20 fixed flex-col w-full no-select">
-
-
             <header className='w-full flex flex-col bg-reddit_navbar'>
 
 
                 <div className="flex flex-row w-full items-center  p-2 "> 
                     {!urlContainsWord && (
-                        <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${location.pathname == "/best/communities" ? "hidden" : "xl:hidden"}`}>
+                        <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${(location.pathname == "/best/communities" || location.pathname.includes('/mod')) ? "hidden" : "xl:hidden"}`}>
                             <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
                         </div>
                     )}
