@@ -137,15 +137,6 @@ const Comment = ({ postId }) => {
                             <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                                 <p className="no-select">Sort by</p>
                             </div>
-{/* 
-                            <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Best"); }}
-                                id="mainfeed_category_best"
-                                href=""
-                                className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                            >
-                                <p className="no-select">Best</p>
-                            </div> */}
-
 
                             <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('commentsSelectedSort', "Top"); }}
                                 id="mainfeed_category_top"
@@ -209,7 +200,7 @@ const Comment = ({ postId }) => {
                         </div>}
 
                         {
-                            page === 1 && !hasMore && postComments.length === 0 &&
+                            page === 1 && !hasMore && postComments.length === 0 && !isPaginationLoading && !loadingAddComment &&
                             <NoComments />
                         }
 
