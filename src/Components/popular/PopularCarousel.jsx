@@ -3,6 +3,7 @@ import { getRequest } from '../../services/Requests';
 import { baseUrl } from '../../constants';
 import { useLocation } from 'react-router-dom';
 import Loading from '../Loading/Loading';
+import { useNavigate } from 'react-router-dom';
 
 const PopularCarousel = () => {
     const [popularPosts, setPopularPosts] = useState([]);
@@ -11,6 +12,7 @@ const PopularCarousel = () => {
     const carouselRef = useRef(null);
     const [atMostRight, setAtMostRight] = useState(false);
     const [atMostLeft, setAtMostLeft] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const checkScrollPosition = () => {
@@ -37,7 +39,7 @@ const PopularCarousel = () => {
 
             try{
             setIsLoading(true);
-            const response = await getRequest(`${baseUrl}/post/home-feed?page=1&limit=10&sort=top`);
+            const response = await getRequest(`${baseUrl}/post/popular`);
             if (response.status === 200 || response.status === 201)
                 setPopularPosts(response.data);
             }catch(e){
@@ -82,14 +84,18 @@ const PopularCarousel = () => {
 
 
                 {popularPosts.map((post, index) => (
-                    <div key={index} class="mr-4 flex-col h-[210px] relative w-[290px] inline-flex shrink-0 snap-mandatory snap-start list-none overflow-hidden rounded-[16px]">
+                    <div onClick={
+                        ()=>navigate(post.communityName ? `/r/${post.communityName}/comments/${post._id}` : `/u/${post.username}/comments/${post._id}`)
+                    }  key={index} class="mr-4 flex-col cursor-pointer h-[210px] relative w-[290px] inline-flex shrink-0 snap-mandatory snap-start list-none overflow-hidden rounded-[16px]">
                         <img className='absolute object-cover w-full h-full' src={post.content} />
                         <div className='absolute w-full h-full bg-black opacity-50'></div>
                         <div className='w-full h-full z-10 px-3 justify-end flex flex-col'>
                             <h1 className='text-[20px] text-gray-200 shadow-md font-semibold truncate'> {post.title}</h1>
-                            <div className='flex mt-[10px] mb-[14px] items-center flex-row'>
-                                <img className='rounded-full w-[25px] h-[25px]' src={post.profilePicture} alt="" />
-                                <h1 className='text-gray-200 text-[12px] font-medium ml-[7px]'>{post.communityName ? `r/${post.communityName}` : `u/${post.username}`}</h1>
+                            <div onClick={
+                                (e)=>{e.stopPropagation(); navigate(post.communityName ? `/r/${post.communityName}` : `/user/${post.username}`)}
+                            } className='flex cursor-pointer mt-[10px] mb-[14px] items-center flex-row'>
+                                <img className='rounded-full peer w-[25px] h-[25px]' src={post.profilePicture} alt="" />
+                                <h1 className='text-gray-200 peer-hover:underline hover:underline text-[12px] font-medium ml-[7px]'>{post.communityName ? `r/${post.communityName}` : `u/${post.username}`}</h1>
                             </div>
                         </div>
                     </div>))}
