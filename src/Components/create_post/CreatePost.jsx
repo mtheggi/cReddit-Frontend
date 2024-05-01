@@ -23,6 +23,7 @@ import { UserContext } from '@/context/UserContext';
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
     const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
+    const [communityResults, setCommunityResults] = useState([]);
     const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
     const [voteDurationDropdownOpen, setVoteDurationDropdownOpen] = useState(false);
@@ -41,7 +42,7 @@ const CreatePost = () => {
     const communityMenuRef = useRef();
     const communityCardRef = useRef();
     const voteMenuRef = useRef();
-    const commNameInputRef = useRef();
+    const commNameInputRef = useRef("");
     const navigate = useNavigate();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(false);
@@ -54,14 +55,21 @@ const CreatePost = () => {
 
     }, []);
 
+    const getSearchResults = async (query) => {
+        if (query.length == 0 || query.trim() == "")
+            return;
+        const communitiesResponse = await getRequest(`${baseUrl}/search/communities?page=1&limit=10&query=${query}&autocomplete=true`);
+        if (communitiesResponse.status == 200 || communitiesResponse.status == 201) {
+            setCommunityResults(communitiesResponse.data);
+        }
+    }
+
     useEffect(() => {
-        if(location.pathname.includes('/r/'))
-        {
+        if (location.pathname.includes('/r/')) {
             let pathParts = location.pathname.split('/');
             commNameInputRef.current.value = `r/${pathParts[3]}`;
         }
-        else
-        {
+        else {
             commNameInputRef.current.value = "";
         }
     }, []);
@@ -94,8 +102,8 @@ const CreatePost = () => {
  * @param {string} communityName - The name of the community.
  * @returns {boolean} - Returns true if the community is joined, false otherwise.
  */
-    const isCommunityJoined = (communityName) => {
-        return joinedSubreddits.some(subreddit => subreddit.name === communityName);
+    const isCommunityExist = (communityName) => {
+        return (joinedSubreddits.some(subreddit => subreddit.name === communityName) || communityResults.some(subreddit => subreddit.name === communityName));
     }
 
     /**
@@ -111,12 +119,12 @@ const CreatePost = () => {
     }
 
 
-/**
- * Handles the submission of other types of posts.
- * @function handleSubmitOtherTypes
- * @async
- * @returns {Object} - The response from the post request.
- */
+    /**
+     * Handles the submission of other types of posts.
+     * @function handleSubmitOtherTypes
+     * @async
+     * @returns {Object} - The response from the post request.
+     */
     const handleSubmitOtherTypes = async () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
@@ -130,12 +138,12 @@ const CreatePost = () => {
     }
 
 
-/**
- * Handles the submission of image posts.
- * @function handleSubmitImg
- * @async
- * @returns {Object} - The response from the post request.
- */
+    /**
+     * Handles the submission of image posts.
+     * @function handleSubmitImg
+     * @async
+     * @returns {Object} - The response from the post request.
+     */
     const handleSubmitImg = async () => {
 
         if (commNameInputRef.current.value.substring(2) != user)
@@ -203,7 +211,7 @@ const CreatePost = () => {
     const handleSubmitPost = async () => {
         if (isLoading) return;
         setIsLoading(true);
-        if (isCommunityJoined(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2) == user) {
+        if (isCommunityExist(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2) == user) {
             if (title.trim() !== "") {
                 let res = null;
                 if (type === "Poll") {
@@ -316,7 +324,7 @@ const CreatePost = () => {
 
                 <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
                     <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
-                        <input autoComplete='off' onChange={() => { !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("YOUR COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
+                        <input autoComplete='off' onChange={() => { getSearchResults(commNameInputRef.current.value); !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("JOINED COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -348,7 +356,18 @@ const CreatePost = () => {
                         </li>
 
                         <ul data-testid="joined-subreddits" className="pb-1 max-h-[270px] border-0 overflow-y-auto text-sm" aria-labelledby="dropdownInformationButton">
-                            {joinedSubreddits.map((subreddit, index) => (
+                            {(commNameInputRef.current && commNameInputRef.current.value.trim()=="" )&& joinedSubreddits.map((subreddit, index) => (
+                                <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
+                                    <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
+                                        <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
+                                        <div className='flex flex-col space-y-1'>
+                                            <h1 className='text-gray-200 text-[13px] ml-2 font-base'>r/{subreddit.name}</h1>
+                                            <h1 className='text-gray-400 text-[11px] ml-2 font-light'>{subreddit.members.toLocaleString()} members</h1>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
+                            {communityResults.length!=0 && communityResults.map((subreddit, index) => (
                                 <li key={index} className='flex border-gray-400 flex-col w-full h-13'>
                                     <div onClick={() => { setCommunityDropdownOpen(false); commNameInputRef.current.value = `r/${subreddit.name}`; }} className='hover:bg-reddit_search_light pt-[8px] cursor-pointer pb-1 pl-3 h-full w-full items-center flex'>
                                         <img className=' h-[32px] w-[34px] rounded-2xl' src={subreddit.icon} alt="" />
@@ -523,7 +542,7 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3  h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-                        <div onClick={handleSubmitPost} id='submit_post' data-testid="submit_post" className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${ (title.trim() == "" || (!isCommunityJoined(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2) != user) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file == null && type == "Images & Video") || (type == "Link" && content.trim() == "") || isLoading) ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
+                        <div onClick={handleSubmitPost} id='submit_post' data-testid="submit_post" className={`  group  bg-gray-100 w-18 h-9  rounded-full flex justify-center items-center ${(title.trim() == "" || (!isCommunityExist(commNameInputRef.current.value.substring(2)) && commNameInputRef.current.value.substring(2) != user) || (type == "Poll" && !(checkInputFieldsNotEmpty())) || (file == null && type == "Images & Video") || (type == "Link" && content.trim() == "") || isLoading) ? "cursor-not-allowed text-gray-600" : " cursor-pointer hover:bg-reddit_upvote hover:text-white"} `}>
                             <p className=' ml-1 mr-0.5   text-sm'>Post</p>
                         </div>
                     </div>
