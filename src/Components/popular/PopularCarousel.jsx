@@ -85,11 +85,11 @@ const PopularCarousel = () => {
                     <div key={index} class="mr-4 flex-col h-[210px] relative w-[290px] inline-flex shrink-0 snap-mandatory snap-start list-none overflow-hidden rounded-[16px]">
                         <img className='absolute object-cover w-full h-full' src={post.content} />
                         <div className='absolute w-full h-full bg-black opacity-50'></div>
-                        <div className='w-full h-full z-20 px-3 justify-end flex flex-col'>
-                            <h1 className='text-[20px] text-white font-semibold truncate'> {post.title}</h1>
+                        <div className='w-full h-full z-10 px-3 justify-end flex flex-col'>
+                            <h1 className='text-[20px] text-gray-200 shadow-md font-semibold truncate'> {post.title}</h1>
                             <div className='flex mt-[10px] mb-[14px] items-center flex-row'>
                                 <img className='rounded-full w-[25px] h-[25px]' src={post.profilePicture} alt="" />
-                                <h1 className='text-white text-[12px] font-medium ml-[7px]'>{post.communityName ? `r/${post.communityName}` : `u/${post.username}`}</h1>
+                                <h1 className='text-gray-200 text-[12px] font-medium ml-[7px]'>{post.communityName ? `r/${post.communityName}` : `u/${post.username}`}</h1>
                             </div>
                         </div>
                     </div>))}
