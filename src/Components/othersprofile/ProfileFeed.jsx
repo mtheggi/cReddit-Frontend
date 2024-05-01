@@ -31,11 +31,11 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     const mainfeedRef = useRef();
 
     const [selectedSort, setSelectedSort] = useState(() => {
-        const storedSort = localStorage.getItem('homeSelectedSort');
+        const storedSort = localStorage.getItem('othersSelected');
         if (storedSort) {
             return storedSort;
         } else {
-            localStorage.setItem('homeSelectedSort', 'New');
+            localStorage.setItem('othersSelected', 'New');
             return 'New';
         }
     });
@@ -248,7 +248,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                             </div>
                       
 
-                            <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
+                            <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "Hot"); }}
                                 id="mainfeed_category_hot"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -256,7 +256,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                                 <p className="no-select">Hot</p>
                             </div>
 
-                            <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
+                            <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "New"); }}
                                 id="mainfeed_category_new"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -264,7 +264,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                                 <p className="no-select">New</p>
                             </div>
 
-                            <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
+                            <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "Top"); }}
                                 id="mainfeed_category_top"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"

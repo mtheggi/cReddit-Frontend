@@ -41,11 +41,11 @@ const CommunityFeed = ({ subredditName, isMember }) => {
 
 
   const [selectedSort, setSelectedSort] = useState(() => {
-    const storedSort = localStorage.getItem("homeSelectedSort");
+    const storedSort = localStorage.getItem("subredditSelectedSort");
     if (storedSort) {
       return storedSort;
     } else {
-      localStorage.setItem("homeSelectedSort", "New");
+      localStorage.setItem("subredditSelectedSort", "New");
       return "New";
     }
   });
@@ -230,7 +230,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
                   onClick={() => {
                     setSelectedSort("Hot");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Hot");
+                    localStorage.setItem("subredditSelectedSort", "Hot");
                   }}
                   id="commfeed_category_hot"
                   href=""
@@ -243,7 +243,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
                   onClick={() => {
                     setSelectedSort("New");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "New");
+                    localStorage.setItem("subredditSelectedSort", "New");
                   }}
                   id="commfeed_category_new"
                   href=""
@@ -256,7 +256,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
                   onClick={() => {
                     setSelectedSort("Top");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Top");
+                    localStorage.setItem("subredditSelectedSort", "Top");
                   }}
                   id="commfeed_category_top"
                   href=""
