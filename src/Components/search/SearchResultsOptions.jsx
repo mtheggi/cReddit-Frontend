@@ -89,10 +89,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
 
                             <div onClick={() => { setIsOpenSortType(prev => !prev) }} className={`flex  flex-row justify-center items-center ${sortType == "Most Comments" ? 'w-[145px]' : 'w-[122px] '} h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl`}>
 
-                                {sortType == "Relevance" &&
-                                    <svg rpl="" fill="#82949B" height="16" icon_name="best-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M16 10.011v-.445A10.264 10.264 0 0 0 10.273.221L10 .087l-.273.134A10.263 10.263 0 0 0 4 9.566v.445a3.727 3.727 0 0 0-3 3.7v3.141A1.14 1.14 0 0 0 2.125 18h15.75A1.14 1.14 0 0 0 19 16.852v-3.141a3.727 3.727 0 0 0-3-3.7ZM2.25 16.75v-3.039A2.493 2.493 0 0 1 4 11.3v5.45H2.25Zm12.5 0h-9.5V9.566A9.037 9.037 0 0 1 10 1.483a9.037 9.037 0 0 1 4.75 8.083v7.184Zm3 0H16V11.3a2.493 2.493 0 0 1 1.75 2.416v3.034ZM7 18.75h6V20H7v-1.25ZM7 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm4.75 0a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z"></path>
-                                    </svg>}
+                
 
                                 {sortType == "Hot" && <svg rpl="" fill="#82949B" height="17" icon-name="hot-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10.328.454 9.956.311l-.283.143C8.785.9 1 5.056 1 12.225c0 4.243 3.957 7.7 8.849 7.768A.979.979 0 0 0 9.99 20H10c4.962 0 9-3.488 9-7.775C19 5.056 11.215.9 10.328.454ZM12.5 17.789a3.699 3.699 0 0 1-2.854.945 3.48 3.48 0 0 1-2.457-1.37 3.945 3.945 0 0 1-.764-3.052c.441-2.639 2.75-4.38 3.576-4.926.928.611 3.65 2.674 3.65 5.818a3.469 3.469 0 0 1-1.151 2.585Zm1.64-.057c.49-.754.753-1.633.76-2.532 0-4.268-4.069-6.79-4.537-7.066l-.415-.184-.315.187c-.638.377-3.852 2.436-4.442 5.964A5.18 5.18 0 0 0 6 17.8a6.4 6.4 0 0 1-3.75-5.575c0-5.969 6.4-9.788 7.75-10.53 1.352.741 7.75 4.56 7.75 10.53a6.366 6.366 0 0 1-3.611 5.507h.001Z"></path>
@@ -107,9 +104,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                                 </svg>
                                 }
 
-                                {sortType == "Most Comments" && <svg rpl="" fill="#82949B" height="17" icon-name="rising-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M3.554 17.826a1.124 1.124 0 0 1-.8-.33L.435 15.175a1.131 1.131 0 0 1 0-1.6l6.008-6.008a1.643 1.643 0 0 1 2.315 0l1.878 1.879 2.8-2.8-1.412-1.406A.726.726 0 0 1 12.54 4h6.736a.727.727 0 0 1 .726.727v6.735a.727.727 0 0 1-1.239.516l-1.41-1.411-5.56 5.56a1.64 1.64 0 0 1-2.313 0L7.6 14.248 4.354 17.5c-.213.21-.5.328-.8.326ZM1.4 14.376l2.151 2.151 4.05-4.047 2.76 2.763a.389.389 0 0 0 .547 0L17.352 8.8l1.4 1.4V5.25h-4.951l1.4 1.4-4.567 4.566-2.76-2.765a.391.391 0 0 0-.547 0L1.4 14.376Z"></path>
-                                </svg>}
+                              
 
                                 <h1 id="sort_options" className="text-[12px] ml-2 text-[#83959B]">{sortType}</h1>
                                 <ChevronDownIcon className="w-4 text-gray-400 ml-1 h-4" />
@@ -119,19 +114,10 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                             </div>
 
                             {isOpenSortType && (
-                                <div className=" w-[185px] h-60 bg-[#0E1A1C] absolute mt-70 ml-7 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
+                                <div className=" w-[185px] h-38 bg-[#0E1A1C] absolute mt-48 ml-7 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
 
 
-                                    <div onClick={() => { setSortType("Relevance"); setIsOpenSortType(false); }}
-                                        id="search_relevance"
-                                        href=""
-                                        className={`w-full pl-[28px] ${sortType == "Relevance" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
-                                    >
-                                        <svg rpl="" fill="currentColor" height="16" icon-name="best-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M16 10.011v-.445A10.264 10.264 0 0 0 10.273.221L10 .087l-.273.134A10.263 10.263 0 0 0 4 9.566v.445a3.727 3.727 0 0 0-3 3.7v3.141A1.14 1.14 0 0 0 2.125 18h15.75A1.14 1.14 0 0 0 19 16.852v-3.141a3.727 3.727 0 0 0-3-3.7ZM2.25 16.75v-3.039A2.493 2.493 0 0 1 4 11.3v5.45H2.25Zm12.5 0h-9.5V9.566A9.037 9.037 0 0 1 10 1.483a9.037 9.037 0 0 1 4.75 8.083v7.184Zm3 0H16V11.3a2.493 2.493 0 0 1 1.75 2.416v3.034ZM7 18.75h6V20H7v-1.25ZM7 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm4.75 0a1.75 1.75 0 1 1-3.5 0 1.75 1.75 0 0 1 3.5 0Z"></path>
-                                        </svg>
-                                        <p className="no-select ml-3">Relevance</p>
-                                    </div>
+                                   
 
                                     <div onClick={() => { setSortType("Hot"); setIsOpenSortType(false); }}
                                         id="search_hot"
@@ -168,16 +154,6 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                                     </div>
 
 
-                                    <div onClick={() => { setSortType("Most Comments"); setIsOpenSortType(false); }}
-                                        id="search_rising"
-                                        href=""
-                                        className={`w-full pl-[28px] ${sortType == "Most Comments" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
-                                    >
-                                        <svg rpl="" fill="currentColor" height="16" icon-name="rising-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M3.554 17.826a1.124 1.124 0 0 1-.8-.33L.435 15.175a1.131 1.131 0 0 1 0-1.6l6.008-6.008a1.643 1.643 0 0 1 2.315 0l1.878 1.879 2.8-2.8-1.412-1.406A.726.726 0 0 1 12.54 4h6.736a.727.727 0 0 1 .726.727v6.735a.727.727 0 0 1-1.239.516l-1.41-1.411-5.56 5.56a1.64 1.64 0 0 1-2.313 0L7.6 14.248 4.354 17.5c-.213.21-.5.328-.8.326ZM1.4 14.376l2.151 2.151 4.05-4.047 2.76 2.763a.389.389 0 0 0 .547 0L17.352 8.8l1.4 1.4V5.25h-4.951l1.4 1.4-4.567 4.566-2.76-2.765a.391.391 0 0 0-.547 0L1.4 14.376Z"></path>
-                                        </svg>
-                                        <p className="no-select ml-3">Most Comments</p>
-                                    </div>
 
                                 </div>
                             )}
@@ -198,58 +174,58 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
 
                                 <div className=" w-[185px] h-68 bg-[#0E1A1C] absolute mt-[2px] -ml-4 text-white text-sm pt-2.5 z-20 rounded-xl items-center font-extralight flex flex-col">
 
-                                    <div onClick={() => { setSortTime("All Time"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("All"); setIsOpenSortTime(false); }}
                                         id="search_all_time"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "All Time" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "All" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
                                        
                                         <p className="no-select ml-3">All Time</p>
                                     </div>
 
-                                    <div onClick={() => { setSortTime("Past Year"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("Year"); setIsOpenSortTime(false); }}
                                         id="search_past_year"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "Past Year" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "Year" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
-                                        <p className="no-select ml-3">Past Year</p>
+                                        <p className="no-select ml-3">Year</p>
                                     </div>
 
-                                    <div onClick={() => { setSortTime("Past Month"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("Month"); setIsOpenSortTime(false); }}
                                         id="search_past_month"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "Past Month" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "Month" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
                                     >
                                     
-                                        <p className="no-select ml-3">Past Month</p>
+                                        <p className="no-select ml-3">Month</p>
                                     </div>
 
-                                    <div onClick={() => { setSortTime("Past Week"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("Week"); setIsOpenSortTime(false); }}
                                         id="search_past_week"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "Past Week" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "Week" ? "bg-reddit_search_light" : "hover:bg-reddit_hover "}  h-12 flex items-center cursor-pointer`}
                                     >
                                       
-                                        <p className="no-select ml-3">Past Week</p>
+                                        <p className="no-select ml-3">Week</p>
                                     </div>
 
 
-                                    <div onClick={() => { setSortTime("Past 24 Hours"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("Today"); setIsOpenSortTime(false); }}
                                         id="search_past_24_hours"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "Past 24 Hours" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "Today" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
                                         
-                                        <p className="no-select ml-3">Past 24 Hours</p>
+                                        <p className="no-select ml-3">Today</p>
                                     </div>
 
-                                    <div onClick={() => { setSortTime("Past Hour"); setIsOpenSortTime(false); }}
+                                    <div onClick={() => { setSortTime("Now"); setIsOpenSortTime(false); }}
                                         id="search_past_hour"
                                         href=""
-                                        className={`w-full pl-[28px] ${sortTime == "Past Hour" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
+                                        className={`w-full pl-[28px] ${sortTime == "Now" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
                                     >
                                         
-                                        <p className="no-select ml-3">Past Hour</p>
+                                        <p className="no-select ml-3">Now</p>
                                     </div>
 
                                 </div>
