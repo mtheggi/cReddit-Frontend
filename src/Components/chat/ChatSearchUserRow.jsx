@@ -13,7 +13,7 @@ const ChatSearchUserRow = ({
 
     return (
 
-        <div onClick={(e) => handleClick(e, username)} className="w-full h-[54px] flex flex-row px-[24px] hover:bg-reddit_hover cursor-pointer items-center">
+        <div onClick={(e) => handleClick(e, username)} className="z-30 w-full h-[54px] flex flex-row px-[24px] hover:bg-reddit_hover cursor-pointer items-center">
             <div className="w-fit flex-row flex items-center h-full mr-2">
                 <img src={profilePicture} alt="" className="w-7 h-7 rounded-full" />
             </div>

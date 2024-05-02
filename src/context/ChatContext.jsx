@@ -5,6 +5,8 @@ export const ChatContextProvider = ({ children }) => {
     const [isAddChat, setIsAddChat] = useState(false);
     const [isChannelSelected, setIsChannelSelected] = useState(false);
     const [tags, setTags] = useState([]);
+    const [groupName, setGroupName] = useState("");
+
 
     return <ChatContext.Provider value={{
         isAddChat,
@@ -12,7 +14,9 @@ export const ChatContextProvider = ({ children }) => {
         isChannelSelected,
         setIsChannelSelected,
         tags,
-        setTags
+        setTags,
+        groupName,
+        setGroupName
     }}>
         {children}
     </ChatContext.Provider>
