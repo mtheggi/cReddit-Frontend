@@ -15,13 +15,16 @@ const AddChatIcon = () => {
     );
 }
 const ChatSideHeader = () => {
-    const { setIsAddChat } = useContext(ChatContext);
+    const { setIsAddChat, setIsChannelSelected } = useContext(ChatContext);
     return (
 
         <div className="flex flex-row h-15 p-3 justify-between">
             <p className="text-white font-bold text-lg"> Chats</p>
             <div id="add-chat" data-testid="add-chat" className="flex flex-row justify-center items-center w-9 h-9 -mt-[5px] rounded-full hover:bg-reddit_hover cursor-pointer"
-                onClick={() => { setIsAddChat(prev => !prev) }}
+                onClick={() => {
+                    setIsAddChat(prev => !prev);
+                    setIsChannelSelected(false);
+                }}
             >
                 <AddChatIcon />
             </div>

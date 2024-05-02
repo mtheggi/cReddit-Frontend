@@ -11,6 +11,7 @@ const Chat = ({ setIsChat }) => {
     const { isChannelSelected } = useContext(ChatContext);
 
     console.log("chat component started");
+    console.log("selected channel", isChannelSelected);
     return (
         <div className="flex flex-row">
             <div className="w-57 min-w-57 sm:w-77  sm:min-w-77  h-screen border-r border-gray-800">

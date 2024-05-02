@@ -15,7 +15,7 @@ const ChatChannels = () => {
 
     const getChatChannels = async () => {
       setIsLoadingRooms(true);
-      const response = await getRequest(`${baseUrl}/chat?page=${page}&limit=10`);
+      const response = await getRequest(`${baseUrl}/chat?page=${page}&limit=30`);
       if (response.status === 200) {
         setRooms(response.data);
         setIsLoadingRooms(false);
@@ -31,9 +31,8 @@ const ChatChannels = () => {
   return (isLoadingRooms && page === 1 ? <Loading /> :
 
 
-    <div className="flex flex-col border-r h-200 border-gray-800 overflow-y-auto">
+    <div className="flex flex-col border-r gap-1 h-200 border-gray-800 overflow-y-auto">
       {rooms && rooms.map((room, index) => (
-        console.log(room),
         <Channel key={index} roomInfo={room} />
       ))}
     </div>

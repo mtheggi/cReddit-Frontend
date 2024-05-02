@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import moment from "moment";
 import { AvatarGenerator } from 'random-avatar-generator';
+import { ChatContext } from "@/context/ChatContext";
 const Channel = ({ roomInfo }) => {
     const [isOpenChannel, setIsOpenChannel] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -8,7 +9,8 @@ const Channel = ({ roomInfo }) => {
     const generator = new AvatarGenerator();
     const [avatar, setAvatar] = useState("https://random.imagecdn.app/500/150");
     const { _id, name, lastSentMessage } = roomInfo;
-    const { createdAt, content } = lastSentMessage;
+    const { createdAt, content } = lastSentMessage || { createdAt: "", content: "" };
+    const { selectedRoomId, setSelectedRoomId, setIsChannelSelected, setIsAddChat, setSelectedRoom } = useContext(ChatContext);
 
     useEffect(() => {
         const newAvatar = generator.generateRandomAvatar(_id);
@@ -36,7 +38,7 @@ const Channel = ({ roomInfo }) => {
     }, []);
 
     const limitMessage = (message) => {
-        const maxChars = windowWidth <= 768 ? 8 : 15;
+        const maxChars = windowWidth <= 768 ? 8 : 20;
         if (message.length > maxChars) {
             return message.slice(0, maxChars) + "...";
         }
@@ -44,13 +46,13 @@ const Channel = ({ roomInfo }) => {
     };
 
     const limitName = (name) => {
-        const maxChars = windowWidth <= 768 ? 8 : 15;
+        const maxChars = windowWidth <= 768 ? 8 : 20;
         if (name.length > maxChars) {
             return name.slice(0, maxChars) + "...";
         }
         return name;
     };
-
+    useEffect(() => { console.log("hateit") }, [selectedRoomId])
     return (
         <div
             ref={channelRef}
@@ -59,6 +61,12 @@ const Channel = ({ roomInfo }) => {
                 }`}
             onClick={() => {
                 setIsOpenChannel((prev) => !prev);
+                setSelectedRoomId(_id);
+                setSelectedRoom(roomInfo);
+                setIsAddChat(false);
+                console.log("test");
+                setIsChannelSelected(true);
+
             }}
 
         >

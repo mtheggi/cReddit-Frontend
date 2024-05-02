@@ -62,7 +62,11 @@ export const ChatContextProvider = ({ children }) => {
         rooms,
         setRooms,
         reRenderSide,
-        setReRenderSide
+        setReRenderSide,
+        setSelectedRoomId,
+        selectedRoomId,
+        selectedRoom,
+        setSelectedRoom
 
     }}>
         {children}
