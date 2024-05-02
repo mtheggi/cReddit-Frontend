@@ -92,7 +92,7 @@ const SearchChat = () => {
 
             </div>
 
-            <div className={`z-30 mx-6 mt-5 w-175 xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
+            <div className={`z-30 absolute mx-6 mt-5  xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
 
 
                 {userResults.length != 0 && <Separator />}
