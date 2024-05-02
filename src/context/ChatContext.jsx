@@ -8,6 +8,8 @@ export const ChatContextProvider = ({ children }) => {
     const [isChannelSelected, setIsChannelSelected] = useState(false);
     const [tags, setTags] = useState([]);
     const [groupName, setGroupName] = useState("");
+    const [allRooms, setAllRoooms] = useState([]);
+    const [selectedRoom, setSelectedRoom] = useState(null);
 
 
 

@@ -148,7 +148,7 @@ function App() {
             }
           />
           {
-            //  isLoggedIn &&
+            isLoggedIn &&
             <Route path="/chat" element={
               <SidebarContextProvider>
                 <Chat isChat={isChat} setIsChat={setIsChat} />
