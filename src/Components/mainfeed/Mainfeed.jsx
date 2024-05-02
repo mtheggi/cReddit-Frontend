@@ -269,7 +269,7 @@ const Mainfeed = ({ mode }) => {
           loadingPost ? <Loading /> :
             <>
               <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-              <Comment postId={selectedPost._id} />
+              <Comment postId={selectedPost._id} setPosts={setPosts} />
             </>
         )
       }

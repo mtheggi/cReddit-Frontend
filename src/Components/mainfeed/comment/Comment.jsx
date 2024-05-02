@@ -7,7 +7,7 @@ import { getRequest } from "../../../services/Requests";
 import NoComments from "./NoComments";
 import Loading from "@/Components/Loading/Loading";
 
-const Comment = ({ postId }) => {
+const Comment = ({ postId, setPosts }) => {
     const menuRefCateg = useRef();
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
@@ -170,6 +170,7 @@ const Comment = ({ postId }) => {
                     setIsCommenting={setIsCommenting}
                     setIsPaginationLoading={setIsPaginationLoading}
                     setLoadingAddComment={setLoadingAddComment}
+                    setPosts={setPosts}
                 />
 
                 {

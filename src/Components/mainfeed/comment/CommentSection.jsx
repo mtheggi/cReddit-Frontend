@@ -24,7 +24,8 @@ function CommentSection({
   setIsCommenting,
   setPostComments,
   setIsPaginationLoading,
-  setLoadingAddComment
+  setLoadingAddComment,
+  setPosts
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -75,6 +76,13 @@ function CommentSection({
       return;
     }
     setPostComments(prev => [newComment, ...prev]);
+    setPosts(prev => prev.map(post => {
+      if (post._id === postId) {
+        console.log(post);
+        post.commentsCount += 1;
+      }
+      return post;
+    }));
     setIsPaginationLoading(false);
     setLoadingAddComment(false);
     setComment("");
