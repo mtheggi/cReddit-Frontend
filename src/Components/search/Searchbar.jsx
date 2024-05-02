@@ -54,13 +54,13 @@ const Searchbar = ({ isSearchInMobile }) => {
 
     useEffect(() => {
         
-        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/') ) {
+        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') ) {
             setPlaceholder('Search in u/' + location.pathname.split('/')[2]);
         }
-        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/') ) {
+        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') ) {
             setPlaceholder('Search in r/' + location.pathname.split('/')[2]);
         }
-        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/')) {
+        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/')) {
             setPlaceholder('Search in my user');
         }
         else {
@@ -110,11 +110,11 @@ const Searchbar = ({ isSearchInMobile }) => {
     const goToSearchPage = (query) => {
         if (query.trim() == "")
             return;
-        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/'))
+        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') )
             navigate(`/user/${location.pathname.split('/')[2]}/search/${query}/posts`);
-        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/'))
+        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') )
             navigate(`/r/${location.pathname.split('/')[2]}/search/${query}/posts`);
-        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/'))
+        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/'))
             navigate(`/my-user/${location.pathname.split('/')[2]}/search/${query}/posts`);
         else
             navigate(`/search/${query}/posts`);
@@ -129,7 +129,7 @@ const Searchbar = ({ isSearchInMobile }) => {
                 <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group  ${isSearchInMobile ? 'w-[93%] xs:w-[95%] ml-3 ' : 'hidden mmd:flex w-full '} xl:mr-12 z-20 ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'}  justify-start cursor-default h-9 min-h-10 items-center flex mmd:flex-grow rounded-full hover:bg-reddit_search_light px-3 `}>
                     <MagnifyingGlassIcon className=" text-gray-300 h-5 w-6  min-h-5 min-w-6  mr-1" />
 
-                    {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) && (!location.pathname.includes("comments")) &&
+                    {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) && (!location.pathname.includes("comments")) && !location.pathname.includes('/submit/') &&
                         <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
 
                             {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] truncate font-medium'>u/{location.pathname.split("/")[2]}</h1>}
