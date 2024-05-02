@@ -80,7 +80,7 @@ const SearchChat = () => {
 
         <div className="flex-col w-full h-full items-center gap-20 p-7 flex relative bg-reddit_dark_Chat_Create">
             <div className="flex-col w-full items-center flex relative mt-5">
-                <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-full mr-2 xl:max-w-[600px] xl:mr-12 z-40 xs:bg-reddit_dark_search_chat justify-center sm:justify-start cursor-pointer sm:cursor-default h-13  min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3 `}>
+                <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group w-full  xl:max-w-[600px] z-40 xs:bg-reddit_dark_search_chat justify-center sm:justify-start cursor-pointer sm:cursor-default h-13  min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3 `}>
                     <MagnifyingGlassIcon className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
 
                     <input ref={inputRef} onClick={() => setIsFocused(true)} onChange={(e) => { getSearchResults(e.target.value); setSearchValue(e.target.value); }} id='chat_searchbar_input' type="text" autoComplete='off' className={`bg-reddit_dark_search_chat h-7 w-11/12 text-sm hidden xs:block font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder={placeholder} />
@@ -90,9 +90,9 @@ const SearchChat = () => {
                     </div>}
                 </form>
 
-            </div>
+       
 
-            <div className={`z-30 absolute mx-6 mt-5  xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
+            <div className={`z-30 absolute -mt-8 w-full  xl:max-w-[600px] bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
 
 
                 {userResults.length != 0 && <Separator />}
@@ -110,6 +110,7 @@ const SearchChat = () => {
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon" className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1"><path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path></svg>
                     <h1 className='text-gray-300 text-[14px] ml-1 font-light'>Search for "{searchValue}"</h1>
                 </div>}
+            </div>
             </div>
 
 
