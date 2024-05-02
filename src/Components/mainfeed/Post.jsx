@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
 import ReactMarkdown from 'react-markdown'
+import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 
 
@@ -293,22 +294,48 @@ const Post = ({
    * @function handleJoinSubreddit
    */
   const handleJoinSubreddit = async () => {
-    setIsSubbredditJoined((prev) => !prev);
+
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.communityName === communityName) {
+          console.log(true);
+          return {
+            ...post,
+            isJoined: !post.isJoined,
+          };
+        }
+        return post;
+      });
+    });
+
     let response = null;
     if (isSubbredditJoined) {
-      response = await deleteRequest(
-        `${baseUrl}/subreddit/${communityName}/join`
-      );
+      response = await deleteRequest(`${baseUrl}/subreddit/${communityName}/join`);
     } else {
-      response = await postRequest(
-        `${baseUrl}/subreddit/${communityName}/join`
+      response = await postRequest(`${baseUrl}/subreddit/${communityName}/join`
       );
     }
     if (!(response.status === 200 || response.status === 201)) {
-      setIsSubbredditJoined((prev) => !prev);
+      setPosts((prevPosts) => {
+        return prevPosts.map((post) => {
+          if (post.communityName === communityName) {
+            console.log(true);
+            return {
+              ...post,
+              isJoined: !post.isJoined,
+            };
+          }
+          return post;
+        });
+      });
     }
+
   };
 
+
+  useEffect(() => {
+    setIsSubbredditJoined(isJoined);
+  }, [isJoined])
 
 
   return currentIsHidden ? (
@@ -530,7 +557,7 @@ const Post = ({
                   <div
                     id={"mainfeed_" + id + "_polloptions"}
                     className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
-                    onClick={(e) => {e.stopPropagation()}}
+                    onClick={(e) => { e.stopPropagation() }}
                   >
                     {editedPollOptions &&
                       editedPollOptions.map((option, index) => (
@@ -581,7 +608,7 @@ const Post = ({
                   <div className="flex flex-row w-full mt-3 items-center">
                     {!hasVoted && !hasExpired && (
                       <div
-                        onClick={(e)=>handleVote(e)}
+                        onClick={(e) => handleVote(e)}
                         className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
                           ? "bg-black cursor-pointer"
                           : "bg-[#1C1E20] cursor-not-allowed"
