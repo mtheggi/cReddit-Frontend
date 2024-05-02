@@ -491,7 +491,7 @@ const Post = ({
             <h1>{title}</h1>
           </div>
 
-          <div className="relative w-full h-full">
+          <div className="relative w-full h-fit">
 
             {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
               <EyeIcon className='w-5 mr-1.5 h-5' />
