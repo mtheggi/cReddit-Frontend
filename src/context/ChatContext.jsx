@@ -11,7 +11,7 @@ export const ChatContextProvider = ({ children }) => {
     const [tags, setTags] = useState([]);
     const [profilePictureTag, setProfilePictureTag] = useState([]);
     const [groupName, setGroupName] = useState("");
-    const [rooms, setRoooms] = useState([]);
+    const [rooms, setRooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
     const [selectedRoomId, setSelectedRoomId] = useState(null);
 
@@ -55,7 +55,9 @@ export const ChatContextProvider = ({ children }) => {
         creationMsg,
         handleCreateChat,
         setProfilePictureTag,
-        profilePictureTag
+        profilePictureTag,
+        rooms,
+        setRooms
 
     }}>
         {children}

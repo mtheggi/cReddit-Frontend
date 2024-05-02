@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-
-const Channel = () => {
+import moment from "moment";
+const Channel = ({ roomInfo }) => {
     const [isOpenChannel, setIsOpenChannel] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const channelRef = useRef(null);
+    const { name, lastSentMessage } = roomInfo;
+    const { createdAt, content } = lastSentMessage;
 
     useEffect(() => {
         const handleResize = () => {
@@ -26,7 +28,7 @@ const Channel = () => {
     }, []);
 
     const limitMessage = (message) => {
-        const maxChars = windowWidth <= 768 ? 10 : 15;
+        const maxChars = windowWidth <= 768 ? 8 : 15;
         if (message.length > maxChars) {
             return message.slice(0, maxChars) + "...";
         }
@@ -34,7 +36,7 @@ const Channel = () => {
     };
 
     const limitName = (name) => {
-        const maxChars = windowWidth <= 768 ? 10 : 15;
+        const maxChars = windowWidth <= 768 ? 8 : 15;
         if (name.length > maxChars) {
             return name.slice(0, maxChars) + "...";
         }
@@ -45,7 +47,7 @@ const Channel = () => {
         <div
             ref={channelRef}
             data-testid="open-threads"
-            className={`flex flex-row h-[50px] px-3 py-2 mt-1 justify-start items-center hover:bg-reddit_dark_Chat_hover ${isOpenChannel ? "bg-reddit_dark_Chat_hover" : ""
+            className={`flex flex-row h-[50px] px-3 py-2 mt-1 justify-start items-center hover:bg-reddit_dark_Chat_hover cursor-pointer ${isOpenChannel ? "bg-reddit_dark_Chat_hover" : ""
                 }`}
             onClick={() => {
                 setIsOpenChannel((prev) => !prev);
@@ -56,12 +58,12 @@ const Channel = () => {
 
             <div className="flex flex-col w-full">
                 <div className="flex flex-row justify-between items-baseline ">
-                    <p className="text-white text-sm">{limitName("samir")}</p>
-                    <p className="text-gray-500 text-xs">Yesterday</p>
+                    <p className="text-white text-sm">{limitName(name)}</p>
+                    <p className="text-gray-500 text-xs">{moment(createdAt).calendar()}</p>
                 </div>
 
                 <div className="flex flex-row">
-                    <p className="text-gray-400 text-sm"> {limitMessage("LatessdfsdfsdfsdfsdfsdfsdftMEssage")}</p>
+                    <p className="text-gray-400 text-sm"> {limitMessage(content)}</p>
                 </div>
             </div>
         </div>

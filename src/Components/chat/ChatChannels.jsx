@@ -1,50 +1,41 @@
+import { useContext, useEffect, useState } from "react";
 import Channel from "./Channel";
+import { getRequest } from "@/services/Requests";
+import { baseUrl } from "@/constants";
+import { ChatContext } from "@/context/ChatContext";
+import Loading from "../Loading/Loading";
 
 const ChatChannels = () => {
-  return (
+  const [page, setPage] = useState(1);
+  const { rooms, setRooms } = useContext(ChatContext);
+  const [isLoadingRooms, setIsLoadingRooms] = useState(false);
+
+  useEffect(() => {
+
+    const getChatChannels = async () => {
+      setIsLoadingRooms(true);
+      const response = await getRequest(`${baseUrl}/chat?page=${page}&limit=10`);
+      if (response.status === 200) {
+        setRooms(response.data);
+        setIsLoadingRooms(false);
+      } else {
+        console.log(response.data.message);
+      }
+
+    }
+
+    getChatChannels();
+  }, [])
+
+
+  return (isLoadingRooms && page === 1 ? <Loading /> :
+
+
     <div className="flex flex-col border-r h-200 border-gray-800 overflow-y-auto">
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
-      <Channel />
+      {rooms && rooms.map((room, index) => (
+        console.log(room),
+        <Channel key={index} roomInfo={room} />
+      ))}
     </div>
 
   );
