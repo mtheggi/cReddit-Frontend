@@ -3,7 +3,21 @@ import SearchChat from "./SearchChat";
 import { ChatContext } from "@/context/ChatContext";
 
 const CreateChannel = () => {
-    const { setIsAddChat, tags, setTags, setIsChannelSelected, groupName, setGroupName, handleCreateChat, creationError, creationMsg, setCreationMsg, setCreationError, setProfilePictureTag } = useContext(ChatContext)
+    const { setIsAddChat,
+        tags,
+        setTags,
+        setIsChannelSelected,
+        groupName,
+        setGroupName,
+        handleCreateChat,
+        creationError,
+        creationMsg,
+        setCreationMsg,
+        setCreationError,
+        setProfilePictureTag,
+        setReRenderSide,
+
+    } = useContext(ChatContext)
 
     useEffect(() => {
         const cleanup = () => {
@@ -12,6 +26,7 @@ const CreateChannel = () => {
             setCreationError(false);
             setCreationMsg("");
             setProfilePictureTag([]);
+            setReRenderSide(false);
         }
 
         return () => { cleanup(); }

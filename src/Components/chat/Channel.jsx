@@ -1,11 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import moment from "moment";
+import { AvatarGenerator } from 'random-avatar-generator';
 const Channel = ({ roomInfo }) => {
     const [isOpenChannel, setIsOpenChannel] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const channelRef = useRef(null);
-    const { name, lastSentMessage } = roomInfo;
+    const generator = new AvatarGenerator();
+    const [avatar, setAvatar] = useState("https://random.imagecdn.app/500/150");
+    const { _id, name, lastSentMessage } = roomInfo;
     const { createdAt, content } = lastSentMessage;
+
+    useEffect(() => {
+        const newAvatar = generator.generateRandomAvatar(_id);
+        setAvatar(newAvatar);
+    }, []);
 
     useEffect(() => {
         const handleResize = () => {
@@ -54,7 +62,7 @@ const Channel = ({ roomInfo }) => {
             }}
 
         >
-            <img src="https://random.imagecdn.app/500/150" className="h-7 w-7 rounded-full mr-3" />
+            <img src={avatar} className="h-9 w-9 rounded-full mr-3" />
 
             <div className="flex flex-col w-full">
                 <div className="flex flex-row justify-between items-baseline ">

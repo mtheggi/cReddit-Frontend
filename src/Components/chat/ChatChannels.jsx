@@ -7,10 +7,11 @@ import Loading from "../Loading/Loading";
 
 const ChatChannels = () => {
   const [page, setPage] = useState(1);
-  const { rooms, setRooms } = useContext(ChatContext);
+  const { rooms, setRooms, reRenderSide } = useContext(ChatContext);
   const [isLoadingRooms, setIsLoadingRooms] = useState(false);
 
   useEffect(() => {
+    setPage(1);
 
     const getChatChannels = async () => {
       setIsLoadingRooms(true);
@@ -23,9 +24,8 @@ const ChatChannels = () => {
       }
 
     }
-
     getChatChannels();
-  }, [])
+  }, [reRenderSide])
 
 
   return (isLoadingRooms && page === 1 ? <Loading /> :

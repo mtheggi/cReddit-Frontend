@@ -17,6 +17,7 @@ export const ChatContextProvider = ({ children }) => {
 
     const [creationError, setCreationError] = useState(false);
     const [creationMsg, setCreationMsg] = useState("");
+    const [reRenderSide, setReRenderSide] = useState(false);
 
     const handleCreateChat = useCallback(async () => {
         let name = groupName;
@@ -28,10 +29,12 @@ export const ChatContextProvider = ({ children }) => {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
+            setReRenderSide(true);
         } else if (response.status === 201) {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
+            setReRenderSide(true);
         } else {
             setCreationError(true);
             setCreationMsg(response.data.message);
@@ -57,7 +60,9 @@ export const ChatContextProvider = ({ children }) => {
         setProfilePictureTag,
         profilePictureTag,
         rooms,
-        setRooms
+        setRooms,
+        reRenderSide,
+        setReRenderSide
 
     }}>
         {children}
