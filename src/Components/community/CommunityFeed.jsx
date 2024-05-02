@@ -101,7 +101,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
     setPosts([]);
     setPage(1);
     setIsSortChanged(prev => ( prev + 1 ));
-    console.log("subredditName", subredditName);
+
   }, [subredditName]);
 
 

@@ -370,7 +370,7 @@ const Post = ({
               className={`peer ${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"} rounded-full `}
             />
             <p className="text-gray-300 peer-hover:underline  font-semibold text-xs ml-2 hover:underline">
-              {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
+              {communityName && communityName.trim() != "" && (!location.pathname.includes("/r/")) ? `r/${communityName}` : `u/${username}`}
             </p>
           </div>
         </div>
@@ -477,7 +477,7 @@ const Post = ({
         <div className="cursor-pointer" onClick={() => {
           if (Blured)
             return;
-          
+
           if (communityName == null)
             navigate(`/user/${username}/comments/${id}`);
           else
