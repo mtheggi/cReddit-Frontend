@@ -1,4 +1,13 @@
-const Message = ({ Message, isFirstMessage }) => {
+import moment from "moment";
+const Message = ({ Message, isFirstMessage, time, username, profilePicture }) => {
+
+
+    if (username === null) {
+
+        return <div className="flex flex-row justify-center font-bold">  <p className="text-blue-800  mt-1 mb-1 text-xs">{Message}</p></div>
+    }
+
+
 
     return isFirstMessage ? (
 
@@ -8,8 +17,8 @@ const Message = ({ Message, isFirstMessage }) => {
 
             <div className="flex flex-col w-full">
                 <div className="flex flex-row justify-between items-baseline ">
-                    <p className="text-white text-sm">Osama Nasser Saber</p>
-                    <p className="text-gray-500 text-xs">Yesterday</p>
+                    <p className="text-white text-sm">{username}</p>
+                    <p className="text-gray-500 text-xs">{moment(time).calendar()}</p>
                 </div>
 
                 <div className="flex flex-row">
@@ -19,9 +28,9 @@ const Message = ({ Message, isFirstMessage }) => {
         </div>
     ) : (
 
-        <div className="flex flex-row h-[25px] justify-start items-center gap-3 hover:bg-reddit_dark_Chat_hover">
-            <p className="text-sm text-gray-400 ml-5">  9:45 </p>
-            <p className="text-sm text-white"> {Message} </p>
+        <div className="flex flex-row h-[25px] justify-between items-center gap-3 hover:bg-reddit_dark_Chat_hover">
+            <p className="text-sm text-white ml-7"> {Message} </p>
+            <p className="text-gray-500 text-xs mr-4">{moment(time).calendar()}</p>
         </div>
 
     )

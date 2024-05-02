@@ -58,12 +58,19 @@ const ChatBox = () => {
             </div>
             <Separator />
 
-            <Message Message="Hello" isFirstMessage={true} />
-            <Message Message="can you get me a new piece of shit" isFirstMessage={false} />
-            <Message Message="Yes, I can eat shit" isFirstMessage={false} />
-            <Message Message="can I fix him" isFirstMessage={true} />
-            <Message Message="I need to get married" isFirstMessage={false} />
-            <Message Message="Hello" isFirstMessage={false} />
+            {messages && messages.map((message, index) => {
+                if (index === 0) {
+                    return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} />
+                } else {
+                    if (messages[index - 1].user === message.user) {
+                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
+                    }
+                }
+
+
+
+            })
+            }
 
 
             <div className="flex flex-row p-1 justify-center items-center">
