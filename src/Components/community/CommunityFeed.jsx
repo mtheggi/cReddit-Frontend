@@ -139,6 +139,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
     if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
       prevSort.current = selectedSort;
+      prevSubredditNameRef.current = subredditName;
     }
   }, [page, isSortChanged]);
 
