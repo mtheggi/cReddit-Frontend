@@ -24,11 +24,9 @@ import { useNavigate } from 'react-router-dom';
 
 import moment from "moment";
 import HiddenPost from "./HiddenPost";
-import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
 import ReactMarkdown from 'react-markdown'
-import useEnhancedEffect from "@mui/material/utils/useEnhancedEffect";
 
 
 
@@ -434,13 +432,7 @@ const Post = ({
         </div>
       </div>
 
-      <div onClick={() => {
-        if (communityName == null)
-          navigate(`/user/${username}/comments/${id}`);
-        else
-          navigate(`/r/${communityName}/comments/${id}`);
-      }
-      } className="mt-1 w-full cursor-pointer h-fit flex flex-col">
+      <div className="mt-1 w-full h-fit flex flex-col">
         {(isSpoiler || isNSFW) && (
           <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
             {isSpoiler && (
@@ -482,159 +474,170 @@ const Post = ({
             )}
           </div>
         )}
-        <div
-          id={"mainfeed_" + id + "_title"}
-          className="text-white mt-1.5 font-medium text-lg"
-        >
-          <h1>{title}</h1>
-        </div>
+        <div className="cursor-pointer" onClick={() => {
+          if (Blured)
+            return;
+          
+          if (communityName == null)
+            navigate(`/user/${username}/comments/${id}`);
+          else
+            navigate(`/r/${communityName}/comments/${id}`);
+        }
+        }>
+          <div
+            id={"mainfeed_" + id + "_title"}
+            className="text-white mt-1.5 font-medium text-lg"
+          >
+            <h1>{title}</h1>
+          </div>
 
-        <div className="relative w-full h-full">
+          <div className="relative w-full h-full">
 
-          {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-            <EyeIcon className='w-5 mr-1.5 h-5' />
-            View
-          </div>}
+            {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+              <EyeIcon className='w-5 mr-1.5 h-5' />
+              View
+            </div>}
 
-          {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
-            <>
-              {type != "Link" ? (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
-                (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
-            </>
-          </div>}
+            {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
+              <>
+                {type != "Link" ? (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
+                  (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
+              </>
+            </div>}
 
-          {
-            type == "Images & Video" &&
-            <div
-              id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
-              <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
-
-                <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
-                  {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
-                    <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
-                </div>
-
-                {content.endsWith(".mp4") ? (
-                  <video
-                    src={content}
-                    alt="Post"
-                    className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                      } max-h-[500px] w-full object-contain `}
-                    controls
-                  />
-                ) : (
-                  <img
-                    src={content}
-                    alt="Post"
-                    className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                      }  max-h-[500px] w-full object-contain `}
-                  />
-                )}
-              </div>
-            </div>
-          }
-
-
-
-          {type == "Poll" && (
-            <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
+            {
+              type == "Images & Video" &&
               <div
-                className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
-                  }`}
-              >
-                <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
-                  <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
-                    <h1 className="mr-1 text-gray-300 font-light">
-                      {hasExpired ? "Closed" : "Open"} .
-                    </h1>
-                    <h1 className="text-gray-300 font-light">
-                      {!hasVoted
-                        ? formatNumber(getTotalVotes(pollOptions))
-                        : formatNumber(getTotalVotes(editedPollOptions))}{" "}
-                      total votes
-                    </h1>
+                id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
+                <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
+
+                  <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
+                    {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
+                      <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
                   </div>
-                  <div
-                    id={"mainfeed_" + id + "_polloptions"}
-                    className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
-                    onClick={(e) => { e.stopPropagation() }}
-                  >
-                    {editedPollOptions &&
-                      editedPollOptions.map((option, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center flex-row w-full"
-                        >
-                          {!hasVoted && !hasExpired ? (
-                            <div className="w-fit hit flex-row">
-                              <input
-                                type="radio"
-                                name={id + "PollOption" + index}
-                                className="radio bg-inherit outline-gray-200 focus:outline-none"
-                                checked={option.isVoted}
-                                onChange={() => handleOptionChange(index)}
-                              />
-                              <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
-                                {option.text}
-                              </label>
-                            </div>
-                          ) : (
-                            <div className="w-7/12">
-                              <div
-                                style={{
-                                  width: `${getVoteWidth(option.votes)}`,
-                                }}
-                                className={` ${option.votes == getMaxVotes(editedPollOptions)
-                                  ? "bg-[#33464C]"
-                                  : "bg-reddit_search_light"
-                                  }  items-center h-8 rounded-[5px] flex flex-row`}
-                              >
-                                <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
-                                  {option.votes}
-                                </h1>
+
+                  {content.endsWith(".mp4") ? (
+                    <video
+                      src={content}
+                      alt="Post"
+                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                        } max-h-[500px] w-full object-contain `}
+                      controls
+                    />
+                  ) : (
+                    <img
+                      src={content}
+                      alt="Post"
+                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                        }  max-h-[500px] w-full object-contain `}
+                    />
+                  )}
+                </div>
+              </div>
+            }
+
+
+
+            {type == "Poll" && (
+              <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
+                <div
+                  className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
+                    }`}
+                >
+                  <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
+                    <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
+                      <h1 className="mr-1 text-gray-300 font-light">
+                        {hasExpired ? "Closed" : "Open"} .
+                      </h1>
+                      <h1 className="text-gray-300 font-light">
+                        {!hasVoted
+                          ? formatNumber(getTotalVotes(pollOptions))
+                          : formatNumber(getTotalVotes(editedPollOptions))}{" "}
+                        total votes
+                      </h1>
+                    </div>
+                    <div
+                      id={"mainfeed_" + id + "_polloptions"}
+                      className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
+                      onClick={(e) => { e.stopPropagation() }}
+                    >
+                      {editedPollOptions &&
+                        editedPollOptions.map((option, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center flex-row w-full"
+                          >
+                            {!hasVoted && !hasExpired ? (
+                              <div className="w-fit hit flex-row">
+                                <input
+                                  type="radio"
+                                  name={id + "PollOption" + index}
+                                  className="radio bg-inherit outline-gray-200 focus:outline-none"
+                                  checked={option.isVoted}
+                                  onChange={() => handleOptionChange(index)}
+                                />
                                 <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
                                   {option.text}
                                 </label>
-                                {option.isVoted ? (
-                                  <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
-                                ) : null}
                               </div>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                  </div>
+                            ) : (
+                              <div className="w-7/12">
+                                <div
+                                  style={{
+                                    width: `${getVoteWidth(option.votes)}`,
+                                  }}
+                                  className={` ${option.votes == getMaxVotes(editedPollOptions)
+                                    ? "bg-[#33464C]"
+                                    : "bg-reddit_search_light"
+                                    }  items-center h-8 rounded-[5px] flex flex-row`}
+                                >
+                                  <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
+                                    {option.votes}
+                                  </h1>
+                                  <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
+                                    {option.text}
+                                  </label>
+                                  {option.isVoted ? (
+                                    <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
+                                  ) : null}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                    </div>
 
-                  <div className="flex flex-row w-full mt-3 items-center">
-                    {!hasVoted && !hasExpired && (
-                      <div
-                        onClick={(e) => handleVote(e)}
-                        className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
-                          ? "bg-black cursor-pointer"
-                          : "bg-[#1C1E20] cursor-not-allowed"
-                          } text-[13px] text-white`}
-                      >
-                        <h1>Vote</h1>
-                      </div>
-                    )}
-                    {!hasExpired ? (
-                      <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
-                        Closes {durationRemaining}
-                      </h1>
-                    ) : null}
+                    <div className="flex flex-row w-full mt-3 items-center">
+                      {!hasVoted && !hasExpired && (
+                        <div
+                          onClick={(e) => handleVote(e)}
+                          className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
+                            ? "bg-black cursor-pointer"
+                            : "bg-[#1C1E20] cursor-not-allowed"
+                            } text-[13px] text-white`}
+                        >
+                          <h1>Vote</h1>
+                        </div>
+                      )}
+                      {!hasExpired ? (
+                        <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
+                          Closes {durationRemaining}
+                        </h1>
+                      ) : null}
+                    </div>
                   </div>
+                  {Blured && (
+                    <div
+                      onClick={(e) => {
+                        setBlured(false);
+                      }}
+                      className="absolute inset-0 bg-black opacity-60 rounded-2xl"
+                    ></div>
+                  )}
                 </div>
-                {Blured && (
-                  <div
-                    onClick={(e) => {
-                      setBlured(false);
-                    }}
-                    className="absolute inset-0 bg-black opacity-60 rounded-2xl"
-                  ></div>
-                )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
