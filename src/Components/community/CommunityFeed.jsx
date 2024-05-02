@@ -97,6 +97,12 @@ const CommunityFeed = ({ subredditName, isMember }) => {
   }, [selectedSort]);
 
 
+  useEffect(() => {
+    setPosts([]);
+    setPage(1);
+    setIsSortChanged(prev => ( prev + 1 ));
+    console.log("subredditName", subredditName);
+  }, [subredditName]);
 
 
   useEffect(() => {
@@ -131,7 +137,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
       getHomeFeed();
       prevSort.current = selectedSort;
     }
-  }, [page, isSortChanged, navigate.pathname]);
+  }, [page, isSortChanged]);
 
 
 
