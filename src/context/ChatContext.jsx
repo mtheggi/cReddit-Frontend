@@ -1,31 +1,40 @@
 import { postRequest } from "@/services/Requests";
 import { createContext, useState, useEffect, useCallback } from "react";
 import { baseUrl } from "@/constants";
+import { useNavigate } from "react-router-dom";
+
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
     const [isAddChat, setIsAddChat] = useState(false);
     const [isChannelSelected, setIsChannelSelected] = useState(false);
     const [tags, setTags] = useState([]);
+    const [profilePictureTag, setProfilePictureTag] = useState([]);
     const [groupName, setGroupName] = useState("");
-    const [allRooms, setAllRoooms] = useState([]);
+    const [rooms, setRoooms] = useState([]);
     const [selectedRoom, setSelectedRoom] = useState(null);
+    const [selectedRoomId, setSelectedRoomId] = useState(null);
 
-
+    const [creationError, setCreationError] = useState(false);
+    const [creationMsg, setCreationMsg] = useState("");
 
     const handleCreateChat = useCallback(async () => {
-        const name = groupName;
+        let name = groupName;
         if (tags.length === 1) {
             name = null;
         }
         const response = await postRequest(`${baseUrl}/chat`, { name: name, members: tags });
         if (response.status === 200) {
             console.log("success");
-            console.log(response.data);
+            setSelectedRoomId(response.data.roomID);
+            setCreationMsg(response.data.message);
         } else if (response.status === 201) {
             console.log("success");
-            console.log(response.data)
-
+            setSelectedRoomId(response.data.roomID);
+            setCreationMsg(response.data.message);
+        } else {
+            setCreationError(true);
+            setCreationMsg(response.data.message);
         }
 
     });
@@ -40,7 +49,14 @@ export const ChatContextProvider = ({ children }) => {
         setTags,
         groupName,
         setGroupName,
-        handleCreateChat
+        creationError,
+        setCreationError,
+        setCreationMsg,
+        creationMsg,
+        handleCreateChat,
+        setProfilePictureTag,
+        profilePictureTag
+
     }}>
         {children}
     </ChatContext.Provider>

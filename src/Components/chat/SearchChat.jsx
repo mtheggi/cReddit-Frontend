@@ -23,10 +23,8 @@ const SearchChat = () => {
     const inputRef = useRef(null);
     const [searchHistory, setSearchHistory] = useState(JSON.parse(localStorage.getItem('searchHistory') || '[]'));
     const [isFocused, setIsFocused] = useState(false);
-    const { tags, setTags, groupName, setGroupName } = useContext(ChatContext);
+    const { tags, setTags, groupName, setGroupName, setProfilePictureTag, profilePictureTag } = useContext(ChatContext);
 
-    const navigate = useNavigate();
-    const location = useLocation();
 
 
 
@@ -65,15 +63,17 @@ const SearchChat = () => {
     });
 
 
-    const handleTagClick = (e, name) => {
+    const handleTagClick = (e, name, profilePicture) => {
         e.stopPropagation();
         console.log("test");
         setTags([...tags, name]);
+        setProfilePictureTag([...profilePictureTag, profilePicture])
         console.log(tags);
         setUserResults(userResults.filter(user => user.username !== name));
     };
     const removeTags = indexToRemove => {
         setTags([...tags.filter((_, index) => index !== indexToRemove)]);
+        setProfilePictureTag([...profilePictureTag.filter((_, index) => index !== indexToRemove)]);
     };
 
     return (
@@ -92,7 +92,7 @@ const SearchChat = () => {
 
             </div>
 
-            <div className={`z-30 absolute -ml-[8px] mt-5 w-full xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
+            <div className={`z-30 mx-6 mt-5 w-175 xl:max-w-[600px] xl:mr-10 bg-[#0F1A1C] ${isFocused ? 'block' : 'hidden'}  hover:rounded-b-3xl rounded-b-3xl  h-fit top-[55px] `}>
 
 
                 {userResults.length != 0 && <Separator />}
@@ -132,6 +132,7 @@ const SearchChat = () => {
                 <ul id="tags">
                     {tags.map((tag, index) => (
                         <li key={index} className="tag">
+                            <img src={profilePictureTag[index]} className='h-4 w-4 rounded-full mr-1'></img>
                             <span className='tag-title'>{tag}</span>
                             <span className='tag-close-icon'
                                 onClick={() => removeTags(index)}
