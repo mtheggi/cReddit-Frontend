@@ -38,7 +38,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
   const [isSortChanged, setIsSortChanged] = useState(0);
   const commfeedRef = useRef();
   const existingPost = useRef(null);
-
+  const prevSubredditNameRef = useRef(subredditName);
 
   const [selectedSort, setSelectedSort] = useState(() => {
     const storedSort = localStorage.getItem("subredditSelectedSort");
@@ -91,17 +91,20 @@ const CommunityFeed = ({ subredditName, isMember }) => {
 
 
   useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    if (prevSort.current !== selectedSort) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
   }, [selectedSort]);
 
 
   useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    setIsSortChanged(prev => ( prev + 1 ));
-
+    if (prevSubredditNameRef.current !== subredditName) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
   }, [subredditName]);
 
 
@@ -273,7 +276,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
               </div>
             )}
           </div>
-        
+
         </div>
       )}
       <div
@@ -283,7 +286,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
         <Separator />
       </div>
 
-      {feedLoading && page==1 ? (
+      {feedLoading && page == 1 ? (
         <Loading />
       ) : (
         <>
@@ -332,7 +335,7 @@ const CommunityFeed = ({ subredditName, isMember }) => {
 
       {
         <div className="w-full max-h-15 mt-10">
-          { feedLoading && page!=1 && <Loading />}
+          {feedLoading && page != 1 && <Loading />}
           {
             <div className="w-full h-6 mt-2">
               <div className="relative w-full h-full">
