@@ -201,10 +201,12 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route path="/r/:communityName/mod/:page" element={
-            <ModTools/>
+          <Route path="/r/mod/about/:page" element={
+            <ModTools />
           } />
-
+          <Route path="/r/:communityName/mod/about/:page" element={
+            <ModTools />
+          } />
           <Route path="/chat" element={<Chat />} />
           <Route
             path="/*"

@@ -55,9 +55,9 @@ function EmptyStart({ color, isBookmarked }) {
  * @returns {JSX.Element} The rendered community icon component.
  */
 
-const CommunityIcon = ({ text, divId, bookmarkId, icon, href }) => {
+const CommunityIcon = ({ text, divId, icon, href }) => {
 
-    // const [isBookmarked, setIsHisBookmarkedover] = useState(false);
+    
     const navigate = useNavigate();
     return (
         <div onClick={()=>navigate(href)} id={divId} data-testid={divId} className="testClass flex h-[48px] mb-1 flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
@@ -66,9 +66,7 @@ const CommunityIcon = ({ text, divId, bookmarkId, icon, href }) => {
                 <span className="text-gray-200 text-[13px] tracking-wider truncate letter font-normal ml-3">{text}</span>
             </div>
 
-            {/* <div onClick={(e) =>{ e.stopPropagation(); setIsHisBookmarkedover((prev) => !prev)}} id={bookmarkId} className="flex justify-center items-center w-8 h-8 rounded-full  hover:bg-reddit_search_light">
-                <span className="h-5 w-5 flex justify-center items-center " role="button"> <EmptyStart color={"white"} isBookmarked={isBookmarked} /> </span>
-            </div> */}
+           
 
         </div>
     );

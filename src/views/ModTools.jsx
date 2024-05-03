@@ -54,21 +54,20 @@ const ModTools = () => {
                     <p className="text-gray-200 mt-1 font-light text-[14px]">Anything that needs moderator attention will show up in needs review.</p>
 
                     <div className="w-[470px] h-12  mt-auto mb-2 flex flex-row items-center space-x-16">
-                        <div className="hover:bg-reddit_hover w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
+                        <div className="hover:bg-reddit_search w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
                             <h1 className="text-white text-[14px]">Unmoderated</h1>
                         </div>
 
-                        <div className="hover:bg-reddit_hover w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
+                        <div className="hover:bg-reddit_search  w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
                             <h1 className="text-white text-[14px]">Edited</h1>
                         </div>
 
-                        <div className="hover:bg-reddit_hover w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
+                        <div className="hover:bg-reddit_search w-fit px-3 h-11 flex flex-row items-center cursor-pointer rounded-3xl">
                             <h1 className="text-white text-[14px]">Removed</h1>
                         </div>
 
                     </div>
                 </div>
-
 
                 {/* <div className="w-full h-full flex flex-col items-center mt-20 ">
                     <img className="w-[200px] h-[200px]" src="https://www.redditstatic.com/shreddit/assets/snoomojis/cat_blep.png" alt="cat blep" />
