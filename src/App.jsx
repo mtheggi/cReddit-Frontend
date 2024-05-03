@@ -5,7 +5,7 @@ import "./index.css";
 import Navbar from "./Components/navbar/Navbar";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
-import Search from "./views/Search"
+import Search from "./views/Search";
 import { useContext, useState, useRef } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -21,8 +21,13 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
-
-
+import Compose from "./Components/messages/Compose";
+import Inbox from "./Components/messages/Inbox";
+import Unread from "./Components/messages/Unread";
+import Messages from "./Components/messages/Messages";
+import PostReplies from "./Components/messages/PostReplies";
+import UsernameMentions from "./Components/messages/UsernameMentions";
+import Sent from "./Components/messages/Sent";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -44,8 +49,9 @@ function App() {
         )}
         {!isNotFound && (
           <div
-            className={`fixed inset-0 bg-black opacity-50 z-10 ${isVisibleLeftSidebar ? "block" : "hidden"
-              }`}
+            className={`fixed inset-0 bg-black opacity-50 z-10 ${
+              isVisibleLeftSidebar ? "block" : "hidden"
+            }`}
             onClick={() => setIsVisibleLeftSidebar(false)}
           ></div>
         )}
@@ -111,12 +117,13 @@ function App() {
             }
           />
           <Route path="/r/:name" element={<Community />} />
-  
+
           <Route
             path="/user/:username/:page?"
             element={
               <SidebarContextProvider>
-                <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
+                <OthersProfile
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                 />
@@ -127,21 +134,35 @@ function App() {
             path="/search/:query/:type"
             element={
               <SidebarContextProvider>
-                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                <Search
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                 />
               </SidebarContextProvider>
             }
           />
+
           <Route path="/chat" element={<Chat />} />
+
           <Route
             path="/*"
             element={
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
             }
-            />
+          />
 
+          <Route path="/message" element={<Messages />} />
+          <Route path="/message/compose" element={<Compose />} />
+          <Route path="/message/inbox" element={<Inbox />} />
+          <Route path="/message/unread" element={<Unread />} />
+          <Route path="/message/messages" element={<Messages />} />
+          <Route path="/message/post-replies" element={<PostReplies />} />
+          <Route
+            path="/message/username-mentions"
+            element={<UsernameMentions />}
+          />
+          <Route path="/message/sent" element={<Sent />} />
         </Routes>
       </div>
     </Router>
