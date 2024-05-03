@@ -21,8 +21,8 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
-import { useLocation } from "react-router-dom";
 import ModTools from "./views/ModTools";
+import AlertDemo from "./Components/alert/AlertDemo";
 
 
 
@@ -41,12 +41,15 @@ function App() {
     <Router>
       <div className="App h-screen min-w-[350px] flex flex-col bg-reddit_greenyDark overflow-x-hidden">
         {!isNotFound && (
+
           <Navbar
             setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
             navbarRef={navbarRef}
             isSearchInMobile={isSearchInMobile}
             setIsSearchInMobile={setIsSearchInMobile}
           />
+  
+       
         )}
         {!isNotFound && (
           <div

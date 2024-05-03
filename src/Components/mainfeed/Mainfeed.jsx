@@ -8,6 +8,7 @@ import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
 import { useLocation } from "react-router-dom";
 import Comment from "./comment/Comment";
+import AlertDemo from "../alert/AlertDemo";
 
 
 /**
@@ -26,8 +27,18 @@ const Mainfeed = ({ mode }) => {
   const { isLoggedIn } = useContext(UserContext);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
+  const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
+
+  const showAlertForTime = (condition, message) => {
+    setAlertState({ show: true, message: message, condition: condition });
+
+    setTimeout(() => {
+      setAlertState({ show: false, message: "", condition: "" });
+    }, 3000);
+  };
+
   const [selectedSort, setSelectedSort] = useState(() => {
-  
+
     const storedSort = localStorage.getItem(`${mode}SelectedSort`);
 
     if (storedSort) {
@@ -181,8 +192,8 @@ const Mainfeed = ({ mode }) => {
   return (
     <div
       id="mainfeed"
-      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 "
-    >
+      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 ">
+      {alertState.show && <AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
       {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
@@ -254,10 +265,10 @@ const Mainfeed = ({ mode }) => {
         <>
           {!isSinglePostSelected && posts.map((post, i) => {
             if (posts.length === i + 1) {
-              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
+              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
             }
             else {
-              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime}  setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
             }
           })}
         </>
@@ -268,7 +279,7 @@ const Mainfeed = ({ mode }) => {
         (
           loadingPost ? <Loading /> :
             <>
-              <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+              <Post id={selectedPost._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
               <Comment postId={selectedPost._id} setPosts={setPosts} />
             </>
         )

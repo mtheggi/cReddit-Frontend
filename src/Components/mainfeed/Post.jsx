@@ -60,6 +60,7 @@ const Post = ({
   isSaved,
   isSinglePostSelected,
   setPosts,
+  showAlertForTime,
   lastPostRef
 }) => {
   const menuRefDots = useRef();
@@ -82,7 +83,7 @@ const Post = ({
   const [saved, setSaved] = useState(isSaved);
   const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
   const [isShareMenuOpened, setIsShareMenuOpened] = useState(false);
-  const { isLoggedIn } = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -261,6 +262,18 @@ const Post = ({
     }
   };
 
+
+  const handleReportPost = async () => {
+    setIsOpenDots(false);
+    const response = await postRequest(`${baseUrl}/post/${id}/report`);
+    if (response.status == 200 || response.status == 201) {
+      showAlertForTime("success", response.data.message);
+
+    } else {
+      showAlertForTime("error", response.data.message);
+    }
+  };
+
   const joinBtnStyle = {
     backgroundColor: hoverJoin ? "#196FF4" : "#0045AC",
   };
@@ -331,9 +344,15 @@ const Post = ({
   };
 
 
+
+
+
   useEffect(() => {
     setIsSubbredditJoined(isJoined);
   }, [isJoined])
+
+
+
 
 
   return currentIsHidden ? (
@@ -344,8 +363,7 @@ const Post = ({
       id={"mainfeed_" + id + "_full"}
       className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : "hover:bg-reddit_hover"
         } ${isOpenDots ? "bg-reddit_hover" : ""
-        }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
-    >
+        }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}>
       <div className="flex flex-row items-center w-full h-6 ">
         <div
           id={"mainfeed_" + id + "_community"}
@@ -398,11 +416,10 @@ const Post = ({
             />
           </div>
           {isOpenDots && (
-            <div className={`z-20 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
+            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post")  ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} `}>
               <div onClick={handleClickSave}
                 id={"mainfeed_" + id + "_menu_save"}
-                className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
+                className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
                 {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
                   :
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
@@ -419,7 +436,22 @@ const Post = ({
                 <p className="ml-2 no-select">{currentIsHidden ? "unHide" : "Hide"}</p>
               </div>
 
-              <div
+
+
+              {username == userInfo.username && type == "Post" &&
+                <div
+                  id={"mainfeed_" + id + "_menu_report"}
+                  className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                >
+                  <svg rpl="" fill="white" height="20" icon-name="edit-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m18.236 3.158-1.4-1.4a2.615 2.615 0 0 0-3.667-.021L1.336 13.318a1.129 1.129 0 0 0-.336.8v3.757A1.122 1.122 0 0 0 2.121 19h3.757a1.131 1.131 0 0 0 .8-.337L18.256 6.826a2.616 2.616 0 0 0-.02-3.668ZM5.824 17.747H2.25v-3.574l9.644-9.435L15.259 8.1l-9.435 9.647ZM17.363 5.952l-1.23 1.257-3.345-3.345 1.257-1.23a1.362 1.362 0 0 1 1.91.01l1.4 1.4a1.364 1.364 0 0 1 .008 1.908Z"></path> </svg>
+                  <p className="ml-2 no-select">Edit</p>
+                </div>}
+
+
+
+              <div onClick={
+                handleReportPost
+              }
                 id={"mainfeed_" + id + "_menu_report"}
                 className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
               >
