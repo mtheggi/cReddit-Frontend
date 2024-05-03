@@ -6,7 +6,7 @@ const MyButtonsRow = ({ selectedPage, setSelectedPage, userName }) => {
   return (
     <div
       id="profile-buttons-row"
-      className="flex w-full flex-row justify-start px-0 py-3"
+      className="flex flex-row justify-start px-0 py-3 overflow-scroll"
     >
       <button
         onClick={() => {
