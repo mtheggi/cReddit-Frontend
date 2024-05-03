@@ -494,6 +494,43 @@ const MyProfileFeed = ({ userName, selectedPage }) => {
       )}
 
       {feedLoading && page == 1 ? (
+        selectedPage === "saved" ? (
+          <Loading />
+        ) : (
+          <></>
+        )
+      ) : (
+        <>
+          {!isSinglePostSelected &&
+            selectedPage === "saved" &&
+            saved.map((post, i) => {
+              if (saved.length === i + 1) {
+                return (
+                  <Post
+                    id={post._id}
+                    key={i}
+                    setPosts={setSaved}
+                    isSinglePostSelected={isSinglePostSelected}
+                    {...post}
+                    lastPostRef={lastPostRef}
+                  />
+                );
+              } else {
+                return (
+                  <Post
+                    id={post._id}
+                    key={i}
+                    setPosts={setSaved}
+                    isSinglePostSelected={isSinglePostSelected}
+                    {...post}
+                  />
+                );
+              }
+            })}
+        </>
+      )}
+
+      {feedLoading && page == 1 ? (
         selectedPage === "hidden" ? (
           <Loading />
         ) : (
