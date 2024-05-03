@@ -108,9 +108,15 @@ const ChatBox = () => {
                     background="#1A282C"
                     placeholderColor="#415054"
                     color="#ffff"
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter' && textMessage !== '') {
+                            handleSendMessage(e, textMessage);
+                            setTextMessage("");
+                        }
+                    }}
 
                 />
-                <PaperAirplaneIcon onClick={(e) => { if (textMessage === '') { return } else { handleSendMessage(e, textMessage) } }} className={`h-7 w-7  ${textMessage === '' ? 'opacity-50 cursor-not-allowed text-gray-500 ' : 'cursor-pointer text-white'}`} />
+                <PaperAirplaneIcon onClick={(e) => { if (textMessage === '') { return } else { setTextMessage(""); handleSendMessage(e, textMessage) } }} className={`h-7 w-7  ${textMessage === '' ? 'opacity-50 cursor-not-allowed text-gray-500 ' : 'cursor-pointer text-white'}`} />
             </ div>
 
 

@@ -72,6 +72,7 @@ export const ChatContextProvider = ({ children }) => {
 
     const handleSendMessage = (event, message) => {
         event.preventDefault();
+        console.log("message ", message);
         const data = {
             username: userInfo?.username,
             roomId: selectedRoomId, // Add the room ID to the chat message data
