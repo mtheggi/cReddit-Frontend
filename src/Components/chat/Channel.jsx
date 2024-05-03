@@ -54,7 +54,7 @@ const Channel = ({ index, roomInfo }) => {
         }
         return name;
     };
-    useEffect(() => { console.log("hateit") }, [selectedRoomId])
+
     const handleLeaveRoom = () => {
         socket.current.emit('leaveRoom', rooms[index]); // Emit the 'leaveRoom' event with the current room ID
     };

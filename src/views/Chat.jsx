@@ -13,21 +13,17 @@ const Chat = ({ setIsChat }) => {
     console.log("chat component started");
     console.log("selected channel", isChannelSelected);
     return (
-        <div className="flex flex-row overflow-clip">
-            <div className="w-57 min-w-57 sm:w-77  sm:min-w-77  h-screen border-r border-gray-800">
+        <div className="flex flex-row overflow-x-auto sm:overflow-x-hidden h-screen ">
+            <div className="w-57 min-w-57 sm:w-77  sm:min-w-77  h-screen border-r border-gray-800 overflow-y-hidden ">
                 <ChatSide />
             </div>
 
-            <div className="w-full  h-screen ">
+            <div className="min-w-100 sm:w-full h-screen overflow-x-auto ">
                 {isAddChat ? <CreateChannel /> :
                     isChannelSelected ? <ChatBox /> : <LandingOnChat />
                 }
             </div>
-
         </div>
-
-
-
     );
 }
 

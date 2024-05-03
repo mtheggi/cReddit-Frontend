@@ -62,7 +62,7 @@ const ChatBox = () => {
 
     return (messageLoading ? <Loading /> :
 
-        <div className="flex  flex-col w-full h-full">
+        <div className="flex flex-col w-full h-full">
             {/* Chatbox Head  */}
             <div className="flex flex-row justify-between items-center w-full py-2 px-3">
                 <p className="text-white font-bold text-lg "> {selectedRoom?.name} </p>
@@ -96,7 +96,7 @@ const ChatBox = () => {
                 }
                 <div ref={messagesEndRef} />
             </div>
-            <div className="flex flex-row p-1 justify-center items-center">
+            <div className="flex h-15 flex-row p-1 justify-center items-center ">
 
                 <CameraIcon className="h-7 w-7 ml-1 text-gray-500 cursor-pointer" />
 
