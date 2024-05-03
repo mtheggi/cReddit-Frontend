@@ -114,11 +114,12 @@ const Mainfeed = ({ mode }) => {
   }
 
   useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    if (prevSort.current !== selectedSort && isLoggedIn) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
   }, [selectedSort, isLoggedIn]);
-
 
 
 
@@ -268,7 +269,7 @@ const Mainfeed = ({ mode }) => {
               return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
             }
             else {
-              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime}  setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
             }
           })}
         </>

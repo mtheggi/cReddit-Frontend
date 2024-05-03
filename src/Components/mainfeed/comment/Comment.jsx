@@ -83,9 +83,11 @@ const Comment = ({ postId, setPosts }) => {
     }
 
     useEffect(() => {
+        if (prevSort.current !== selectedSort ) {
         setPostComments([]);
         setPage(1);
-        setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+        setIsSortChanged(prev => ( prev + 1 ));
+        }
     }, [selectedSort]);
 
 

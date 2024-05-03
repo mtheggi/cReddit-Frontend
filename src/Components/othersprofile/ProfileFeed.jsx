@@ -103,10 +103,12 @@ const ProfileFeed = ({ userName, selectedPage }) => {
 
 
     useEffect(() => {
+        if (prevSort.current !== selectedSort) {
         setPosts([]);
         setPage(1);
         setComments([]);
-        setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+        setIsSortChanged(prev => (prev + 1 ));
+        }
      
     }, [selectedSort]);
 
