@@ -85,6 +85,7 @@ const Post = ({
   const [isShareMenuOpened, setIsShareMenuOpened] = useState(false);
   const { userInfo } = useContext(UserContext);
   const navigate = useNavigate();
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setEditedPollOptions(pollOptions);
@@ -119,6 +120,8 @@ const Post = ({
       return num;
     }
   }
+
+
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -343,17 +346,19 @@ const Post = ({
 
   };
 
-
-
-
-
   useEffect(() => {
     setIsSubbredditJoined(isJoined);
   }, [isJoined])
 
 
-
-
+  const enterEditMode = () => {
+    setEditMode(true);
+    setIsOpenDots(false);
+    if (communityName == null)
+      navigate(`/user/${username}/comments/${id}`);
+    else
+      navigate(`/r/${communityName}/comments/${id}`);
+  }
 
   return currentIsHidden ? (
     <HiddenPost id={id} handleHidePost={handleHidePost} />
@@ -416,7 +421,7 @@ const Post = ({
             />
           </div>
           {isOpenDots && (
-            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post")  ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} `}>
+            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} `}>
               <div onClick={handleClickSave}
                 id={"mainfeed_" + id + "_menu_save"}
                 className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
@@ -439,7 +444,7 @@ const Post = ({
 
 
               {username == userInfo.username && type == "Post" &&
-                <div
+                <div onClick={enterEditMode}
                   id={"mainfeed_" + id + "_menu_report"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                 >
@@ -532,8 +537,9 @@ const Post = ({
 
             {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
               <>
-                {type != "Link" ? (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>) :
-                  (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
+                {type != "Link" && !editMode && (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>)}
+                {type != "Link" && editMode && (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>)}
+                {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
               </>
             </div>}
 

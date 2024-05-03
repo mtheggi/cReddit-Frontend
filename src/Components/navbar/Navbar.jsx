@@ -270,7 +270,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
 
-                                        <div ref={loginMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div ref={loginMenuRef} className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                             <LogIn setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedSignupMenu={setIsOpenedSignupMenu} />
                                         </div>
                                     </div>
@@ -286,7 +286,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
 
-                                        <div ref={signupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div ref={signupMenuRef} className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                             <SignUpEmail setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} setNavbarSignupEmail={setSignupEmail} />
                                         </div>
                                     </div>
@@ -295,7 +295,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                 {isOpenedForgotPass && (
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
-                                        <div className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                             <ForgetPass setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedLoginMenu={setIsOpenedLoginMenu} forgotPassRef={forgotPassRef} setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsPrevForgotPassOrUsername={setIsPrevForgotPassOrUsername} />
                                         </div>
                                     </div>
@@ -306,7 +306,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
 
-                                        <div ref={forgotUsernameRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div ref={forgotUsernameRef} className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                             <ForgetUsername setIsOpenedForgotUsername={setIsOpenedForgotUsername} setIsOpenedLoginMenu={setIsOpenedLoginMenu} setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsPrevForgotPassOrUsername={setIsPrevForgotPassOrUsername} />
                                         </div>
                                     </div>
@@ -317,7 +317,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
 
-                                        <div ref={emailVerificationRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div ref={emailVerificationRef} className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
                                             <EmailVerification setIsOpenedEmailVerification={setIsOpenedEmailVerification} setIsOpenedForgotPass={setIsOpenedForgotPass} setIsOpenedForgotUsername={setIsOpenedForgotUsername} isPrevForgotPassOrUsername={isPrevForgotPassOrUsername} />
                                         </div>
                                     </div>
@@ -328,7 +328,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                     <div className="community-modal flex flex-row items-center justify-center">
                                         <div className='overlay'></div>
 
-                                        <div ref={secondSignupMenuRef} className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+                                        <div ref={secondSignupMenuRef} className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
 
                                             <SignUp setIsOpenedSignupMenu={setIsOpenedSignupMenu} setIsOpenedSecondSignupMenu={setIsOpenedSecondSignupMenu} NavbarSignupEmail={signupEmail} />
                                         </div>
