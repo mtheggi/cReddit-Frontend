@@ -103,9 +103,8 @@ const MyProfile = ({
 
   useEffect(() => {
     if (isNotFound) {
-      navigate('/404');
+      navigate("/404");
     }
-
   }, [isNotFound]);
 
   useEffect(() => {
@@ -220,10 +219,11 @@ const MyProfile = ({
             >
               <div
                 ref={sidebarRef}
-                className={`h-full ${isVisibleLeftSidebar
-                  ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
-                  : "hidden xl:flex"
-                  } z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+                className={`h-full ${
+                  isVisibleLeftSidebar
+                    ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
+                    : "hidden xl:flex"
+                } z-20  w-[290px] min-w-[270px] border-r border-neutral-800 pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
               >
                 <Sidebar
                   setIsCommunityOpen={setIsCommunityOpen}
@@ -243,9 +243,9 @@ const MyProfile = ({
 
               <>
                 <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-                  <div className="flex flex-row w-fit">
+                  <div className="flex flex-row w-fit justify-center">
                     <div
-                      className="w-full mxl:px-4 max-w-[900px] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2"
+                      className="w-full mxl:px-4 xs:w-full sm:w-[600px] lg:w-[550px] xl:w-[52%] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2"
                       ref={mainfeedRef}
                     >
                       <MyProfileHead
@@ -264,9 +264,9 @@ const MyProfile = ({
                           userName={userInfo?.username}
                           selectedPage={selectedPage}
                         />
-                      ) :
+                      ) : (
                         <Loading />
-                      }
+                      )}
                     </div>
 
                     <div
