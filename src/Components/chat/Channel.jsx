@@ -72,7 +72,7 @@ const Channel = ({ roomInfo }) => {
         >
             <img src={avatar} className="h-9 w-9 rounded-full mr-3" />
 
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col py-1 w-full">
                 <div className="flex flex-row justify-between items-baseline ">
                     <p className="text-white text-sm">{limitName(name)}</p>
                     <p className="text-gray-500 text-xs">{moment(createdAt).calendar()}</p>

@@ -118,7 +118,7 @@ const SearchChat = () => {
                 <>
 
                     <div className="flex-col w-full items-center flex relative mt-5">
-                        <div className={`group w-full  xl:max-w-[600px] xl:mr-11 z-20 xs:bg-reddit_dark_search_chat justify-center sm:justify-start cursor-pointer sm:cursor-default h-13  min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3 `}>
+                        <div className={`group w-full  xl:max-w-[600px] z-20 xs:bg-reddit_dark_search_chat justify-center sm:justify-start cursor-pointer sm:cursor-default h-13  min-h-10 items-center flex xs:flex-grow rounded-full xs:px-3 `}>
                             <UserGroupIcon className=" text-gray-300 xs:h-5 xs:w-6 h-7 w-6 min-h-5 min-w-6  xs:ml-0 xs:mr-1" />
                             <input onChange={(e) => { setGroupName(e.target.value); }} id='chat_groupname_input' type="text" autoComplete='off' className={`bg-reddit_dark_search_chat h-7 w-11/12 text-sm hidden xs:block font-extralight border-none outline-none text-white focus:outline-none focus:border-none focus:ring-0`} placeholder="Enter the group name" />
                         </div>
