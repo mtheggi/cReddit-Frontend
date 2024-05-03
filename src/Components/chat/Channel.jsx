@@ -2,7 +2,8 @@ import { useState, useEffect, useRef, useContext } from "react";
 import moment from "moment";
 import { AvatarGenerator } from 'random-avatar-generator';
 import { ChatContext } from "@/context/ChatContext";
-const Channel = ({ roomInfo }) => {
+import { UserContext } from "@/context/UserContext";
+const Channel = ({ index, roomInfo }) => {
     const [isOpenChannel, setIsOpenChannel] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const channelRef = useRef(null);
@@ -10,8 +11,8 @@ const Channel = ({ roomInfo }) => {
     const [avatar, setAvatar] = useState("https://random.imagecdn.app/500/150");
     const { _id, name, lastSentMessage } = roomInfo;
     const { createdAt, content } = lastSentMessage || { createdAt: "", content: "" };
-    const { selectedRoomId, setSelectedRoomId, setIsChannelSelected, setIsAddChat, setSelectedRoom } = useContext(ChatContext);
-
+    const { socket, rooms, selectedRoomId, setSelectedRoomId, setIsChannelSelected, setIsAddChat, setSelectedRoom } = useContext(ChatContext);
+    const { user } = useContext(UserContext);
     useEffect(() => {
         const newAvatar = generator.generateRandomAvatar(_id);
         setAvatar(newAvatar);
@@ -24,6 +25,7 @@ const Channel = ({ roomInfo }) => {
         const handleClickOutside = (event) => {
             if (channelRef.current && !channelRef.current.contains(event.target)) {
                 setIsOpenChannel(false);
+                handleLeaveRoom();
             }
         };
 
@@ -38,7 +40,7 @@ const Channel = ({ roomInfo }) => {
     }, []);
 
     const limitMessage = (message) => {
-        const maxChars = windowWidth <= 768 ? 8 : 20;
+        const maxChars = windowWidth <= 768 ? 6 : 20;
         if (message.length > maxChars) {
             return message.slice(0, maxChars) + "...";
         }
@@ -46,13 +48,24 @@ const Channel = ({ roomInfo }) => {
     };
 
     const limitName = (name) => {
-        const maxChars = windowWidth <= 768 ? 8 : 20;
+        const maxChars = windowWidth <= 768 ? 6 : 12;
         if (name.length > maxChars) {
             return name.slice(0, maxChars) + "...";
         }
         return name;
     };
     useEffect(() => { console.log("hateit") }, [selectedRoomId])
+    const handleLeaveRoom = () => {
+        socket.current.emit('leaveRoom', rooms[index]); // Emit the 'leaveRoom' event with the current room ID
+    };
+    const handleJoinRoom = () => {
+        const data = {
+            username: user,
+            rooms: [rooms[index]] // Join the room IDs with a comma to send as a string
+        };
+        socket.current.emit('joinRoom', data);
+    };
+
     return (
         <div
             ref={channelRef}
@@ -66,7 +79,7 @@ const Channel = ({ roomInfo }) => {
                 setIsAddChat(false);
                 console.log("test");
                 setIsChannelSelected(true);
-
+                handleJoinRoom();
             }}
 
         >

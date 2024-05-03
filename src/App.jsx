@@ -22,6 +22,7 @@ import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import Plus18 from "./Components/NSFW/Plus18";
+import { ChatContextProvider } from "./context/ChatContext";
 
 
 
@@ -149,8 +150,11 @@ function App() {
           />
           {
             isLoggedIn &&
+
             <Route path="/chat" element={
-              <Chat isChat={isChat} setIsChat={setIsChat} />
+              <ChatContextProvider>
+                <Chat isChat={isChat} setIsChat={setIsChat} />
+              </ChatContextProvider>
             } />
           }
           <Route

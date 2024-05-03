@@ -10,9 +10,27 @@ import Loading from "../Loading/Loading";
 const ChatBox = () => {
     const [isOpenSetting, setIsOpenSetting] = useState(false);
     const [textMessage, setTextMessage] = useState("");
-    const { selectedRoomId, selectedRoom } = useContext(ChatContext);
+    const { selectedRoomId, selectedRoom, handleSendMessage, socket } = useContext(ChatContext);
     const [messages, setMessage] = useState([]);
     const [messageLoading, setMessageLoading] = useState(false);
+    const [recivedData, setRecievedData] = useState("");
+    useEffect(() => {
+        socket.current.on('newMessage', (data) => {
+            // TODO: handle receiving of the message
+            console.log(`New message: ${data.message} from ${data.username}`);
+            const newMessage = {
+                content: data.message,
+                profilePicture: data.profilePicture,
+                user: data.username,
+                createdAt: new Date().toISOString()
+            }
+            setMessage(prevMessages => [...prevMessages, newMessage]); // Update the state of messages array using the functional form of setMessage
+        });
+        socket.current.on('joinedRoom', (data) => {
+            console.log(`Joined rooms: ${data.rooms.join(', ')}`);
+        });
+    }, [])
+
 
     useEffect(() => {
         if (!selectedRoomId) {
@@ -23,9 +41,10 @@ const ChatBox = () => {
 
         const getMessages = async () => {
             setMessageLoading(true);
-            const response = await getRequest(`${baseUrl}/chat/${selectedRoomId}`);
+            const response = await getRequest(`${baseUrl}/chat/${selectedRoomId}?page=1&limit=50`);
             if (response.status === 200) {
-                setMessage(response.data);
+                const reversedData = response.data.reverse();
+                setMessage(reversedData);
                 setMessageLoading(false);
             } else {
                 console.log(response.data.message);
@@ -51,28 +70,30 @@ const ChatBox = () => {
 
             <Separator />
 
-            {/* ChatBox chat imgs */}
-            <div className="user-info w-full flex flex-col flex-grow items-center justify-center gap-2 min-h-[250px]">
-                <img src="https://random.imagecdn.app/500/150" className="h-12 w-12 rounded-full" />
-                <p className="text-gray-500 text-lg font-bold">{selectedRoom?.name} </p>
-            </div>
-            <Separator />
+            <div className="flex  flex-col w-full h-full overflow-y-auto">
 
-            {messages && messages.map((message, index) => {
-                if (index === 0) {
-                    return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} />
-                } else {
-                    if (messages[index - 1].user === message.user) {
-                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
+                {/* ChatBox chat imgs */}
+                <div className="user-info w-full flex flex-col flex-grow items-center justify-center gap-2 min-h-[250px]">
+                    <img src="https://random.imagecdn.app/500/150" className="h-12 w-12 rounded-full" />
+                    <p className="text-gray-500 text-lg font-bold">{selectedRoom?.name} </p>
+                </div>
+                <Separator />
+
+                {messages && messages.map((message, index) => {
+                    if (index === 0 || (index > 0 && messages[index - 1].user !== message.user)) {
+                        return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} />
+                    } else {
+                        if (messages[index - 1].user === message.user) {
+                            return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
+                        }
                     }
+
+
+
+                })
                 }
 
-
-
-            })
-            }
-
-
+            </div>
             <div className="flex flex-row p-1 justify-center items-center">
 
                 <CameraIcon className="h-7 w-7 ml-1 text-gray-500 cursor-pointer" />
@@ -87,8 +108,7 @@ const ChatBox = () => {
                     color="#ffff"
 
                 />
-                <PaperAirplaneIcon className="h-7 w-7 text-gray-500 cursor-pointer" />
-
+                <PaperAirplaneIcon onClick={(e) => { if (textMessage === '') { return } else { handleSendMessage(e, textMessage) } }} className={`h-7 w-7  ${textMessage === '' ? 'opacity-50 cursor-not-allowed text-gray-500 ' : 'cursor-pointer text-white'}`} />
             </ div>
 
 

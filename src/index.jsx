@@ -29,19 +29,15 @@ enableMocking().then(() => {
   ReactDOM.createRoot(document.getElementById('root')).render(
 
     <GoogleOAuthProvider clientId={Client_ID} >
-      <ChatContextProvider>
-        <NavbarContextProvider>
-          <NotificationProvider>
-            <ServerContextProvider>
-              <UserContextProvider>
-
-                <App />
-
-              </UserContextProvider>
-            </ServerContextProvider>
-          </NotificationProvider>
-        </NavbarContextProvider>
-      </ChatContextProvider>
+      <NavbarContextProvider>
+        <NotificationProvider>
+          <ServerContextProvider>
+            <UserContextProvider>
+              <App />
+            </UserContextProvider>
+          </ServerContextProvider>
+        </NotificationProvider>
+      </NavbarContextProvider>
     </GoogleOAuthProvider >,
   )
 })

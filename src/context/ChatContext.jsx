@@ -1,11 +1,14 @@
 import { postRequest } from "@/services/Requests";
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback, useRef, useContext } from "react";
 import { baseUrl } from "@/constants";
 import { useNavigate } from "react-router-dom";
+import io from 'socket.io-client';
+import { UserContext } from "./UserContext";
 
 export const ChatContext = createContext();
 
 export const ChatContextProvider = ({ children }) => {
+    const { userInfo } = useContext(UserContext)
     const [isAddChat, setIsAddChat] = useState(false);
     const [isChannelSelected, setIsChannelSelected] = useState(false);
     const [tags, setTags] = useState([]);
@@ -18,6 +21,31 @@ export const ChatContextProvider = ({ children }) => {
     const [creationError, setCreationError] = useState(false);
     const [creationMsg, setCreationMsg] = useState("");
     const [reRenderSide, setReRenderSide] = useState(false);
+    const socket = useRef(null);
+
+    useEffect(() => {
+        if (!socket.current) {
+            console.log('Connecting to server', socket.current)
+            socket.current = io(baseUrl);
+            socket.current.on('connect', () => {
+                console.log('Connected to server', socket.current)
+            });
+
+            // socket.current.on('error', (data) => {
+            //     setResponse(`Error: ${data.message}`);
+            // });
+
+            // socket.current.on('onlineUser', (data) => {
+            //     setResponse(`User: ${data.username} is online in room: ${data.room}`);
+            // });
+
+            // socket.current.on('joinedRoom', (data) => {
+            //     setResponse(`Joined rooms: ${data.rooms.join(', ')}`);
+            // });
+
+        }
+    }, []);
+
 
     const handleCreateChat = useCallback(async () => {
         let name = groupName;
@@ -42,6 +70,15 @@ export const ChatContextProvider = ({ children }) => {
 
     });
 
+    const handleSendMessage = (event, message) => {
+        event.preventDefault();
+        const data = {
+            username: userInfo?.username,
+            roomId: selectedRoomId, // Add the room ID to the chat message data
+            message: message
+        };
+        socket.current.emit('chatMessage', data);
+    };
 
     return <ChatContext.Provider value={{
         isAddChat,
@@ -66,7 +103,9 @@ export const ChatContextProvider = ({ children }) => {
         setSelectedRoomId,
         selectedRoomId,
         selectedRoom,
-        setSelectedRoom
+        setSelectedRoom,
+        handleSendMessage,
+        socket,
 
     }}>
         {children}

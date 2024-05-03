@@ -17,7 +17,7 @@ const Message = ({ Message, isFirstMessage, time, username, profilePicture }) =>
 
             <div className="flex flex-col w-full">
                 <div className="flex flex-row justify-between items-baseline ">
-                    <p className="text-white text-sm">{username}</p>
+                    <p className="text-white text-md font-bold">{username}</p>
                     <p className="text-gray-500 text-xs">{moment(time).calendar()}</p>
                 </div>
 
@@ -28,8 +28,8 @@ const Message = ({ Message, isFirstMessage, time, username, profilePicture }) =>
         </div>
     ) : (
 
-        <div className="flex flex-row h-[25px] justify-between items-center gap-3 hover:bg-reddit_dark_Chat_hover">
-            <p className="text-sm text-white ml-7"> {Message} </p>
+        <div className="flex flex-row h-[30px] mt-2 justify-between items-center gap-3 hover:bg-reddit_dark_Chat_hover">
+            <p className="text-sm text-white ml-14 "> {Message} </p>
             <p className="text-gray-500 text-xs mr-4">{moment(time).calendar()}</p>
         </div>
 
