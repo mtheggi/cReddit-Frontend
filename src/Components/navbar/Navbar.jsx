@@ -33,7 +33,7 @@ import { NavbarContext } from '@/context/NavbarContext';
  * @param {Object} props.navbarRef - Reference to the navbar element.
  * @returns {JSX.Element} The Navbar component.
  * */
-const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSearchInMobile}) => {
+const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSearchInMobile }) => {
     const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
     const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
     const { isOpenedLoginMenu, setIsOpenedLoginMenu } = useContext(NavbarContext);
@@ -51,7 +51,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
     const [isOpenBellMenu, setIsOpenBellMenu] = useState(false);
     const [showInboxTooltip, setShowInboxTooltip] = useState(false);
     const [showInboxTextTransition, setShowInboxTextTransition] = useState(false);
-  
+
 
 
     const profileMenuRef = useRef();
@@ -72,18 +72,18 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
     useEffect(() => {
         const checkScreenSize = () => {
-            const isMobile = window.matchMedia("(min-width: 681px)").matches; 
+            const isMobile = window.matchMedia("(min-width: 681px)").matches;
             if (isMobile && document.getElementById('search_mobile_icon')?.offsetParent === null) {
                 setIsSearchInMobile(false);
             }
         };
-    
+
         checkScreenSize();
-    
-     
+
+
         window.addEventListener('resize', checkScreenSize);
-    
-        
+
+
         return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
@@ -225,11 +225,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
 
     return (
-        <div ref={navbarRef} className="flex  z-20 fixed flex-col w-full no-select">
+        <div ref={navbarRef} className="flex  z-30 fixed flex-col w-full no-select">
             <header className='w-full flex flex-col bg-reddit_navbar'>
 
 
-                <div className="flex flex-row w-full items-center  p-2 "> 
+                <div className="flex flex-row w-full items-center  p-2 ">
                     {!urlContainsWord && (
                         <div className={`ml-2.5 hover:bg-reddit_search_light rounded-full min-w-9 w-9 h-9 flex justify-center items-center ${(location.pathname == "/best/communities" || location.pathname.includes('/mod')) ? "hidden" : "xl:hidden"}`}>
                             <Bars3Icon onClick={() => setIsVisibleLeftSidebar((prev) => !prev)} className="h-8 w-7 text-white cursor-pointer" />
