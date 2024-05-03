@@ -23,6 +23,7 @@ const Searchbar = ({ isSearchInMobile }) => {
     const [isFocused, setIsFocused] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const [searchGlobal, setSearchGlobal] = useState(false);
 
 
     useEffect(() => {
@@ -31,7 +32,7 @@ const Searchbar = ({ isSearchInMobile }) => {
 
     useEffect(() => {
 
-        if ((location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user/')) && location.pathname.includes('/search/') ) {
+        if ((location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user/')) && location.pathname.includes('/search/')) {
             const pathParts = location.pathname.split('/');
 
             if (pathParts[1] === 'user' || pathParts[1] === 'r' || pathParts[1] === 'my-user') {
@@ -53,25 +54,25 @@ const Searchbar = ({ isSearchInMobile }) => {
     }, [location.pathname])
 
     useEffect(() => {
-        
-        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') ) {
+
+        if (location.pathname.includes('/user/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal) {
             setPlaceholder('Search in u/' + location.pathname.split('/')[2]);
         }
-        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') ) {
+        else if (location.pathname.includes('/r/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal) {
             setPlaceholder('Search in r/' + location.pathname.split('/')[2]);
         }
-        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod')) {
+        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal) {
             setPlaceholder('Search in my user');
         }
         else {
             setPlaceholder('Search in Reddit');
         }
-    }, [location.pathname]);
+    }, [location.pathname, searchGlobal]);
 
 
 
     const getSearchResults = async (query) => {
-        if (query.length == 0 || query.trim() == "" || location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user'))
+        if (query.length == 0 || query.trim() == "" || (location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user')) && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal)
             return;
         const communitiesResponse = await getRequest(`${baseUrl}/search/communities?page=1&limit=5&query=${query}&autocomplete=true`);
         if (communitiesResponse.status == 200 || communitiesResponse.status == 201) {
@@ -110,11 +111,11 @@ const Searchbar = ({ isSearchInMobile }) => {
     const goToSearchPage = (query) => {
         if (query.trim() == "")
             return;
-        if (location.pathname.includes('/user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') )
+        if (location.pathname.includes('/user/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal)
             navigate(`/user/${location.pathname.split('/')[2]}/search/${query}/posts`);
-        else if (location.pathname.includes('/r/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') )
+        else if (location.pathname.includes('/r/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal)
             navigate(`/r/${location.pathname.split('/')[2]}/search/${query}/posts`);
-        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/comments/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod'))
+        else if (location.pathname.includes('/my-user/') && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal)
             navigate(`/my-user/${location.pathname.split('/')[2]}/search/${query}/posts`);
         else
             navigate(`/search/${query}/posts`);
@@ -123,18 +124,20 @@ const Searchbar = ({ isSearchInMobile }) => {
 
     return (
 
-        <div className={`flex-col w-full items-center flex ${isSearchInMobile?"":"relative"}   `}>
+        <div className={`flex-col w-full items-center flex ${isSearchInMobile ? "" : "relative"}   `}>
 
-            <div className={`${isSearchInMobile?'absolute top-[56px] left-[2px] pb-[7px] pt-[1.5px] w-[99%] bg-reddit_navbar':'max-w-[600px] w-full '} z-20`}>
+            <div className={`${isSearchInMobile ? 'absolute top-[56px] left-[2px] pb-[7px] pt-[1.5px] w-[99%] bg-reddit_navbar' : 'max-w-[600px] w-full '} z-20`}>
                 <form action="" onSubmit={(e) => { e.preventDefault(); goToSearchPage(searchValue); }} className={`group  ${isSearchInMobile ? 'w-[93%] xs:w-[95%] ml-3 ' : 'hidden mmd:flex w-full '} xl:mr-12 z-20 ${isFocused ? 'bg-[#0E1A1C]' : 'bg-reddit_search'}  justify-start cursor-default h-9 min-h-10 items-center flex mmd:flex-grow rounded-full hover:bg-reddit_search_light px-3 `}>
                     <MagnifyingGlassIcon className=" text-gray-300 h-5 w-6  min-h-5 min-w-6  mr-1" />
 
-                    {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) && (!location.pathname.includes("comments")) && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') &&
-                        <div className='flex flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 px-3'>
+                    {(location.pathname.includes("/user/") || location.pathname.includes("/r/") || location.pathname.includes("/my-user/")) && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal &&
+                        <div className='flex ml-1 flex-row items-center rounded-2xl w-fit bg-[#33454C] h-8 pl-[14px] '>
 
-                            {location.pathname.includes("/user/") && <h1 className='text-white text-[13px] truncate font-medium'>u/{location.pathname.split("/")[2]}</h1>}
+                            {location.pathname.includes("/user/") || location.pathname.includes("/my-user/") && <h1 className='text-white text-[13px] truncate font-medium'>u/{location.pathname.split("/")[2]}</h1>}
                             {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] truncate font-medium'>r/{location.pathname.split("/")[2]}</h1>}
-
+                            <div onClick={()=>setSearchGlobal(true)} className=' ml-1 w-8 flex flex-row items-center justify-center h-8 rounded-full hover:bg-reddit_search_light cursor-pointer'>
+                                <svg rpl="" fill="white" height="16" icon-name="clear-fill" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.832 12.418-1.414 1.414L10 11.414l-2.418 2.418-1.414-1.414L8.586 10 6.168 7.582l1.414-1.414L10 8.586l2.418-2.418 1.414 1.414L11.414 10l2.418 2.418Z"></path></svg>
+                            </div>
                         </div>
                     }
 
