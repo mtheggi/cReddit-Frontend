@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import Separator from "../sidebar/Nav-Icons/Separator";
 import { Cog6ToothIcon, CameraIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
 import InputEmoji from "react-input-emoji"
@@ -13,7 +13,12 @@ const ChatBox = () => {
     const { selectedRoomId, selectedRoom, handleSendMessage, socket } = useContext(ChatContext);
     const [messages, setMessage] = useState([]);
     const [messageLoading, setMessageLoading] = useState(false);
-    const [recivedData, setRecievedData] = useState("");
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
     useEffect(() => {
         socket.current.on('newMessage', (data) => {
             // TODO: handle receiving of the message
@@ -83,16 +88,13 @@ const ChatBox = () => {
                     if (index === 0 || (index > 0 && messages[index - 1].user !== message.user)) {
                         return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} />
                     } else {
-                        if (messages[index - 1].user === message.user) {
-                            return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
-                        }
+                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
                     }
-
 
 
                 })
                 }
-
+                <div ref={messagesEndRef} />
             </div>
             <div className="flex flex-row p-1 justify-center items-center">
 
