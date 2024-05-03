@@ -245,7 +245,7 @@ const MyProfile = ({
                 <div className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
                   <div className="flex flex-row w-fit justify-center">
                     <div
-                      className="w-full mxl:px-4 xs:w-full sm:w-[600px] lg:w-[550px] xl:w-[52%] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2"
+                      className="w-full mxl:px-4 2xs:w-[300px] xs:w-[400px] sm:w-[600px] md:w-[600px] lg:w-[550px] xl:w-[45%] 2xl:w-[900px] mt-2 flex flex-col flex-grow lg:flex-grow-0 xl:ml-0 mx-1 lg:mx-2"
                       ref={mainfeedRef}
                     >
                       <MyProfileHead
