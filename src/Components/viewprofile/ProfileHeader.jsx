@@ -1,6 +1,13 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
+/**
+ * Renders the header section of the user profile page.
+ * @module ProfileHeader
+ * @param {Object} props - The component props.
+ * @param {Object} props.userInfo - Information about the user.
+ * @returns {JSX.Element} A React component representing the profile header section.
+ */
 const ProfileHeader = ({ userInfo }) => {
   const baseUrl = window.location.origin;
   const location = useLocation();
