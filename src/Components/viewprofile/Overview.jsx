@@ -1,3 +1,8 @@
+/**
+ * Renders the overview section of the profile page.
+ * @module Overview
+ * @returns {JSX.Element} A React component representing the overview section.
+ */
 const Overview = () => {
   return (
     <div id="overview">
