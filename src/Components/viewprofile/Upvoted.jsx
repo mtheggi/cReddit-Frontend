@@ -65,7 +65,7 @@ const Upvoted = () => {
   }, [loading, hasMore]);
 
   return (
-    <>
+    <div id="upvoted">
       {upvoted.map((upvotedItem, index) => {
         if (upvoted.length === index + 1) {
           return (
@@ -85,7 +85,7 @@ const Upvoted = () => {
           <Loading />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
