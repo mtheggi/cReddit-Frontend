@@ -65,7 +65,7 @@ const Submitted = ({ userInfo }) => {
   }, [loading, hasMore]);
 
   return (
-    <>
+    <div id="submitted">
       {posts.map((post, index) => {
         if (posts.length === index + 1) {
           return (
@@ -83,7 +83,7 @@ const Submitted = ({ userInfo }) => {
           <Loading />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
