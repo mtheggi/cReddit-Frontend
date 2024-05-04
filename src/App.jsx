@@ -19,9 +19,6 @@ import Community from "./views/Community";
 import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from './views/NotificationPage';
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
-import { generateToken, messaging } from "./firebase";
-import { onMessage } from 'firebase/messaging';
-import toast, {Toaster} from 'react-hot-toast'
 
 function App() {
 
@@ -34,14 +31,6 @@ function App() {
         console.log('Service Worker registration failed: ', err);
       });
   }
-  
-  useEffect (() => {
-    generateToken();
-    onMessage(messaging, (payload) => {
-      console.log(payload);
-      toast(payload.notification.body);
-    })
-  }, [])
 
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
@@ -55,7 +44,6 @@ function App() {
       </div>
     ) : (
       <Router>
-        <Toaster position="top-right"/>
         <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
           {!isNotFound && (
             <Navbar

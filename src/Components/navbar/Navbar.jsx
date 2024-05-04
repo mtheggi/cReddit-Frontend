@@ -18,6 +18,10 @@ import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import NotificationList from '../notifications/NotificationList'
 import { useNotifications } from '../notifications/NotificationContext'; 
+import { CurrencyPoundTwoTone } from '@mui/icons-material';
+import { generateToken, messaging } from "../../firebase";
+import { onMessage } from 'firebase/messaging';
+import toast, {Toaster} from 'react-hot-toast'
 
 /**
  * Navbar component.
@@ -59,60 +63,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const bellMenuRef = useRef();
     const bellMenuRefExpanded = useRef();
 
-    const { notifications, flushAndAddNotifications } = useNotifications();
-
-    useEffect(() => {
-        const newNotifications = [
-            {
-              key: "1",
-              title: "u/Abdelaal replied to your comment in r/cReddit",
-              description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
-              date: "4/11/2024",
-              time: "23:45",
-              image: avatar,
-            },
-            {
-              key: "2",
-              title: "u/Malek replied to your post in r/CCE",
-              description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
-              date: "4/11/2024",
-              time: "23:30",
-              image: avatar,
-            },
-            {
-              key: "3",
-              title: "u/Maro replied to your post in r/APT",
-              description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
-              date: "4/11/2024",
-              time: "20:10",
-              image: avatar,
-            },
-            {
-              key: "4",
-              title: "u/Bassel replied to your comment in r/Front",
-              description: "Notification Description 4",
-              date: "4/5/2024",
-              time: "11:11",
-              image: avatar,
-            },
-            {
-              key: "5",
-              title: "u/Heggi replied to your comment in r/Pattern",
-              description: "Notification Description 5",
-              date: "4/6/2024",
-              time: "18:50",
-              image: avatar,
-            },
-        ];
-
-        newNotifications.sort((a, b) => {
-            const dateA = new Date(`${a.date} ${a.time}`);
-            const dateB = new Date(`${b.date} ${b.time}`);
-            return dateB - dateA;
-        });
-
-        flushAndAddNotifications(newNotifications);
-    }, []);
+    const {
+        notifications, addNotification
+    } = useNotifications();
 
     const navigate = useNavigate();
 
@@ -195,6 +148,30 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
           setShowInboxTextTransition(false);
         }, 100); 
     };
+
+    useEffect(() => {
+        generateToken();
+        onMessage(messaging, (payload) => {
+            console.log(payload);
+            toast(payload.notification.body);
+            const [title, date, time] = payload.notification.title.split(' --- ');
+    
+            // Generate a unique key using the current date-time to ensure uniqueness
+            const uniqueKey = `${date.trim()}-${time.trim()}-${new Date().getTime()}`;
+    
+            const notificationDetails = {
+                key: uniqueKey,
+                title: title.trim(),
+                date: date.trim(),
+                time: time.trim(),
+                description: payload.notification.body,
+                image: avatar
+            };
+            addNotification(notificationDetails);
+            console.log(notifications);
+        });
+    }, []);
+    
 
 
     return (
@@ -366,7 +343,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     </div>
 
                                     {isOpenBellMenu && (
-                                        <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded}/>
+                                        <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} setIsOpenBellMenu={setIsOpenBellMenu}/>
                                     )}
                                 </div>
 

@@ -34,4 +34,20 @@ messaging.onBackgroundMessage((payload) => {
     };
   
     self.registration.showNotification(notificationTitle, notificationOptions);
+
+    const [title, date, time] = payload.notification.title.split(' --- ');
+    
+    // Generate a unique key using the current date-time to ensure uniqueness
+    const uniqueKey = `${date.trim()}-${time.trim()}-${new Date().getTime()}`;
+
+    const notificationDetails = {
+        key: uniqueKey,
+        title: title.trim(),
+        date: date.trim(),
+        time: time.trim(),
+        description: payload.notification.body,
+        image: avatar
+    };
+    addNotification(notificationDetails);
+    console.log(notifications);
 });
