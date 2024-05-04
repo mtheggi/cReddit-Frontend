@@ -22,7 +22,7 @@ import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import ModTools from "./views/ModTools";
-import AlertDemo from "./Components/alert/AlertDemo";
+
 
 
 
@@ -48,8 +48,8 @@ function App() {
             isSearchInMobile={isSearchInMobile}
             setIsSearchInMobile={setIsSearchInMobile}
           />
-  
-       
+
+
         )}
         {!isNotFound && (
           <div
@@ -222,6 +222,8 @@ function App() {
       </div>
 
     </Router>
+    
+
   );
 }
 

@@ -26,7 +26,9 @@ import moment from "moment";
 import HiddenPost from "./HiddenPost";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
-import ReactMarkdown from 'react-markdown'
+import parse from "html-react-parser";
+import Tiptap from "../tiptap/Tiptap";
+import { StepContent } from "@mui/material";
 
 
 
@@ -72,6 +74,7 @@ const Post = ({
   const durationRemaining = moment(expirationDate).fromNow();
   const [Blured, setBlured] = useState(isSpoiler || isNSFW);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
+  const [editPostContent, setEditPostContent]=useState("")
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
   );
@@ -352,12 +355,8 @@ const Post = ({
 
 
   const enterEditMode = () => {
-    setEditMode(true);
     setIsOpenDots(false);
-    if (communityName == null)
-      navigate(`/user/${username}/comments/${id}`);
-    else
-      navigate(`/r/${communityName}/comments/${id}`);
+    setEditMode(true);
   }
 
   return currentIsHidden ? (
@@ -398,7 +397,7 @@ const Post = ({
           </div>
         </div>
 
-        <div className=" flex flex-row w-[32%] xs:w-[40%] items-center ">
+        <div className=" flex flex-row w-[40%] xs:w-[40%] items-center ">
           <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
           <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
             {uploadedFrom}
@@ -421,7 +420,7 @@ const Post = ({
             />
           </div>
           {isOpenDots && (
-            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} `}>
+            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[78px]" : "-ml-[72px]"} `}>
               <div onClick={handleClickSave}
                 id={"mainfeed_" + id + "_menu_save"}
                 className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
@@ -511,8 +510,8 @@ const Post = ({
             )}
           </div>
         )}
-        <div className="cursor-pointer" onClick={() => {
-          if (Blured)
+        <div className= {`${!editMode?`cursor-pointer`:'cursor-text'}`} onClick={() => {
+          if (Blured || editMode)
             return;
 
           if (communityName == null)
@@ -537,8 +536,12 @@ const Post = ({
 
             {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
               <>
-                {type != "Link" && !editMode && (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>)}
-                {type != "Link" && editMode && (<ReactMarkdown style={{ wordBreak: 'break-all' }}>{content}</ReactMarkdown>)}
+                {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(content)}</div>)}
+                {type != "Link" && editMode && (
+                  <div className=" h-[200px] mb-2 mt-[12px]">
+                    <Tiptap initialContent={content} setDescription={setEditMode} />
+                  </div>
+                )}
                 {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
               </>
             </div>}

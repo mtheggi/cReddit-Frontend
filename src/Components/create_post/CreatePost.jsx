@@ -6,13 +6,13 @@ import { useState, useEffect, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import redditLogo from "../../assets/reddit_logo.png"
-import Post from './Post';
 import { baseUrl } from "../../constants";
 import { v4 as uuidv4 } from 'uuid';
 import RedditRuleIcon from './RedditRuleIcon';
 import DropImage from './DropImage';
 import { UserContext } from '@/context/UserContext';
-
+import Tiptap from '../tiptap/Tiptap';
+import AlertDemo from '../alert/AlertDemo';
 
 
 /**
@@ -23,6 +23,7 @@ import { UserContext } from '@/context/UserContext';
 const CreatePost = () => {
     const { user, setUser } = useContext(UserContext);
     const { userProfilePicture, setUserProfilePicture } = useContext(UserContext);
+    const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
     const [communityResults, setCommunityResults] = useState([]);
     const [isCommunityOpenLocal, setIsCommunityOpenLocal] = useState(false);
     const [CommunityDropdownOpen, setCommunityDropdownOpen] = useState(false);
@@ -49,6 +50,15 @@ const CreatePost = () => {
 
     let initialHeight = '38px';
     let communityName = "";
+
+    const showAlertForTime = (condition, message) => {
+        setAlertState({ show: true, message: message, condition: condition });
+    
+        setTimeout(() => {
+          setAlertState({ show: false, message: "", condition: "" });
+        }, 3000);
+      };
+    
 
     useEffect(() => {
         getJoinedSubreddits();
@@ -178,10 +188,7 @@ const CreatePost = () => {
         return response
     }
 
-    const searchSubreddits = async () => {
-
-    }
-
+ 
 
     /**
  * Gets the joined subreddits.
@@ -236,7 +243,7 @@ const CreatePost = () => {
 
                 if (res != null && res.status != 200 && res.status != 201) {
                     //Todo: either toast or 404 page for failure creating post -> server error 
-                    navigate('/not-found');
+                    showAlertForTime("error", res.data.message);
                 }
                 setIsLoading(false);
             }
@@ -315,7 +322,7 @@ const CreatePost = () => {
     return (
 
         <div className='flex mx-auto min-w-[350px]  sm:px-9 pl-2 pr-2 w-full max-w-[1092px] flex-row mt-15 overflow'>
-
+            {alertState.show && < AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
 
             <div className='flex flex-col w-full h-fit mb-16 lg:mr-10  '>
                 <div className='w-full h-14 min-h-14 border-b-[1px] border-gray-600 flex flex-row items-center '>
@@ -425,8 +432,8 @@ const CreatePost = () => {
                             <div className='text-gray-400 no-select mr-1 text-[9px] flex flex-row justify-center items-center w-14 h-10'>{charCount}/300</div>
                         </div>
                         {type == 'Post' && (
-                            <div className='h-fit w-full border-[0.5px] mb-3 border-gray-400 '>
-                                <Post setContent={setContent} type={type} />
+                            <div className='w-full h-fit  mb-3  '>
+                                <Tiptap setDescription={setContent} />
 
                             </div>)}
 
