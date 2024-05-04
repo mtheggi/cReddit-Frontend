@@ -4,20 +4,61 @@ import { baseUrl, limit } from "@/constants";
 import Post from "../mainfeed/Post";
 import Loading from "../Loading/Loading";
 
+/**
+ * Renders a list of hidden posts for the user.
+ * @module Hidden
+ * @returns {JSX.Element} A React component representing a list of hidden posts.
+ */
 const Hidden = () => {
+  /**
+   * State to hold the list of hidden posts.
+   * @type {[Object[], Function]}
+   */
   const [hidden, setHidden] = useState([]);
+
+  /**
+   * State to track the current page of hidden posts.
+   * @type {[number, Function]}
+   */
   const [currentPage, setCurrentPage] = useState(1);
+
+  /**
+   * State to indicate whether hidden posts are being loaded.
+   * @type {[boolean, Function]}
+   */
   const [loading, setLoading] = useState(false);
+
+  /**
+   * State to indicate whether there are more hidden posts to fetch.
+   * @type {[boolean, Function]}
+   */
   const [hasMore, setHasMore] = useState(true);
 
+  /**
+   * Ref to observe the last hidden post element for lazy loading.
+   * @type {Object}
+   */
   const observer = useRef();
+
+  /**
+   * Ref to the last hidden post element in the list.
+   * @type {Object}
+   */
   const lastHiddenRef = useRef();
 
+  /**
+   * Function to load the next page of hidden posts.
+   * @returns {void}
+   */
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
   useEffect(() => {
+    /**
+     * Fetches hidden posts from the server.
+     * @returns {void}
+     */
     const getHidden = async () => {
       if (!hasMore) return;
       setLoading(true);
