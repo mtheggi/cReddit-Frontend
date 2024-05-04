@@ -1,8 +1,20 @@
 import React from "react";
 
+/**
+ * Renders the right sidebar component for displaying user information and settings.
+ * @module RightSidebar
+ * @param {Object} props - The component props.
+ * @param {Object} props.userInfo - Information about the user.
+ * @returns {JSX.Element} A React component representing the right sidebar.
+ */
 const RightSidebar = ({ userInfo }) => {
   const baseUrl = window.location.origin;
 
+  /**
+   * Formats the cake day date.
+   * @param {string} cakeDay - The cake day date string.
+   * @returns {string} The formatted cake day date.
+   */
   const formatCakeDay = (cakeDay) => {
     if (!cakeDay) return "";
     const date = new Date(cakeDay);
