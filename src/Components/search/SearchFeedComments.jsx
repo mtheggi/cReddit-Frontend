@@ -39,7 +39,7 @@ const SearchFeedComments = ({
             return num.toString();
         }
     }
-    const navigate = useNavigate();
+   
 
 
     return (
