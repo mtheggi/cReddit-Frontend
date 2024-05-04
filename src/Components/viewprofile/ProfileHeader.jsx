@@ -9,7 +9,10 @@ const ProfileHeader = ({ userInfo }) => {
   return (
     <>
       {/* Header */}
-      <div className="px-[16px] relative pt-[16px] flex pb-[16px] items-center">
+      <div
+        id="profile-header"
+        className="px-[16px] relative pt-[16px] flex pb-[16px] items-center"
+      >
         <div className="flex items-center flex-shrink-0 pr-[16px] relative">
           <img
             src={userInfo.profilePicture}
