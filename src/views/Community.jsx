@@ -6,11 +6,13 @@ import { getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import CreateCommunity from "../Components/createCommunity/CreateCommunity";
 import { UserContext } from "@/context/UserContext";
+import { useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
 import CommunityFeed from "@/Components/community/CommunityFeed";
 import CommunityHeader from "@/Components/community/CommunityHeader";
 import CommunityInfo from "@/Components/community/CommunityInfo";
+import NSFW from "@/Components/NSFW/NSFW";
 
 function getSubredditName() {
   return window.location.pathname.split("/")[2];
@@ -32,10 +34,12 @@ const Community = ({
   setIsVisibleLeftSidebar,
   navbarRef,
 }) => {
-  const { isLoggedIn } = useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const commInfoRef = useRef();
   const mainfeedRef = useRef();
   const communiyCardRef = useRef();
+  const location = useLocation();
+  const [showAdultPage, setShowAdultPage] = useState(false);
 
   /**
    * The subreddit state.
@@ -55,19 +59,20 @@ const Community = ({
     communityButtonRef,
     userHistoryRes,
     setUserHistoryRes,
-    sidebarRef,
+    sidebarRef
   } = useContext(SidebarContext);
 
-  // Get the subreddit data
   useEffect(() => {
     async function getSubreddit() {
       const response = await getRequest(
         `${baseUrl}/subreddit/${getSubredditName()}`
       );
       setSubreddit(response.data);
+      setShowAdultPage(response.data.isNSFW && !userInfo.showAdultContent);
     }
     getSubreddit();
-  }, [isLoggedIn]);
+
+  }, [location.pathname]);
 
   useEffect(() => {
     async function getHistory() {
@@ -78,7 +83,7 @@ const Community = ({
       else localStorage.setItem("userHistory", null);
     }
     getHistory();
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     let handleClickOutside = (e) => {
@@ -153,9 +158,14 @@ const Community = ({
       }, 440);
     };
 
-    commInfoRef.current.addEventListener("scroll", handleScroll);
-    sidebarRef.current.addEventListener("scroll", handleScroll);
-    mainfeedRef.current.addEventListener("scroll", handleScroll);
+    if (commInfoRef.current)
+      commInfoRef.current.addEventListener("scroll", handleScroll);
+
+    if (sidebarRef.current)
+      sidebarRef.current.addEventListener("scroll", handleScroll);
+
+    if (mainfeedRef.current)
+      mainfeedRef.current.addEventListener("scroll", handleScroll);
 
     return () => {
       if (commInfoRef.current) {
@@ -179,11 +189,10 @@ const Community = ({
       >
         <div
           ref={sidebarRef}
-          className={`h-full ${
-            isVisibleLeftSidebar
-              ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
-              : "hidden xl:flex"
-          } z-20  w-[290px] min-w-[270px] border-r  border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
+          className={`h-full ${isVisibleLeftSidebar
+            ? "fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]"
+            : "hidden xl:flex"
+            } z-20  w-[290px] min-w-[270px] border-r  border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}
         >
           <Sidebar
             setIsCommunityOpen={setIsCommunityOpen}
@@ -201,32 +210,39 @@ const Community = ({
           )}
         </div>
 
-        <div className="flex flex-col w-full overflow-auto scrollbar_mod_mf  items-center">
-        <div
-          id={`community_page__content`}
-          className="w-fit flex flex-col max-w-[1100px] mx-2" >
-     
-          {subreddit && <CommunityHeader {...subreddit} />}
-         
-          <div className="w-full flex flex-row">
-            <div
-              id="community_page__content__mainfeed"
-              className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
-              ref={mainfeedRef}
-            >
-              {subreddit && <CommunityFeed subredditName={subreddit.name} />}
-            </div>
 
-            <div
-              id="community_page__content__community_info"
-              className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf sticky top-2"
-              ref={commInfoRef}
-            >
-              {subreddit && <CommunityInfo {...subreddit} />}
+
+        <div className="flex flex-col w-full overflow-auto scrollbar_mod_mf  items-center">
+
+          {showAdultPage ? <div className="w-full flex flex-row justify-center mt-[240px]">
+            <NSFW setOver18={setShowAdultPage} />
+          </div> : <div
+            id={`community_page__content`}
+            className="w-fit flex flex-col max-w-[1100px] mx-2" >
+
+            {subreddit && <CommunityHeader {...subreddit} />}
+
+            <div className="w-full flex flex-row">
+              <div
+                id="community_page__content__mainfeed"
+                className="w-fit px-1 flex flex-row flex-grow lg:flex-grow-0  "
+                ref={mainfeedRef}
+              >
+                {subreddit && <CommunityFeed subredditName={subreddit.name} isMember={subreddit.isMember} />}
+              </div>
+
+              <div
+                id="community_page__content__community_info"
+                className="w-fit min-w-fit max-h-200 overflow-auto scrollbar_mod_mf sticky top-2"
+                ref={commInfoRef}
+              >
+                {subreddit && <CommunityInfo {...subreddit} />}
+              </div>
             </div>
-          </div>
+          </div>}
+
+
         </div>
-      </div>
       </div>
     </div>
   );

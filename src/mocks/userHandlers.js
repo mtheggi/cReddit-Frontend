@@ -141,9 +141,6 @@ export const userHandlers = [
     }),
     http.get('/user/refresh-token', async (resolver) => {
 
-        // return HttpResponse.json({
-        //     message: "Unauthorized"
-        // }, { status: 400 });
         return HttpResponse.json(
             {
                 message: "Token refreshed successfully"
@@ -152,7 +149,7 @@ export const userHandlers = [
     }),
     http.get('/user/verify/:verificationToken', async (resolver) => {
 
-        // console.log("resolverVerficition", resolver.params.verificationToken)
+
         return HttpResponse.json(
             {
                 message: "User verified successfully"

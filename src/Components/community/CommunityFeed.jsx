@@ -25,9 +25,8 @@ import Comment from "../mainfeed/comment/Comment";
  *
  * @returns {React.Element} The rendered component.
  */
-const CommunityFeed = ({ subredditName }) => {
+const CommunityFeed = ({ subredditName, isMember }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const [page, setPage] = useState(1);
@@ -39,15 +38,15 @@ const CommunityFeed = ({ subredditName }) => {
   const [isSortChanged, setIsSortChanged] = useState(0);
   const commfeedRef = useRef();
   const existingPost = useRef(null);
-
+  const prevSubredditNameRef = useRef(subredditName);
 
   const [selectedSort, setSelectedSort] = useState(() => {
-    const storedSort = localStorage.getItem("homeSelectedSort");
+    const storedSort = localStorage.getItem("subredditSelectedSort");
     if (storedSort) {
       return storedSort;
     } else {
-      localStorage.setItem("homeSelectedSort", "Best");
-      return "Best";
+      localStorage.setItem("subredditSelectedSort", "New");
+      return "New";
     }
   });
 
@@ -67,7 +66,7 @@ const CommunityFeed = ({ subredditName }) => {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setPage(prevPage => prevPage + 1);
-        console.log("fetching more posts");
+
       }
     });
     if (node) observer.current.observe(node);
@@ -92,12 +91,21 @@ const CommunityFeed = ({ subredditName }) => {
 
 
   useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    if (prevSort.current !== selectedSort) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
   }, [selectedSort]);
 
 
+  useEffect(() => {
+    if (prevSubredditNameRef.current !== subredditName) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
+  }, [subredditName]);
 
 
   useEffect(() => {
@@ -111,7 +119,7 @@ const CommunityFeed = ({ subredditName }) => {
       try {
         setHasMore(true);
         setIsFeedLoading(true);
-        console.log("fetching home feed");
+
         const response = await getRequest(`${baseUrl}/subreddit/${subredditName}/posts?page=${page}&limit=15&sort=${selectedSort.toLowerCase()}`);
         const status = response.status;
         const data = response.data;
@@ -131,8 +139,9 @@ const CommunityFeed = ({ subredditName }) => {
     if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
       prevSort.current = selectedSort;
+      prevSubredditNameRef.current = subredditName;
     }
-  }, [page, isSortChanged, navigate.pathname]);
+  }, [page, isSortChanged]);
 
 
 
@@ -161,9 +170,6 @@ const CommunityFeed = ({ subredditName }) => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
         setIsOpenCateg(false);
       }
-      if (menuRefView.current && !menuRefView.current.contains(e.target)) {
-        setIsOpenView(false);
-      }
     };
     document.addEventListener("click", closeDropdown);
 
@@ -174,7 +180,6 @@ const CommunityFeed = ({ subredditName }) => {
       setHomeFeedScroll(commfeedElement.scrollTop);
       if (commfeedElement.scrollTop > scrollThreshold) {
         setIsOpenCateg(false);
-        setIsOpenView(false);
       }
     };
 
@@ -192,10 +197,10 @@ const CommunityFeed = ({ subredditName }) => {
 
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
-      localStorage.setItem("homeFeedScroll", homeFeedScroll);
+      localStorage.setItem("communityFeedScroll", homeFeedScroll);
     } else {
       setTimeout(() => {
-        commfeedRef.current.scrollTop = localStorage.getItem("homeFeedScroll");
+        commfeedRef.current.scrollTop = localStorage.getItem("communityFeedScroll");
       }, 10);
     }
   }, [navigate.pathname]);
@@ -225,29 +230,17 @@ const CommunityFeed = ({ subredditName }) => {
             </div>
 
             {isOpenCateg && (
-              <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
+              <div className=" w-20 h-48 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
                 <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                   <p className="no-select">Sort by</p>
                 </div>
 
-                <div
-                  onClick={() => {
-                    setSelectedSort("Best");
-                    setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Best");
-                  }}
-                  id="commfeed_category_best"
-                  href=""
-                  className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-                >
-                  <p className="no-select">Best</p>
-                </div>
 
                 <div
                   onClick={() => {
                     setSelectedSort("Hot");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Hot");
+                    localStorage.setItem("subredditSelectedSort", "Hot");
                   }}
                   id="commfeed_category_hot"
                   href=""
@@ -260,7 +253,7 @@ const CommunityFeed = ({ subredditName }) => {
                   onClick={() => {
                     setSelectedSort("New");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "New");
+                    localStorage.setItem("subredditSelectedSort", "New");
                   }}
                   id="commfeed_category_new"
                   href=""
@@ -273,7 +266,7 @@ const CommunityFeed = ({ subredditName }) => {
                   onClick={() => {
                     setSelectedSort("Top");
                     setIsOpenCateg(false);
-                    localStorage.setItem("homeSelectedSort", "Top");
+                    localStorage.setItem("subredditSelectedSort", "Top");
                   }}
                   id="commfeed_category_top"
                   href=""
@@ -284,42 +277,7 @@ const CommunityFeed = ({ subredditName }) => {
               </div>
             )}
           </div>
-          <div ref={menuRefView} className="relative">
-            <div
-              id="commfeed_view_type"
-              onClick={() => setIsOpenView((prev) => !prev)}
-              className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
-                } justify-center items-center cursor-pointer`}
-            >
-              <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
-              <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-            </div>
 
-            {isOpenView && (
-              <div className=" w-30 h-33  bg-reddit_search absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-20 rounded-lg  font-extralight flex flex-col">
-                <div className="w-full pl-3  rounded-lg h-8 flex items-center font-medium">
-                  <p className="no-select">View</p>
-                </div>
-                <a
-                  id="commfeed_view_card"
-                  href=""
-                  className="w-full pl-6 hover:bg-reddit_hover h-11 flex items-center cursor-pointer"
-                >
-                  <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                  <p className="ml-2 no-select">Card</p>
-                </a>
-                <a
-                  id="commfeed_view_classic"
-                  href=""
-                  className="w-full pl-6 hover:bg-reddit_hover h-11 flex rounded-b-lg items-center cursor-pointer"
-                >
-                  <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                  {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
-                  <p className="ml-2 no-select">Classic</p>
-                </a>
-              </div>
-            )}
-          </div>
         </div>
       )}
       <div
@@ -329,7 +287,7 @@ const CommunityFeed = ({ subredditName }) => {
         <Separator />
       </div>
 
-      {feedLoading && page==1 ? (
+      {feedLoading && page == 1 ? (
         <Loading />
       ) : (
         <>
@@ -342,7 +300,7 @@ const CommunityFeed = ({ subredditName }) => {
                   setPosts={setPosts}
                   isSinglePostSelected={isSinglePostSelected}
                   {...post}
-                  inSubreddit={true}
+                  isJoined={isMember}
                   lastPostRef={lastPostRef}
                 />
               }
@@ -353,7 +311,7 @@ const CommunityFeed = ({ subredditName }) => {
                   setPosts={setPosts}
                   isSinglePostSelected={isSinglePostSelected}
                   {...post}
-                  inSubreddit={true}
+                  isJoined={isMember}
                 />
               }
             })}
@@ -378,7 +336,7 @@ const CommunityFeed = ({ subredditName }) => {
 
       {
         <div className="w-full max-h-15 mt-10">
-          { feedLoading && page!=1 && <Loading />}
+          {feedLoading && page != 1 && <Loading />}
           {
             <div className="w-full h-6 mt-2">
               <div className="relative w-full h-full">

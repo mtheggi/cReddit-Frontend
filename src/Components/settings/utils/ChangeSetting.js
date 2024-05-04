@@ -13,9 +13,7 @@ export async function changeSetting(pageName, settingName, newSettingValue) {
     const settingsFormData = new FormData();
     settingsFormData.append(pageName, JSON.stringify(msg));
 
-    console.log("CHANGE SETTING:")
-    console.log(msg)
-
+   
     try {
         const res = await putRequestFD(url, settingsFormData);
 

@@ -37,6 +37,7 @@ function Profile({
   isContentVisible,
   isActiveCommunityVisible,
   setUserSettings,
+  isNSFW
 }) {
   const [modalShow, setModalShow] = useState(false);
   // const [avatar, setAvatar] = useState(null);
@@ -175,7 +176,7 @@ function Profile({
         title="NSFW"
         message="This content is NSFW (may contain nudity, pornography, profanity or inappropriate content for those under 18)"
         toggleButton={true}
-        isToggled={showAdultContent}
+        isToggled={isNSFW}
         pageName={"profile"}
         settingName={"isNSFW"}
         setUserSettings={setUserSettings}

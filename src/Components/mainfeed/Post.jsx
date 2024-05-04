@@ -24,9 +24,11 @@ import { useNavigate } from 'react-router-dom';
 
 import moment from "moment";
 import HiddenPost from "./HiddenPost";
-import { Link } from "react-router-dom";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
+import parse from "html-react-parser";
+import Tiptap from "../tiptap/Tiptap";
+import { StepContent } from "@mui/material";
 
 
 
@@ -60,10 +62,11 @@ const Post = ({
   isSaved,
   isSinglePostSelected,
   setPosts,
-  inSubreddit,
+  showAlertForTime,
   lastPostRef
 }) => {
   const menuRefDots = useRef();
+  const shareMenuRef = useRef();
   const [isOpenDots, setIsOpenDots] = useState(false);
   const [hoverJoin, setHoverJoin] = useState(false);
   const [editedPollOptions, setEditedPollOptions] = useState(pollOptions);
@@ -71,6 +74,7 @@ const Post = ({
   const durationRemaining = moment(expirationDate).fromNow();
   const [Blured, setBlured] = useState(isSpoiler || isNSFW);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
+  const [editPostContent, setEditPostContent]=useState("")
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
   );
@@ -81,8 +85,10 @@ const Post = ({
   const [isHiddenMsg, setIsHiddenMsg] = useState("");
   const [saved, setSaved] = useState(isSaved);
   const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
-  const { isLoggedIn } = useContext(UserContext);
+  const [isShareMenuOpened, setIsShareMenuOpened] = useState(false);
+  const { userInfo } = useContext(UserContext);
   const navigate = useNavigate();
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     setEditedPollOptions(pollOptions);
@@ -118,28 +124,41 @@ const Post = ({
     }
   }
 
+
+
   useEffect(() => {
     let closeDropdown = (e) => {
-      if (menuRefDots.current && !menuRefDots.current.contains(e.target)) {
+      if (menuRefDots.current && !menuRefDots.current.contains(e.target))
         setIsOpenDots(false);
-      }
+
+      if (shareMenuRef.current && !shareMenuRef.current.contains(e.target))
+        setIsShareMenuOpened(false);
+
     };
     document.addEventListener("click", closeDropdown);
 
-    const scrollingElement = document.getElementById("mainfeed");
+    const scrollingElement = document.getElementById("homefeed");
+
     const handleScroll = () => {
       const scrollThreshold = 30;
       if (!menuRefDots.current) {
         return;
       }
+
       const rect = menuRefDots.current.getBoundingClientRect();
-      const viewportHeight =
-        window.innerHeight || document.documentElement.clientHeight;
-      if (
-        rect.top < scrollThreshold ||
-        rect.bottom > viewportHeight - scrollThreshold
-      ) {
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+
+      if (rect.top < scrollThreshold || rect.bottom > viewportHeight - scrollThreshold) {
         setIsOpenDots(false);
+      }
+
+      if (!shareMenuRef.current) {
+        return;
+      }
+      const rectShare = shareMenuRef.current.getBoundingClientRect();
+      if (rectShare.top < scrollThreshold || rectShare.bottom > viewportHeight - scrollThreshold) {
+        setIsShareMenuOpened(false);
       }
     };
 
@@ -229,7 +248,8 @@ const Post = ({
    * @async
    * @function handleVote
    */
-  const handleVote = async () => {
+  const handleVote = async (e) => {
+    e.stopPropagation();
     if (!isOptionSelected) {
       return;
     }
@@ -245,6 +265,18 @@ const Post = ({
     } else {
       setEditedPollOptions(pollOptions);
       setHasVoted(false);
+    }
+  };
+
+
+  const handleReportPost = async () => {
+    setIsOpenDots(false);
+    const response = await postRequest(`${baseUrl}/post/${id}/report`);
+    if (response.status == 200 || response.status == 201) {
+      showAlertForTime("success", response.data.message);
+
+    } else {
+      showAlertForTime("error", response.data.message);
     }
   };
 
@@ -279,31 +311,63 @@ const Post = ({
    * @function handleJoinSubreddit
    */
   const handleJoinSubreddit = async () => {
-    setIsSubbredditJoined((prev) => !prev);
+
+    setPosts((prevPosts) => {
+      return prevPosts.map((post) => {
+        if (post.communityName === communityName) {
+          console.log(true);
+          return {
+            ...post,
+            isJoined: !post.isJoined,
+          };
+        }
+        return post;
+      });
+    });
+
     let response = null;
     if (isSubbredditJoined) {
-      response = await deleteRequest(
-        `${baseUrl}/subreddit/${communityName}/join`
-      );
+      response = await deleteRequest(`${baseUrl}/subreddit/${communityName}/join`);
     } else {
-      response = await postRequest(
-        `${baseUrl}/subreddit/${communityName}/join`
+      response = await postRequest(`${baseUrl}/subreddit/${communityName}/join`
       );
     }
     if (!(response.status === 200 || response.status === 201)) {
-      setIsSubbredditJoined((prev) => !prev);
+      setPosts((prevPosts) => {
+        return prevPosts.map((post) => {
+          if (post.communityName === communityName) {
+            console.log(true);
+            return {
+              ...post,
+              isJoined: !post.isJoined,
+            };
+          }
+          return post;
+        });
+      });
     }
+
   };
+
+  useEffect(() => {
+    setIsSubbredditJoined(isJoined);
+  }, [isJoined])
+
+
+  const enterEditMode = () => {
+    setIsOpenDots(false);
+    setEditMode(true);
+  }
 
   return currentIsHidden ? (
     <HiddenPost id={id} handleHidePost={handleHidePost} />
   ) : (
-    <div ref={lastPostRef}
+    <div
+      ref={lastPostRef}
       id={"mainfeed_" + id + "_full"}
       className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected ? "" : "hover:bg-reddit_hover"
         } ${isOpenDots ? "bg-reddit_hover" : ""
-        }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}
-    >
+        }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}>
       <div className="flex flex-row items-center w-full h-6 ">
         <div
           id={"mainfeed_" + id + "_community"}
@@ -316,24 +380,24 @@ const Post = ({
               <ArrowLeftIcon className="text-white w-6 h-6" />
             </div>
           )}
-          <img
-            src={profilePicture}
-            alt="Logo"
-            className={`${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"
-              } rounded-full `}
-          />
-          <Link
-            to={
-              communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`
-            }
+
+          <div className="flex flex-row cursor-pointer items-center"
+            onClick={(e) => {
+              navigate(communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`);
+            }}
           >
-            <p className="text-gray-300 font-semibold text-xs ml-2 hover:text-cyan-600">
-              {communityName && communityName.trim() != "" ? `r/${communityName}` : `u/${username}`}
+            <img
+              src={profilePicture}
+              alt="Logo"
+              className={`peer ${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"} rounded-full `}
+            />
+            <p className="text-gray-300 peer-hover:underline  font-semibold text-xs ml-2 hover:underline">
+              {communityName && communityName.trim() != "" && (!location.pathname.includes("/r/")) ? `r/${communityName}` : `u/${username}`}
             </p>
-          </Link>
+          </div>
         </div>
 
-        <div className=" flex flex-row w-[32%] xs:w-[40%] items-center ">
+        <div className=" flex flex-row w-[40%] xs:w-[40%] items-center ">
           <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
           <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
             {uploadedFrom}
@@ -341,8 +405,8 @@ const Post = ({
         </div>
 
         <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-          {(communityName !== null) && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-            <h1 className='text-[12px] font-medium text-white'>{isSubbredditJoined ? "Leave" : "Join"}</h1>
+          {(communityName !== null) && !isSubbredditJoined && !location.pathname.includes("/r/") && !location.pathname.includes("/user/") && !location.pathname.includes("/my-user/") && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+            <h1 className='text-[12px] font-medium text-white'>Join</h1>
           </div>}
           <div
             id={"mainfeed_" + id + "_menu"}
@@ -350,18 +414,16 @@ const Post = ({
           >
             <EllipsisHorizontalIcon
               onClick={(e) => {
-
                 setIsOpenDots((prev) => !prev);
               }}
               className="h-6 w-6 outline-none"
             />
           </div>
           {isOpenDots && (
-            <div className={`z-20 w-30 h-37 bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[24px]" : "-ml-[72px]"} mt-45`}>
+            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[78px]" : "-ml-[72px]"} `}>
               <div onClick={handleClickSave}
                 id={"mainfeed_" + id + "_menu_save"}
-                className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
-              >
+                className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
                 {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
                   :
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
@@ -378,7 +440,22 @@ const Post = ({
                 <p className="ml-2 no-select">{currentIsHidden ? "unHide" : "Hide"}</p>
               </div>
 
-              <div
+
+
+              {username == userInfo.username && type == "Post" &&
+                <div onClick={enterEditMode}
+                  id={"mainfeed_" + id + "_menu_report"}
+                  className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                >
+                  <svg rpl="" fill="white" height="20" icon-name="edit-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m18.236 3.158-1.4-1.4a2.615 2.615 0 0 0-3.667-.021L1.336 13.318a1.129 1.129 0 0 0-.336.8v3.757A1.122 1.122 0 0 0 2.121 19h3.757a1.131 1.131 0 0 0 .8-.337L18.256 6.826a2.616 2.616 0 0 0-.02-3.668ZM5.824 17.747H2.25v-3.574l9.644-9.435L15.259 8.1l-9.435 9.647ZM17.363 5.952l-1.23 1.257-3.345-3.345 1.257-1.23a1.362 1.362 0 0 1 1.91.01l1.4 1.4a1.364 1.364 0 0 1 .008 1.908Z"></path> </svg>
+                  <p className="ml-2 no-select">Edit</p>
+                </div>}
+
+
+
+              <div onClick={
+                handleReportPost
+              }
                 id={"mainfeed_" + id + "_menu_report"}
                 className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
               >
@@ -433,158 +510,175 @@ const Post = ({
             )}
           </div>
         )}
-        <div
-          id={"mainfeed_" + id + "_title"}
-          className="text-white mt-1.5 font-medium text-lg"
-        >
-          <h1>{title}</h1>
-        </div>
+        <div className= {`${!editMode?`cursor-pointer`:'cursor-text'}`} onClick={() => {
+          if (Blured || editMode)
+            return;
 
-        <div className="relative w-full h-full">
+          if (communityName == null)
+            navigate(`/user/${username}/comments/${id}`);
+          else
+            navigate(`/r/${communityName}/comments/${id}`);
+        }
+        }>
+          <div
+            id={"mainfeed_" + id + "_title"}
+            className="text-white mt-1.5 font-medium text-lg"
+          >
+            <h1>{title}</h1>
+          </div>
 
-          {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-            <EyeIcon className='w-5 mr-1.5 h-5' />
-            View
-          </div>}
+          <div className="relative w-full h-fit">
 
-          {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
-            <>
-              {type != "Link" ? (<p style={{ wordBreak: 'break-all' }}>{content}</p>) :
-                (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
-            </>
-          </div>}
+            {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+              <EyeIcon className='w-5 mr-1.5 h-5' />
+              View
+            </div>}
 
-          {
-            type == "Images & Video" &&
-            <div
-              id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
-              <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
-
-                <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
-                  {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
-                    <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
-                </div>
-
-                {content.endsWith(".mp4") ? (
-                  <video
-                    src={content}
-                    alt="Post"
-                    className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                      } max-h-[500px] w-full object-contain `}
-                    controls
-                  />
-                ) : (
-                  <img
-                    src={content}
-                    alt="Post"
-                    className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                      }  max-h-[500px] w-full object-contain `}
-                  />
-                )}
-              </div>
-            </div>
-          }
-
-          
-
-          {type == "Poll" && (
-            <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
-              <div
-                className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
-                  }`}
-              >
-                <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
-                  <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
-                    <h1 className="mr-1 text-gray-300 font-light">
-                      {hasExpired ? "Closed" : "Open"} .
-                    </h1>
-                    <h1 className="text-gray-300 font-light">
-                      {!hasVoted
-                        ? formatNumber(getTotalVotes(pollOptions))
-                        : formatNumber(getTotalVotes(editedPollOptions))}{" "}
-                      total votes
-                    </h1>
+            {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
+              <>
+                {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(content)}</div>)}
+                {type != "Link" && editMode && (
+                  <div className=" h-[200px] mb-2 mt-[12px]">
+                    <Tiptap initialContent={content} setDescription={setEditMode} />
                   </div>
-                  <div
-                    id={"mainfeed_" + id + "_polloptions"}
-                    className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
-                  >
-                    {editedPollOptions &&
-                      editedPollOptions.map((option, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center flex-row w-full"
-                        >
-                          {!hasVoted && !hasExpired ? (
-                            <div className="w-fit hit flex-row">
-                              <input
-                                type="radio"
-                                name={id + "PollOption" + index}
-                                className="radio bg-inherit outline-gray-200 focus:outline-none"
-                                checked={option.isVoted}
-                                onChange={() => handleOptionChange(index)}
-                              />
-                              <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
-                                {option.text}
-                              </label>
-                            </div>
-                          ) : (
-                            <div className="w-7/12">
-                              <div
-                                style={{
-                                  width: `${getVoteWidth(option.votes)}`,
-                                }}
-                                className={` ${option.votes == getMaxVotes(editedPollOptions)
-                                    ? "bg-[#33464C]"
-                                    : "bg-reddit_search_light"
-                                  }  items-center h-8 rounded-[5px] flex flex-row`}
-                              >
-                                <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
-                                  {option.votes}
-                                </h1>
+                )}
+                {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
+              </>
+            </div>}
+
+            {
+              type == "Images & Video" &&
+              <div
+                id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
+                <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
+
+                  <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
+                    {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
+                      <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
+                  </div>
+
+                  {content.endsWith(".mp4") ? (
+                    <video
+                      src={content}
+                      alt="Post"
+                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                        } max-h-[500px] w-full object-contain `}
+                      controls
+                    />
+                  ) : (
+                    <img
+                      src={content}
+                      alt="Post"
+                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                        }  max-h-[500px] w-full object-contain `}
+                    />
+                  )}
+                </div>
+              </div>
+            }
+
+
+
+            {type == "Poll" && (
+              <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
+                <div
+                  className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
+                    }`}
+                >
+                  <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
+                    <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
+                      <h1 className="mr-1 text-gray-300 font-light">
+                        {hasExpired ? "Closed" : "Open"} .
+                      </h1>
+                      <h1 className="text-gray-300 font-light">
+                        {!hasVoted
+                          ? formatNumber(getTotalVotes(pollOptions))
+                          : formatNumber(getTotalVotes(editedPollOptions))}{" "}
+                        total votes
+                      </h1>
+                    </div>
+                    <div
+                      id={"mainfeed_" + id + "_polloptions"}
+                      className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
+                      onClick={(e) => { e.stopPropagation() }}
+                    >
+                      {editedPollOptions &&
+                        editedPollOptions.map((option, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center flex-row w-full"
+                          >
+                            {!hasVoted && !hasExpired ? (
+                              <div className="w-fit hit flex-row">
+                                <input
+                                  type="radio"
+                                  name={id + "PollOption" + index}
+                                  className="radio bg-inherit outline-gray-200 focus:outline-none"
+                                  checked={option.isVoted}
+                                  onChange={() => handleOptionChange(index)}
+                                />
                                 <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
                                   {option.text}
                                 </label>
-                                {option.isVoted ? (
-                                  <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
-                                ) : null}
                               </div>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                  </div>
+                            ) : (
+                              <div className="w-7/12">
+                                <div
+                                  style={{
+                                    width: `${getVoteWidth(option.votes)}`,
+                                  }}
+                                  className={` ${option.votes == getMaxVotes(editedPollOptions)
+                                    ? "bg-[#33464C]"
+                                    : "bg-reddit_search_light"
+                                    }  items-center h-8 rounded-[5px] flex flex-row`}
+                                >
+                                  <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
+                                    {option.votes}
+                                  </h1>
+                                  <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
+                                    {option.text}
+                                  </label>
+                                  {option.isVoted ? (
+                                    <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
+                                  ) : null}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                    </div>
 
-                  <div className="flex flex-row w-full mt-3 items-center">
-                    {!hasVoted && !hasExpired && (
-                      <div
-                        onClick={handleVote}
-                        className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
+                    <div className="flex flex-row w-full mt-3 items-center">
+                      {!hasVoted && !hasExpired && (
+                        <div
+                          onClick={(e) => handleVote(e)}
+                          className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
                             ? "bg-black cursor-pointer"
                             : "bg-[#1C1E20] cursor-not-allowed"
-                          } text-[13px] text-white`}
-                      >
-                        <h1>Vote</h1>
-                      </div>
-                    )}
-                    {!hasExpired ? (
-                      <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
-                        Closes {durationRemaining}
-                      </h1>
-                    ) : null}
+                            } text-[13px] text-white`}
+                        >
+                          <h1>Vote</h1>
+                        </div>
+                      )}
+                      {!hasExpired ? (
+                        <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
+                          Closes {durationRemaining}
+                        </h1>
+                      ) : null}
+                    </div>
                   </div>
+                  {Blured && (
+                    <div
+                      onClick={(e) => {
+                        setBlured(false);
+                      }}
+                      className="absolute inset-0 bg-black opacity-60 rounded-2xl"
+                    ></div>
+                  )}
                 </div>
-                {Blured && (
-                  <div
-                    onClick={(e) => {
-                      setBlured(false);
-                    }}
-                    className="absolute inset-0 bg-black opacity-60 rounded-2xl"
-                  ></div>
-                )}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
@@ -603,7 +697,40 @@ const Post = ({
           communityName={communityName}
           commentCount={commentCount}
         />
-        <Share id={id} />
+
+        <div ref={shareMenuRef} className="relative flex flex-col">
+          <Share id={id} setIsShareMenuOpened={setIsShareMenuOpened} />
+
+          {isShareMenuOpened && (
+            <div className="flex-col absolute mt-[38px] flex w-[190px] z-20 h-fit py-1 space-y-1  bg-reddit_hover rounded-lg ">
+
+              <div onClick={(e) => {
+                e.stopPropagation(); setIsShareMenuOpened(false);
+                navigator.clipboard.writeText(communityName ? `creddit.tech/r/${communityName}/comments/${id}` : `creddit.tech/u/${username}/comments/${id}`).then(function () {
+
+                }, function (err) {
+                  console.error('Could not copy text: ', err);
+                });
+              }} id="copy_link" className="w-full cursor-pointer pl-[14px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
+                <svg rpl="" className="mt-[1px] ml-[4px]" fill="white" height="20" icon-name="link-post-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.111 12.5a3.701 3.701 0 0 1-1.09 2.41c-.479.47-.928.922-1.378 1.373-.45.45-.894.9-1.368 1.366a3.852 3.852 0 0 1-2.698 1.099 3.852 3.852 0 0 1-2.698-1.099 3.738 3.738 0 0 1-1.116-2.659c0-.997.402-1.953 1.116-2.658.479-.472.928-.923 1.378-1.375.45-.45.893-.9 1.368-1.365A3.936 3.936 0 0 1 9.638 8.59a3.968 3.968 0 0 1 2.24.258c.27-.269.546-.54.812-.806l.131-.13a5.086 5.086 0 0 0-3.182-.624A5.052 5.052 0 0 0 6.732 8.71c-.48.471-.929.922-1.377 1.373-.449.451-.894.9-1.37 1.366A4.982 4.982 0 0 0 2.5 14.992c0 1.328.534 2.602 1.486 3.543A5.13 5.13 0 0 0 7.58 20a5.13 5.13 0 0 0 3.595-1.465c.478-.471.927-.923 1.377-1.374.451-.451.894-.9 1.368-1.366a4.993 4.993 0 0 0 1.263-2.071c.243-.781.288-1.61.132-2.412L14.11 12.5Z"></path><path d="M16.017 1.467A5.123 5.123 0 0 0 12.422 0a5.123 5.123 0 0 0-3.595 1.467c-.478.471-.926.923-1.377 1.374-.45.451-.894.9-1.367 1.366a4.966 4.966 0 0 0-1.106 1.624 4.907 4.907 0 0 0-.291 2.86l1.2-1.19a3.699 3.699 0 0 1 1.092-2.41c.478-.472.928-.923 1.377-1.374.45-.45.894-.9 1.368-1.366a3.844 3.844 0 0 1 2.698-1.101c1.012 0 1.982.396 2.698 1.101a3.736 3.736 0 0 1 1.116 2.66c0 .996-.401 1.953-1.116 2.658-.478.471-.927.922-1.377 1.373-.45.451-.893.9-1.368 1.367a3.933 3.933 0 0 1-2.014 1.003 3.966 3.966 0 0 1-2.24-.26c-.273.274-.551.549-.818.818l-.123.12a5.087 5.087 0 0 0 3.183.624 5.053 5.053 0 0 0 2.906-1.423c.477-.472.926-.923 1.376-1.375.45-.452.894-.9 1.368-1.365A4.977 4.977 0 0 0 17.5 5.008a4.977 4.977 0 0 0-1.488-3.543l.005.002Z"></path>
+                </svg>
+                <h1 className="text-gray-300 ml-3 text-[15px]">Copy Link</h1>
+              </div>
+
+
+              <div id="cross_post" className="w-full cursor-pointer pl-[18px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
+                <svg rpl="" class="mt-[1px] ml-[4px]" fill="white" height="20" icon-name="crosspost-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m15.944 11.926-.888.879 1.925 1.945H12A4.873 4.873 0 0 1 7.138 10 4.873 4.873 0 0 1 12 5.25h4.971l-1.915 1.936.888.878L18.875 5.1a.727.727 0 0 0-.007-1.025l-2.929-2.9-.878.888L17.011 4H12a6.128 6.128 0 0 0-6.056 5.25H1v1.625h4.981A6.117 6.117 0 0 0 12 16h5l-1.94 1.92.878.89 2.929-2.9a.726.726 0 0 0 .006-1.025l-2.929-2.96Z"></path>
+                </svg>
+
+                <h1 className="text-gray-300 ml-3 text-[15px]">Cross Post</h1>
+              </div>
+
+            </div>
+          )
+          }
+        </div>
       </div>
     </div>
   );

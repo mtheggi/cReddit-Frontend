@@ -74,7 +74,7 @@ const ForgetUsername = ({
   }, [internalClose, internalReturnBack]);
 
   return (
-    <div className="z-20 msm:w-132 min-w-90 msm:h-158 w-100% h-100% bg-reddit_lightGreen no-select text-white msm:rounded-3xl items-center flex flex-col">
+    <div className="z-30 msm:w-132 min-w-90 msm:h-158 w-100% h-100% bg-reddit_lightGreen no-select text-white msm:rounded-3xl items-center flex flex-col">
       <div className="w-full px-7 pt-10 pb-4 h-12 flex items-center justify-between">
         <div
           onClick={() => setInternalReturnBack(true)}
