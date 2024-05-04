@@ -4,19 +4,59 @@ import { baseUrl, limit } from "@/constants";
 import Post from "../mainfeed/Post";
 import Loading from "../Loading/Loading";
 
+/**
+ * Component for displaying the posts submitted by a user.
+ * @param {Object} props - The props passed to the Submitted component.
+ * @param {Object} props.userInfo - Information about the user.
+ * @returns {JSX.Element} The JSX element representing the Submitted component.
+ */
 const Submitted = ({ userInfo }) => {
+  /**
+   * State to store the array of submitted posts.
+   * @type {Array<Object>}
+   */
   const [posts, setPosts] = useState([]);
+
+  /**
+   * State to store the current page number of submitted posts.
+   * @type {number}
+   */
   const [currentPage, setCurrentPage] = useState(1);
+
+  /**
+   * State to indicate if data is being loaded.
+   * @type {boolean}
+   */
   const [loading, setLoading] = useState(false);
+
+  /**
+   * State to track if there are more submitted posts to fetch.
+   * @type {boolean}
+   */
   const [hasMore, setHasMore] = useState(true);
 
+  /**
+   * Ref for IntersectionObserver.
+   * @type {React.MutableRefObject<IntersectionObserver>}
+   */
   const observer = useRef();
+
+  /**
+   * Ref for the last submitted post element.
+   * @type {React.MutableRefObject<HTMLDivElement>}
+   */
   const lastPostRef = useRef();
 
+  /**
+   * Function to increment the current page number.
+   */
   const nextPage = () => {
     setCurrentPage(currentPage + 1);
   };
 
+  /**
+   * Effect hook to fetch submitted posts from the server.
+   */
   useEffect(() => {
     const getPosts = async () => {
       if (!hasMore) return;
@@ -41,6 +81,9 @@ const Submitted = ({ userInfo }) => {
     getPosts();
   }, [currentPage, hasMore]);
 
+  /**
+   * Effect hook to set up IntersectionObserver to detect when the last submitted post becomes visible.
+   */
   useEffect(() => {
     if (loading) return;
 
