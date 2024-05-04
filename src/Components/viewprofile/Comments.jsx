@@ -64,7 +64,7 @@ const Comments = ({ userInfo }) => {
   }, [loading, hasMore]);
 
   return (
-    <>
+    <div id="comments">
       {comments.map((comment, index) => {
         if (comments.length === index + 1) {
           return (
@@ -84,7 +84,7 @@ const Comments = ({ userInfo }) => {
           <Loading />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
