@@ -28,7 +28,7 @@ const LeftSidebar = ({ sidebarProps }) => {
   }, []);
 
   return (
-    <>
+    <div id="left-sidebar">
       {isLargeScreen && (
         <div className="">
           <div
@@ -62,7 +62,7 @@ const LeftSidebar = ({ sidebarProps }) => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
