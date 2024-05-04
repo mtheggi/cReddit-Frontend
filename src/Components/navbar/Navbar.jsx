@@ -13,7 +13,7 @@ import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
 import { getRequest } from '../../services/Requests';
-import { baseUrl } from "../../constants";
+import { baseUrl, testingUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -393,7 +393,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
                                     {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-46 mt-90 h-72 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
 
-                                        <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
+                                        <a id="profile_view" href={`${testingUrl}/profile/${user}/`} className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
                                             <div className='flex flex-row w-full'>
 
                                                 <div className='  w-9 h-9 rounded-full'>
@@ -406,7 +406,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                 </div>
 
                                             </div>
-                                        </div>
+                                        </a>
                                         <Separator />
 
                                         <a id="profile_modmode" href="M" className='w-full pl-8 hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
