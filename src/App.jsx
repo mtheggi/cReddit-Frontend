@@ -43,6 +43,11 @@ function App() {
     sidebarRef,
   };
 
+  const notFound = {
+    isNotFound,
+    setIsNotFound,
+  };
+
   return isLoading ? (
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
       <Loading />
@@ -185,7 +190,11 @@ function App() {
           <Route
             path="/profile/:username/*"
             element={
-              <ViewProfile userInfo={userInfo} sidebarProps={sidebarProps} />
+              <ViewProfile
+                userInfo={userInfo}
+                sidebarProps={sidebarProps}
+                notFound={notFound}
+              />
             }
           />
         </Routes>

@@ -9,9 +9,21 @@ import Hidden from "./Hidden";
 import Upvoted from "./Upvoted";
 import Downvoted from "./Downvoted";
 import RightSidebar from "./RightSidebar";
+import NotFound from "@/views/NotFound";
 
-const ViewProfile = ({ userInfo, sidebarProps }) => {
+const ViewProfile = ({ userInfo, sidebarProps, notFound }) => {
   const location = useLocation();
+
+  if (userInfo == null) {
+    notFound.setIsNotFound(true);
+    return (
+      <NotFound
+        isNotFound={notFound.isNotFound}
+        setIsNotFound={notFound.setIsNotFound}
+      />
+    );
+  }
+
   const urlUsername = location.pathname.split("/")[2];
   const isUsernameMatch = userInfo.username === urlUsername;
   if (!isUsernameMatch) return null;
