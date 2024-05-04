@@ -74,7 +74,7 @@ const Post = ({
   const durationRemaining = moment(expirationDate).fromNow();
   const [Blured, setBlured] = useState(isSpoiler || isNSFW);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
-  const [editPostContent, setEditPostContent] = useState("");
+  const [editPostContent, setEditPostContent] = useState(type=="Post"?content:"");
   const [commentsNumber, setCommentsNumber] = useState(commentCount);
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
@@ -98,7 +98,6 @@ const Post = ({
 
   useEffect(() => {
     setCommentsNumber(commentCount);
-    console.log(commentCount);
   }, [commentCount]);
 
   /**
@@ -287,6 +286,20 @@ const Post = ({
     }
   };
 
+
+  const submitEditedPost = async () => {
+    const response = await patchRequest(`${baseUrl}/post/${id}`, {
+      newContent: editPostContent,
+      isNSFW: true,
+      isSpoiler: true
+    });
+    if (response.status == 200 || response.status == 201) {
+      setEditMode(false);
+    } else {
+      showAlertForTime("error", response.data.message);
+    }
+  }
+
   const joinBtnStyle = {
     backgroundColor: hoverJoin ? "#196FF4" : "#0045AC",
   };
@@ -322,7 +335,7 @@ const Post = ({
     setPosts((prevPosts) => {
       return prevPosts.map((post) => {
         if (post.communityName === communityName) {
-          console.log(true);
+  
           return {
             ...post,
             isJoined: !post.isJoined,
@@ -343,7 +356,6 @@ const Post = ({
       setPosts((prevPosts) => {
         return prevPosts.map((post) => {
           if (post.communityName === communityName) {
-            console.log(true);
             return {
               ...post,
               isJoined: !post.isJoined,
@@ -569,10 +581,10 @@ const Post = ({
 
             {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
               <>
-                {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(content)}</div>)}
+                {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(editPostContent)}</div>)}
                 {type != "Link" && editMode && (
                   <div className=" h-[200px] mb-2 mt-[12px]">
-                    <Tiptap initialContent={content} setDescription={setEditMode} />
+                    <Tiptap initialContent={editPostContent} setDescription={setEditPostContent} />
                   </div>
                 )}
                 {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
@@ -767,13 +779,13 @@ const Post = ({
 
 
         {editMode &&
-          <div className="flex flex-row w-full">
+          <div onClick={() => setEditMode(false)} className="flex flex-row w-full">
             <div className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_search_light cursor-pointer bg-reddit_search rounded-2xl ml-auto">
               <p className="text-white text-[12px] font-medium">Cancel</p>
             </div>
 
 
-            <div className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] rounded-2xl ml-3">
+            <div onClick={submitEditedPost} className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] rounded-2xl ml-3">
               <p className="text-white text-[12px] font-medium">Save</p>
             </div>
           </div>
