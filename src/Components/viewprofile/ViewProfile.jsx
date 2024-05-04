@@ -11,6 +11,14 @@ import Downvoted from "./Downvoted";
 import RightSidebar from "./RightSidebar";
 import NotFound from "@/views/NotFound";
 
+/**
+ * Component for displaying the profile view including various sections like overview, submitted, comments, saved, etc.
+ * @param {Object} props - The props passed to the component.
+ * @param {Object} props.userInfo - Information about the user whose profile is being viewed.
+ * @param {Object} props.sidebarProps - Props for the left sidebar.
+ * @param {Object} props.notFound - Object to control whether the user profile is found or not found.
+ * @returns {JSX.Element} The JSX element representing the ViewProfile component.
+ */
 const ViewProfile = ({ userInfo, sidebarProps, notFound }) => {
   const location = useLocation();
 
