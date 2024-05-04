@@ -59,6 +59,8 @@ const MyProfileFeed = ({ userName, selectedPage }) => {
     [feedLoading, hasMore]
   );
 
+  const limit = 5;
+
   console.log("selected page ", selectedPage);
 
   const getSinglePost = async (selectedPostId) => {
@@ -77,42 +79,42 @@ const MyProfileFeed = ({ userName, selectedPage }) => {
 
   const fetchPosts = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/${userName}/posts?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/${userName}/posts?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
 
   const fetchComments = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/${userName}/comments?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/${userName}/comments?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
 
   const fetchSaved = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/saved?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/saved?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
 
   const fetchHidden = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/hidden-posts?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/hidden-posts?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
 
   const fetchUpvoted = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/upvoted?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/upvoted?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
 
   const fetchDownvoted = async (page, selectedSort) => {
     const response = await getRequest(
-      `${baseUrl}/user/downvoted?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`
+      `${baseUrl}/user/downvoted?page=${page}&limit=${limit}&sort=${selectedSort.toLowerCase()}`
     );
     return response;
   };
