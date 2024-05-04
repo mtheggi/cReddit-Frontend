@@ -17,7 +17,7 @@ const RightSidebar = ({ userInfo }) => {
     >
       <div className="mt-[16px] rounded-[16px] bg-[#04090A]">
         <div
-          className="relative overflow-hidden w-full rounded-t-[1rem] h-[114px]"
+          className="relative overflow-hidden w-full rounded-t-[1rem] h-[114px] bg-cover bg-center"
           style={{
             backgroundImage: `url(${userInfo.banner})`,
           }}
@@ -84,7 +84,7 @@ const RightSidebar = ({ userInfo }) => {
           <div className="grid gap-y-[24px] grid-cols-2 my-[16px]">
             <div className="flex flex-col min-w-0">
               <p className="m-0 text-neutral-200 text-[14px] font-semibold whitespace-nowrap">
-                <span className="font-semibold text-[14px]">1</span>
+                <span className="font-semibold text-[14px]">101</span>
               </p>
               <p className="m-0 text-neutral-500 text-[12px] whitespace-nowrap truncate">
                 Post Karma
@@ -92,7 +92,7 @@ const RightSidebar = ({ userInfo }) => {
             </div>
             <div className="flex flex-col min-w-0">
               <p className="m-0 text-neutral-200 text-[14px] font-semibold whitespace-nowrap">
-                <span className="font-semibold text-[14px]">0</span>
+                <span className="font-semibold text-[14px]">44</span>
               </p>
               <p className="m-0 text-neutral-500 text-[12px] whitespace-nowrap truncate">
                 Comment Karma
@@ -110,7 +110,7 @@ const RightSidebar = ({ userInfo }) => {
             </div>
             <div className="flex flex-col min-w-0">
               <p className="m-0 text-neutral-200 text-[14px] font-semibold whitespace-nowrap">
-                <span className="font-semibold text-[14px]">0</span>
+                <span className="font-semibold text-[14px]">10000</span>
               </p>
               <p className="m-0 text-neutral-500 text-[12px] whitespace-nowrap truncate">
                 Gold Recieved
