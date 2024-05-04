@@ -29,6 +29,7 @@ import { UserContext } from '@/context/UserContext';
 import parse from "html-react-parser";
 import Tiptap from "../tiptap/Tiptap";
 import { StepContent } from "@mui/material";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 
 
@@ -74,7 +75,7 @@ const Post = ({
   const durationRemaining = moment(expirationDate).fromNow();
   const [Blured, setBlured] = useState(isSpoiler || isNSFW);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
-  const [editPostContent, setEditPostContent] = useState(type=="Post"?content:"");
+  const [editPostContent, setEditPostContent] = useState(type == "Post" ? content : "");
   const [commentsNumber, setCommentsNumber] = useState(commentCount);
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
@@ -85,12 +86,15 @@ const Post = ({
   const [currentIsHidden, setCurrentIsHidden] = useState(isHidden);
   const [currentIsDeleted, setCurrentIsDeleted] = useState(false);
   const [isHiddenMsg, setIsHiddenMsg] = useState("");
+  const [EditedSpoiler, setEditedSpoiler] = useState(isSpoiler);
+  const [EditedNSFW, setEditedNSFW] = useState(isNSFW);
   const [saved, setSaved] = useState(isSaved);
   const [isSubbredditJoined, setIsSubbredditJoined] = useState(isJoined);
   const [isShareMenuOpened, setIsShareMenuOpened] = useState(false);
   const { userInfo } = useContext(UserContext);
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
+  const [shareMode, setShareMode] = useState(false);
 
   useEffect(() => {
     setEditedPollOptions(pollOptions);
@@ -129,6 +133,8 @@ const Post = ({
       return num;
     }
   }
+
+
 
 
 
@@ -289,9 +295,7 @@ const Post = ({
 
   const submitEditedPost = async () => {
     const response = await patchRequest(`${baseUrl}/post/${id}`, {
-      newContent: editPostContent,
-      isNSFW: true,
-      isSpoiler: true
+      newContent: editPostContent
     });
     if (response.status == 200 || response.status == 201) {
       setEditMode(false);
@@ -335,7 +339,7 @@ const Post = ({
     setPosts((prevPosts) => {
       return prevPosts.map((post) => {
         if (post.communityName === communityName) {
-  
+
           return {
             ...post,
             isJoined: !post.isJoined,
@@ -375,6 +379,7 @@ const Post = ({
 
   const enterEditMode = () => {
     setIsOpenDots(false);
+    setShareMode(false);
     setEditMode(true);
   }
 
@@ -398,334 +403,357 @@ const Post = ({
     <div
       ref={lastPostRef}
       id={"mainfeed_" + id + "_full"}
-      className={`flex flex-col bg-reddit_greenyDark ${isSinglePostSelected || editMode ? "" : "hover:bg-reddit_hover"
-        } ${isOpenDots ? "bg-reddit_hover" : ""
-        }  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}>
-      <div className="flex flex-row items-center w-full h-6 ">
-        <div
-          id={"mainfeed_" + id + "_community"}
-          href=""
-          className="flex flex-row items-center w-fit"
-        >
-          {isSinglePostSelected && (
+      className={`flex flex-col ${shareMode ? 'pb-[11px]' : ''} bg-reddit_greenyDark ${isSinglePostSelected || editMode ? "" : "hover:bg-reddit_hover"} ${isOpenDots ? "bg-reddit_hover" : ""}  pl-1 pr-1 xs:px-3 pt-2.5 mt-1 rounded-2xl w-full h-fit`}>
 
-            <div onClick={() => navigate(-1)} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
-              <ArrowLeftIcon className="text-white w-6 h-6" />
+
+      {shareMode &&
+        <div className="flex flex-col justify-center">
+          <div className="flex flex-row  items-center  w-full mb-[3px]">
+            <img id="my_profile_img" onClick={() => navigate(`/my-user/${userInfo.username}`)} src={userInfo.profilePicture} alt="" className="w-7 cursor-pointer peer mr-2 h-7 rounded-full" />
+            <h1 id="my_username" onClick={() => navigate(`/my-user/${userInfo.username}`)} className="text-white text-[13px] peer-hover:underline cursor-pointer hover:underline font-medium">u/{userInfo.username}</h1>
+          </div>
+
+          <div className="flex items-center h-fit flex-row w-[calc(100%-16px)] mx-auto  border-gray-400 rounded-lg ">
+            <h1 className="min-w-fit text-white text-[14px] pl-[3px] ">Add your title :</h1>
+            <textarea maxLength={300} className="h-[40px] flex flex-row items-center text-white text-[14px] tracking-wide outline-none bg-transparent focus:outline-none focus:ring-0 border-none focus:border-gray-500 resize-none w-full" name="" id="share_new_title"></textarea>
+          </div>
+        </div>
+
+      }
+
+
+      <div className={`flex flex-col ${shareMode ? 'px-[16px] mx-[6px] pt-[10px] bg-[#04090A] rounded-xl' : ''}`}>
+
+        <div className="flex  flex-row items-center w-full h-6 ">
+          <div
+            id={"mainfeed_" + id + "_community"}
+            href=""
+            className="flex flex-row items-center w-fit"
+          >
+            {isSinglePostSelected && (
+
+              <div onClick={() => navigate(-1)} className='flex flex-row justify-center items-center hover:bg-reddit_search_light min-w-8 w-8 h-8 rounded-full bg-reddit_search cursor-pointer mr-2'>
+                <ArrowLeftIcon className="text-white w-6 h-6" />
+              </div>
+            )}
+
+            <div className="flex flex-row cursor-pointer items-center"
+              onClick={(e) => {
+                navigate(communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`);
+              }}>
+              <img
+                src={profilePicture}
+                alt="Logo"
+                className={`peer ${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"} rounded-full `}
+              />
+
+
+              <p className="text-gray-300 peer-hover:underline  font-semibold text-xs ml-2 hover:underline">
+                {!communityName || communityName.trim() == "" || (location.pathname.includes("/r/") && !location.pathname.includes("/comments")) ? `u/${username}` : `r/${communityName}`}
+              </p>
             </div>
-          )}
+          </div>
 
-          <div className="flex flex-row cursor-pointer items-center"
-            onClick={(e) => {
-              navigate(communityName && communityName.trim() != "" ? `/r/${communityName}` : `/user/${username}`);
-            }}>
-            <img
-              src={profilePicture}
-              alt="Logo"
-              className={`peer ${isSinglePostSelected ? "w-8 h-8" : "w-6 h-6"} rounded-full `}
-            />
-
-
-            <p className="text-gray-300 peer-hover:underline  font-semibold text-xs ml-2 hover:underline">
-              {!communityName || communityName.trim() == "" || (location.pathname.includes("/r/") && !location.pathname.includes("/comments")) ? `u/${username}` : `r/${communityName}`}
+          <div className=" flex flex-row w-[40%] xs:w-[40%] items-center ">
+            <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
+            <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
+              {uploadedFrom}
             </p>
           </div>
-        </div>
 
-        <div className=" flex flex-row w-[40%] xs:w-[40%] items-center ">
-          <p className="text-gray-400 font-bold text-xs ml-2 mb-1.5"></p>
-          <p className="text-gray-400 w-70% truncate font-extralight text-xs ml-1.5">
-            {uploadedFrom}
-          </p>
-        </div>
+          <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
+            {(communityName !== null) && !isSubbredditJoined && !location.pathname.includes("/r/") && !location.pathname.includes("/user/") && !location.pathname.includes("/my-user/") && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
+              <h1 className='text-[12px] font-medium text-white'>Join</h1>
+            </div>}
+            {!shareMode && <div
+              id={"mainfeed_" + id + "_menu"}
+              className="h-7 w-7 ml-auto text-white rounded-full flex justify-center cursor-pointer items-center hover:bg-reddit_search_light"
+            >
+              <EllipsisHorizontalIcon
+                onClick={(e) => {
+                  setIsOpenDots((prev) => !prev);
+                }}
+                className="h-6 w-6 outline-none"
+              />
+            </div>}
+            {isOpenDots && (
+              <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-62 mt-66' : (username == userInfo.username) ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[78px]" : "-ml-[72px]"} `}>
+                <div onClick={handleClickSave}
+                  id={"mainfeed_" + id + "_menu_save"}
+                  className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
+                  {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
+                    :
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
+                      <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clipRule="evenodd" />
+                    </svg>
+                  }
+                  <p className="ml-2 no-select">{saved ? "Unsave" : "Save"}</p>
+                </div>
+                <div onClick={handleHidePost}
+                  id={"mainfeed_" + id + "_menu_hide"}
+                  className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                >
+                  {currentIsHidden ? <EyeIcon className="h-4.5 w-5 text-white" /> : <EyeSlashIcon className="h-4.5 w-5 text-white" />}
+                  <p className="ml-2 no-select">{currentIsHidden ? "unHide" : "Hide"}</p>
+                </div>
 
-        <div ref={menuRefDots} className="relative ml-auto flex items-center flex-row ">
-          {(communityName !== null) && !isSubbredditJoined && !location.pathname.includes("/r/") && !location.pathname.includes("/user/") && !location.pathname.includes("/my-user/") && <div id={`join` + id} onClick={handleJoinSubreddit} onMouseEnter={() => setHoverJoin(true)} onMouseLeave={() => setHoverJoin(false)} className='w-[50px] h-[25px]  cursor-pointer flex flex-row justify-center items-center bg-blue-600 -mt-[4px] mr-1 rounded-full' style={joinBtnStyle}>
-            <h1 className='text-[12px] font-medium text-white'>Join</h1>
-          </div>}
-          <div
-            id={"mainfeed_" + id + "_menu"}
-            className="h-7 w-7 ml-auto text-white rounded-full flex justify-center cursor-pointer items-center hover:bg-reddit_search_light"
-          >
-            <EllipsisHorizontalIcon
-              onClick={(e) => {
-                setIsOpenDots((prev) => !prev);
-              }}
-              className="h-6 w-6 outline-none"
-            />
-          </div>
-          {isOpenDots && (
-            <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-62 mt-66' : (username == userInfo.username) ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[78px]" : "-ml-[72px]"} `}>
-              <div onClick={handleClickSave}
-                id={"mainfeed_" + id + "_menu_save"}
-                className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
-                {!saved ? <BookmarkIcon className="h-4.5 w-5 text-white " />
-                  :
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" className="w-5 h-4.5">
-                    <path fillRule="evenodd" d="M6.32 2.577a49.255 49.255 0 0 1 11.36 0c1.497.174 2.57 1.46 2.57 2.93V21a.75.75 0 0 1-1.085.67L12 18.089l-7.165 3.583A.75.75 0 0 1 3.75 21V5.507c0-1.47 1.073-2.756 2.57-2.93Z" clipRule="evenodd" />
-                  </svg>
+
+
+                {username == userInfo.username && type == "Post" &&
+                  <div onClick={enterEditMode}
+                    id={"mainfeed_" + id + "_menu_report"}
+                    className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                  >
+                    <svg rpl="" fill="white" height="20" icon-name="edit-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m18.236 3.158-1.4-1.4a2.615 2.615 0 0 0-3.667-.021L1.336 13.318a1.129 1.129 0 0 0-.336.8v3.757A1.122 1.122 0 0 0 2.121 19h3.757a1.131 1.131 0 0 0 .8-.337L18.256 6.826a2.616 2.616 0 0 0-.02-3.668ZM5.824 17.747H2.25v-3.574l9.644-9.435L15.259 8.1l-9.435 9.647ZM17.363 5.952l-1.23 1.257-3.345-3.345 1.257-1.23a1.362 1.362 0 0 1 1.91.01l1.4 1.4a1.364 1.364 0 0 1 .008 1.908Z"></path> </svg>
+                    <p className="ml-2 no-select">Edit</p>
+                  </div>}
+
+
+
+                {username == userInfo.username &&
+                  <div onClick={deletePost}
+                    id={"mainfeed_" + id + "_menu_report"}
+                    className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                  >
+                    <svg rpl="" fill="white" height="20" icon-name="delete-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"> <path d="M15.751 6.023 17 6.106l-.761 11.368a2.554 2.554 0 0 1-.718 1.741A2.586 2.586 0 0 1 13.8 20H6.2a2.585 2.585 0 0 1-1.718-.783 2.553 2.553 0 0 1-.719-1.737L3 6.106l1.248-.083.761 11.369c-.005.333.114.656.333.908.22.252.525.415.858.458h7.6c.333-.043.64-.207.859-.46.22-.254.338-.578.332-.912l.76-11.363ZM18 2.983v1.243H2V2.983h4v-.372A2.737 2.737 0 0 1 6.896.718 2.772 2.772 0 0 1 8.875.002h2.25c.729-.03 1.44.227 1.979.716.538.488.86 1.169.896 1.893v.372h4Zm-10.75 0h5.5v-.372a1.505 1.505 0 0 0-.531-1.014 1.524 1.524 0 0 0-1.094-.352h-2.25c-.397-.03-.79.097-1.094.352-.304.256-.495.62-.531 1.014v.372Z"></path></svg>
+                    <p className="ml-2 no-select">Delete</p>
+                  </div>}
+
+
+
+                <div onClick={
+                  handleReportPost
                 }
-                <p className="ml-2 no-select">{saved ? "Unsave" : "Save"}</p>
-              </div>
-              <div onClick={handleHidePost}
-                id={"mainfeed_" + id + "_menu_hide"}
-                className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
-              >
-                {currentIsHidden ? <EyeIcon className="h-4.5 w-5 text-white" /> : <EyeSlashIcon className="h-4.5 w-5 text-white" />}
-                <p className="ml-2 no-select">{currentIsHidden ? "unHide" : "Hide"}</p>
-              </div>
-
-
-
-              {username == userInfo.username && type == "Post" &&
-                <div onClick={enterEditMode}
                   id={"mainfeed_" + id + "_menu_report"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
                 >
-                  <svg rpl="" fill="white" height="20" icon-name="edit-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="m18.236 3.158-1.4-1.4a2.615 2.615 0 0 0-3.667-.021L1.336 13.318a1.129 1.129 0 0 0-.336.8v3.757A1.122 1.122 0 0 0 2.121 19h3.757a1.131 1.131 0 0 0 .8-.337L18.256 6.826a2.616 2.616 0 0 0-.02-3.668ZM5.824 17.747H2.25v-3.574l9.644-9.435L15.259 8.1l-9.435 9.647ZM17.363 5.952l-1.23 1.257-3.345-3.345 1.257-1.23a1.362 1.362 0 0 1 1.91.01l1.4 1.4a1.364 1.364 0 0 1 .008 1.908Z"></path> </svg>
-                  <p className="ml-2 no-select">Edit</p>
-                </div>}
-
-
-
-              {username == userInfo.username &&
-                <div onClick={deletePost}
-                  id={"mainfeed_" + id + "_menu_report"}
-                  className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
-                >
-                  <svg rpl="" fill="white" height="20" icon-name="delete-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"> <path d="M15.751 6.023 17 6.106l-.761 11.368a2.554 2.554 0 0 1-.718 1.741A2.586 2.586 0 0 1 13.8 20H6.2a2.585 2.585 0 0 1-1.718-.783 2.553 2.553 0 0 1-.719-1.737L3 6.106l1.248-.083.761 11.369c-.005.333.114.656.333.908.22.252.525.415.858.458h7.6c.333-.043.64-.207.859-.46.22-.254.338-.578.332-.912l.76-11.363ZM18 2.983v1.243H2V2.983h4v-.372A2.737 2.737 0 0 1 6.896.718 2.772 2.772 0 0 1 8.875.002h2.25c.729-.03 1.44.227 1.979.716.538.488.86 1.169.896 1.893v.372h4Zm-10.75 0h5.5v-.372a1.505 1.505 0 0 0-.531-1.014 1.524 1.524 0 0 0-1.094-.352h-2.25c-.397-.03-.79.097-1.094.352-.304.256-.495.62-.531 1.014v.372Z"></path></svg>
-                  <p className="ml-2 no-select">Delete</p>
-                </div>}
-
-
-
-              <div onClick={
-                handleReportPost
-              }
-                id={"mainfeed_" + id + "_menu_report"}
-                className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
-              >
-                <FlagIcon className="h-4.5 w-5 text-white " />
-                {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
-                <p className="ml-2 no-select">Report</p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="mt-1 w-full h-fit flex flex-col">
-        {(isSpoiler || isNSFW) && (
-          <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
-            {isSpoiler && (
-              <div
-                onClick={(e) => {
-                  setBlured(true);
-                }}
-                className="flex cursor-pointer flex-row items-center"
-              >
-                <ExclamationTriangleIcon className="h-[22px]  text-reddit_navbar fill-red-600 w-[23px]" />
-                <h1 className="text-[12.5px] text-red-600 mr-3 ml-[1px]">
-                  SPOILER
-                </h1>
-              </div>
-            )}
-            {isNSFW && (
-              <div
-                onClick={(e) => {
-                  setBlured(true);
-                }}
-                className="cursor-pointer flex flex-row items-center"
-              >
-                <svg
-                  rpl=""
-                  className="inline-block"
-                  fill="#E00296"
-                  height="19"
-                  icon-name="nsfw-fill"
-                  viewBox="0 0 20 20"
-                  width="19"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M13 10.967a1.593 1.593 0 0 0-1.363 0 1.2 1.2 0 0 0-.475.414 1.02 1.02 0 0 0-.173.576.967.967 0 0 0 .18.574c.122.172.29.307.482.393.21.095.438.143.668.14a1.51 1.51 0 0 0 .671-.146 1.2 1.2 0 0 0 .475-.4.985.985 0 0 0 .173-.569 1.024 1.024 0 0 0-.17-.57 1.2 1.2 0 0 0-.469-.412Z"></path>
-                  <path d="M11.747 9.227c.177.095.374.143.574.14.2.003.396-.045.572-.14a1.057 1.057 0 0 0 .402-1.462.984.984 0 0 0-.406-.37 1.317 1.317 0 0 0-1.137 0 1 1 0 0 0-.557.902 1.047 1.047 0 0 0 .551.932l.001-.002Z"></path>
-                  <path d="M18.636 6.73 13.27 1.363a4.634 4.634 0 0 0-6.542 0L1.364 6.73a4.627 4.627 0 0 0 0 6.542l5.365 5.365a4.633 4.633 0 0 0 6.542 0l5.366-5.365a4.634 4.634 0 0 0 0-6.542ZM8.204 14.5H6.288V8.277L4.648 9V7.23l2.988-1.367h.568V14.5Zm6.862-1.148c-.29.4-.683.714-1.136.912a4.11 4.11 0 0 1-3.24-.006 2.8 2.8 0 0 1-1.134-.918 2.172 2.172 0 0 1-.41-1.283c0-.42.12-.83.345-1.184a2.6 2.6 0 0 1 .944-.879 2.488 2.488 0 0 1-.636-.832c-.152-.32-.23-.67-.229-1.025a2.117 2.117 0 0 1 .378-1.248c.256-.362.604-.65 1.008-.832.43-.198.9-.298 1.374-.293.474-.004.942.099 1.371.3.403.182.749.47 1 .834.249.368.378.804.37 1.248a2.371 2.371 0 0 1-.868 1.851c.383.21.708.51.944.877a2.24 2.24 0 0 1-.074 2.481l-.007-.003Z"></path>
-                </svg>
-                <h1 className="text-sm ml-1 text-[#E00296]">NSFW</h1>
-              </div>
-            )}
-          </div>
-        )}
-        <div className={`${!editMode ? `cursor-pointer` : ''}`} onClick={() => {
-          if (Blured || editMode)
-            return;
-
-          if (communityName == null)
-            navigate(`/user/${username}/comments/${id}`);
-          else
-            navigate(`/r/${communityName}/comments/${id}`);
-        }
-        }>
-          <div
-            id={"mainfeed_" + id + "_title"}
-            className="text-white mt-1.5 cursor-text font-medium text-lg"
-          >
-            <h1>{title}</h1>
-          </div>
-
-          <div className="relative w-full h-fit">
-
-            {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
-              <EyeIcon className='w-5 mr-1.5 h-5' />
-              View
-            </div>}
-
-            {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
-              <>
-                {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(editPostContent)}</div>)}
-                {type != "Link" && editMode && (
-                  <div className=" h-[200px] mb-2 mt-[12px]">
-                    <Tiptap initialContent={editPostContent} setDescription={setEditPostContent} />
-                  </div>
-                )}
-                {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
-              </>
-            </div>}
-
-            {
-              type == "Images & Video" &&
-              <div
-                id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
-                <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
-
-                  <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
-                    {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
-                      <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
-                  </div>
-
-                  {content.endsWith(".mp4") ? (
-                    <video
-                      src={content}
-                      alt="Post"
-                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                        } max-h-[500px] w-full object-contain `}
-                      controls
-                    />
-                  ) : (
-                    <img
-                      src={content}
-                      alt="Post"
-                      className={`${Blured ? "rounded-[40px] hidden" : "z-10"
-                        }  max-h-[500px] w-full object-contain `}
-                    />
-                  )}
+                  <FlagIcon className="h-4.5 w-5 text-white " />
+                  {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
+                  <p className="ml-2 no-select">Report</p>
                 </div>
               </div>
-            }
+            )}
+          </div>
+        </div>
 
-
-
-            {type == "Poll" && (
-              <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
+        <div className={`mt-1 ${shareMode ? 'mb-[10px]' : ''}  w-full h-fit flex flex-col`}>
+          {(isSpoiler || isNSFW) && (
+            <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
+              {isSpoiler && (
                 <div
-                  className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
-                    }`}
+                  onClick={(e) => {
+                    setBlured(true);
+                  }}
+                  className="flex cursor-pointer flex-row items-center"
                 >
-                  <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
-                    <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
-                      <h1 className="mr-1 text-gray-300 font-light">
-                        {hasExpired ? "Closed" : "Open"} .
-                      </h1>
-                      <h1 className="text-gray-300 font-light">
-                        {!hasVoted
-                          ? formatNumber(getTotalVotes(pollOptions))
-                          : formatNumber(getTotalVotes(editedPollOptions))}{" "}
-                        total votes
-                      </h1>
+                  <ExclamationTriangleIcon className="h-[22px]  text-reddit_navbar fill-red-600 w-[23px]" />
+                  <h1 className="text-[12.5px] text-red-600 mr-3 ml-[1px]">
+                    SPOILER
+                  </h1>
+                </div>
+              )}
+              {isNSFW && (
+                <div
+                  onClick={(e) => {
+                    setBlured(true);
+                  }}
+                  className="cursor-pointer flex flex-row items-center"
+                >
+                  <svg
+                    rpl=""
+                    className="inline-block"
+                    fill="#E00296"
+                    height="19"
+                    icon-name="nsfw-fill"
+                    viewBox="0 0 20 20"
+                    width="19"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M13 10.967a1.593 1.593 0 0 0-1.363 0 1.2 1.2 0 0 0-.475.414 1.02 1.02 0 0 0-.173.576.967.967 0 0 0 .18.574c.122.172.29.307.482.393.21.095.438.143.668.14a1.51 1.51 0 0 0 .671-.146 1.2 1.2 0 0 0 .475-.4.985.985 0 0 0 .173-.569 1.024 1.024 0 0 0-.17-.57 1.2 1.2 0 0 0-.469-.412Z"></path>
+                    <path d="M11.747 9.227c.177.095.374.143.574.14.2.003.396-.045.572-.14a1.057 1.057 0 0 0 .402-1.462.984.984 0 0 0-.406-.37 1.317 1.317 0 0 0-1.137 0 1 1 0 0 0-.557.902 1.047 1.047 0 0 0 .551.932l.001-.002Z"></path>
+                    <path d="M18.636 6.73 13.27 1.363a4.634 4.634 0 0 0-6.542 0L1.364 6.73a4.627 4.627 0 0 0 0 6.542l5.365 5.365a4.633 4.633 0 0 0 6.542 0l5.366-5.365a4.634 4.634 0 0 0 0-6.542ZM8.204 14.5H6.288V8.277L4.648 9V7.23l2.988-1.367h.568V14.5Zm6.862-1.148c-.29.4-.683.714-1.136.912a4.11 4.11 0 0 1-3.24-.006 2.8 2.8 0 0 1-1.134-.918 2.172 2.172 0 0 1-.41-1.283c0-.42.12-.83.345-1.184a2.6 2.6 0 0 1 .944-.879 2.488 2.488 0 0 1-.636-.832c-.152-.32-.23-.67-.229-1.025a2.117 2.117 0 0 1 .378-1.248c.256-.362.604-.65 1.008-.832.43-.198.9-.298 1.374-.293.474-.004.942.099 1.371.3.403.182.749.47 1 .834.249.368.378.804.37 1.248a2.371 2.371 0 0 1-.868 1.851c.383.21.708.51.944.877a2.24 2.24 0 0 1-.074 2.481l-.007-.003Z"></path>
+                  </svg>
+                  <h1 className="text-sm ml-1 text-[#E00296]">NSFW</h1>
+                </div>
+              )}
+            </div>
+          )}
+          <div className={`${!editMode ? `cursor-pointer` : ''}`} onClick={() => {
+            if (Blured || editMode)
+              return;
+
+            if (communityName == null)
+              navigate(`/user/${username}/comments/${id}`);
+            else
+              navigate(`/r/${communityName}/comments/${id}`);
+          }
+          }>
+            <div
+              id={"mainfeed_" + id + "_title"}
+              className="text-white mt-1.5 cursor-text font-medium text-lg"
+            >
+              <h1>{title}</h1>
+            </div>
+
+            <div className="relative w-full h-fit">
+
+              {(Blured) && <div onClick={(e) => { setBlured(false) }} className={`w-[94px] z-10 left-[calc(50%-47px)] top-[calc(50%-10px)]  h-[30px] text-[13px] font-semibold flex-row flex items-center justify-center cursor-pointer absolute text-white rounded-3xl bg-[#090E0FB9] hover:bg-black `} >
+                <EyeIcon className='w-5 mr-1.5 h-5' />
+                View
+              </div>}
+
+              {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
+                <>
+                  {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(editPostContent)}</div>)}
+                  {type != "Link" && editMode && (
+                    <div className=" h-[200px] mb-2 mt-[12px]">
+                      <Tiptap initialContent={editPostContent} setDescription={setEditPostContent} />
                     </div>
-                    <div
-                      id={"mainfeed_" + id + "_polloptions"}
-                      className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
-                      onClick={(e) => { e.stopPropagation() }}
-                    >
-                      {editedPollOptions &&
-                        editedPollOptions.map((option, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center flex-row w-full"
-                          >
-                            {!hasVoted && !hasExpired ? (
-                              <div className="w-fit hit flex-row">
-                                <input
-                                  type="radio"
-                                  name={id + "PollOption" + index}
-                                  className="radio bg-inherit outline-gray-200 focus:outline-none"
-                                  checked={option.isVoted}
-                                  onChange={() => handleOptionChange(index)}
-                                />
-                                <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
-                                  {option.text}
-                                </label>
-                              </div>
-                            ) : (
-                              <div className="w-7/12">
-                                <div
-                                  style={{
-                                    width: `${getVoteWidth(option.votes)}`,
-                                  }}
-                                  className={` ${option.votes == getMaxVotes(editedPollOptions)
-                                    ? "bg-[#33464C]"
-                                    : "bg-reddit_search_light"
-                                    }  items-center h-8 rounded-[5px] flex flex-row`}
-                                >
-                                  <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
-                                    {option.votes}
-                                  </h1>
+                  )}
+                  {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
+                </>
+              </div>}
+
+              {
+                type == "Images & Video" &&
+                <div
+                  id={"mainfeed_" + id + "_" + type} className="w-full h-full mt-2">
+                  <div className={`relative flex-row rounded-2xl overflow-clip border-[0.5px] border-gray-700 flex justify-center`}>
+
+                    <div className={`${Blured ? 'block' : "absolute"} inset-0 flex flex-row w-full `} onClick={(e) => { setBlured(false) }} >
+                      {content.endsWith('.mp4') ? <video src={content} alt="" className={`blur-[50px] max-h-[500px] object-cover w-full `} /> :
+                        <img src={content} alt="" className=' blur-[50px] max-h-[500px] object-cover w-full' />}
+                    </div>
+
+                    {content.endsWith(".mp4") ? (
+                      <video
+                        src={content}
+                        alt="Post"
+                        className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                          } max-h-[500px] w-full object-contain `}
+                        controls
+                      />
+                    ) : (
+                      <img
+                        src={content}
+                        alt="Post"
+                        className={`${Blured ? "rounded-[40px] hidden" : "z-10"
+                          }  max-h-[500px] w-full object-contain `}
+                      />
+                    )}
+                  </div>
+                </div>
+              }
+
+
+
+              {type == "Poll" && (
+                <div id={"mainfeed_" + id + "_" + type} className="w-full mt-2">
+                  <div
+                    className={`relative h-fit w-full ${Blured ? "filter blur-[10px]" : ""
+                      }`}
+                  >
+                    <div className="w-full rounded-xl bg-transparent border-[0.5px] border-gray-600 h-fit px-[14px] pb-2 pt-1 flex flex-col">
+                      <div className="w-full h-9 pt-1 items-center border-b-[0.5px] border-gray-600 text-[11px] flex flex-row ">
+                        <h1 className="mr-1 text-gray-300 font-light">
+                          {hasExpired ? "Closed" : "Open"} .
+                        </h1>
+                        <h1 className="text-gray-300 font-light">
+                          {!hasVoted
+                            ? formatNumber(getTotalVotes(pollOptions))
+                            : formatNumber(getTotalVotes(editedPollOptions))}{" "}
+                          total votes
+                        </h1>
+                      </div>
+                      <div
+                        id={"mainfeed_" + id + "_polloptions"}
+                        className="w-full flex flex-col h-fit min-h-13 text-[11px] px-2 space-y-3.5 mt-3"
+                        onClick={(e) => { e.stopPropagation() }}
+                      >
+                        {editedPollOptions &&
+                          editedPollOptions.map((option, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center flex-row w-full"
+                            >
+                              {!hasVoted && !hasExpired ? (
+                                <div className="w-fit hit flex-row">
+                                  <input
+                                    type="radio"
+                                    name={id + "PollOption" + index}
+                                    className="radio bg-inherit outline-gray-200 focus:outline-none"
+                                    checked={option.isVoted}
+                                    onChange={() => handleOptionChange(index)}
+                                  />
                                   <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
                                     {option.text}
                                   </label>
-                                  {option.isVoted ? (
-                                    <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
-                                  ) : null}
                                 </div>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                    </div>
+                              ) : (
+                                <div className="w-7/12">
+                                  <div
+                                    style={{
+                                      width: `${getVoteWidth(option.votes)}`,
+                                    }}
+                                    className={` ${option.votes == getMaxVotes(editedPollOptions)
+                                      ? "bg-[#33464C]"
+                                      : "bg-reddit_search_light"
+                                      }  items-center h-8 rounded-[5px] flex flex-row`}
+                                  >
+                                    <h1 className="text-gray-100 text-[14px] font-semibold ml-5 mr-4">
+                                      {option.votes}
+                                    </h1>
+                                    <label className="text-gray-200 text-[14px] whitespace-nowrap font-light ml-2">
+                                      {option.text}
+                                    </label>
+                                    {option.isVoted ? (
+                                      <CheckIcon className="w-[23px] min-w-[23px] min-h-[23px] h-[23px] ml-2 text-white" />
+                                    ) : null}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                      </div>
 
-                    <div className="flex flex-row w-full mt-3 items-center">
-                      {!hasVoted && !hasExpired && (
-                        <div
-                          onClick={(e) => handleVote(e)}
-                          className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
-                            ? "bg-black cursor-pointer"
-                            : "bg-[#1C1E20] cursor-not-allowed"
-                            } text-[13px] text-white`}
-                        >
-                          <h1>Vote</h1>
-                        </div>
-                      )}
-                      {!hasExpired ? (
-                        <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
-                          Closes {durationRemaining}
-                        </h1>
-                      ) : null}
+                      <div className="flex flex-row w-full mt-3 items-center">
+                        {!hasVoted && !hasExpired && (
+                          <div
+                            onClick={(e) => handleVote(e)}
+                            className={`flex items-center justify-center w-12 h-8 rounded-full ${isOptionSelected
+                              ? "bg-black cursor-pointer"
+                              : "bg-[#1C1E20] cursor-not-allowed"
+                              } text-[13px] text-white`}
+                          >
+                            <h1>Vote</h1>
+                          </div>
+                        )}
+                        {!hasExpired ? (
+                          <h1 className="text-[11px] ml-2.5 font-light text-gray-300">
+                            Closes {durationRemaining}
+                          </h1>
+                        ) : null}
+                      </div>
                     </div>
+                    {Blured && (
+                      <div
+                        onClick={(e) => {
+                          setBlured(false);
+                        }}
+                        className="absolute inset-0 bg-black opacity-60 rounded-2xl"
+                      ></div>
+                    )}
                   </div>
-                  {Blured && (
-                    <div
-                      onClick={(e) => {
-                        setBlured(false);
-                      }}
-                      className="absolute inset-0 bg-black opacity-60 rounded-2xl"
-                    ></div>
-                  )}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
+
+     
       </div>
+
+
 
       <div className="flex flex-row mt-1 items-center w-full h-13 space-x-2.5 no-select ">
         <Vote
@@ -743,7 +771,7 @@ const Post = ({
           commentCount={commentsNumber}
         />
 
-        <div ref={shareMenuRef} className="relative flex flex-col">
+        {!shareMode && <div ref={shareMenuRef} className="relative flex flex-col">
           <Share id={id} setIsShareMenuOpened={setIsShareMenuOpened} />
 
           {isShareMenuOpened && (
@@ -764,7 +792,9 @@ const Post = ({
               </div>
 
 
-              <div id="cross_post" className="w-full cursor-pointer pl-[18px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
+              <div onClick={
+                () => { setIsShareMenuOpened(false);  setEditMode(false); setShareMode(true); }
+              } id="cross_post" className="w-full cursor-pointer pl-[18px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
                 <svg rpl="" class="mt-[1px] ml-[4px]" fill="white" height="20" icon-name="crosspost-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                   <path d="m15.944 11.926-.888.879 1.925 1.945H12A4.873 4.873 0 0 1 7.138 10 4.873 4.873 0 0 1 12 5.25h4.971l-1.915 1.936.888.878L18.875 5.1a.727.727 0 0 0-.007-1.025l-2.929-2.9-.878.888L17.011 4H12a6.128 6.128 0 0 0-6.056 5.25H1v1.625h4.981A6.117 6.117 0 0 0 12 16h5l-1.94 1.92.878.89 2.929-2.9a.726.726 0 0 0 .006-1.025l-2.929-2.96Z"></path>
                 </svg>
@@ -775,18 +805,47 @@ const Post = ({
             </div>
           )
           }
+
         </div>
+        }
+
+
+
 
 
         {editMode &&
-          <div onClick={() => setEditMode(false)} className="flex flex-row w-full">
-            <div className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_search_light cursor-pointer bg-reddit_search rounded-2xl ml-auto">
+          <div className="flex flex-row w-full items-center">
+            <div id={`${id}_spoiler_edit`} onClick={() => setEditedSpoiler(prev => !prev)} className={` hover:bg-reddit_search_light   w-14 h-[30px]  rounded-full flex justify-center items-center cursor-pointer ml-auto`}>
+
+              <p className={`no-select ml-1 mr-0.5 ${EditedSpoiler ? 'text-red-600' : 'text-gray-300'} font-semibold text-[12px]`}>Spoiler</p>
+            </div>
+
+            <div id={`${id}_nsfw_edit`} onClick={() => setEditedNSFW(prev => !prev)} className={` hover:bg-reddit_search_light  w-14 h-[30px] mr-4 ml-3 rounded-full flex justify-center items-center cursor-pointer `}>
+
+              <p className={`ml-1 no-select mr-0.5 ${EditedNSFW ? 'text-[#E00296]' : 'text-gray-300'} font-semibold  text-[12px]`}>NSFW</p>
+            </div>
+
+
+            <div onClick={() => setEditMode(false)} id={`${id}_save_cancel`} className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_search_light cursor-pointer bg-reddit_search rounded-2xl">
               <p className="text-white text-[12px] font-medium">Cancel</p>
             </div>
 
 
-            <div onClick={submitEditedPost} className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] rounded-2xl ml-3">
+            <div id={`${id}_save_edit`} onClick={submitEditedPost} className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] rounded-2xl ml-3">
               <p className="text-white text-[12px] font-medium">Save</p>
+            </div>
+
+          </div>
+        }
+
+
+
+
+        {shareMode &&
+          <div className="w-full flx flex-row">
+            <div className="ml-auto w-14 h-[34px] hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] flex flex-row justify-center items-center rounded-3xl">
+              <h1 className="text-white text-[12px] font-medium ">Share</h1>
+
             </div>
           </div>
         }
