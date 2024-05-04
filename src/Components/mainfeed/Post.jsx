@@ -74,7 +74,8 @@ const Post = ({
   const durationRemaining = moment(expirationDate).fromNow();
   const [Blured, setBlured] = useState(isSpoiler || isNSFW);
   const [isOptionSelected, setIsOptionSelected] = useState(false);
-  const [editPostContent, setEditPostContent] = useState("")
+  const [editPostContent, setEditPostContent] = useState("");
+  const [commentsNumber, setCommentsNumber] = useState(commentCount);
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
   );
@@ -94,6 +95,11 @@ const Post = ({
   useEffect(() => {
     setEditedPollOptions(pollOptions);
   }, [pollOptions]);
+
+  useEffect(() => {
+    setCommentsNumber(commentCount);
+    console.log(commentCount);
+  }, [commentCount]);
 
   /**
    * Function to handle saving a post.
@@ -722,7 +728,7 @@ const Post = ({
           postId={postId}
           username={username}
           communityName={communityName}
-          commentCount={commentCount}
+          commentCount={commentsNumber}
         />
 
         <div ref={shareMenuRef} className="relative flex flex-col">

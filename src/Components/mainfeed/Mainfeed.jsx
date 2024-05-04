@@ -281,7 +281,7 @@ const Mainfeed = ({ mode }) => {
           loadingPost ? <Loading /> :
             <>
               <Post id={selectedPost._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-              <Comment postId={selectedPost._id} setPosts={setPosts} />
+              <Comment postId={selectedPost._id} setSelectedPost={setSelectedPost} />
             </>
         )
       }

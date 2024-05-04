@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 import { ChatBubbleBottomCenterTextIcon } from '@heroicons/react/24/outline';
@@ -18,6 +18,11 @@ import { Link } from 'react-router-dom';
 const CommentIcon = ({ id, commentCount, username, communityName }) => {
     const location = useLocation();
     const navigate = useNavigate();
+    const [commentsNumber, setCommentsNumber] = useState(commentCount);
+
+    useEffect(() => {
+        setCommentsNumber(commentCount);
+    } , [commentCount]);
 
     /**
     * Formats the comment count for display.
@@ -102,7 +107,7 @@ const CommentIcon = ({ id, commentCount, username, communityName }) => {
             }
             id={"mainfeed_" + id + "_comment"} className="flex justify-center cursor-pointer flex-row items-center min-w-18 h-8 w-fit  bg-reddit_search hover:bg-reddit_search_light rounded-3xl">
             <ChatBubbleBottomCenterTextIcon className="h-6 w-6 mr-1 text-gray-300" />
-            <span className="text-gray-300  text-sm mr-0.5"> {formatComments(commentCount)}</span>
+            <span className="text-gray-300  text-sm mr-0.5"> {formatComments(commentsNumber)}</span>
         </div>
 
     );
