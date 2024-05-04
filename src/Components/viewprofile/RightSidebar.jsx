@@ -11,7 +11,10 @@ const RightSidebar = ({ userInfo }) => {
   };
 
   return (
-    <div className="w-[316px] min-w-[316px] hidden md:block md:sticky md:top-[56px] md:max-h-[calc(100vh-56px-1px)] md:overflow-y-auto md:overflow-x-hidden mt-[60px]">
+    <div
+      id="right-sidebar"
+      className="w-[316px] min-w-[316px] hidden md:block md:sticky md:top-[56px] md:max-h-[calc(100vh-56px-1px)] md:overflow-y-auto md:overflow-x-hidden mt-[60px]"
+    >
       <div className="mt-[16px] rounded-[16px] bg-[#04090A]">
         <div
           className="relative overflow-hidden w-full rounded-t-[1rem] h-[114px]"
