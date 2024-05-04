@@ -44,6 +44,7 @@ const ViewProfile = ({ userInfo, sidebarProps }) => {
             <RightSidebar userInfo={userInfo} />
           </div>
         </div>
+
         <LeftSidebar sidebarProps={sidebarProps} />
       </div>
     </div>
