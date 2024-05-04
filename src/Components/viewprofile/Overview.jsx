@@ -1,6 +1,6 @@
 const Overview = () => {
   return (
-    <>
+    <div id="overview">
       {/** Snoo PlaceHolder */}
       <div className="text-center text-[18px] font-bold flex flex-col items-center justify-center">
         <img
@@ -13,7 +13,7 @@ const Overview = () => {
           Welcome to Your Profile Page, Have a walk!
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
