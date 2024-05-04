@@ -13,7 +13,7 @@ const Message = ({ Message, isFirstMessage, time, username, profilePicture }) =>
 
         <div className="flex flex-row h-[50px] px-3 py-2 mt-1 justify-start items-center hover:bg-reddit_dark_Chat_hover">
 
-            <img src="https://random.imagecdn.app/500/150" className="h-7 w-7 rounded-full mr-3" />
+            <img src={profilePicture} className="h-9 w-9 rounded-full mr-3" />
 
             <div className="flex flex-col w-full">
                 <div className="flex flex-row justify-between items-baseline ">

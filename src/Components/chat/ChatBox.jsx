@@ -7,34 +7,47 @@ import { ChatContext } from "@/context/ChatContext";
 import { getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import Loading from "../Loading/Loading";
+import { UserContext } from "@/context/UserContext";
 const ChatBox = () => {
     const [isOpenSetting, setIsOpenSetting] = useState(false);
     const [textMessage, setTextMessage] = useState("");
-    const { selectedRoomId, selectedRoom, handleSendMessage, socket } = useContext(ChatContext);
+    const { selectedRoomId, selectedRoom, handleSendMessage, socket, setReRenderSide } = useContext(ChatContext);
+    const { user, userProfilePicture } = useContext(UserContext);
     const [messages, setMessage] = useState([]);
     const [messageLoading, setMessageLoading] = useState(false);
     const messagesEndRef = useRef(null);
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        console.log("MEssages ,  : ", messages);
     }, [messages]);
 
+
     useEffect(() => {
-        socket.current.on('newMessage', (data) => {
-            // TODO: handle receiving of the message
+        const handleMessage = (data) => {
             console.log(`New message: ${data.message} from ${data.username}`);
+
             const newMessage = {
                 content: data.message,
                 profilePicture: data.profilePicture,
                 user: data.username,
                 createdAt: new Date().toISOString()
             }
-            setMessage(prevMessages => [...prevMessages, newMessage]); // Update the state of messages array using the functional form of setMessage
-        });
-        socket.current.on('joinedRoom', (data) => {
-            console.log(`Joined rooms: ${data.rooms.join(', ')}`);
-        });
-    }, [])
+
+            if (data.roomId == selectedRoomId || data.username == user) {
+                setMessage(prevMessages => [...prevMessages, newMessage]);
+            } else {
+                setReRenderSide(prev => prev + 1);
+            }
+        }
+
+        socket.current.on('newMessage', handleMessage);
+
+        // Cleanup function
+        return () => {
+            socket.current.off('newMessage', handleMessage);
+        }
+    }, [selectedRoomId]);
 
 
     useEffect(() => {
@@ -48,7 +61,7 @@ const ChatBox = () => {
             setMessageLoading(true);
             const response = await getRequest(`${baseUrl}/chat/${selectedRoomId}?page=1&limit=50`);
             if (response.status === 200) {
-                const reversedData = response.data.reverse();
+                const reversedData = response.data;
                 setMessage(reversedData);
                 setMessageLoading(false);
             } else {
@@ -79,16 +92,16 @@ const ChatBox = () => {
 
                 {/* ChatBox chat imgs */}
                 <div className="user-info w-full flex flex-col flex-grow items-center justify-center gap-2 min-h-[250px]">
-                    <img src="https://random.imagecdn.app/500/150" className="h-12 w-12 rounded-full" />
+                    <img src={userProfilePicture} className="h-12 w-12 rounded-full" />
                     <p className="text-gray-500 text-lg font-bold">{selectedRoom?.name} </p>
                 </div>
                 <Separator />
 
                 {messages && messages.map((message, index) => {
                     if (index === 0 || (index > 0 && messages[index - 1].user !== message.user)) {
-                        return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} />
+                        return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} profilePicture={message.profilePicture} />
                     } else {
-                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} />
+                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} profilePicture={message.profilePicture} />
                     }
 
 

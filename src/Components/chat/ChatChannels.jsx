@@ -25,6 +25,7 @@ const ChatChannels = () => {
 
     }
     getChatChannels();
+    console.log('reRenderSide', reRenderSide);
   }, [reRenderSide])
 
 

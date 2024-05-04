@@ -25,7 +25,6 @@ const Channel = ({ index, roomInfo }) => {
         const handleClickOutside = (event) => {
             if (channelRef.current && !channelRef.current.contains(event.target)) {
                 setIsOpenChannel(false);
-                handleLeaveRoom();
             }
         };
 
@@ -58,13 +57,6 @@ const Channel = ({ index, roomInfo }) => {
     const handleLeaveRoom = () => {
         socket.current.emit('leaveRoom', rooms[index]); // Emit the 'leaveRoom' event with the current room ID
     };
-    const handleJoinRoom = () => {
-        const data = {
-            username: user,
-            rooms: [rooms[index]] // Join the room IDs with a comma to send as a string
-        };
-        socket.current.emit('joinRoom', data);
-    };
 
     return (
         <div
@@ -77,9 +69,9 @@ const Channel = ({ index, roomInfo }) => {
                 setSelectedRoomId(_id);
                 setSelectedRoom(roomInfo);
                 setIsAddChat(false);
-                console.log("test");
+                console.log("selectedRoomId", _id);
                 setIsChannelSelected(true);
-                handleJoinRoom();
+
             }}
 
         >

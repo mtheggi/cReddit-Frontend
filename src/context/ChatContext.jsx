@@ -20,16 +20,20 @@ export const ChatContextProvider = ({ children }) => {
 
     const [creationError, setCreationError] = useState(false);
     const [creationMsg, setCreationMsg] = useState("");
-    const [reRenderSide, setReRenderSide] = useState(false);
+    const [reRenderSide, setReRenderSide] = useState(0);
     const socket = useRef(null);
 
     useEffect(() => {
         if (!socket.current) {
             console.log('Connecting to server', socket.current)
-            socket.current = io(baseUrl);
+            socket.current = io(baseUrl, {
+                withCredentials: true
+            });
             socket.current.on('connect', () => {
                 console.log('Connected to server', socket.current)
+
             });
+            console.log("Cookie:: ", socket)
 
             // socket.current.on('error', (data) => {
             //     setResponse(`Error: ${data.message}`);
@@ -57,12 +61,12 @@ export const ChatContextProvider = ({ children }) => {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
-            setReRenderSide(true);
+            // setReRenderSide(prev => (prev + 1));
         } else if (response.status === 201) {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
-            setReRenderSide(true);
+            // setReRenderSide(prev => (prev + 1));
         } else {
             setCreationError(true);
             setCreationMsg(response.data.message);
