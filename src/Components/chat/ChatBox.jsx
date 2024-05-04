@@ -30,7 +30,7 @@ const ChatBox = () => {
             const newMessage = {
                 content: data.message,
                 profilePicture: data.profilePicture,
-                user: data.username,
+                username: data.username,
                 createdAt: new Date().toISOString()
             }
 
@@ -98,10 +98,10 @@ const ChatBox = () => {
                 <Separator />
 
                 {messages && messages.map((message, index) => {
-                    if (index === 0 || (index > 0 && messages[index - 1].user !== message.user)) {
-                        return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.user} profilePicture={message.profilePicture} />
+                    if (index === 0 || (index > 0 && messages[index - 1].username !== message.username)) {
+                        return <Message key={index} Message={message.content} isFirstMessage={true} time={message.createdAt} username={message.username} profilePicture={message.profilePicture} />
                     } else {
-                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.user} profilePicture={message.profilePicture} />
+                        return <Message key={index} Message={message.content} isFirstMessage={false} time={message.createdAt} username={message.username} profilePicture={message.profilePicture} />
                     }
 
 
