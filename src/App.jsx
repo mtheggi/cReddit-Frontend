@@ -21,13 +21,7 @@ import PasswordRecovery from "./Components/recovery/PasswordRecovery";
 import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
-import Compose from "./Components/messages/Compose";
-import Inbox from "./Components/messages/Inbox";
-import Unread from "./Components/messages/Unread";
-import Messages from "./Components/messages/Messages";
-import PostReplies from "./Components/messages/PostReplies";
-import UsernameMentions from "./Components/messages/UsernameMentions";
-import Sent from "./Components/messages/Sent";
+import Message from "./Components/messages/Message";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -152,17 +146,7 @@ function App() {
             }
           />
 
-          <Route path="/message" element={<Messages />} />
-          <Route path="/message/compose" element={<Compose />} />
-          <Route path="/message/inbox" element={<Inbox />} />
-          <Route path="/message/unread" element={<Unread />} />
-          <Route path="/message/messages" element={<Messages />} />
-          <Route path="/message/post-replies" element={<PostReplies />} />
-          <Route
-            path="/message/username-mentions"
-            element={<UsernameMentions />}
-          />
-          <Route path="/message/sent" element={<Sent />} />
+          <Route path="/message/*" element={<Message />} />
         </Routes>
       </div>
     </Router>
