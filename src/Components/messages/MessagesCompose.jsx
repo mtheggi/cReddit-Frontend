@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { postRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 
+/**
+ * Component for composing and sending messages.
+ * @returns {JSX.Element} JSX element representing the messages compose component.
+ */
 const MessagesCompose = () => {
   const [to, setTo] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
+  /**
+   * Handles the form submission to send the message.
+   * @param {Event} event - The form submission event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
 
