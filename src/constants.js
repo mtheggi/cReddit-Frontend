@@ -4,6 +4,8 @@ export const Client_Secret = "GOCSPX - v6jMupTe7miz9sll3_mEnYpe - PyD";
 export const NODE_ENV = "production";
 // export const baseUrl = '';
 export const baseUrl = 'https://creddit.tech/API';
-export const socketBaseUrl = 'https://chat.creddit.tech'
+// export const socketBaseUrl = 'https://chat.creddit.tech'
+export const socketBaseUrl = 'https://creddit.tech/API'
+
 // export const baseUrl = "http://localhost:3000";
 
