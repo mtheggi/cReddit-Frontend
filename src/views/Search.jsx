@@ -13,7 +13,9 @@ import SearchFeed from "@/Components/search/SearchFeed";
 
 import SearchResultsOptions from "@/Components/search/SearchResultsOptions";
 
-const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
+const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef, isSearchInMobile}) => {
+  const [sortType, setSortType] = useState(localStorage.getItem('sortType') || 'New');
+  const [sortTime, setSortTime] = useState(localStorage.getItem('sortTime') || 'All Time');
   const { isLoggedIn } = useContext(UserContext);
   const mainfeedRef = useRef();
   const searchFeed = useRef();
@@ -119,8 +121,8 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
   });
   return (
 
-    <div className="w-full mt-14 h-full flex flex-row overflow-hidden min-w-[570px]">
-      <div className={`flex flex-row w-full xl:ml-4 min-w-[570px] h-full`}>
+    <div className={`w-full ${isSearchInMobile?'mt-[108px] ':'mt-14 '} h-full flex min-w-[366px] flex-row overflow-hidden`}>
+      <div className={`flex flex-row w-full xl:ml-4  h-full`}>
 
         <div ref={sidebarRef} className={`h-full ${isVisibleLeftSidebar ? 'fixed left-0 xl:relative xl:flex pl-1 bg-reddit_navbar w-[280px]' : 'hidden xl:flex'} z-20  w-[290px] min-w-[270px] border-r-[1px] border-[#3C4447] pt-2 mr-2 no-select ml-auto overflow-auto scrollbar_mod overflow-x-hidden`}>
           <Sidebar setIsCommunityOpen={setIsCommunityOpen} communityButtonRef={communityButtonRef} setIsVisibleLeftSidebar={setIsVisibleLeftSidebar} userHistoryRes={userHistoryRes} />
@@ -131,11 +133,11 @@ const Search = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) =>
 
         <div ref={searchFeed} id="searchfeed" className="flex-col w-full h-full items-center flex overflow-auto scrollbar_mod_mf">
           <div className="flex-col w-fit max-w-[1150px]">
-              <SearchResultsOptions isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
+              <SearchResultsOptions sortTime={sortTime} setSortTime={setSortTime} sortType={sortType} setSortType={setSortType} isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
 
             <div className="flex flex-row w-fit">
               <div className='w-fit px-3 max-w-[1150px] -mt-2 flex flex-row flex-grow lg:flex-grow-0 ' ref={mainfeedRef}>
-                <SearchFeed isSafe={isSafeSearch} setIsSafe={setIsSafeSearch}/>
+                <SearchFeed  sortTime={sortTime} sortType={sortType} isSafe={isSafeSearch} />
               </div>
 
               

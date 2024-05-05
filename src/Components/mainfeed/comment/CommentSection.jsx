@@ -24,7 +24,8 @@ function CommentSection({
   setIsCommenting,
   setPostComments,
   setIsPaginationLoading,
-  setLoadingAddComment
+  setLoadingAddComment,
+  setSelectedPost
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -64,13 +65,18 @@ function CommentSection({
   }, [isCommenting]);
 
 
-  const addComment = async() => {
+  const addComment = async () => {
+    if (!(image || (comment && comment.trim() !== ""))) return;
     setIsPaginationLoading(true);
     setLoadingAddComment(true);
-    if (!(image || (comment && comment.trim() !== ""))) return;
     const newComment = await submitComment(postId, image, comment);
-    if (!newComment) return;
-    setPostComments(prev=>[newComment, ...prev]);
+    if (!newComment) {
+      setIsPaginationLoading(false);
+      setLoadingAddComment(false);
+      return;
+    }
+    setPostComments(prev => [newComment, ...prev]);
+    setSelectedPost(prev => ({...prev, commentCount: prev.commentCount + 1}));
     setIsPaginationLoading(false);
     setLoadingAddComment(false);
     setComment("");
@@ -127,8 +133,9 @@ function CommentSection({
           >
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
+
           <div id="submit_comment"
-            onClick={()=>addComment()}
+            onClick={() => addComment()}
             className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(image || (comment && comment.trim() !== "")) ? "cursor-pointer" : "cursor-not-allowed"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
@@ -145,10 +152,14 @@ function CommentSection({
       <CancelComment
         show={modalShow}
         onHide={() => {
-          setImage(null);
           setModalShow(false);
-          setIsCommenting(false);
+        }}
+
+        onDiscard={() => {
+          setModalShow(false);
           setComment("");
+          setImage(null);
+          setIsCommenting(false);
         }}
       />
     </div>

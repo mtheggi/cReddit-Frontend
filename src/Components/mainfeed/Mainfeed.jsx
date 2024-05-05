@@ -8,6 +8,7 @@ import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
 import { useLocation } from "react-router-dom";
 import Comment from "./comment/Comment";
+import AlertDemo from "../alert/AlertDemo";
 
 
 /**
@@ -18,20 +19,32 @@ import Comment from "./comment/Comment";
  * @component
  * @returns {JSX.Element} The rendered Mainfeed component.
  */
-const Mainfeed = () => {
+const Mainfeed = ({ mode }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
+
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const { isLoggedIn } = useContext(UserContext);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
+  const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
+
+  const showAlertForTime = (condition, message) => {
+    setAlertState({ show: true, message: message, condition: condition });
+
+    setTimeout(() => {
+      setAlertState({ show: false, message: "", condition: "" });
+    }, 3000);
+  };
+
   const [selectedSort, setSelectedSort] = useState(() => {
-  const storedSort = localStorage.getItem('homeSelectedSort');
+
+    const storedSort = localStorage.getItem(`${mode}SelectedSort`);
+
     if (storedSort) {
       return storedSort;
     } else {
-      localStorage.setItem('homeSelectedSort', 'Best');
+      localStorage.setItem(`${mode}SelectedSort`, 'Best');
       return 'Best';
     }
   });
@@ -50,7 +63,7 @@ const Mainfeed = () => {
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setPage(prevPage => prevPage + 1);
-        console.log("fetching more posts");
+
       }
     });
     if (node) observer.current.observe(node);
@@ -89,25 +102,32 @@ const Mainfeed = () => {
    * @returns {Promise} The response from the API.
    */
   const fetchPosts = async (page, selectedSort) => {
-    const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
-    return response;
+    if (location.pathname == "/popular") {
+      page += 1;
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
+    else {
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
   }
 
   useEffect(() => {
-    setPosts([]);
-    setPage(1);
-    setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
+    if (prevSort.current !== selectedSort && isLoggedIn) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
   }, [selectedSort, isLoggedIn]);
 
 
 
-
   useEffect(() => {
 
-    if (existingPost.current)
-    {
-    existingPost.current = null;
-    return;
+    if (existingPost.current) {
+      existingPost.current = null;
+      return;
     }
 
     const getHomeFeed = async () => {
@@ -156,9 +176,7 @@ const Mainfeed = () => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
         setIsOpenCateg(false);
       }
-      if (menuRefView.current && !menuRefView.current.contains(e.target)) {
-        setIsOpenView(false);
-      }
+
     };
     document.addEventListener("click", closeDropdown);
 
@@ -175,8 +193,8 @@ const Mainfeed = () => {
   return (
     <div
       id="mainfeed"
-      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 "
-    >
+      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 ">
+      {alertState.show && <AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
       {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
@@ -201,7 +219,7 @@ const Mainfeed = () => {
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Best"); }}
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Best"); }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -209,7 +227,7 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Hot"); }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -217,7 +235,7 @@ const Mainfeed = () => {
                 <p className="no-select">Hot</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "New"); }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -225,7 +243,7 @@ const Mainfeed = () => {
                 <p className="no-select">New</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Top"); }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -236,48 +254,7 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
-        <div ref={menuRefView} className="relative">
-          <div
-            id="mainfeed_view_type"
-            onClick={() => setIsOpenView((prev) => !prev)}
-            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
-          >
-            <svg rpl="" fill="#82949B" height="16" icon-name="view-card-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-              <path d="M17.882 1H2.118A1.12 1.12 0 0 0 1 2.119v15.762A1.119 1.119 0 0 0 2.118 19h15.764A1.12 1.12 0 0 0 19 17.881V2.119A1.12 1.12 0 0 0 17.882 1Zm-.132 16.75H2.25v-7.138h15.5v7.138ZM2.25 9.362V2.25h15.5v7.112H2.25Z"></path>
-            </svg>
-            <ChevronDownIcon className="h-3 ml-1 w-3 text-gray-400" />
-          </div>
 
-          {isOpenView && (
-            <div className=" w-30 h-33  bg-reddit_search absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-20 rounded-lg  font-extralight flex flex-col">
-              <div className="w-full pl-3  rounded-lg h-8 flex items-center font-medium">
-                <p className="no-select">View</p>
-              </div>
-              <a
-                id="mainfeed_view_card"
-                href=""
-                className="w-full pl-6 hover:bg-reddit_hover h-11 flex items-center cursor-pointer"
-              >
-                <svg rpl="" fill="white" height="16" icon-name="view-card-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.882 1H2.118A1.12 1.12 0 0 0 1 2.119v15.762A1.119 1.119 0 0 0 2.118 19h15.764A1.12 1.12 0 0 0 19 17.881V2.119A1.12 1.12 0 0 0 17.882 1Zm-.132 16.75H2.25v-7.138h15.5v7.138ZM2.25 9.362V2.25h15.5v7.112H2.25Z"></path>
-                </svg>
-                <p className="ml-2 no-select">Card</p>
-              </a>
-              <a
-                id="mainfeed_view_classic"
-                href=""
-                className="w-full pl-6 hover:bg-reddit_hover h-11 flex rounded-b-lg items-center cursor-pointer"
-              >
-                <svg rpl="" fill="white" height="16" icon-name="view-classic-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M17.882 2H2.118A1.118 1.118 0 0 0 1 3.116v13.768A1.118 1.118 0 0 0 2.118 18h15.764A1.118 1.118 0 0 0 19 16.884V3.116A1.118 1.118 0 0 0 17.882 2ZM2.25 3.25h15.5V7H2.25V3.25Zm15.5 13.5H2.25v-3.5h15.5v3.5Zm0-4.75H2.25V8.25h15.5V12Z"></path>
-                </svg>
-                {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
-                <p className="ml-2 no-select">Classic</p>
-              </a>
-            </div>
-          )}
-        </div>
 
       </div>}
       <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
@@ -289,10 +266,10 @@ const Mainfeed = () => {
         <>
           {!isSinglePostSelected && posts.map((post, i) => {
             if (posts.length === i + 1) {
-              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
+              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
             }
             else {
-              return <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
             }
           })}
         </>
@@ -303,8 +280,8 @@ const Mainfeed = () => {
         (
           loadingPost ? <Loading /> :
             <>
-              <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-              <Comment postId={selectedPost._id} />
+              <Post id={selectedPost._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+              <Comment postId={selectedPost._id} setSelectedPost={setSelectedPost} />
             </>
         )
       }

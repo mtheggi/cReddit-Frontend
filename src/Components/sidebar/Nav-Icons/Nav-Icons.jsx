@@ -16,7 +16,7 @@ const NavIcon = ({ href, children, text, id }) => {
 
     return (
         <Link id={id}
-            className={`w-full SideIcon-Container text-sm font-extralight  items-center flex flex-row relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10 my-1'}`}
+            className={`w-full ${isSidebarRecent?'mb-1':''} SideIcon-Container text-sm font-extralight  items-center flex flex-row relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10 my-1'}`}
             to={href}>
             <span className="items-center ">
                 {children}

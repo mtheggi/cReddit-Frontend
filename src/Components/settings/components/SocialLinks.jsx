@@ -20,8 +20,7 @@ function SocialLinks({ pageName, socialLinks, setModalShow }) {
     );
     const res = await changeSetting(pageName, "socials", newSocials);
     if (res.status === 200) {
-      console.log("New Socials:");
-      console.log(newSocials);
+
       setSocials(newSocials);
       notify("Changes saved successfully");
     } else notify("Failed to save changes");

@@ -380,8 +380,12 @@ export default {
 
       msm: "530px",
 
+      mmsm: "572px",
+
       sm: "640px",
       // => @media (min-width: 640px) { ... }
+
+      mmd: "680px",
 
       md: "768px",
       // => @media (min-width: 768px) { ... }

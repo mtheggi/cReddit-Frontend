@@ -41,7 +41,7 @@ const EmailVerification = ({ setIsOpenedEmailVerification, setIsOpenedForgotPass
 
     return (
 
-        <div className='z-20 min-w-90 w-100% h-100% msm:w-132 msm:h-158  bg-reddit_lightGreen no-select text-white msm:rounded-3xl items-center flex flex-col'>
+        <div className='z-30 min-w-90 w-100% h-100% msm:w-132 msm:h-158  bg-reddit_lightGreen no-select text-white msm:rounded-3xl items-center flex flex-col'>
 
             <div className='w-full px-3 pt-10 pb-4 h-12 flex items-center justify-between'>
 
