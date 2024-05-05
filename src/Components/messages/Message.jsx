@@ -8,8 +8,9 @@ import PostReplies from "./PostReplies";
 import UsernameMentions from "./UsernameMentions";
 import Sent from "./Sent";
 import MessagesFooter from "./MessagesFooter";
+import LeftSidebar from "./LeftSidebar";
 
-const Message = () => {
+const Message = ({ sidebarProps }) => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
   const isCompose = pathParts[2] === "compose";
@@ -21,19 +22,23 @@ const Message = () => {
   const isSent = pathParts[2] === "sent";
 
   return (
-    <div id="message" className="bg-[#1B2426] text-[#D7DADC] m-0 p-0">
-      <MessagesHeader />
+    <>
+      <div id="message" className="bg-[#1B2426] text-[#D7DADC] m-0 p-0">
+        <MessagesHeader />
 
-      {isCompose && <Compose />}
-      {isInbox && <Inbox />}
-      {isUnread && <Unread />}
-      {isMessages && <Messages />}
-      {isPostReplies && <PostReplies />}
-      {isUsernameMentions && <UsernameMentions />}
-      {isSent && <Sent />}
+        {isCompose && <Compose />}
+        {isInbox && <Inbox />}
+        {isUnread && <Unread />}
+        {isMessages && <Messages />}
+        {isPostReplies && <PostReplies />}
+        {isUsernameMentions && <UsernameMentions />}
+        {isSent && <Sent />}
 
-      <MessagesFooter />
-    </div>
+        <MessagesFooter />
+      </div>
+
+      <LeftSidebar sidebarProps={sidebarProps} />
+    </>
   );
 };
 
