@@ -1,8 +1,8 @@
 const MessagesFooter = () => {
   return (
-    <div className="text-[12px] pt-[40px] clear-both text-center flex justify-center bg-black">
-      <div className="border-[#808080] border-[3px] max-w-[600px] rounded-[7px] mb-[50px]">
-        <div className="border-none inline-block align-top box-border mx-[25px]">
+    <div className="text-[10px] pt-[40px] clear-both text-center flex justify-center bg-black">
+      <div className="border-[#808080] border-[3px] max-w-[700px] 2xs:w-full w-[700px] rounded-[7px] mb-[50px] flex flex-row">
+        <div className="inline-block align-top box-border px-[25px] my-[15px] w-[25%]">
           <ul className="text-left list-none">
             <li className="text-[#777] text-[18px] font-normal mb-[5px] mt-auto">
               about
@@ -22,7 +22,7 @@ const MessagesFooter = () => {
           </ul>
         </div>
 
-        <div className="border-none inline-block align-top box-border mx-[25px]">
+        <div className="inline-block align-top box-border px-[25px] my-[15px] border-r-[#808080] border-l-[#808080] border-y-0 border-l-[2px] border-r-[1px] w-[25%]">
           <ul className="text-left list-none">
             <li className="text-[#777] text-[18px] font-normal mb-[5px] mt-auto">
               help
@@ -47,7 +47,7 @@ const MessagesFooter = () => {
           </ul>
         </div>
 
-        <div className="border-none inline-block align-top box-border mx-[25px]">
+        <div className="inline-block align-top box-border px-[25px] my-[15px] border-r-[#808080] border-l-[#808080] border-y-0 border-r-[2px] border-l-[1px] w-[25%]">
           <ul className="text-left list-none">
             <li className="text-[#777] text-[18px] font-normal mb-[5px] mt-auto">
               apps & tools
@@ -68,7 +68,7 @@ const MessagesFooter = () => {
           </ul>
         </div>
 
-        <div className="border-none inline-block align-top box-border mx-[25px]">
+        <div className="inline-block align-top box-border px-[25px] my-[15px] w-[25%]">
           <ul className="text-left list-none">
             <li className="text-[#777] text-[18px] font-normal mb-[5px] mt-auto">
               &lt;3
