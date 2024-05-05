@@ -4,12 +4,19 @@ import { baseUrl, messagesLimit } from "@/constants";
 import MessagesInbox from "./MessagesInbox";
 import Pagination from "./Pagination";
 
+/**
+ * Component for displaying post replies.
+ * @returns {JSX.Element} JSX element representing the post replies component.
+ */
 const PostReplies = () => {
   const [postReplies, setPostReplies] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreContent, setHasMoreContent] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetch post replies from the server.
+     */
     const getPostReplies = async () => {
       try {
         const response = await getRequest(
@@ -26,12 +33,18 @@ const PostReplies = () => {
     getPostReplies();
   }, [currentPage]);
 
+  /**
+   * Moves to the next page of post replies.
+   */
   const nextPage = () => {
     if (hasMoreContent) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  /**
+   * Moves to the previous page of post replies.
+   */
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
