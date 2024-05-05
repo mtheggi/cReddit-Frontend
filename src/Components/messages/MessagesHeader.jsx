@@ -11,7 +11,7 @@ const MessagesHeader = () => {
 
   return (
     <div className="flex justify-center items-center text-white">
-      <div className="p-0 bg-[#FF4500] border-[#1B2426] border-[2.5px] mt-[56px] w-[90%] rounded-full">
+      <div className="p-0 bg-[#FF4500] border-[#1B2426] border-[2.5px] mt-[56px] w-[100%]">
         <div className="flex justify-center py-[10px] border-[#1B2426] border-[1.5px]">
           <div className="2xs:w-[80%] sm:w-[40%] w-full">
             <ul className="list-none flex flex-row justify-between w-full">
@@ -44,9 +44,9 @@ const MessagesHeader = () => {
         </div>
         {isInboxPage && (
           <div className="flex justify-center items-center w-full">
-            <div className="bg-[#FF8717] flex justify-center py-[5px] w-[95%] rounded-full">
+            <div className="bg-[#FF8717] flex justify-center py-[5px] w-[100%]">
               <div className="lg:max-w-[50%] xs:max-w-[90%] w-full">
-                <ul className="list-none flex flex-row justify-between w-full">
+                <ul className="list-none flex flex-row justify-between w-full [&>li]:whitespace-nowrap overflow-x-auto gap-[16px] no-scrollbar">
                   <li>
                     <a
                       href="/message/inbox"
