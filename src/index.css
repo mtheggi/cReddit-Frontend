@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* #1A282D : hovre bg*/ 
+/* #1A282D : hovre bg*/
 /* #0B1416 : bg */
 input#reset_username_email:-webkit-autofill,
 input#reset_username_email:-webkit-autofill:hover,
@@ -13,15 +13,15 @@ input#reset_username_email:-webkit-autofill:active {
   -webkit-text-fill-color: #dcdcdc !important;
 }
 ::-webkit-scrollbar {
-    width: 4px;
-    background-color: #0B1416;
-  }
-  
-  /* This will style the scrollbar thumb (the part you drag) */
-  ::-webkit-scrollbar-thumb {
-    background-color: #757474; 
-    border-radius: 15px;
-  }
+  width: 4px;
+  background-color: #0b1416;
+}
+
+/* This will style the scrollbar thumb (the part you drag) */
+::-webkit-scrollbar-thumb {
+  background-color: #757474;
+  border-radius: 15px;
+}
 
 html {
   background-color: #0b1416;
@@ -50,14 +50,14 @@ html {
 
 /* For Firefox */
 .scrollbar_mod {
-  scrollbar-width:thin; /* Make the scrollbar thin */
-  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
+  scrollbar-width: thin; /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease; /* Add transition to the thumb */
   scrollbar-color: rgba(0, 0, 0, 0) transparent; /* Make the scrollbar transparent */
 }
 
 .scrollbar_mod.scrolling {
   scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
-  transition: scrollbar-color  0.3s ease;
+  transition: scrollbar-color 0.3s ease;
 }
 
 .no-select {
@@ -66,8 +66,6 @@ html {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-
-
 
 .scrollbar_mod_mf {
   overflow-y: scroll; /* Show scrollbar */
@@ -92,16 +90,15 @@ html {
 
 /* For Firefox */
 .scrollbar_mod_mf {
-  scrollbar-width:thin; /* Make the scrollbar thin */
-  transition: scrollbar-color  0.9s ease; /* Add transition to the thumb */
-  scrollbar-color: #3a3939 transparent; 
+  scrollbar-width: thin; /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease; /* Add transition to the thumb */
+  scrollbar-color: #3a3939 transparent;
 }
 
 .scrollbar_mod_mf.scrolling {
   scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
-  transition: scrollbar-color  0.3s ease;
+  transition: scrollbar-color 0.3s ease;
 }
-
 
 /* Custom CSS for striping every n cards */
 @layer utilities {
@@ -133,6 +130,12 @@ html {
   }
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  /* width */
+  width: 0px;
+  height: 0px;
+}
+
 .overlay {
   background: #000000;
   opacity: 0.5;
@@ -143,21 +146,22 @@ html {
   padding: 2px;
 }
 
-.RichTextEditor__root___2QXK-{
-  background-color: #1A282B!important;
-  border: 0px solid grey!important;
+.RichTextEditor__root___2QXK- {
+  background-color: #1a282b !important;
+  border: 0px solid grey !important;
   color: white;
-  height: 250px!important;
+  height: 250px !important;
 }
 
-.ButtonWrap__root___1EO_R button, .Dropdown__root___3ALmx{
-  background-color: white!important;
+.ButtonWrap__root___1EO_R button,
+.Dropdown__root___3ALmx {
+  background-color: white !important;
   color: black;
 }
 
-.RichTextEditor__editor___1QqIU{
-  height: 195px!important;
-  font-size: 14px!important;
+.RichTextEditor__editor___1QqIU {
+  height: 195px !important;
+  font-size: 14px !important;
   color: #efeeee;
   font-family: Arial, Helvetica, sans-serif;
 }
