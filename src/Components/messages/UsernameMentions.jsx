@@ -4,12 +4,19 @@ import { baseUrl, messagesLimit } from "@/constants";
 import MessagesInbox from "./MessagesInbox";
 import Pagination from "./Pagination";
 
+/**
+ * Component for displaying messages with username mentions.
+ * @returns {JSX.Element} JSX element representing the username mentions component.
+ */
 const UsernameMentions = () => {
   const [usernameMentions, setUsernameMentions] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreContent, setHasMoreContent] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetch messages with username mentions from the server.
+     */
     const getUsernameMentions = async () => {
       try {
         const response = await getRequest(
@@ -26,12 +33,18 @@ const UsernameMentions = () => {
     getUsernameMentions();
   }, [currentPage]);
 
+  /**
+   * Moves to the next page of messages with username mentions.
+   */
   const nextPage = () => {
     if (hasMoreContent) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  /**
+   * Moves to the previous page of messages with username mentions.
+   */
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
