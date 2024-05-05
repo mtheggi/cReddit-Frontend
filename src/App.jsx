@@ -18,7 +18,10 @@ import Community from "./views/Community";
 import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
-import { SidebarContextProvider } from "./context/SidebarContext";
+import {
+  SidebarContextProvider,
+  SidebarContext,
+} from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import Message from "./Components/messages/Message";
@@ -27,7 +30,19 @@ function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
   const { isLoading, isLoggedIn } = useContext(UserContext);
+  const { setIsCommunityOpen, communityButtonRef, userHistoryRes, sidebarRef } =
+    useContext(SidebarContext);
   const navbarRef = useRef();
+
+  const sidebarProps = {
+    isVisibleLeftSidebar,
+    setIsVisibleLeftSidebar,
+    setIsCommunityOpen,
+    communityButtonRef,
+    userHistoryRes,
+    sidebarRef,
+  };
+
   return isLoading ? (
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
       <Loading />
@@ -146,7 +161,10 @@ function App() {
             }
           />
 
-          <Route path="/message/*" element={<Message />} />
+          <Route
+            path="/message/*"
+            element={<Message sidebarProps={sidebarProps} />}
+          />
         </Routes>
       </div>
     </Router>
