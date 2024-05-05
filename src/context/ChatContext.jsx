@@ -1,6 +1,6 @@
 import { postRequest } from "@/services/Requests";
 import { createContext, useState, useEffect, useCallback, useRef, useContext } from "react";
-import { baseUrl } from "@/constants";
+import { baseUrl, socketBaseUrl } from "@/constants";
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 import { UserContext } from "./UserContext";
@@ -26,7 +26,7 @@ export const ChatContextProvider = ({ children }) => {
     useEffect(() => {
         if (!socket.current) {
             console.log('Connecting to server', socket.current)
-            socket.current = io(baseUrl, {
+            socket.current = io(socketBaseUrl, {
                 withCredentials: true
             });
             socket.current.on('connect', () => {
