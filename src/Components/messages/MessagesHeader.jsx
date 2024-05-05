@@ -1,5 +1,9 @@
 import React from "react";
 
+/**
+ * Component for the header of the messages page.
+ * @returns {JSX.Element} JSX element representing the messages header component.
+ */
 const MessagesHeader = () => {
   const currentUrl = window.location.pathname;
   const isInboxPage =
