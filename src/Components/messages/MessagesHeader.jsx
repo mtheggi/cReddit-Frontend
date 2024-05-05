@@ -6,8 +6,8 @@ const MessagesHeader = () => {
     currentUrl === "/message/inbox" ||
     currentUrl === "/message/unread" ||
     currentUrl === "/message/messages" ||
-    currentUrl === "/message/post-replies" ||
-    currentUrl === "/message/username-mentions";
+    currentUrl === "/message/selfreply" ||
+    currentUrl === "/message/mentions";
 
   return (
     <div className="flex justify-center items-center text-white">
@@ -18,7 +18,7 @@ const MessagesHeader = () => {
               <li className="font-bold">
                 <a
                   href="/message/compose"
-                  className="capitalize rounded-md hover:bg-[#1B2426]"
+                  className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                 >
                   Compose
                 </a>
@@ -26,7 +26,7 @@ const MessagesHeader = () => {
               <li className="font-bold">
                 <a
                   href="/message/inbox"
-                  className="capitalize rounded-md hover:bg-[#1B2426]"
+                  className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                 >
                   Inbox
                 </a>
@@ -34,7 +34,7 @@ const MessagesHeader = () => {
               <li className="font-bold">
                 <a
                   href="/message/sent"
-                  className="capitalize rounded-md hover:bg-[#1B2426]"
+                  className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                 >
                   Sent
                 </a>
@@ -50,7 +50,7 @@ const MessagesHeader = () => {
                   <li>
                     <a
                       href="/message/inbox"
-                      className="capitalize rounded-md hover:bg-[#1B2426]"
+                      className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                     >
                       all
                     </a>
@@ -58,7 +58,7 @@ const MessagesHeader = () => {
                   <li>
                     <a
                       href="/message/unread"
-                      className="capitalize rounded-md hover:bg-[#1B2426]"
+                      className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                     >
                       unread
                     </a>
@@ -66,23 +66,23 @@ const MessagesHeader = () => {
                   <li>
                     <a
                       href="/message/messages"
-                      className="capitalize rounded-md hover:bg-[#1B2426]"
+                      className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                     >
                       messages
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/message/post-replies"
-                      className="capitalize rounded-md hover:bg-[#1B2426]"
+                      href="/message/selfreply"
+                      className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                     >
                       post replies
                     </a>
                   </li>
                   <li>
                     <a
-                      href="/message/username-mentions"
-                      className="capitalize rounded-md hover:bg-[#1B2426]"
+                      href="/message/mentions"
+                      className="capitalize rounded-md hover:text-[#1B2426] hover:bg-white"
                     >
                       username mentions
                     </a>
