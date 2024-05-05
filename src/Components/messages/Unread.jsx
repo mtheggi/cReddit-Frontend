@@ -4,12 +4,19 @@ import { baseUrl, messagesLimit } from "@/constants";
 import MessagesInbox from "./MessagesInbox";
 import Pagination from "./Pagination";
 
+/**
+ * Component for displaying unread messages.
+ * @returns {JSX.Element} JSX element representing the unread messages component.
+ */
 const Unread = () => {
   const [unread, setUnread] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreContent, setHasMoreContent] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetch unread messages from the server.
+     */
     const getUnread = async () => {
       try {
         const response = await getRequest(
@@ -26,12 +33,18 @@ const Unread = () => {
     getUnread();
   }, [currentPage]);
 
+  /**
+   * Moves to the next page of unread messages.
+   */
   const nextPage = () => {
     if (hasMoreContent) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  /**
+   * Moves to the previous page of unread messages.
+   */
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
