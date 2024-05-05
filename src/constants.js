@@ -7,4 +7,4 @@ export const NODE_ENV = "production";
 export const baseUrl = "http://localhost:3000";
 export const testingUrl = "http://localhost:5173";
 
-export const limit = 10;
+export const profileLimit = 10;

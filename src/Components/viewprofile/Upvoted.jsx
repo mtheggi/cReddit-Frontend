@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { getRequest } from "@/services/Requests";
-import { baseUrl, limit } from "@/constants";
+import { baseUrl, profileLimit } from "@/constants";
 import Post from "../mainfeed/Post";
 import Loading from "../Loading/Loading";
 
@@ -61,7 +61,7 @@ const Upvoted = () => {
       setLoading(true);
       try {
         const response = await getRequest(
-          `${baseUrl}/user/upvoted?page=${currentPage}&limit=${limit}`
+          `${baseUrl}/user/upvoted?page=${currentPage}&limit=${profileLimit}`
         );
         if (response.status === 200 || response.status === 201) {
           if (response.data.length === 0) {
