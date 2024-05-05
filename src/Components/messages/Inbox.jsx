@@ -4,12 +4,19 @@ import { baseUrl, messagesLimit } from "@/constants";
 import MessagesInbox from "./MessagesInbox";
 import Pagination from "./Pagination";
 
+/**
+ * Component for displaying the inbox messages.
+ * @returns {JSX.Element} JSX element representing the inbox component.
+ */
 const Inbox = () => {
   const [inbox, setInbox] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreContent, setHasMoreContent] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetches the inbox messages from the server.
+     */
     const getInbox = async () => {
       try {
         const response = await getRequest(
@@ -26,12 +33,18 @@ const Inbox = () => {
     getInbox();
   }, [currentPage]);
 
+  /**
+   * Function to navigate to the next page of messages.
+   */
   const nextPage = () => {
     if (hasMoreContent) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  /**
+   * Function to navigate to the previous page of messages.
+   */
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
