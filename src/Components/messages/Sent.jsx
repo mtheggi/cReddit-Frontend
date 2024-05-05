@@ -4,12 +4,19 @@ import { baseUrl, messagesLimit } from "@/constants";
 import MessagesInbox from "./MessagesInbox";
 import Pagination from "./Pagination";
 
+/**
+ * Component for displaying sent messages.
+ * @returns {JSX.Element} JSX element representing the sent messages component.
+ */
 const Sent = () => {
   const [sent, setSent] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMoreContent, setHasMoreContent] = useState(false);
 
   useEffect(() => {
+    /**
+     * Fetch sent messages from the server.
+     */
     const getSent = async () => {
       try {
         const response = await getRequest(
@@ -26,12 +33,18 @@ const Sent = () => {
     getSent();
   }, [currentPage]);
 
+  /**
+   * Moves to the next page of sent messages.
+   */
   const nextPage = () => {
     if (hasMoreContent) {
       setCurrentPage(currentPage + 1);
     }
   };
 
+  /**
+   * Moves to the previous page of sent messages.
+   */
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
