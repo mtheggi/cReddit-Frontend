@@ -1,3 +1,7 @@
+/**
+ * Component for the footer of the messages page.
+ * @returns {JSX.Element} JSX element representing the messages footer component.
+ */
 const MessagesFooter = () => {
   return (
     <div className="text-[10px] pt-[40px] clear-both text-center flex justify-center bg-black">
