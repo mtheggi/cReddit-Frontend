@@ -5,3 +5,5 @@ export const NODE_ENV = "production";
 // export const baseUrl = '';
 // export const baseUrl = 'https://creddit.tech/API';
 export const baseUrl = "http://localhost:3000";
+
+export const messagesLimit = 3;
