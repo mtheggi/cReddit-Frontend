@@ -61,12 +61,12 @@ export const ChatContextProvider = ({ children }) => {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
-            // setReRenderSide(prev => (prev + 1));
+            setReRenderSide(prev => (prev + 1));
         } else if (response.status === 201) {
             console.log("success");
             setSelectedRoomId(response.data.roomID);
             setCreationMsg(response.data.message);
-            // setReRenderSide(prev => (prev + 1));
+            setReRenderSide(prev => (prev + 1));
         } else {
             setCreationError(true);
             setCreationMsg(response.data.message);
