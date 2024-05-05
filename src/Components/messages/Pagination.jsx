@@ -1,5 +1,14 @@
 import React from "react";
 
+/**
+ * Component for pagination.
+ * @param {Object} props - The properties passed to the component.
+ * @param {number} props.currentPage - The current page number.
+ * @param {boolean} props.hasMoreContent - Indicates if there is more content to display.
+ * @param {Function} props.onNextPage - Function to handle moving to the next page.
+ * @param {Function} props.onPrevPage - Function to handle moving to the previous page.
+ * @returns {JSX.Element} JSX element representing the pagination component.
+ */
 const Pagination = ({
   currentPage,
   hasMoreContent,
