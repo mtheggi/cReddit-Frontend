@@ -2,6 +2,19 @@ import React from "react";
 import { baseUrl } from "@/constants";
 import { deleteRequest, patchRequest } from "@/services/Requests";
 
+/**
+ * Component representing a message in the inbox.
+ * @param {Object} props - The properties passed to the component.
+ * @param {string} props.id - The ID of the message.
+ * @param {string} props.from - The sender of the message.
+ * @param {string} props.to - The recipient of the message.
+ * @param {string} props.subject - The subject of the message.
+ * @param {string} props.text - The content of the message.
+ * @param {boolean} props.isRead - Indicates if the message has been read.
+ * @param {boolean} props.isDeleted - Indicates if the message has been deleted.
+ * @param {string} props.createdAt - The creation date of the message.
+ * @returns {JSX.Element|null} JSX element representing the message, or null if the message is deleted.
+ */
 const MessagesInbox = ({
   id,
   from,
@@ -20,6 +33,9 @@ const MessagesInbox = ({
 
   const isInvitation = subject.toLowerCase().includes("invitation to moderate");
 
+  /**
+   * Handles the deletion of the message.
+   */
   const handleDelete = async () => {
     try {
       await deleteRequest(`${baseUrl}/message/${id}`);
@@ -29,6 +45,9 @@ const MessagesInbox = ({
     }
   };
 
+  /**
+   * Handles marking the message as read.
+   */
   const handleMarkAsRead = async () => {
     try {
       await patchRequest(`${baseUrl}/message/${id}/mark-as-read`);
