@@ -9,6 +9,7 @@ import { ServerContextProvider } from './context/ServerContext.jsx'
 import { NavbarContextProvider } from './context/NavbarContext.jsx';
 import { StrictMode } from 'react';
 import { NotificationProvider } from './Components/notifications/NotificationContext';
+import { ChatContextProvider } from './context/ChatContext.jsx';
 axios.interceptors.request.use(config => {
   config.withCredentials = true;
   return config;
@@ -32,9 +33,7 @@ enableMocking().then(() => {
         <NotificationProvider>
           <ServerContextProvider>
             <UserContextProvider>
-
               <App />
-
             </UserContextProvider>
           </ServerContextProvider>
         </NotificationProvider>
