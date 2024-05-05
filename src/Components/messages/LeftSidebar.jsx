@@ -1,5 +1,16 @@
 import Sidebar from "../sidebar/Sidebar";
 
+/**
+ * Component for the left sidebar.
+ * @param {Object} sidebarProps - Props passed to the LeftSidebar component.
+ * @param {boolean} sidebarProps.isVisibleLeftSidebar - Flag indicating if the left sidebar is visible.
+ * @param {Function} sidebarProps.setIsVisibleLeftSidebar - Function to set the visibility of the left sidebar.
+ * @param {Function} sidebarProps.setIsCommunityOpen - Function to set the community open state.
+ * @param {Object} sidebarProps.communityButtonRef - Reference to the community button.
+ * @param {Object} sidebarProps.userHistoryRes - User history response.
+ * @param {Object} sidebarProps.sidebarRef - Reference to the sidebar element.
+ * @returns {JSX.Element} JSX element representing the left sidebar component.
+ */
 const LeftSidebar = ({ sidebarProps }) => {
   const {
     isVisibleLeftSidebar,
