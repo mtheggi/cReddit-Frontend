@@ -20,7 +20,7 @@ const Messages = () => {
     const getMessages = async () => {
       try {
         const response = await getRequest(
-          `${baseUrl}/message/messages?page=${currentPage}&limit=${messagesLimit}`
+          `${baseUrl}/message/messages?page=${currentPage}&limit=${messagesLimit}` //The endpoint still needs to be created by the backend team
         );
         if (response.status === 200 || response.status === 201) {
           setMessages(response.data);
