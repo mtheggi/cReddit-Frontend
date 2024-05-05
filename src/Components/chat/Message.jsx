@@ -1,10 +1,17 @@
 import moment from "moment";
+import Separator from "../sidebar/Nav-Icons/Separator";
 const Message = ({ Message, isFirstMessage, time, username, profilePicture }) => {
 
+    console.log(username);
 
-    if (username === null) {
+    if (!username) {
 
-        return <div className="flex flex-row justify-center font-bold">  <p className="text-blue-800  mt-1 mb-1 text-xs">{Message}</p></div>
+        return (
+            <>
+                <div className="flex flex-row justify-center font-bold">  <p className="text-cyan-500  mt-2 mb-1 text-xs">{Message}</p>  </div>
+                <Separator />
+            </>
+        )
     }
 
 

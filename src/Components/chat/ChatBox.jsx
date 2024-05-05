@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import Separator from "../sidebar/Nav-Icons/Separator";
-import { Cog6ToothIcon, CameraIcon, PaperAirplaneIcon } from "@heroicons/react/24/outline";
+import { Cog6ToothIcon, CameraIcon, PaperAirplaneIcon, UserMinusIcon } from "@heroicons/react/24/outline";
 import InputEmoji from "react-input-emoji"
 import Message from "./Message";
 import { ChatContext } from "@/context/ChatContext";
-import { getRequest } from "@/services/Requests";
+import { deleteRequest, getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import Loading from "../Loading/Loading";
 import { UserContext } from "@/context/UserContext";
 const ChatBox = () => {
     const [isOpenSetting, setIsOpenSetting] = useState(false);
     const [textMessage, setTextMessage] = useState("");
-    const { selectedRoomId, selectedRoom, handleSendMessage, socket, setReRenderSide } = useContext(ChatContext);
+    const { selectedRoomId, selectedRoom, handleSendMessage, socket, setReRenderSide, setIsAddChat, setIsChannelSelected } = useContext(ChatContext);
     const { user, userProfilePicture } = useContext(UserContext);
     const [messages, setMessage] = useState([]);
     const [messageLoading, setMessageLoading] = useState(false);
@@ -73,15 +73,27 @@ const ChatBox = () => {
     }, [selectedRoomId]);
 
 
+    const handleLeaveRoom = async () => {
+        const response = await deleteRequest(`${baseUrl}/chat/leaveChat/${selectedRoomId}`);
+        if (response.status === 200) {
+            socket.current.emit('leaveRoom', selectedRoomId);
+            setIsAddChat(false);
+            setIsChannelSelected(false);
+            setReRenderSide(prev => prev + 1);
+        }
+    }
+
     return (messageLoading ? <Loading /> :
 
         <div className="flex flex-col w-full h-full">
             {/* Chatbox Head  */}
             <div className="flex flex-row justify-between items-center w-full py-2 px-3">
                 <p className="text-white font-bold text-lg "> {selectedRoom?.name} </p>
-                <div id="chat-setting" data-testid="chat-setting" className="flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
-                    onClick={() => { setIsOpenSetting(prev => !prev) }} >
-                    <Cog6ToothIcon className="h-6 w-6 text-gray-500 " />
+                <div id="chat-setting" data-testid="chat-setting" className="group relative flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
+                    onClick={() => { handleLeaveRoom(); }} >
+                    <UserMinusIcon className="h-6 w-6 text-white" />
+                    <span className="opacity-0 inset-x-0 bottom-0 mb-2  group-hover:opacity-100 absolute bg-gray-800 text-white text-xs rounded-md px-2 py-1 transition-opacity duration-300 ease-in-out">Leave</span>
+
                 </div>
 
             </div>
