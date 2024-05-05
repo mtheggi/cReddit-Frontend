@@ -10,6 +10,11 @@ import Sent from "./Sent";
 import MessagesFooter from "./MessagesFooter";
 import LeftSidebar from "./LeftSidebar";
 
+/**
+ * Component for displaying messages based on the current URL path.
+ * @param {Object} sidebarProps - Props for the sidebar.
+ * @returns {JSX.Element} JSX element representing the message component.
+ */
 const Message = ({ sidebarProps }) => {
   const location = useLocation();
   const pathParts = location.pathname.split("/");
