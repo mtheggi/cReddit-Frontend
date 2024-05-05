@@ -37,59 +37,61 @@ const PasswordRecovery = () => {
   };
 
   return (
-    <div className="community-modal flex flex-row items-center justify-center">
-      <div className='overlay'></div>
-      <div className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
-        <div className="flex min-w-88 flex-col w-full h-full msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
-          <div className="h-full w-full flex flex-col">
-            <div className="flex flex-col h-full px-10 pt-8">
-              <h1 className="text-2xl text-white font-bold mb-2">
-                Reset your password
-              </h1>
+    <div className='w-full h-full ' style={{backgroundImage: 'url(https://www.redditstatic.com/shreddit/assets/account/standalone-auth-bg.svg)'}}>
+      <div className="community-modal flex flex-row items-center justify-center">
+        <div className='overlay'></div>
+        <div className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-160'>
+          <div className="flex min-w-88 flex-col w-full h-full msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
+            <div className="h-full w-full flex flex-col">
+              <div className="flex flex-col h-full px-10 pt-8">
+                <h1 className="text-2xl text-white font-bold mb-2">
+                  Reset your password
+                </h1>
 
-              <div className="flex flex-col">
-                <div className="min-h-[70px] px-2 mt-4">
-                  <FloatingInput
-                    id="password_recovery_new_password"
-                    label="New Password"
-                    validateInput={validatePassword}
-                    setInputNameOnChange={setPassword}
-                    backendValidationError={recoveryError}
-                    setBackendValidationError={setRecoveryError}
-                  />
+                <div className="flex flex-col">
+                  <div className="min-h-[70px] px-2 mt-4">
+                    <FloatingInput
+                      id="password_recovery_new_password"
+                      label="New Password"
+                      validateInput={validatePassword}
+                      setInputNameOnChange={setPassword}
+                      backendValidationError={recoveryError}
+                      setBackendValidationError={setRecoveryError}
+                    />
+                  </div>
+
+                  <div className="min-h-[70px] px-2 mt-4">
+                    <FloatingInput
+                      id="password_recovery_confirm_password"
+                      label="Confirm New Password"
+                      validateInput={validatePassword}
+                      setInputNameOnChange={setConfirmPassword}
+                      backendValidationError={recoveryError}
+                      setBackendValidationError={setRecoveryError}
+                    />
+                  </div>
+
+                  {recoveryError && <div className="relative ml-3 mt-3 h-3 text-xs font-light w-85">
+                    <p className="text-red-400">{recoveryError}</p>
+                  </div>}
                 </div>
 
-                <div className="min-h-[70px] px-2 mt-4">
-                  <FloatingInput
-                    id="password_recovery_confirm_password"
-                    label="Confirm New Password"
-                    validateInput={validatePassword}
-                    setInputNameOnChange={setConfirmPassword}
-                    backendValidationError={recoveryError}
-                    setBackendValidationError={setRecoveryError}
-                  />
-                </div>
 
-                {recoveryError && <div className="relative ml-3 mt-3 h-3 text-xs font-light w-85"> 
-                  <p className="text-red-400">{recoveryError}</p> 
-                </div>}
-              </div>
-
-
-              <p className="text-xs text-gray-400 mt-65 mb-2 text-center">
-                Resetting your password will log you out on all devices.
-              </p>
-              <div className="w-full h-[96px] px-2 flex justify-center items-center">
-                <div
-                  id="recovery_submit"
-                  role="button" 
-                  aria-disabled={!(passwordsMatch() && validatePassword(password) && !recoveryError)}
-                  className={`${passwordsMatch() && validatePassword(password) && !recoveryError ? 'bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px] items-center justify-center rounded-3xl bg-reddit_search`}
-                  onClick={handleRecoverySubmit}
-                >
-                  <span className="flex items-center gap-[8px] text-[14px] font-[600]">
-                    Continue
-                  </span>
+                <p className="text-xs text-gray-400 mt-65 mb-2 text-center">
+                  Resetting your password will log you out on all devices.
+                </p>
+                <div className="w-full h-[96px] px-2 flex justify-center items-center">
+                  <div
+                    id="recovery_submit"
+                    role="button"
+                    aria-disabled={!(passwordsMatch() && validatePassword(password) && !recoveryError)}
+                    className={`${passwordsMatch() && validatePassword(password) && !recoveryError ? 'bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white' : 'text-gray-500'} flex w-full h-[48px] items-center justify-center rounded-3xl bg-reddit_search`}
+                    onClick={handleRecoverySubmit}
+                  >
+                    <span className="flex items-center gap-[8px] text-[14px] font-[600]">
+                      Continue
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
