@@ -20,7 +20,7 @@ const Inbox = () => {
     const getInbox = async () => {
       try {
         const response = await getRequest(
-          `${baseUrl}/message/?page=${currentPage}&limit=${messagesLimit}`
+          `${baseUrl}/message/inbox?page=${currentPage}&limit=${messagesLimit}`
         );
         if (response.status === 200 || response.status === 201) {
           setInbox(response.data);
