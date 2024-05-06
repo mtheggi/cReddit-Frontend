@@ -1,6 +1,7 @@
 import Share from "./Share";
 import CommentIcon from "./CommentIcon";
 import Vote from "./Vote";
+import * as marked from 'marked';
 import { useState, useEffect, useRef, useContext } from "react";
 import {
   deleteRequest,
@@ -26,10 +27,9 @@ import moment from "moment";
 import HiddenPost from "./HiddenPost";
 import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
-import parse from "html-react-parser";
+import ReactMarkdown from 'react-markdown';
 import Tiptap from "../tiptap/Tiptap";
-import { StepContent } from "@mui/material";
-import { PlusIcon } from "@heroicons/react/20/solid";
+
 
 
 
@@ -103,6 +103,11 @@ const Post = ({
   useEffect(() => {
     setCommentsNumber(commentCount);
   }, [commentCount]);
+
+  useEffect(() => {
+    setEditPostContent(content);
+  }, [content]);
+
 
   /**
    * Function to handle saving a post.
@@ -299,6 +304,7 @@ const Post = ({
     });
     if (response.status == 200 || response.status == 201) {
       setEditMode(false);
+      setPosts(prev => prev.map(post => post._id === id ? { ...post, content: editPostContent } : post));
     } else {
       showAlertForTime("error", response.data.message);
     }
@@ -322,6 +328,7 @@ const Post = ({
     });
     if (response.status == 200 || response.status == 201) {
       setIsHiddenMsg(response.data.message);
+      setPosts(prev => prev.map(post => post._id === id ? { ...post, isHidden: !currentIsHidden } : post));
     } else {
       setIsHiddenMsg(response.data.message);
       setCurrentIsHidden((prev) => !prev);
@@ -393,6 +400,10 @@ const Post = ({
     if (!response.status == 200 && !response.status == 201) {
       showAlertForTime("error", response.data.message);
       setCurrentIsDeleted(false);
+    }
+    else {
+      setPosts(prev => prev.filter(post => post._id !== id));
+
     }
 
   }
@@ -582,10 +593,12 @@ const Post = ({
             if (Blured || editMode)
               return;
 
-            if (communityName == null)
-              navigate(`/user/${username}/comments/${id}`);
-            else
-              navigate(`/r/${communityName}/comments/${id}`);
+            if (!location.pathname.includes("/comments/")) {
+              if (communityName == null)
+                navigate(`/u/${username}/comments/${id}`);
+              else
+                navigate(`/r/${communityName}/comments/${id}`);
+            }
           }
           }>
             <div
@@ -604,10 +617,10 @@ const Post = ({
 
               {type != "Images & Video" && <div id={"mainfeed_" + id + "_content"} onClick={(e) => { setBlured(false) }} className={`text-gray-400  text-sm mt-1.5  ${Blured ? 'filter blur-[10px]' : ''}`}>
                 <>
-                  {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}>{parse(editPostContent)}</div>)}
+                  {type != "Link" && !editMode && (<div style={{ wordBreak: 'break-all' }}><ReactMarkdown>{editPostContent}</ReactMarkdown></div>)}
                   {type != "Link" && editMode && (
                     <div className=" h-[200px] mb-2 mt-[12px]">
-                      <Tiptap initialContent={editPostContent} setDescription={setEditPostContent} />
+                      <Tiptap initialContent={marked.marked(editPostContent)} setDescription={setEditPostContent} />
                     </div>
                   )}
                   {type == "Link" && (<a href={content} className=' underline cursor-pointer text-blue-600 hover:text-blue-500' style={{ wordBreak: 'break-all' }}>{content}</a>)}
@@ -750,7 +763,7 @@ const Post = ({
           </div>
         </div>
 
-     
+
       </div>
 
 
@@ -793,7 +806,7 @@ const Post = ({
 
 
               <div onClick={
-                () => { setIsShareMenuOpened(false);  setEditMode(false); setShareMode(true); }
+                () => { setIsShareMenuOpened(false); setEditMode(false); setShareMode(true); }
               } id="cross_post" className="w-full cursor-pointer pl-[18px] h-10 hover:bg-reddit_search_light flex flex-row items-center">
                 <svg rpl="" class="mt-[1px] ml-[4px]" fill="white" height="20" icon-name="crosspost-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
                   <path d="m15.944 11.926-.888.879 1.925 1.945H12A4.873 4.873 0 0 1 7.138 10 4.873 4.873 0 0 1 12 5.25h4.971l-1.915 1.936.888.878L18.875 5.1a.727.727 0 0 0-.007-1.025l-2.929-2.9-.878.888L17.011 4H12a6.128 6.128 0 0 0-6.056 5.25H1v1.625h4.981A6.117 6.117 0 0 0 12 16h5l-1.94 1.92.878.89 2.929-2.9a.726.726 0 0 0 .006-1.025l-2.929-2.96Z"></path>
