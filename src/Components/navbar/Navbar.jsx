@@ -64,7 +64,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     const bellMenuRefExpanded = useRef();
 
     const {
-        notifications, addNotification
+        notifications, addNotification, setNotifications
     } = useNotifications();
 
     const navigate = useNavigate();
@@ -150,22 +150,25 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     };
 
     useEffect(() => {
-        generateToken();
         onMessage(messaging, (payload) => {
             console.log(payload);
             toast(payload.notification.body);
-            const [title, date, time] = payload.notification.title.split(' --- ');
-    
+        
+            // Get the current date and time
+            const now = new Date();
+            const date = now.toLocaleDateString('en-US');  // Format the date as MM/DD/YYYY
+            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); // Format the time as HH:MM:SS AM/PM
+        
             // Generate a unique key using the current date-time to ensure uniqueness
-            const uniqueKey = `${date.trim()}-${time.trim()}-${new Date().getTime()}`;
-    
+            const uniqueKey = `${date.replace(/\//g, '-')}-${time.replace(/:/g, '-').replace(/ /g, '-')}-${now.getTime()}`;
+        
             const notificationDetails = {
                 key: uniqueKey,
-                title: title.trim(),
-                date: date.trim(),
-                time: time.trim(),
+                title: payload.notification.title,
+                date: date,
+                time: time,
                 description: payload.notification.body,
-                image: avatar
+                image: avatar 
             };
             addNotification(notificationDetails);
             console.log(notifications);
