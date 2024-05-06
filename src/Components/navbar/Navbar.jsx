@@ -12,7 +12,7 @@ import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
-import { getRequest } from '../../services/Requests';
+import { getRequest, postRequest } from '../../services/Requests';
 import { baseUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -149,11 +149,11 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
      * @function handleLogout
      * */
     const handleLogout = async () => {
-        const response = await getRequest(`${baseUrl}/user/logout`);
+        const response = await postRequest(`${baseUrl}/user/logout`);
         if (response.status == 200 || response.status == 201) {
             setIsLoggedIn(false);
             setIsOpenProfileMenu(false);
-            navigate('');
+            navigate('/');
         }
     }
 
