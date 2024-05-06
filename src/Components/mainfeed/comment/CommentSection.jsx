@@ -25,7 +25,8 @@ function CommentSection({
   setPostComments,
   setIsPaginationLoading,
   setLoadingAddComment,
-  setSelectedPost
+  setSelectedPost,
+  setPosts
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -77,6 +78,7 @@ function CommentSection({
     }
     setPostComments(prev => [newComment, ...prev]);
     setSelectedPost(prev => ({...prev, commentCount: prev.commentCount + 1}));
+    setPosts(prev => prev.map(post => post._id === postId ? {...post, commentCount: post.commentCount + 1} : post));
     setIsPaginationLoading(false);
     setLoadingAddComment(false);
     setComment("");
