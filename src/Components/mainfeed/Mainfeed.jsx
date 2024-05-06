@@ -119,7 +119,13 @@ const Mainfeed = ({ mode }) => {
       setPage(1);
       setIsSortChanged(prev => (prev + 1));
     }
-  }, [selectedSort, isLoggedIn]);
+  }, [selectedSort]);
+
+
+  useEffect(() => {
+      setPosts([]);
+      setPage(1);
+  }, [isLoggedIn]);
 
 
 
