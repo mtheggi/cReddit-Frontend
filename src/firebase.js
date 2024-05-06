@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBMfQZGiURoZ2kG2-AD3vmu3tbrW4K7718",
-    authDomain: "pushnotifications-f62af.firebaseapp.com",
-    projectId: "pushnotifications-f62af",
-    storageBucket: "pushnotifications-f62af.appspot.com",
-    messagingSenderId: "279396824268",
-    appId: "1:279396824268:web:25d2a2eb10543dabccfe69",
-    measurementId: "G-WBDZS6JW3C"
+    apiKey: "AIzaSyCcVZwRwhcV50n0MozxYRyCHuzXBMtisCg",
+    authDomain: "creddit-by-ss-ltd.firebaseapp.com",
+    projectId: "creddit-by-ss-ltd",
+    storageBucket: "creddit-by-ss-ltd.appspot.com",
+    messagingSenderId: "737898149215",
+    appId: "1:737898149215:web:599824eea54d2806d5f2ea",
+    measurementId: "G-N200CQ3FQ8"
 };
 
 // Initialize Firebase
@@ -21,7 +21,7 @@ export const generateToken = async () => {
     console.log(permission);
     if (permission === "granted") {
         const token = await getToken(messaging, {
-            vapidKey: "BHVS4RVfU59NlPh1W6qqhr04T2P599KlE6iuzEVbkHbAFmuq-BrF2e_mZ83DtWqGuvnHSY6ZGtf88_mHhUnVm7Y",
+            vapidKey: "BAOo40lVroFVeMDVgUI3WLjqaqM67vkgv-k-wFFBbepUpVePhK6mQLPM_uqbURL5LnzPo_Xc8j_czKQYmNgplUE",
         })
         console.log(token)
         return token;
