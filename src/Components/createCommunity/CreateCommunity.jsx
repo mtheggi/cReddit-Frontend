@@ -92,7 +92,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
      * @returns {Promise<void>}
      * */
     const handleCreateCommunity = async () => {
-        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature, type: selectedRadio.replace("-community-type", "").toLowerCase()})
         if (!response) return;
         if (response.status !== 200 && response.status !== 201) {
             setCommunityNameError(response.data.message);
