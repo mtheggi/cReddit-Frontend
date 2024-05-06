@@ -7,6 +7,8 @@ import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 import { UserContext } from "@/context/UserContext";
+import fcmToken from "@/firebase";
+
 
 /**
  * React component for user login.
@@ -67,10 +69,12 @@ const LogIn = ({
       validateLoginUsername(username) &&
       validateLoginPassword(password) &&
       loginError == null
+      && fcmToken
     ) {
       const response = await postRequest(`${baseUrl}/user/login`, {
         username,
         password,
+        fcmToken
       });
       if (response.status !== 200 && response.status !== 201) {
         setLoginError(response.data.message);
@@ -94,12 +98,11 @@ const LogIn = ({
      * @async
       */
     async function sendToken() {
-      if (OAuthAccessToken) {
+      if (OAuthAccessToken && fcmToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, {
           googleToken: OAuthAccessToken,
+          fcmToken
         });
-        // console.log("accessToken", OAuthAccessToken);
-        // console.log("Response ", response);
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
           LoginFailedToast(response.data.message);
@@ -289,15 +292,14 @@ const LogIn = ({
           <div
             onClick={handleLoginSubmit}
             id="login_submit"
-            className={` ${
-              username &&
-              password &&
-              validateLoginUsername(username) &&
-              validateLoginPassword(password) &&
-              loginError == null
+            className={` ${username &&
+                password &&
+                validateLoginUsername(username) &&
+                validateLoginPassword(password) &&
+                loginError == null
                 ? " bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white"
                 : "text-gray-500"
-            } w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}
+              } w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}
           >
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">

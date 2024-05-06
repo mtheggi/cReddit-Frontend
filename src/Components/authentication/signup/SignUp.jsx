@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
 import { baseUrl } from "../../../constants";
 import { UserContext } from "@/context/UserContext";
+import fcmToken from "@/firebase";
 
 /**
  * React component for user signup.
@@ -108,6 +109,7 @@ const SignUp = ({
       password &&
       validatePassword(password) &&
       gender != "Gender"
+      && fcmToken
     ) {
       const email = NavbarSignupEmail;
       const response = await postRequest(`${baseUrl}/user`, {
@@ -115,6 +117,7 @@ const SignUp = ({
         username,
         password,
         gender,
+        fcmToken
       });
       if (response.status != 200 && response.status != 201) {
         setSignupError(response.data.message);
