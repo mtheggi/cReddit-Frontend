@@ -140,6 +140,12 @@ const Post = ({
   }
 
 
+  useEffect(() => {
+    if (!username && !communityName)
+      setCurrentIsDeleted(true);
+
+  }
+    , []);
 
 
 
@@ -594,6 +600,8 @@ const Post = ({
               return;
 
             if (!location.pathname.includes("/comments/")) {
+              if (content.endsWith(".mp4"))
+                return;
               if (communityName == null)
                 navigate(`/u/${username}/comments/${id}`);
               else
