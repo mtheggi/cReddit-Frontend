@@ -187,16 +187,18 @@ function App() {
             }
           />
 
-          <Route
-            path="/profile/:username/*"
-            element={
-              <ViewProfile
-                userInfo={userInfo}
-                sidebarProps={sidebarProps}
-                notFound={notFound}
-              />
-            }
-          />
+          {userInfo && (
+            <Route
+              path={`/user/${userInfo.username}/*`}
+              element={
+                <ViewProfile
+                  userInfo={userInfo}
+                  sidebarProps={sidebarProps}
+                  notFound={notFound}
+                />
+              }
+            />
+          )}
         </Routes>
       </div>
     </Router>
