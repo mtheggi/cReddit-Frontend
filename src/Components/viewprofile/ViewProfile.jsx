@@ -52,7 +52,7 @@ const ViewProfile = ({ userInfo, sidebarProps, notFound }) => {
           <div className="flex gap-[1rem] w-full pb-[2rem]">
             <main className="w-full md:max-w-[calc(100%-(16px+316px))] mt-[60px]">
               <ProfileHeader userInfo={userInfo} />
-              {isOverview && <Overview />}
+              {isOverview && <Overview userInfo={userInfo} />}
               {isSubmitted && <Submitted userInfo={userInfo} />}
               {isComments && <Comments userInfo={userInfo} />}
               {isSaved && <Saved />}
