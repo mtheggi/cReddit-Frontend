@@ -82,7 +82,7 @@ function App() {
             {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
             {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
             <Route path="/notifications" element={<NotificationPage isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
-            <Route path="/passwordrecovery" element={<PasswordRecovery/>}/>
+            <Route path="/passwordrecovery/:token" element={<PasswordRecovery />} />
             <Route path="/best/communities" element={<TopCommunities />} />
             <Route path="/r/:name" element={<Community />} />
             <Route path="/*" element={<NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />} />
