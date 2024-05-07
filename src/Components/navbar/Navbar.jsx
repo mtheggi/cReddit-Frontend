@@ -152,7 +152,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
     useEffect(() => {
         onMessage(messaging, (payload) => {
             console.log(payload);
-            toast(payload.notification.body);
+            toast(payload.notification.title);
         
             // Get the current date and time
             const now = new Date();
@@ -179,7 +179,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     return (
         <div ref={navbarRef} className="flex z-30 fixed flex-col w-full no-select">
-
+            <Toaster position='top-right' toastOptions={{style: {marginTop: '50px'}}}/>
 
             <header className="flex w-full bg-reddit_navbar p-2 items-center">
                 {!urlContainsWord && (
