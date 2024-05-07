@@ -29,7 +29,7 @@ const ProfileHeader = ({ userInfo }) => {
             <div className="bg-[#1A282D] hover:bg-gray-700 w-[32px] h-[32px] flex justify-center rounded-full">
               <a
                 className="h-[2rem] p-[0.25rem] border-[0.0625rem] px-[6px] w-[2rem] items-center justify-center rounded-full cursor-pointer inline-flex border-[#1A282D] hover:border-gray-700"
-                href="https://www.reddit.com/settings/profile"
+                href={`${baseUrl}/settings/profile`}
               >
                 <span className="flex items-center justify-center">
                   <span className="flex">
@@ -58,7 +58,7 @@ const ProfileHeader = ({ userInfo }) => {
                 <div className="flex items-center justify-start w-full">
                   <div className="flex items-baseline justify-start">
                     <h1 className="text-[24px] font-bold m-0 text-[#f2f2f2]">
-                      {userInfo.username}
+                      {userInfo.displayName}
                     </h1>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/`}
+          href={`${baseUrl}/user/${userInfo.username}/`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -95,7 +95,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "submitted" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/submitted`}
+          href={`${baseUrl}/user/${userInfo.username}/submitted`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -112,7 +112,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "comments" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/comments`}
+          href={`${baseUrl}/user/${userInfo.username}/comments`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -129,7 +129,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "saved" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/saved`}
+          href={`${baseUrl}/user/${userInfo.username}/saved`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -146,7 +146,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "hidden" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/hidden`}
+          href={`${baseUrl}/user/${userInfo.username}/hidden`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -163,7 +163,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "upvoted" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/upvoted`}
+          href={`${baseUrl}/user/${userInfo.username}/upvoted`}
           slot="page-1"
           tabIndex="0"
           type="button"
@@ -180,7 +180,7 @@ const ProfileHeader = ({ userInfo }) => {
           className={`h-[2.5rem] px-[14px] items-center justify-center cursor-pointer inline-flex text-[#F2F4F5] ${
             currentPage === "downvoted" ? "bg-[#33464C]" : ""
           } rounded-3xl hover:underline mx-[5px]`}
-          href={`${baseUrl}/profile/${userInfo.username}/downvoted`}
+          href={`${baseUrl}/user/${userInfo.username}/downvoted`}
           slot="page-1"
           tabIndex="0"
           type="button"
