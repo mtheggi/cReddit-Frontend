@@ -21,18 +21,18 @@ const VerifyEmail = () => {
             } catch (error) {
                 console.error('Error verifying email:', error);
             } finally {
-                setIsLoading(false); // Hide loading animation when done
+                setIsLoading(false);
             }
         };
 
         verifyEmail();
-    }, [navigate]); // Empty dependency array means this effect will only run once on component mount
+    }, [navigate]);
 
     return (
         <div>
             {isLoading ? <Loading /> : (
                 <div>
-                    {/* Optional: Any post-loading content or redirects */}
+                    {/**/}
                 </div>
             )}
         </div>
