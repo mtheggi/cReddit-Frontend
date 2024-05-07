@@ -22,13 +22,14 @@ import { SidebarContextProvider } from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import ModTools from "./views/ModTools";
-
+import { ChatContextProvider } from "./context/ChatContext";
 
 
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
+  const [isChat, setIsChat] = useState(false);
   const { isLoading, isLoggedIn } = useContext(UserContext);
   const [isSearchInMobile, setIsSearchInMobile] = useState(false);
 
@@ -39,9 +40,8 @@ function App() {
     </div>
   ) : (
     <Router>
-      <div className="App h-screen min-w-[350px] flex flex-col bg-reddit_greenyDark overflow-x-hidden">
-        {!isNotFound && (
-
+      <div className={`App h-screen  min-w-[350px] flex flex-col overflow-x-hidden ${isChat ? "bg-reddit_dark_Chat" : "bg-reddit_greenyDark"}`}>
+        {!isNotFound && !isChat && (
           <Navbar
             setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
             navbarRef={navbarRef}
@@ -210,11 +210,20 @@ function App() {
           <Route path="/r/:communityName/mod/about/:page" element={
             <ModTools />
           } />
-          <Route path="/chat" element={<Chat />} />
+          {
+            isLoggedIn &&
+
+            <Route path="/chat" element={
+              <ChatContextProvider>
+                <Chat isChat={isChat} setIsChat={setIsChat} />
+              </ChatContextProvider>
+            } />
+          }
           <Route
             path="/*"
             element={
               <NotFound isNotFound={isNotFound} setIsNotFound={setIsNotFound} />
+
             }
           />
 
@@ -222,7 +231,7 @@ function App() {
       </div>
 
     </Router>
-    
+
 
   );
 }

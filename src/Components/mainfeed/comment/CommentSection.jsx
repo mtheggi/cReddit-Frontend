@@ -25,6 +25,7 @@ function CommentSection({
   setPostComments,
   setIsPaginationLoading,
   setLoadingAddComment,
+  setSelectedPost,
   setPosts
 }) {
   /**
@@ -76,13 +77,8 @@ function CommentSection({
       return;
     }
     setPostComments(prev => [newComment, ...prev]);
-    setPosts(prev => prev.map(post => {
-      if (post._id === postId) {
-        console.log(post);
-        post.commentsCount += 1;
-      }
-      return post;
-    }));
+    setSelectedPost(prev => ({...prev, commentCount: prev.commentCount + 1}));
+    setPosts(prev => prev.map(post => post._id === postId ? {...post, commentCount: post.commentCount + 1} : post));
     setIsPaginationLoading(false);
     setLoadingAddComment(false);
     setComment("");

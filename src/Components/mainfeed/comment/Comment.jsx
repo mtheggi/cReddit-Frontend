@@ -6,8 +6,9 @@ import { baseUrl } from "../../../constants";
 import { getRequest } from "../../../services/Requests";
 import NoComments from "./NoComments";
 import Loading from "@/Components/Loading/Loading";
+import { use } from "marked";
 
-const Comment = ({ postId, setPosts }) => {
+const Comment = ({ postId, setSelectedPost, setPosts }) => {
     const menuRefCateg = useRef();
     const [isOpenCateg, setIsOpenCateg] = useState(false);
     const [postComments, setPostComments] = useState([]);
@@ -19,6 +20,8 @@ const Comment = ({ postId, setPosts }) => {
     const [loadingAddComment, setLoadingAddComment] = useState(false);
     const [isSortChanged, setIsSortChanged] = useState(0);
     const observer = useRef();
+
+
 
     const lastCommentElementRef = useCallback(node => {
         if (isPaginationLoading) return;
@@ -78,7 +81,11 @@ const Comment = ({ postId, setPosts }) => {
     });
 
     const fetchComments = async (postId, page, sort) => {
-        const response = await getRequest(`${baseUrl}/post/${postId}/comments?page=${page}&limit=5&sort=${sort.toLowerCase()}`);
+        let path=postId;
+        if (!postId) {
+        path  = location.pathname.split('/')[4];
+        }
+        const response = await getRequest(`${baseUrl}/post/${path}/comments?page=${page}&limit=5&sort=${sort.toLowerCase()}`);
         return response;
     }
 
@@ -172,6 +179,7 @@ const Comment = ({ postId, setPosts }) => {
                     setIsCommenting={setIsCommenting}
                     setIsPaginationLoading={setIsPaginationLoading}
                     setLoadingAddComment={setLoadingAddComment}
+                    setSelectedPost={setSelectedPost}
                     setPosts={setPosts}
                 />
 

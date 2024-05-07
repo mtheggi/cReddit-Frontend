@@ -1,6 +1,7 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import TurndownService from 'turndown';
 import "./Tiptap.css";
 import {
     FaBold,
@@ -90,8 +91,10 @@ export const Tiptap = ({ setDescription, initialContent }) => {
         content: initialContent,
 
         onUpdate: ({ editor }) => {
+            const turndownService = new TurndownService();
             const html = editor.getHTML();
-            setDescription(html);
+            const markdown = turndownService.turndown(html);
+            setDescription(markdown);
         },
     });
 

@@ -167,7 +167,8 @@ const SearchFeed = ({ isSafe, sortTime, sortType }) => {
             getSearchResults(query);
             prevPath.current = location.pathname;
             prevSafe.current = isSafe;
-            console.log("fetched")
+            prevSortTime.current = sortTime;
+            prevSortType.current = sortType;
         }
     }, [page, pathChanged]);
 

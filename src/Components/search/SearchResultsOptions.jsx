@@ -46,31 +46,31 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                     <h1 className="text-[12px] md:block hidden font-medium text-[#82949B] mr-4 ">SEARCH RESULTS</h1>
 
                     <div className="flex space-x-7  md:space-x-6 md:w-fit w-full xs:justify-between md:justify-start overflow-x-auto flex-wrap flex-row">
-                        <div onClick={() => changePath('posts')} className={`w-16 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("posts") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
-                            <h1 id="posts_option" className="text-[14px] font-medium text-gray-200">Posts</h1>
+                        <div id="posts_option" onClick={() => changePath('posts')} className={`w-16 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("posts") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
+                            <h1  className="text-[14px] font-medium text-gray-200">Posts</h1>
                         </div>
 
-                     {!(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  )&&  <div onClick={() => changePath('communities')} className={`w-28 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("communities") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
-                            <h1 id="communities_option" className="text-[14px] font-medium text-gray-200 ">Communities</h1>
+                     {!(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  )&&  <div  id="communities_option"  onClick={() => changePath('communities')} className={`w-28 no-select h-10 flex flex-row justify-center items-center ${location.pathname.endsWith("communities") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  rounded-3xl cursor-pointer`}>
+                            <h1 className="text-[14px] font-medium text-gray-200 ">Communities</h1>
                         </div>}
 
-                        <div onClick={() => changePath('comments')} className={`w-24 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("comments") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center   rounded-3xl cursor-pointer`}>
-                            <h1 id="comments_option" className="text-[14px] font-medium text-gray-200 ">Comments</h1>
+                        <div id="comments_option" onClick={() => changePath('comments')} className={`w-24 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("comments") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center   rounded-3xl cursor-pointer`}>
+                            <h1  className="text-[14px] font-medium text-gray-200 ">Comments</h1>
                         </div>
 
-                    { !(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  ) &&  <div onClick={() => changePath('people')} className={`w-18 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("people") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
-                            <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">People</h1>
+                    { !(location.pathname.includes("/r/") || location.pathname.includes("/user/") || location.pathname.includes("/my-user/")  ) &&  <div id="people_option" onClick={() => changePath('people')} className={`w-18 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("people") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
+                            <h1  className="text-[14px] font-medium text-gray-200 ">People</h1>
                         </div>}
 
-                        <div onClick={() => changePath('hashtags')} className={`w-22 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("hashtags") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
-                            <h1 id="people_option" className="text-[14px] font-medium text-gray-200 ">hashtags</h1>
+                        <div id="hashtag_option" onClick={() => changePath('hashtags')} className={`w-22 no-select h-10 flex flex-row justify-center ${location.pathname.endsWith("hashtags") ? 'bg-[#33464C]' : 'hover:bg-reddit_hover'}  items-center rounded-3xl cursor-pointer`}>
+                            <h1  className="text-[14px] font-medium text-gray-200 ">hashtags</h1>
                         </div>
                     </div>
                 </div>
 
-                <div id="ismature_switch_btn_search" className="flex flex-row lg:items-center h-[40px] lg:h-[80px] lg:ml-auto mr-7 font-light w-[140px]">
+                <div className="flex flex-row lg:items-center h-[40px] lg:h-[80px] lg:ml-auto mr-7 font-light w-[140px]">
                     <h1 className="mr-[20px] text-white text-[14px]">Safe Search</h1>
-                    <div className="-mt-2.5">
+                    <div id="ismature_switch_btn_search" className="-mt-2.5">
                         <SwitchButton isSwitched={isSafe} setIsSwitched={setIsSafe} />
                     </div>
                 </div>
@@ -87,7 +87,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                         <div ref={sortTypeRef} className="flex relative flex-row min-w-fit items-center ">
                             <h1 className="text-[#637278] mr-4 min-w-fit text-[12px]">Sort by: </h1>
 
-                            <div onClick={() => { setIsOpenSortType(prev => !prev) }} className={`flex  flex-row justify-center items-center ${sortType == "Most Comments" ? 'w-[145px]' : 'w-[122px] '} h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl`}>
+                            <div id="search_sort_type" onClick={() => { setIsOpenSortType(prev => !prev) }} className={`flex  flex-row justify-center items-center ${sortType == "Most Comments" ? 'w-[145px]' : 'w-[122px] '} h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl`}>
 
                 
 
@@ -123,7 +123,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
                                         id="search_hot"
                                         href=""
                                         className={`w-full pl-[28px] ${sortType == "Hot" ? "bg-reddit_search_light" : "hover:bg-reddit_hover"}   h-12 flex items-center cursor-pointer`}
-                                    >
+                                        >
                                         <svg rpl="" fill="currentColor" height="16" icon-name="hot-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M10.328.454 9.956.311l-.283.143C8.785.9 1 5.056 1 12.225c0 4.243 3.957 7.7 8.849 7.768A.979.979 0 0 0 9.99 20H10c4.962 0 9-3.488 9-7.775C19 5.056 11.215.9 10.328.454ZM12.5 17.789a3.699 3.699 0 0 1-2.854.945 3.48 3.48 0 0 1-2.457-1.37 3.945 3.945 0 0 1-.764-3.052c.441-2.639 2.75-4.38 3.576-4.926.928.611 3.65 2.674 3.65 5.818a3.469 3.469 0 0 1-1.151 2.585Zm1.64-.057c.49-.754.753-1.633.76-2.532 0-4.268-4.069-6.79-4.537-7.066l-.415-.184-.315.187c-.638.377-3.852 2.436-4.442 5.964A5.18 5.18 0 0 0 6 17.8a6.4 6.4 0 0 1-3.75-5.575c0-5.969 6.4-9.788 7.75-10.53 1.352.741 7.75 4.56 7.75 10.53a6.366 6.366 0 0 1-3.611 5.507h.001Z"></path>
                                         </svg>
@@ -162,7 +162,7 @@ const SearchResultsOptions = ({ isSafe, setIsSafe, sortTime, sortType, setSortTi
 
 
                         <div className="relative">
-                            <div ref={sortTimeRef} onClick={() => setIsOpenSortTime(prev => !prev)} className="flex flex-row ml-4 justify-center items-center w-[140px] h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl">
+                            <div id="search_sort_time" ref={sortTimeRef} onClick={() => setIsOpenSortTime(prev => !prev)} className="flex flex-row ml-4 justify-center items-center w-[140px] h-9 hover:bg-reddit_search_light cursor-pointer rounded-3xl">
                                 <svg rpl="" fill="#82949B" height="16" icon_name="calendar-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M17.374 2H16V.25h-1.25V2h-9.5V.251H4V2H2.626A1.627 1.627 0 0 0 1 3.626v13.748A1.627 1.627 0 0 0 2.626 19h14.748A1.627 1.627 0 0 0 19 17.374V3.626A1.627 1.627 0 0 0 17.374 2ZM2.626 3.25H4v1h1.25v-1h9.5v1H16v-1h1.374a.377.377 0 0 1 .376.376V7H2.25V3.626a.377.377 0 0 1 .376-.376Zm14.748 14.5H2.626a.377.377 0 0 1-.376-.376V8.25h15.5v9.124a.378.378 0 0 1-.376.376Z"></path>
                                 </svg>

@@ -119,7 +119,13 @@ const Mainfeed = ({ mode }) => {
       setPage(1);
       setIsSortChanged(prev => (prev + 1));
     }
-  }, [selectedSort, isLoggedIn]);
+  }, [selectedSort]);
+
+
+  useEffect(() => {
+      setPosts([]);
+      setPage(1);
+  }, [isLoggedIn]);
 
 
 
@@ -266,10 +272,10 @@ const Mainfeed = ({ mode }) => {
         <>
           {!isSinglePostSelected && posts.map((post, i) => {
             if (posts.length === i + 1) {
-              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
+              return <Post id={post._id} key={post._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
             }
             else {
-              return <Post id={post._id} key={i} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+              return <Post id={post._id} key={post._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
             }
           })}
         </>
@@ -281,7 +287,7 @@ const Mainfeed = ({ mode }) => {
           loadingPost ? <Loading /> :
             <>
               <Post id={selectedPost._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-              <Comment postId={selectedPost._id} setPosts={setPosts} />
+              <Comment postId={selectedPost._id} setSelectedPost={setSelectedPost}  setPosts={setPosts} />
             </>
         )
       }
