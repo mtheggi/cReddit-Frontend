@@ -3,6 +3,8 @@ import moment from "moment";
 import { AvatarGenerator } from 'random-avatar-generator';
 import { ChatContext } from "@/context/ChatContext";
 import { UserContext } from "@/context/UserContext";
+import { patchRequest } from "@/services/Requests";
+import { baseUrl } from "@/constants";
 const Channel = ({ index, roomInfo }) => {
     const [isOpenChannel, setIsOpenChannel] = useState(false);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -10,9 +12,11 @@ const Channel = ({ index, roomInfo }) => {
     const generator = new AvatarGenerator();
     const [avatar, setAvatar] = useState("https://random.imagecdn.app/500/150");
     const { _id, name, lastSentMessage } = roomInfo;
-    const { createdAt, content } = lastSentMessage || { createdAt: "", content: "" };
+    const { createdAt, content, isRead } = lastSentMessage || { createdAt: "", content: "" };
     const { socket, rooms, selectedRoomId, setSelectedRoomId, setIsChannelSelected, setIsAddChat, setSelectedRoom } = useContext(ChatContext);
     const { user } = useContext(UserContext);
+
+    const [myIsRead, setMyIsRead] = useState(isRead);
     useEffect(() => {
         const newAvatar = generator.generateRandomAvatar(_id);
         setAvatar(newAvatar);
@@ -57,6 +61,13 @@ const Channel = ({ index, roomInfo }) => {
     const handleLeaveRoom = () => {
         socket.current.emit('leaveRoom', rooms[index]); // Emit the 'leaveRoom' event with the current room ID
     };
+    const handleMarkAsRead = async (roomId) => {
+        console.log("mark AS READ ");
+        const response = await patchRequest(`${baseUrl}/chat/${roomId}/mark-as-read`);
+        if (response.status === 200) {
+            setMyIsRead(true);
+        }
+    }
 
     return (
         <div
@@ -70,6 +81,7 @@ const Channel = ({ index, roomInfo }) => {
                 setSelectedRoomId(_id);
                 setSelectedRoom(roomInfo);
                 setIsAddChat(false);
+                handleMarkAsRead(_id);
                 console.log("selectedRoomId", _id);
                 setIsChannelSelected(true);
 
@@ -84,8 +96,10 @@ const Channel = ({ index, roomInfo }) => {
                     <p className="text-gray-500 text-xs">{moment(createdAt).calendar()}</p>
                 </div>
 
-                <div className="flex flex-row">
+                <div className="flex flex-row justify-between">
                     <p className="text-gray-400 text-sm"> {limitMessage(content)}</p>
+
+                    {!myIsRead && <div className='w-[13px] h-[13px] border-[2px] border-[#0C1416] mt-1 rounded-full bg-reddit_upvote'> </div>}
                 </div>
             </div>
         </div>

@@ -8,4 +8,5 @@ export const baseUrl = 'https://api.creddit.tech';
 // export const socketBaseUrl = 'https://chat.creddit.tech'
 export const socketBaseUrl = 'https://api.creddit.tech'
 // export const baseUrl = "http://localhost:3000";
+// export const socketBaseUrl = "http://localhost:3000";
 

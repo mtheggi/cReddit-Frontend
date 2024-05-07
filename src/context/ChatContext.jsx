@@ -27,7 +27,9 @@ export const ChatContextProvider = ({ children }) => {
         if (!socket.current) {
             console.log('Connecting to server', socket.current)
             socket.current = io(socketBaseUrl, {
-                withCredentials: true
+                withCredentials: true,
+                reconnection: true,
+                reconnectionAttempts: 10
             });
             socket.current.on('connect', () => {
                 console.log('Connected to server', socket.current)
