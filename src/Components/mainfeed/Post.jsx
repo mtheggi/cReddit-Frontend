@@ -144,10 +144,17 @@ const Post = ({
     if (!username && !communityName)
       setCurrentIsDeleted(true);
 
-  }
-    , []);
+  }, []);
 
 
+  useEffect(() => {
+    if (!EditedSpoiler && !EditedNSFW)
+      setBlured(false);
+
+    if (EditedSpoiler || EditedNSFW)
+      setBlured(true);
+
+  }, [EditedNSFW, EditedSpoiler]);
 
   useEffect(() => {
     let closeDropdown = (e) => {
@@ -304,11 +311,40 @@ const Post = ({
   };
 
 
+  const markAsSpoiler = async () => {
+    const response = await patchRequest(`${baseUrl}/post/${id}/mark-spoiler`, {
+      isSpoiler: !EditedSpoiler
+    });
+    if (response.status == 200 || response.status == 201) {
+      setEditedSpoiler(!EditedSpoiler);
+      setPosts(prev => prev.map(post => post._id === id ? { ...post, isSpoiler: !EditedSpoiler } : post));
+    } else {
+      showAlertForTime("error", response.data.message);
+    }
+  }
+
+
+  const markAsNSFW = async () => {
+    const response = await patchRequest(`${baseUrl}/post/${id}/mark-nsfw`, {
+      isNSFW: !EditedNSFW
+    });
+    if (response.status == 200 || response.status == 201) {
+      setEditedNSFW(!EditedNSFW);
+      setPosts(prev => prev.map(post => post._id === id ? { ...post, isNSFW: !EditedNSFW } : post));
+    }
+    else {
+      showAlertForTime("error", response.data.message);
+    }
+
+  }
+
+
+
   const submitEditedPost = async () => {
     const response = await patchRequest(`${baseUrl}/post/${id}`, {
       newContent: editPostContent
     });
-    if (response.status == 200 || response.status == 201) {
+    if ((response.status == 200 || response.status == 201) && (isNSFWresponse.status == 200 || isNSFWresponse.status == 201) && (isSPoilerresponse.status == 200 || isSPoilerresponse.status == 201)) {
       setEditMode(false);
       setPosts(prev => prev.map(post => post._id === id ? { ...post, content: editPostContent } : post));
     } else {
@@ -409,7 +445,6 @@ const Post = ({
     }
     else {
       setPosts(prev => prev.filter(post => post._id !== id));
-
     }
 
   }
@@ -494,7 +529,7 @@ const Post = ({
               />
             </div>}
             {isOpenDots && (
-              <div className={`z-20 w-30 ${(username == userInfo.username && type == "Post") ? 'h-62 mt-66' : (username == userInfo.username) ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[78px]" : "-ml-[72px]"} `}>
+              <div className={`z-20 w-48 ${(username == userInfo.username && type == "Post") ? 'h-72 mt-78' : (username == userInfo.username) ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[156px]" : "-ml-[82px]"} `}>
                 <div onClick={handleClickSave}
                   id={"mainfeed_" + id + "_menu_save"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
@@ -526,6 +561,35 @@ const Post = ({
                   </div>}
 
 
+                {username == userInfo.username && type == "Post" &&
+                  <div onClick={markAsSpoiler}
+                    id={"mainfeed_" + id + "_menu_report"}
+                    className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                  >
+                    <svg rpl="" fill="currentColor" height="20" icon-name="spoiler-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M9.463 15.384A1.092 1.092 0 0 1 9.076 15a1.033 1.033 0 0 1-.143-.537c-.002-.186.047-.369.143-.529.093-.16.227-.293.387-.387.16-.097.345-.148.533-.147a1.05 1.05 0 0 1 .537.141 1.076 1.076 0 0 1 .537.921c0 .188-.051.373-.148.535-.096.159-.23.292-.39.386a1.042 1.042 0 0 1-.536.143 1.026 1.026 0 0 1-.533-.142Zm-.141-3.329L9.13 5.342h1.73l-.192 6.713H9.322Zm.667 7.935a4.6 4.6 0 0 1-3.27-1.354l-5.367-5.365a4.634 4.634 0 0 1 0-6.542l5.367-5.365a4.626 4.626 0 0 1 6.54 0l5.366 5.364a4.627 4.627 0 0 1 0 6.542l-5.364 5.365a4.6 4.6 0 0 1-3.272 1.355Zm0-18.73a3.353 3.353 0 0 0-2.386.988L2.237 7.614a3.375 3.375 0 0 0 0 4.772l5.366 5.366a3.46 3.46 0 0 0 4.771 0l5.365-5.366a3.374 3.374 0 0 0 0-4.772L12.374 2.25A3.349 3.349 0 0 0 9.99 1.26Z"></path></svg>
+                    {!EditedSpoiler && <p className="ml-2 no-select">Add spoiler tag</p>}
+                    {EditedSpoiler && <p className="ml-2 no-select">Remove spoiler tag</p>}
+                  </div>}
+
+
+                {username == userInfo.username && type == "Post" &&
+                  <div onClick={markAsNSFW}
+                    id={"mainfeed_" + id + "_menu_report"}
+                    className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
+                  >
+                    {!EditedNSFW &&
+                      <>
+                        <svg rpl="" fill="currentColor" height="20" icon-name="nsfw-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"> <path d="m4.47 7.123 2.653-1.26h.47V14.5H6.15V7.668l-1.68.8V7.123Zm9.9 3.69a2.288 2.288 0 0 1-.02 2.54 2.7 2.7 0 0 1-1.085.91 3.699 3.699 0 0 1-3.068 0A2.774 2.774 0 0 1 9.1 13.35a2.253 2.253 0 0 1-.019-2.532c.257-.383.61-.69 1.025-.893A2.372 2.372 0 0 1 9.4 9.11a2.21 2.21 0 0 1-.257-1.048 2.1 2.1 0 0 1 .342-1.175c.233-.353.557-.637.938-.82.409-.202.86-.305 1.315-.3.451-.005.897.098 1.3.3.377.185.697.468.926.82.227.352.345.762.34 1.18a2.2 2.2 0 0 1-.255 1.05 2.3 2.3 0 0 1-.706.8c.415.202.77.512 1.026.896ZM12.54 13.2c.235-.11.437-.28.583-.495.142-.207.216-.454.214-.705a1.267 1.267 0 0 0-.205-.7 1.468 1.468 0 0 0-.57-.51 1.776 1.776 0 0 0-.83-.19c-.29-.004-.577.061-.836.19a1.5 1.5 0 0 0-.583.513 1.262 1.262 0 0 0 .003 1.4c.147.216.348.388.583.5.256.124.537.186.821.182a1.86 1.86 0 0 0 .82-.185Zm-1.474-6.083a1.194 1.194 0 0 0-.468.422 1.11 1.11 0 0 0-.173.615c-.002.224.058.444.173.636.113.192.275.35.468.46.201.114.429.173.66.17.23.002.456-.055.656-.167a1.233 1.233 0 0 0 .638-1.099 1.132 1.132 0 0 0-.635-1.037 1.507 1.507 0 0 0-1.319 0ZM10 19.988a4.616 4.616 0 0 1-3.27-1.352l-5.366-5.365a4.627 4.627 0 0 1 0-6.542L6.73 1.364a4.634 4.634 0 0 1 6.542 0l5.366 5.365a4.634 4.634 0 0 1 0 6.542l-5.366 5.365a4.615 4.615 0 0 1-3.27 1.352Zm0-18.726a3.362 3.362 0 0 0-2.386.987L2.25 7.614a3.374 3.374 0 0 0 0 4.772l5.366 5.365a3.38 3.38 0 0 0 4.773 0l5.365-5.365a3.375 3.375 0 0 0 0-4.772L12.387 2.25A3.364 3.364 0 0 0 10 1.262Z"></path></svg>
+                        <p className="ml-2 no-select">Add NSFW tag</p>
+                      </>}
+                    {EditedNSFW &&
+                      <>
+                        <svg rpl="" fill="white" height="20" icon-name="nsfw-fill" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"> <path d="M13 10.967a1.593 1.593 0 0 0-1.363 0 1.2 1.2 0 0 0-.475.414 1.02 1.02 0 0 0-.173.576.967.967 0 0 0 .18.574c.122.172.29.307.482.393.21.095.438.143.668.14a1.51 1.51 0 0 0 .671-.146 1.2 1.2 0 0 0 .475-.4.985.985 0 0 0 .173-.569 1.024 1.024 0 0 0-.17-.57 1.2 1.2 0 0 0-.469-.412Z"></path><path d="M11.747 9.227c.177.095.374.143.574.14.2.003.396-.045.572-.14a1.057 1.057 0 0 0 .402-1.462.984.984 0 0 0-.406-.37 1.317 1.317 0 0 0-1.137 0 1 1 0 0 0-.557.902 1.047 1.047 0 0 0 .551.932l.001-.002Z"></path><path d="M18.636 6.73 13.27 1.363a4.634 4.634 0 0 0-6.542 0L1.364 6.73a4.627 4.627 0 0 0 0 6.542l5.365 5.365a4.633 4.633 0 0 0 6.542 0l5.366-5.365a4.634 4.634 0 0 0 0-6.542ZM8.204 14.5H6.288V8.277L4.648 9V7.23l2.988-1.367h.568V14.5Zm6.862-1.148c-.29.4-.683.714-1.136.912a4.11 4.11 0 0 1-3.24-.006 2.8 2.8 0 0 1-1.134-.918 2.172 2.172 0 0 1-.41-1.283c0-.42.12-.83.345-1.184a2.6 2.6 0 0 1 .944-.879 2.488 2.488 0 0 1-.636-.832c-.152-.32-.23-.67-.229-1.025a2.117 2.117 0 0 1 .378-1.248c.256-.362.604-.65 1.008-.832.43-.198.9-.298 1.374-.293.474-.004.942.099 1.371.3.403.182.749.47 1 .834.249.368.378.804.37 1.248a2.371 2.371 0 0 1-.868 1.851c.383.21.708.51.944.877a2.24 2.24 0 0 1-.074 2.481l-.007-.003Z"></path> </svg>
+                        <p className="ml-2 no-select">Remove NSFW tag</p>
+                      </>}
+                  </div>}
+
+
 
                 {username == userInfo.username &&
                   <div onClick={deletePost}
@@ -554,9 +618,9 @@ const Post = ({
         </div>
 
         <div className={`mt-1 ${shareMode ? 'mb-[10px]' : ''}  w-full h-fit flex flex-col`}>
-          {(isSpoiler || isNSFW) && (
+          {(EditedSpoiler || EditedNSFW) && (
             <div className="text-white items-center mt-1.5 flex-row flex font-medium text-lg">
-              {isSpoiler && (
+              {EditedSpoiler && (
                 <div
                   onClick={(e) => {
                     setBlured(true);
@@ -569,7 +633,7 @@ const Post = ({
                   </h1>
                 </div>
               )}
-              {isNSFW && (
+              {EditedNSFW && (
                 <div
                   onClick={(e) => {
                     setBlured(true);
@@ -836,18 +900,10 @@ const Post = ({
 
         {editMode &&
           <div className="flex flex-row w-full items-center">
-            <div id={`${id}_spoiler_edit`} onClick={() => setEditedSpoiler(prev => !prev)} className={` hover:bg-reddit_search_light   w-14 h-[30px]  rounded-full flex justify-center items-center cursor-pointer ml-auto`}>
-
-              <p className={`no-select ml-1 mr-0.5 ${EditedSpoiler ? 'text-red-600' : 'text-gray-300'} font-semibold text-[12px]`}>Spoiler</p>
-            </div>
-
-            <div id={`${id}_nsfw_edit`} onClick={() => setEditedNSFW(prev => !prev)} className={` hover:bg-reddit_search_light  w-14 h-[30px] mr-4 ml-3 rounded-full flex justify-center items-center cursor-pointer `}>
-
-              <p className={`ml-1 no-select mr-0.5 ${EditedNSFW ? 'text-[#E00296]' : 'text-gray-300'} font-semibold  text-[12px]`}>NSFW</p>
-            </div>
 
 
-            <div onClick={() => setEditMode(false)} id={`${id}_save_cancel`} className="w-14 h-8 items-center flex flex-row justify-center hover:bg-reddit_search_light cursor-pointer bg-reddit_search rounded-2xl">
+
+            <div onClick={() => { setEditMode(false); setEditedNSFW(isNSFW); setEditedSpoiler(isSpoiler); setEditPostContent(content); }} id={`${id}_save_cancel`} className="w-14 h-8 items-center ml-auto flex flex-row justify-center hover:bg-reddit_search_light cursor-pointer bg-reddit_search rounded-2xl">
               <p className="text-white text-[12px] font-medium">Cancel</p>
             </div>
 
@@ -863,8 +919,13 @@ const Post = ({
 
 
         {shareMode &&
-          <div className="w-full flx flex-row">
-            <div className="ml-auto w-14 h-[34px] hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] flex flex-row justify-center items-center rounded-3xl">
+          <div className="w-full flex items-center flex-row">
+
+            <div onClick={()=>setShareMode(false)} className="ml-auto w-14 h-[36px] mr-3 hover:bg-reddit_search_light cursor-pointer bg-reddit_search  flex flex-row justify-center items-center rounded-3xl">
+              <h1 className="text-white text-[12px] font-medium ">Cancel</h1>
+
+            </div>
+            <div className=" w-14 h-[34px] hover:bg-reddit_light_blue cursor-pointer bg-[#0045AC] flex flex-row justify-center items-center rounded-3xl">
               <h1 className="text-white text-[12px] font-medium ">Share</h1>
 
             </div>
