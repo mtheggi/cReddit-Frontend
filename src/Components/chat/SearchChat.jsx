@@ -100,7 +100,7 @@ const SearchChat = () => {
                     <div className="flex-col flex h-fit w-full ">
                         {userResults.length != 0 && <h1 className={`text-gray-400 ${communityResults.length == 0 ? "mt-10" : "mt-[10px]"} mb-[5px] text-[14px] px-3 font-semibold`}>People</h1>}
                         {userResults.map((user, index) => {
-                            return <ChatSearchUserRow key={index} {...user} handleClick={handleTagClick} />
+                            return <ChatSearchUserRow key={index} {...user} handleClick={handleTagClick} index={index} />
                         })}
                     </div>
                     <Separator />
@@ -135,7 +135,7 @@ const SearchChat = () => {
                         <li key={index} className="tag">
                             <img src={profilePictureTag[index]} className='h-4 w-4 rounded-full mr-1'></img>
                             <span className='tag-title'>{tag}</span>
-                            <span className='tag-close-icon'
+                            <span id="remove-tag-icon" className='tag-close-icon'
                                 onClick={() => removeTags(index)}
                             >
                                 x

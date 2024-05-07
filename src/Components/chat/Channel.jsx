@@ -62,6 +62,7 @@ const Channel = ({ index, roomInfo }) => {
         <div
             ref={channelRef}
             data-testid="open-threads"
+            id="open-threads"
             className={`flex flex-row h-[50px] px-3 py-2 mt-1 justify-start items-center hover:bg-reddit_dark_Chat_hover cursor-pointer ${isOpenChannel ? "bg-reddit_dark_Chat_hover" : ""
                 }`}
             onClick={() => {
