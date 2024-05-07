@@ -32,13 +32,13 @@ const PasswordRecovery = () => {
 
   const handleRecoverySubmit = async () => {
     if (!recoveryError && validatePassword(password) && passwordsMatch()) {
-      const response = await patchRequest(`${baseUrl}/reset-password/${token}`, {
+      const response = await patchRequest(`${baseUrl}/user/reset-password/${token}`, {
         password,
         confirmPassword,
       });
       if (response.status !== 200 && response.status !== 201) {
         setRecoveryError(response.data.message);
-        RecoveryFailedToast("Failed to Change Password");
+        RecoveryFailedToast(response.data.message);
       } else {
         RecoverySuccessToast("Password Changed Successfully");
         setTimeout(() => {
