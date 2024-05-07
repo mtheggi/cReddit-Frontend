@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { baseUrl } from "@/constants";
 import { getRequest } from "@/services/Requests";
 import SocialLink from "./SocialLink";
+import CommunityModeration from "./CommunityModeration";
 
 /**
  * Renders the right sidebar component for displaying user information and settings.
@@ -12,6 +13,7 @@ import SocialLink from "./SocialLink";
  */
 const RightSidebar = ({ userInfo }) => {
   const [socialLinks, setSocialLinks] = useState([]);
+  const [communities, setCommunities] = useState([]);
 
   const currentUrl = window.location.origin;
 
@@ -32,9 +34,21 @@ const RightSidebar = ({ userInfo }) => {
       const response = await getRequest(`${baseUrl}/user/settings`);
       if (response.status === 200 || response.status === 201) {
         setSocialLinks(response.data.profile.socialLinks);
+        console.log(response.data.profile.socialLinks);
       }
     };
     getSocialLinks();
+  }, []);
+
+  useEffect(() => {
+    const getCommunities = async () => {
+      const response = await getRequest(`${baseUrl}/user/moderator-in`);
+      if (response.status === 200 || response.status === 201) {
+        setCommunities(response.data);
+        console.log(response.data);
+      }
+    };
+    getCommunities();
   }, []);
 
   return (
@@ -335,6 +349,27 @@ const RightSidebar = ({ userInfo }) => {
               ))}
             </div>
           </div>
+
+          {communities.length > 0 && (
+            <>
+              <hr className="border-b-[1px] border-neutral-500"></hr>
+
+              <h2 className="text-[12px] font-semibold uppercase text-[#82959B] my-[1rem]">
+                You're a moderator of these communities
+              </h2>
+
+              <ul className="pl-0 my-0">
+                {communities.map((community, index) => (
+                  <CommunityModeration
+                    key={index}
+                    name={community.name}
+                    icon={community.icon}
+                    members={community.members}
+                  />
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </div>
     </div>
