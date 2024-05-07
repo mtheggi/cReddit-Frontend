@@ -167,14 +167,15 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                 date: date,
                 time: time,
                 description: payload.notification.body,
-                image: avatar 
+                image: avatar,
+                isRead: false
             };
             addNotification(notificationDetails);
             console.log(notifications);
         });
     }, []);
     
-
+    const unreadNotificationsCount = notifications.filter(notification => !notification.isRead).length;
 
     return (
         <div ref={navbarRef} className="flex z-30 fixed flex-col w-full no-select">
@@ -319,7 +320,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                     >
                                         <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer relative'>
                                             <BellIcon className="h-7 w-6 text-gray-300" />
-                                            {notifications.length > 0 && (
+                                            {unreadNotificationsCount > 0 && (
                                                 <span style={{
                                                     position: 'absolute',
                                                     top: '-6px',
@@ -336,7 +337,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                 }}>
-                                                    {notifications.length}
+                                                    {unreadNotificationsCount}
                                                 </span>
                                             )}
                                         </div>
@@ -368,9 +369,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                         <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} setIsOpenBellMenu={setIsOpenBellMenu}/>
                                     )}
                                 </div>
-
-
-
 
                                 <div className="flex justify-center items-center w-fit h-fit">
                                     <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => {  setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>

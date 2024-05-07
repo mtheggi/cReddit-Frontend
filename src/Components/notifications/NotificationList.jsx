@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import NotificationItem from './NotificationItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
-import { putRequest } from '../../services/Requests';
+import { putRequest, getRequest } from '../../services/Requests';
 import { baseUrl } from "../../constants";
 
 /**
@@ -119,11 +119,24 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
     });
 
     const handleMarkAllAsRead = async () => {
-        const response = await putRequest(`${baseUrl}/notification/mark-all-as-read`);
-        if (response.status == 200 || response.status == 201) {
-            console.log("All marked as read")
+        try {
+            const response = await putRequest(`${baseUrl}/notification/mark-all-as-read`);
+            if (response.status === 200 || response.status === 201) {
+                // Update notifications state to set all as read
+                const updatedNotifications = notifications.map(notification => ({
+                    ...notification,
+                    isRead: true
+                }));
+                setNotifications(updatedNotifications);
+                
+                console.log("All notifications marked as read:", response);
+            } else {
+                console.error("Error marking all notifications as read:", response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
         }
-    }
+    };
 
     return (
         <div
