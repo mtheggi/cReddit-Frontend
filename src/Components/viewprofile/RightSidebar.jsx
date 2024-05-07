@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { baseUrl } from "@/constants";
+import { getRequest } from "@/services/Requests";
+import SocialLink from "./SocialLink";
 
 /**
  * Renders the right sidebar component for displaying user information and settings.
@@ -8,7 +11,9 @@ import React from "react";
  * @returns {JSX.Element} A React component representing the right sidebar.
  */
 const RightSidebar = ({ userInfo }) => {
-  const baseUrl = window.location.origin;
+  const [socialLinks, setSocialLinks] = useState([]);
+
+  const currentUrl = window.location.origin;
 
   /**
    * Formats the cake day date.
@@ -22,10 +27,20 @@ const RightSidebar = ({ userInfo }) => {
     return date.toLocaleDateString("en-US", options);
   };
 
+  useEffect(() => {
+    const getSocialLinks = async () => {
+      const response = await getRequest(`${baseUrl}/user/settings`);
+      if (response.status === 200 || response.status === 201) {
+        setSocialLinks(response.data.profile.socialLinks);
+      }
+    };
+    getSocialLinks();
+  }, []);
+
   return (
     <div
       id="right-sidebar"
-      className="w-[316px] min-w-[316px] hidden md:block md:sticky md:top-[56px] md:max-h-[calc(100vh-56px-1px)] md:overflow-y-auto md:overflow-x-hidden mt-[60px]"
+      className="w-[316px] min-w-[316px] hidden md:block md:sticky md:top-[56px] md:max-h-[calc(100vh-56px-1px)] md:overflow-y-auto md:overflow-x-hidden mt-[60px] no-scrollbar"
     >
       <div className="mt-[16px] rounded-[16px] bg-[#04090A]">
         <div
@@ -40,7 +55,7 @@ const RightSidebar = ({ userInfo }) => {
                 rpl=""
                 aria-label="Edit profile banner"
                 className="px-[6px] items-center justify-center inline-flex "
-                href={`${baseUrl}/settings/profile`}
+                href={`${currentUrl}/settings/profile`}
                 waprocessedanchor="true"
               >
                 <span className="flex items-center justify-center">
@@ -66,7 +81,7 @@ const RightSidebar = ({ userInfo }) => {
         <div className="p-[16px]">
           <div className="flex items-center justify-between">
             <h2 className="m-0 text-[16px] text-neutral-100 font-bold truncate h-[20px]">
-              {userInfo.username}
+              {userInfo.displayName}
             </h2>
           </div>
           <div className="mt-[12px]">
@@ -110,7 +125,17 @@ const RightSidebar = ({ userInfo }) => {
                 Comment Karma
               </p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0">
+              <p className="m-0 text-neutral-200 text-[14px] font-semibold whitespace-nowrap">
+                <span className="font-semibold text-[14px]">
+                  {userInfo.followers}
+                </span>
+              </p>
+              <p className="m-0 text-neutral-500 text-[12px] whitespace-nowrap truncate">
+                Followers
+              </p>
+            </div>
+            <div className="flex flex-col min-w-0">
               <p className="m-0 text-neutral-200 text-[14px] font-semibold whitespace-nowrap">
                 <span className="font-semibold text-[14px]">
                   {formatCakeDay(userInfo.cakeDay)}
@@ -169,7 +194,7 @@ const RightSidebar = ({ userInfo }) => {
                   <span className="flex items-center justify-center h-[1.5rem]">
                     <a
                       className="pointer-events-auto h-[2rem] px-[10px] items-center justify-center inline-flex bg-[#1A282D] rounded-3xl hover:bg-gray-700"
-                      href={`${baseUrl}/settings/profile`}
+                      href={`${currentUrl}/settings/profile`}
                     >
                       <span className="flex items-center justify-center">
                         <span className="flex items-center gap-[0.5rem] text-[12px]">
@@ -267,64 +292,49 @@ const RightSidebar = ({ userInfo }) => {
             </li>
           </ul>
 
-          {/* <hr className="border-b-[1px] border-neutral-500 mt-[10px]"></hr> */}
+          <hr className="border-b-[1px] border-neutral-500"></hr>
 
-          {/* <h2 className="text-[12px] font-semibold uppercase text-[#82959B] my-[1rem]">
-            You're a moderator of these communities
+          <h2 className="text-[12px] font-semibold uppercase text-[#82959B] my-[16px]">
+            Links
           </h2>
 
-          <ul className="pl-0 my-0">
-            <li className="relative list-none mt-0 -mx-[1rem]">
+          <div className="mb-[0.75rem]">
+            <div className="flex gap-[0.5rem] flex-wrap">
               <a
-                className="flex justify-between relative px-[1rem] gap-[0.5rem] text-secondary hover:text-secondary-hover active:bg-interactive-pressed hover:bg-neutral-background-hover hover:no-underline cursor-pointer py-2xs -outline-offset-1 no-underline"
-                href="https://www.reddit.com/r/SS_Ltd"
+                href={`${currentUrl}/settings/profile`}
+                className="px-[10px] items-center justify-center rounded-full cursor-pointer inline-flex bg-[#1A282D] py-[8px] hover:bg-gray-700"
               >
-                <span className="flex items-center gap-xs min-w-0 shrink">
-                  <span className="flex shrink-0 items-center justify-center h-xl w-xl text-20 leading-4">
+                <span className="flex items-center justify-center text-white">
+                  <span className="flex mr-[0.5rem]">
                     <svg
                       rpl=""
-                      className="absolute"
                       fill="currentColor"
-                      height="24"
-                      icon-name="community-outline"
+                      height="12"
+                      icon-name="add-fill"
                       viewBox="0 0 20 20"
-                      width="24"
+                      width="12"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <path d="M9.875 7.614a2.055 2.055 0 0 0-.974.222 1.62 1.62 0 0 0-.879 1.46v4.2H6.409V6.2h1.552v.93H8c.275-.32.616-.575 1-.748.453-.207.947-.31 1.445-.3.243-.003.487.02.725.071.158.03.31.084.451.161l-.649 1.559a1.731 1.731 0 0 0-.523-.2 2.755 2.755 0 0 0-.574-.059ZM20 10A10 10 0 1 1 10 0a10.011 10.011 0 0 1 10 10Zm-1.25 0a8.722 8.722 0 0 0-2.841-6.435l-4.974 11.986H9.581l5.3-12.809A8.748 8.748 0 1 0 18.75 10Z"></path>
+                      <path d="M19 9h-8V1H9v8H1v2h8v8h2v-8h8V9Z"></path>
                     </svg>
                   </span>
-
-                  <span className="flex flex-col justify-center min-w-0 shrink py-[var(--rem6)]">
-                    <span className="text-14">r/SS_Ltd</span>
-                    <span className="text-12 text-secondary-weak">
-                      <faceplate-number number="1" pretty="">
-                        1
-                      </faceplate-number>
-                      <span>member</span>
+                  <span className="flex items-center gap-[0.5rem]">
+                    <span className="flex items-center text-[12px]">
+                      Add Social Link
                     </span>
                   </span>
                 </span>
-                <span className="flex items-center shrink-0">
-                  <span className="flex items-center justify-center h-lg">
-                    <faceplate-tracker
-                      source="profile"
-                      action="click"
-                      noun="join_moderated_community"
-                    >
-                      <shreddit-join-button
-                        subreddit-id="t5_azwz1z"
-                        name="SS_Ltd"
-                        buttonsize="x-small"
-                        unsubscribe-label="Joined"
-                        subscribed=""
-                      ></shreddit-join-button>
-                    </faceplate-tracker>
-                  </span>
-                </span>
               </a>
-            </li>
-          </ul> */}
+
+              {socialLinks.map((link, index) => (
+                <SocialLink
+                  key={index}
+                  platform={link.platform}
+                  url={link.url}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
