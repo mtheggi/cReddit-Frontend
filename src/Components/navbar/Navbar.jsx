@@ -19,7 +19,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import NotificationList from '../notifications/NotificationList'
 import { useNotifications } from '../notifications/NotificationContext'; 
 import { CurrencyPoundTwoTone } from '@mui/icons-material';
-import { generateToken, messaging } from "../../firebase";
+import fcmToken, { generateToken, messaging } from "../../firebase";
 import { onMessage } from 'firebase/messaging';
 import toast, {Toaster} from 'react-hot-toast'
 
@@ -75,7 +75,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
      * @function handleLogout
      * */
     const handleLogout = async () => {
-        const response = await getRequest(`${baseUrl}/user/logout`);
+        const response = await getRequest(`${baseUrl}/user/logout`, {
+            fcmToken
+        });
         if (response.status == 200 || response.status == 201) {
             setIsLoggedIn(false);
             setIsOpenProfileMenu(false);
