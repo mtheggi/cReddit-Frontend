@@ -19,6 +19,7 @@ import Community from "./views/Community";
 import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from './views/NotificationPage';
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
+import VerifyEmail from "./views/VerifyEmail";
 
 function App() {
 
@@ -81,6 +82,7 @@ function App() {
             />
             {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
             {isLoggedIn && <Route path="/submit" element={<CreatePost />} />}
+            <Route path={"/verify/:token"} element={<VerifyEmail/>}/>
             <Route path="/notifications" element={<NotificationPage isVisibleLeftSidebar={isVisibleLeftSidebar}setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}navbarRef={navbarRef}/>}/>
             <Route path="/passwordrecovery/:token" element={<PasswordRecovery />} />
             <Route path="/best/communities" element={<TopCommunities />} />
