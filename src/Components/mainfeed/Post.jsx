@@ -29,6 +29,7 @@ import { Save } from './comment/CommentUtils';
 import { UserContext } from '@/context/UserContext';
 import ReactMarkdown from 'react-markdown';
 import Tiptap from "../tiptap/Tiptap";
+import { ReportModal } from "./ReportModal";
 
 
 
@@ -77,6 +78,8 @@ const Post = ({
   const [isOptionSelected, setIsOptionSelected] = useState(false);
   const [editPostContent, setEditPostContent] = useState(type == "Post" ? content : "");
   const [commentsNumber, setCommentsNumber] = useState(commentCount);
+  const [isOpenReportModal, setIsOpenReportModal] = useState(false);
+  const [communityRules, setCommunityRules] = useState([]);
   const [hasVoted, setHasVoted] = useState(
     pollOptions?.find((option) => option.isVoted === true) ? true : false
   );
@@ -95,6 +98,7 @@ const Post = ({
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [shareMode, setShareMode] = useState(false);
+  const reportModalRef = useRef();
 
   useEffect(() => {
     setEditedPollOptions(pollOptions);
@@ -140,6 +144,14 @@ const Post = ({
   }
 
 
+  const getCommunityRules = async () => {
+    const response = await getRequest(`${baseUrl}/subreddit/${communityName}/rules`);
+    if (response.status === 200 || response.status === 201) {
+      setCommunityRules(response.data);
+    }
+  }
+
+
   useEffect(() => {
     if (!username && !communityName)
       setCurrentIsDeleted(true);
@@ -163,6 +175,9 @@ const Post = ({
 
       if (shareMenuRef.current && !shareMenuRef.current.contains(e.target))
         setIsShareMenuOpened(false);
+
+      if (reportModalRef.current && !reportModalRef.current.contains(e.target))
+        setIsOpenReportModal(false);
 
     };
     document.addEventListener("click", closeDropdown);
@@ -299,15 +314,11 @@ const Post = ({
   };
 
 
-  const handleReportPost = async () => {
+  const handleReportPost = (e) => {
+    e.stopPropagation();
     setIsOpenDots(false);
-    const response = await postRequest(`${baseUrl}/post/${id}/report`);
-    if (response.status == 200 || response.status == 201) {
-      showAlertForTime("success", response.data.message);
-
-    } else {
-      showAlertForTime("error", response.data.message);
-    }
+    setIsOpenReportModal(true);
+    getCommunityRules();
   };
 
 
@@ -529,7 +540,7 @@ const Post = ({
               />
             </div>}
             {isOpenDots && (
-              <div className={`z-20 w-48 ${(username == userInfo.username && type == "Post") ? 'h-72 mt-78' : (username == userInfo.username) ? 'h-48 mt-54' : 'h-37 mt-45'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName !== null ? "-ml-[156px]" : "-ml-[82px]"} `}>
+              <div className={`z-20 w-48 ${(username == userInfo.username && type == "Post") ? 'h-72 mt-78' : (username == userInfo.username) ? 'h-54 mt-62' : (username !== userInfo.username && !communityName) ? 'h-26 mt-36' : 'h-37 mt-47'}  bg-reddit_lightGreen absolute text-white text-sm py-2 rounded-lg font-extralight flex flex-col ${communityName != null ? '-ml-[150px]' : '-ml-[156px]'}`}>
                 <div onClick={handleClickSave}
                   id={"mainfeed_" + id + "_menu_save"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex items-center cursor-pointer" >
@@ -561,7 +572,7 @@ const Post = ({
                   </div>}
 
 
-                {username == userInfo.username && type == "Post" &&
+                {username == userInfo.username &&
                   <div onClick={markAsSpoiler}
                     id={"mainfeed_" + id + "_menu_report"}
                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
@@ -572,7 +583,7 @@ const Post = ({
                   </div>}
 
 
-                {username == userInfo.username && type == "Post" &&
+                {username == userInfo.username &&
                   <div onClick={markAsNSFW}
                     id={"mainfeed_" + id + "_menu_report"}
                     className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
@@ -602,8 +613,8 @@ const Post = ({
 
 
 
-                <div onClick={
-                  handleReportPost
+                {userInfo.username !== username && communityName != null && <div onClick={(e) =>
+                  handleReportPost(e)
                 }
                   id={"mainfeed_" + id + "_menu_report"}
                   className="w-full pl-6 hover:bg-reddit_hover h-12 flex rounded-b-lg items-center cursor-pointer"
@@ -611,7 +622,7 @@ const Post = ({
                   <FlagIcon className="h-4.5 w-5 text-white " />
                   {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
                   <p className="ml-2 no-select">Report</p>
-                </div>
+                </div>}
               </div>
             )}
           </div>
@@ -921,7 +932,7 @@ const Post = ({
         {shareMode &&
           <div className="w-full flex items-center flex-row">
 
-            <div onClick={()=>setShareMode(false)} className="ml-auto w-14 h-[36px] mr-3 hover:bg-reddit_search_light cursor-pointer bg-reddit_search  flex flex-row justify-center items-center rounded-3xl">
+            <div onClick={() => setShareMode(false)} className="ml-auto w-14 h-[36px] mr-3 hover:bg-reddit_search_light cursor-pointer bg-reddit_search  flex flex-row justify-center items-center rounded-3xl">
               <h1 className="text-white text-[12px] font-medium ">Cancel</h1>
 
             </div>
@@ -932,6 +943,8 @@ const Post = ({
           </div>
         }
       </div>
+
+      {isOpenReportModal && <ReportModal showAlertForTime={showAlertForTime} setIsOpenReportModal={setIsOpenReportModal} isOpenReportModal={isOpenReportModal} postId={id} reportModalRef={reportModalRef} communityRules={communityRules} />}
     </div>
   );
 };
