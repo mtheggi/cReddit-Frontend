@@ -89,7 +89,7 @@ const ChatBox = () => {
             {/* Chatbox Head  */}
             <div className="flex flex-row justify-between items-center w-full py-2 px-3">
                 <p className="text-white font-bold text-lg "> {selectedRoom?.name} </p>
-                <div id="chat-setting" data-testid="chat-setting" className="group relative flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
+                <div id="chat-leaving" data-testid="chat-leaving" className="group relative flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
                     onClick={() => { handleLeaveRoom(); }} >
                     <UserMinusIcon className="h-6 w-6 text-white" />
                     <span className="opacity-0 inset-x-0 bottom-0 mb-2  group-hover:opacity-100 absolute bg-gray-800 text-white text-xs rounded-md px-2 py-1 transition-opacity duration-300 ease-in-out">Leave</span>
@@ -141,7 +141,7 @@ const ChatBox = () => {
                     }}
 
                 />
-                <PaperAirplaneIcon onClick={(e) => { if (textMessage === '') { return } else { setTextMessage(""); handleSendMessage(e, textMessage) } }} className={`h-7 w-7  ${textMessage === '' ? 'opacity-50 cursor-not-allowed text-gray-500 ' : 'cursor-pointer text-white'}`} />
+                <PaperAirplaneIcon id="send-message-icon" data-testid="send-message-icon" onClick={(e) => { if (textMessage === '') { return } else { setTextMessage(""); handleSendMessage(e, textMessage) } }} className={`h-7 w-7  ${textMessage === '' ? 'opacity-50 cursor-not-allowed text-gray-500 ' : 'cursor-pointer text-white'}`} />
             </ div>
 
 
