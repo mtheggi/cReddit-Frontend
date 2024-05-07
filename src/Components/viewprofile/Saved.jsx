@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { getRequest } from "@/services/Requests";
 import { baseUrl, profileLimit } from "@/constants";
 import Post from "../mainfeed/Post";
+import PostComment from "../mainfeed/comment/PostComment";
 import Loading from "../Loading/Loading";
 
 /**
@@ -108,13 +109,33 @@ const Saved = () => {
     <div id="saved">
       {saved.map((savedItem, index) => {
         if (saved.length === index + 1) {
-          return (
-            <div key={savedItem._id} ref={lastSavedRef}>
-              <Post id={savedItem._id} {...savedItem} />
-            </div>
-          );
+          if (savedItem.type === "Comment") {
+            return (
+              <div key={savedItem._id} ref={lastSavedRef}>
+                <PostComment id={savedItem._id} {...savedItem} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={savedItem._id} ref={lastSavedRef}>
+                <Post id={savedItem._id} {...savedItem} />
+              </div>
+            );
+          }
         } else {
-          return <Post key={savedItem._id} id={savedItem._id} {...savedItem} />;
+          if (savedItem.type === "Comment") {
+            return (
+              <PostComment
+                key={savedItem._id}
+                id={savedItem._id}
+                {...savedItem}
+              />
+            );
+          } else {
+            return (
+              <Post key={savedItem._id} id={savedItem._id} {...savedItem} />
+            );
+          }
         }
       })}
 

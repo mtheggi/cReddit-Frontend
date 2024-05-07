@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { getRequest } from "@/services/Requests";
 import { baseUrl, profileLimit } from "@/constants";
 import Post from "../mainfeed/Post";
+import PostComment from "../mainfeed/comment/PostComment";
 import Loading from "../Loading/Loading";
 
 /**
@@ -105,18 +106,36 @@ const Hidden = () => {
   }, [loading, hasMore]);
 
   return (
-    <div id="saved">
+    <div id="hidden">
       {hidden.map((hiddenItem, index) => {
         if (hidden.length === index + 1) {
-          return (
-            <div key={hiddenItem._id} ref={lastHiddenRef}>
-              <Post id={hiddenItem._id} {...hiddenItem} />
-            </div>
-          );
+          if (hiddenItem.type === "Comment") {
+            return (
+              <div key={hiddenItem._id} ref={lastHiddenRef}>
+                <PostComment id={hiddenItem._id} {...hiddenItem} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={hiddenItem._id} ref={lastHiddenRef}>
+                <Post id={hiddenItem._id} {...hiddenItem} />
+              </div>
+            );
+          }
         } else {
-          return (
-            <Post key={hiddenItem._id} id={hiddenItem._id} {...hiddenItem} />
-          );
+          if (hiddenItem.type === "Comment") {
+            return (
+              <PostComment
+                key={hiddenItem._id}
+                id={hiddenItem._id}
+                {...hiddenItem}
+              />
+            );
+          } else {
+            return (
+              <Post key={hiddenItem._id} id={hiddenItem._id} {...hiddenItem} />
+            );
+          }
         }
       })}
 

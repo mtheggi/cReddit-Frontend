@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { getRequest } from "@/services/Requests";
 import { baseUrl, profileLimit } from "@/constants";
 import Post from "../mainfeed/Post";
+import PostComment from "../mainfeed/comment/PostComment";
 import Loading from "../Loading/Loading";
 
 /**
@@ -112,19 +113,37 @@ const Downvoted = () => {
     <div id="downvoted">
       {downvoted.map((downvotedItem, index) => {
         if (downvoted.length === index + 1) {
-          return (
-            <div key={downvotedItem._id} ref={lastDownvotedRef}>
-              <Post id={downvotedItem._id} {...downvotedItem} />
-            </div>
-          );
+          if (downvotedItem.type === "Comment") {
+            return (
+              <div key={downvotedItem._id} ref={lastDownvotedRef}>
+                <PostComment id={downvotedItem._id} {...downvotedItem} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={downvotedItem._id} ref={lastDownvotedRef}>
+                <Post id={downvotedItem._id} {...downvotedItem} />
+              </div>
+            );
+          }
         } else {
-          return (
-            <Post
-              key={downvotedItem._id}
-              id={downvotedItem._id}
-              {...downvotedItem}
-            />
-          );
+          if (downvotedItem.type === "Comment") {
+            return (
+              <PostComment
+                key={downvotedItem._id}
+                id={downvotedItem._id}
+                {...downvotedItem}
+              />
+            );
+          } else {
+            return (
+              <Post
+                key={downvotedItem._id}
+                id={downvotedItem._id}
+                {...downvotedItem}
+              />
+            );
+          }
         }
       })}
 

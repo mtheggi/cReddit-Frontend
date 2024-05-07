@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { getRequest } from "@/services/Requests";
 import { baseUrl, profileLimit } from "@/constants";
 import Post from "../mainfeed/Post";
+import PostComment from "../mainfeed/comment/PostComment";
 import Loading from "../Loading/Loading";
 
 /**
@@ -109,15 +110,37 @@ const Upvoted = () => {
     <div id="upvoted">
       {upvoted.map((upvotedItem, index) => {
         if (upvoted.length === index + 1) {
-          return (
-            <div key={upvotedItem._id} ref={lastUpvotedRef}>
-              <Post id={upvotedItem._id} {...upvotedItem} />
-            </div>
-          );
+          if (upvotedItem.type === "Comment") {
+            return (
+              <div key={upvotedItem._id} ref={lastUpvotedRef}>
+                <PostComment id={upvotedItem._id} {...upvotedItem} />
+              </div>
+            );
+          } else {
+            return (
+              <div key={upvotedItem._id} ref={lastUpvotedRef}>
+                <Post id={upvotedItem._id} {...upvotedItem} />
+              </div>
+            );
+          }
         } else {
-          return (
-            <Post key={upvotedItem._id} id={upvotedItem._id} {...upvotedItem} />
-          );
+          if (upvotedItem.type === "Comment") {
+            return (
+              <PostComment
+                key={upvotedItem._id}
+                id={upvotedItem._id}
+                {...upvotedItem}
+              />
+            );
+          } else {
+            return (
+              <Post
+                key={upvotedItem._id}
+                id={upvotedItem._id}
+                {...upvotedItem}
+              />
+            );
+          }
         }
       })}
 
