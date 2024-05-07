@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import NotificationItem from './NotificationItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
+import { putRequest } from '../../services/Requests';
+import { baseUrl } from "../../constants";
 
 /**
  * Component for displaying a list of notifications, handling different tabs and the ability to navigate to a detailed notifications page.
@@ -116,6 +118,13 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
         }
     });
 
+    const handleMarkAllAsRead = async () => {
+        const response = await putRequest(`${baseUrl}/notification/mark-all-as-read`);
+        if (response.status == 200 || response.status == 201) {
+            console.log("All marked as read")
+        }
+    }
+
     return (
         <div
             ref={!isNewNotificationsPage ? reference : null}
@@ -149,7 +158,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem', width: '100%' }}>
                             <span className='font-bold' style={{ fontSize: '0.85rem', color: '#777777', flexShrink: 0 }}>TODAY</span>
-                            <span className='cursor-pointer font-bold' style={{ marginLeft: 'auto', flexShrink: 0 }} onClick={() => {/* Functionality will go here */}}>Mark all as read</span>
+                            <span className='cursor-pointer font-bold' style={{ marginLeft: 'auto', flexShrink: 0 }} onClick={handleMarkAllAsRead}>Mark all as read</span>
                             <span className='border-l-2 h-6 mx-2' style={{ borderColor: '#444444', flexShrink: 0 }}></span>
                             <Link onClick={() => setIsOpenBellMenu(false)} id="notifications_settings" to="/settings/notifications">
                                 <svg className="h-4 w-4 fill-current cursor-pointer" style={{ flexShrink: 0 }} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">

@@ -151,7 +151,6 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
 
     useEffect(() => {
         onMessage(messaging, (payload) => {
-            console.log(payload);
             toast(payload.notification.title);
         
             // Get the current date and time
@@ -318,10 +317,30 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                         onMouseEnter={handleMouseEnterBellIcon}
                                         onMouseLeave={handleMouseLeaveBellIcon}
                                     >
-                                        <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
+                                        <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer relative'>
                                             <BellIcon className="h-7 w-6 text-gray-300" />
+                                            {notifications.length > 0 && (
+                                                <span style={{
+                                                    position: 'absolute',
+                                                    top: '-6px',
+                                                    right: '-6px',
+                                                    backgroundColor: 'red',
+                                                    color: 'white',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: 'bold',
+                                                    padding: '0.25em 0.5em',
+                                                    borderRadius: '50%',
+                                                    minWidth: '20px',
+                                                    height: '20px',
+                                                    display: 'flex',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}>
+                                                    {notifications.length}
+                                                </span>
+                                            )}
                                         </div>
-                                        {showInboxTextTransition  && (
+                                        {showInboxTextTransition && (
                                             <span 
                                                 style={{ 
                                                 position: 'absolute',
@@ -349,6 +368,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef }) => {
                                         <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} setIsOpenBellMenu={setIsOpenBellMenu}/>
                                     )}
                                 </div>
+
 
 
 
