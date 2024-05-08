@@ -49,5 +49,5 @@ messaging.onBackgroundMessage((payload) => {
         image: avatar
     };
     addNotification(notificationDetails);
-    console.log(notifications);
+
 });

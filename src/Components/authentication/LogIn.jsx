@@ -91,8 +91,8 @@ const LogIn = ({
         // Fetch notifications
         const notificationsResponse = await getRequest(`${baseUrl}/notification/`);
         if (notificationsResponse.status === 200 || notificationsResponse.status === 201) {
-          console.log("Notifications Retrieved");
-          console.log(notificationsResponse.data);
+
+
   
           // Check if the notifications data exists and is an array
           if (Array.isArray(notificationsResponse.data.notifications)) {

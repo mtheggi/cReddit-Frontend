@@ -64,7 +64,7 @@ const Channel = ({ index, roomInfo }) => {
         socket.current.emit('leaveRoom', rooms[index]); // Emit the 'leaveRoom' event with the current room ID
     };
     const handleMarkAsRead = async (roomId) => {
-        console.log("mark AS READ ");
+
         const response = await patchRequest(`${baseUrl}/chat/${roomId}/mark-as-read`);
         if (response.status === 200) {
             setMyIsRead(true);
