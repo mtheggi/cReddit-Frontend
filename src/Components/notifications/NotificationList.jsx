@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import NotificationItem from './NotificationItem';
 import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
+import { putRequest, getRequest } from '../../services/Requests';
+import { baseUrl } from "../../constants";
+import { testingUrl } from '@/constants';
 
 
 /**
@@ -14,17 +17,42 @@ import { useNotifications} from './NotificationContext';
  * @param {Object} props.reference - React ref passed to the component for handling outside clicks or similar behaviors.
  * @returns {JSX.Element} A component that displays a list of notifications with interactive tabs and options.
  */
-const NotificationList = ({ notifications, isNewNotificationsPage, reference }) => {
+const NotificationList = ({ notifications, isNewNotificationsPage, reference, setIsOpenBellMenu }) => {
     const [activeTab, setActiveTab] = useState('Notifications');
     const [seeAllHovered, setSeeAllHovered] = useState(false);
     const { setNotifications, removeNotification } = useNotifications();
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
 
+
+    // Check window size and redirect if needed
+    useEffect(() => {
+        function handleResize() {
+            const width = window.innerWidth;
+            if (!isNewNotificationsPage && width < 450) { // Adjust 600px to your responsive design breakpoint
+                setNotifications(notifications);
+                setIsOpenBellMenu(false);
+                navigate('/notifications');
+            }
+        }
+
+        // Call once when the component mounts in case the window is already too small
+        handleResize();
+
+        // Set up the event listener for future window size changes
+        window.addEventListener('resize', handleResize);
+
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [isNewNotificationsPage, navigate]);
+    
     /**
      * Handles the action to navigate to the full notifications page and sets the current notifications in context.
      */
     const handleSeeAllClick = () => {
         setNotifications(notifications);
+        setIsOpenBellMenu(false);
         navigate('/notifications');
     };
 
@@ -92,6 +120,26 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
         }
     });
 
+    const handleMarkAllAsRead = async () => {
+        try {
+            const response = await putRequest(`${baseUrl}/notification/mark-all-as-read`);
+            if (response.status === 200 || response.status === 201) {
+                // Update notifications state to set all as read
+                const updatedNotifications = notifications.map(notification => ({
+                    ...notification,
+                    isRead: true
+                }));
+                setNotifications(updatedNotifications);
+                
+
+            } else {
+                console.error("Error marking all notifications as read:", response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    };
+
     return (
         <div
             ref={!isNewNotificationsPage ? reference : null}
@@ -112,12 +160,13 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                     Notifications
                 </div>
 
-                <div 
+                <a 
+                href={`${testingUrl}/message/messages`}
                     style={{ cursor: 'pointer', padding: '8px 16px', fontSize: '14px', fontWeight: 'bold', color: activeTab === 'Messages' ? '#ffffff' : '#888888', borderBottom: activeTab === 'Messages' ? '3px solid #3b82f6' : 'none' }}
                     onClick={() => setActiveTab('Messages')}
                 >
                     Messages
-                </div>
+                </a>
             </div>
 
             <div className='w-full px-2 py-2 flex justify-between items-center'>
@@ -125,7 +174,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '100%' }}>
                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '0.75rem', width: '100%' }}>
                             <span className='font-bold' style={{ fontSize: '0.85rem', color: '#777777', flexShrink: 0 }}>TODAY</span>
-                            <span className='cursor-pointer font-bold' style={{ marginLeft: 'auto', flexShrink: 0 }} onClick={() => {/* Functionality will go here */}}>Mark all as read</span>
+                            <span className='cursor-pointer font-bold' style={{ marginLeft: 'auto', flexShrink: 0 }} onClick={handleMarkAllAsRead}>Mark all as read</span>
                             <span className='border-l-2 h-6 mx-2' style={{ borderColor: '#444444', flexShrink: 0 }}></span>
                             <Link onClick={() => setIsOpenBellMenu(false)} id="notifications_settings" to="/settings/notifications">
                                 <svg className="h-4 w-4 fill-current cursor-pointer" style={{ flexShrink: 0 }} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -133,16 +182,36 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference }) 
                                 </svg>
                             </Link>
                         </div>
-                        {todayNotifications.map(({ key, title, description, date, time, image }) => (
-                            <NotificationItem notificationKey={key} title={title} description={description} date={time} image={image} onRemove={removeNotification} isNewNotificationsPage={isNewNotificationsPage}/>
+                        {todayNotifications.map(notification => (
+                            <NotificationItem
+                                key={notification.key} 
+                                notificationKey={notification.key}
+                                title={notification.title}
+                                description={notification.description}
+                                date={notification.time} 
+                                image={notification.image}
+                                onRemove={removeNotification}
+                                isNewNotificationsPage={isNewNotificationsPage}
+                                isRead={notification.isRead}
+                            />
                         ))}
                         {earlierNotifications.length > 0 && (
                             <>
                                 <div style={{ flexShrink: 0 }}>
                                     <span className='font-bold' style={{ fontSize: '0.85rem', color: '#777777' }}>EARLIER</span>
                                 </div>
-                                {earlierNotifications.map(({ key, title, description, date, time, image }) => (
-                                    <NotificationItem notificationKey={key} title={title} description={description} date={date} image={image} onRemove={removeNotification} isNewNotificationsPage={isNewNotificationsPage}/>
+                                {earlierNotifications.map(notification => (
+                                    <NotificationItem
+                                        key={notification.key} 
+                                        notificationKey={notification.key}
+                                        title={notification.title}
+                                        description={notification.description}
+                                        date={notification.date} 
+                                        image={notification.image}
+                                        onRemove={removeNotification}
+                                        isNewNotificationsPage={isNewNotificationsPage}
+                                        isRead={notification.isRead}
+                                    />
                                 ))}
                             </>
                         )}

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,25 +16,13 @@ input#reset_username_email:-webkit-autofill:active {
 
 ::-webkit-scrollbar {
   width: 4px;
-  background-color: #0B1416;
+  background-color: #0b1416;
 }
 
 /* This will style the scrollbar thumb (the part you drag) */
 ::-webkit-scrollbar-thumb {
   background-color: #757474;
   border-radius: 15px;
-}
-
-/* PopularCarousel.css */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.no-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
 }
 
 html {
@@ -68,17 +57,13 @@ html {
 
 /* For Firefox */
 .scrollbar_mod {
-  scrollbar-width: thin;
-  /* Make the scrollbar thin */
-  transition: scrollbar-color 0.9s ease;
-  /* Add transition to the thumb */
-  scrollbar-color: rgba(0, 0, 0, 0) transparent;
-  /* Make the scrollbar transparent */
+  scrollbar-width: thin; /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease; /* Add transition to the thumb */
+  scrollbar-color: rgba(0, 0, 0, 0) transparent; /* Make the scrollbar transparent */
 }
 
 .scrollbar_mod.scrolling {
-  scrollbar-color: #3a3939 transparent;
-  /* Color of the scrollbar when scrolling */
+  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
   transition: scrollbar-color 0.3s ease;
 }
 
@@ -88,8 +73,6 @@ html {
   -moz-user-select: none;
   -ms-user-select: none;
 }
-
-
 
 .scrollbar_mod_mf {
   overflow-y: scroll;
@@ -119,19 +102,15 @@ html {
 
 /* For Firefox */
 .scrollbar_mod_mf {
-  scrollbar-width: thin;
-  /* Make the scrollbar thin */
-  transition: scrollbar-color 0.9s ease;
-  /* Add transition to the thumb */
+  scrollbar-width: thin; /* Make the scrollbar thin */
+  transition: scrollbar-color 0.9s ease; /* Add transition to the thumb */
   scrollbar-color: #3a3939 transparent;
 }
 
 .scrollbar_mod_mf.scrolling {
-  scrollbar-color: #3a3939 transparent;
-  /* Color of the scrollbar when scrolling */
+  scrollbar-color: #3a3939 transparent; /* Color of the scrollbar when scrolling */
   transition: scrollbar-color 0.3s ease;
 }
-
 
 /* Custom CSS for striping every n cards */
 @layer utilities {
@@ -167,6 +146,12 @@ html {
   }
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  /* width */
+  width: 0px;
+  height: 0px;
+}
+
 .overlay {
   background: #000000;
   opacity: 0.5;
@@ -178,7 +163,7 @@ html {
 }
 
 .RichTextEditor__root___2QXK- {
-  background-color: #1A282B !important;
+  background-color: #1a282b !important;
   border: 0px solid grey !important;
   color: white;
   height: 250px !important;

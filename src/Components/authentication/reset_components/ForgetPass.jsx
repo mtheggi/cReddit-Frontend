@@ -155,39 +155,11 @@ const ForgetPass = ({
           />
         </div>
 
-        {resetPasswordError != null && (
-          <div className=" -ml-3 mt-1  h-2 text-xs font-light w-85">
-            {" "}
-            <p className={`text-red-400`}>{resetPasswordMessage}</p>{" "}
-          </div>
-        )}
+        {resetPasswordError != null && <div className=" -ml-3 mt-1  h-2 text-xs font-light w-85"> <p className={`text-red-400`}>{resetPasswordMessage}</p> </div>}
 
-        <div
-          onClick={(e) => handleForgetPassSubmit(e)}
-          id="reset_password_email_me"
-          className={`w-full h-13 msm:w-93 mt-auto mb-12  msm:mt-23 flex bg-reddit_search ${
-            username &&
-            email &&
-            validateUsername(username) &&
-            validateEmail(email) &&
-            resetPasswordError == null
-              ? " bg-reddit_upvote hover:bg-orange-800 cursor-pointer"
-              : ""
-          } rounded-3xl text-gray-600 flex-row justify-center items-center `}
-        >
-          <p
-            className={`no-select font-semibold text-sm ${
-              username &&
-              email &&
-              validateUsername(username) &&
-              validateEmail(email) &&
-              resetPasswordError == null
-                ? " text-white"
-                : "text-gray-500"
-            } `}
-          >
-            Email Me
-          </p>
+
+        <div onClick={(e) => handleForgetPassSubmit(e)} id="reset_password_email_me" className={`w-full h-13 msm:w-93 mt-auto mb-12  msm:mt-23 flex bg-reddit_search ${username && email && validateUsername(username) && validateEmail(email) && resetPasswordError == null ? ' bg-reddit_upvote hover:bg-orange-800 cursor-pointer' : ''} rounded-3xl text-gray-600 flex-row justify-center items-center `}>
+          <p className={`no-select font-semibold text-sm ${username && email && validateUsername(username) && validateEmail(email) && resetPasswordError == null ? ' text-white' : 'text-gray-500'} `}>Email Me</p>
         </div>
       </div>
     </div>

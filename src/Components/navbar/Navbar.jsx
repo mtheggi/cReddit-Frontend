@@ -12,18 +12,18 @@ import LogIn from '../authentication/LogIn';
 import SignUp from '../authentication/signup/SignUp';
 import SignUpEmail from '../authentication/signup/SignUpEmail';
 import EmailVerification from '../authentication/reset_components/EmailVerification';
-import { getRequest, postRequest } from '../../services/Requests';
-import { baseUrl } from "../../constants";
+import { postRequest } from '../../services/Requests';
+import { baseUrl, testingUrl } from "../../constants";
 import { UserContext } from '@/context/UserContext';
 import { useLocation, useNavigate } from 'react-router-dom';
-
 import NotificationList from '../notifications/NotificationList'
 import { useNotifications } from '../notifications/NotificationContext';
 import { NavbarContext } from '@/context/NavbarContext';
 
-
-
-
+import { CurrencyPoundTwoTone } from '@mui/icons-material';
+import { generateToken, messaging } from "../../firebase";
+import { onMessage } from 'firebase/messaging';
+import toast, { Toaster } from 'react-hot-toast'
 
 /**
  * Navbar component.
@@ -67,81 +67,24 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
     const bellMenuRef = useRef();
     const bellMenuRefExpanded = useRef();
 
-    const { notifications, flushAndAddNotifications } = useNotifications();
-
-
-    useEffect(() => {
-        const checkScreenSize = () => {
-            const isMobile = window.matchMedia("(min-width: 681px)").matches;
-            if (isMobile && document.getElementById('search_mobile_icon')?.offsetParent === null) {
-                setIsSearchInMobile(false);
-            }
-        };
-
-        checkScreenSize();
-
-
-        window.addEventListener('resize', checkScreenSize);
-
-
-        return () => window.removeEventListener('resize', checkScreenSize);
-    }, []);
-
-
-    useEffect(() => {
-        const newNotifications = [
-            {
-                key: "1",
-                title: "u/Abdelaal replied to your comment in r/cReddit",
-                description: "Extending the description of this notification to make sure that many notifications have long descriptions to determine a good value for the height of the notifications menu",
-                date: "4/11/2024",
-                time: "23:45",
-                image: avatar,
-            },
-            {
-                key: "2",
-                title: "u/Malek replied to your post in r/CCE",
-                description: "Notification Description 2 - Trying to make it as long as possible so that the truncation effect takes place",
-                date: "4/11/2024",
-                time: "23:30",
-                image: avatar,
-            },
-            {
-                key: "3",
-                title: "u/Maro replied to your post in r/APT",
-                description: "Notification Description 3: creating a third notification that has a really long description to test for the best height",
-                date: "4/11/2024",
-                time: "20:10",
-                image: avatar,
-            },
-            {
-                key: "4",
-                title: "u/Bassel replied to your comment in r/Front",
-                description: "Notification Description 4",
-                date: "4/5/2024",
-                time: "11:11",
-                image: avatar,
-            },
-            {
-                key: "5",
-                title: "u/Heggi replied to your comment in r/Pattern",
-                description: "Notification Description 5",
-                date: "4/6/2024",
-                time: "18:50",
-                image: avatar,
-            },
-        ];
-
-        newNotifications.sort((a, b) => {
-            const dateA = new Date(`${a.date} ${a.time}`);
-            const dateB = new Date(`${b.date} ${b.time}`);
-            return dateB - dateA;
-        });
-
-        flushAndAddNotifications(newNotifications);
-    }, []);
+    const {
+        notifications, addNotification, setNotifications
+    } = useNotifications();
 
     const navigate = useNavigate();
+
+
+  const [fcmToken, setFcmToken] = useState(null);
+  useEffect (()=>{
+ 
+   const getFCM = async () =>
+     {
+       const token = await generateToken();
+       setFcmToken(token);
+     }
+ 
+     getFCM();
+  },[])
 
     /**
      * Function to handle logout.
@@ -149,7 +92,9 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
      * @function handleLogout
      * */
     const handleLogout = async () => {
-        const response = await postRequest(`${baseUrl}/user/logout`);
+        const response = await postRequest(`${baseUrl}/user/logout`, {
+            fcmToken
+        });
         if (response.status == 200 || response.status == 201) {
             setIsLoggedIn(false);
             setIsOpenProfileMenu(false);
@@ -223,9 +168,37 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
         }, 100);
     };
 
+    useEffect(() => {
+        onMessage(messaging, (payload) => {
+            toast(payload.notification.title);
+
+            // Get the current date and time
+            const now = new Date();
+            const date = now.toLocaleDateString('en-US');  // Format the date as MM/DD/YYYY
+            const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }); // Format the time as HH:MM:SS AM/PM
+
+            // Generate a unique key using the current date-time to ensure uniqueness
+            const uniqueKey = `${date.replace(/\//g, '-')}-${time.replace(/:/g, '-').replace(/ /g, '-')}-${now.getTime()}`;
+
+            const notificationDetails = {
+                key: uniqueKey,
+                title: payload.notification.title,
+                date: date,
+                time: time,
+                description: payload.notification.body,
+                image: avatar,
+                isRead: false
+            };
+            addNotification(notificationDetails);
+
+        });
+    }, []);
+
+    const unreadNotificationsCount = notifications.filter(notification => !notification.isRead).length;
 
     return (
         <div ref={navbarRef} className="flex  z-30 fixed flex-col w-full no-select">
+            <Toaster position='top-right' toastOptions={{ style: { marginTop: '50px' } }} />
             <header className='w-full flex flex-col bg-reddit_navbar'>
 
 
@@ -346,74 +319,88 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
                             {isLoggedIn &&
                                 <>
+                                    <div id='search_mobile_icon' onClick={
+                                        () => setIsSearchInMobile((prev) => !prev)
+                                    } className='mmd:hidden flex flex-row items-center justify-center hover:bg-reddit_search_light w-10 h-9 rounded-full cursor-pointer'>
+                                        <svg className='w-5 h-5' rpl="" aria-hidden="true" fill="white" height="16" icon-name="search-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"> <path d="M19.5 18.616 14.985 14.1a8.528 8.528 0 1 0-.884.884l4.515 4.515.884-.884ZM1.301 8.553a7.253 7.253 0 1 1 7.252 7.253 7.261 7.261 0 0 1-7.252-7.253Z"></path></svg>
+                                    </div>
 
-                                    <>
-                                        <div id='search_mobile_icon' onClick={
-                                            () => setIsSearchInMobile((prev) => !prev)
-                                        } className='mmd:hidden flex flex-row items-center justify-center hover:bg-reddit_search_light w-10 h-9 rounded-full cursor-pointer'>
-                                            <svg className='w-5 h-5' rpl="" aria-hidden="true" fill="white" height="16" icon-name="search-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"> <path d="M19.5 18.616 14.985 14.1a8.528 8.528 0 1 0-.884.884l4.515 4.515.884-.884ZM1.301 8.553a7.253 7.253 0 1 1 7.252 7.253 7.261 7.261 0 0 1-7.252-7.253Z"></path></svg>
+
+                                    <Link id='navbar_chat' to={"/chat"} className="flex justify-center items-center w-fit h-fit">
+                                        <div className='hover:bg-reddit_search_light ml-0 xs:ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
+                                            <svg rpl="" fill="white" height="20" icon-name="chat-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M11.61 19.872a10.013 10.013 0 0 0 6.51-4.035A9.999 9.999 0 0 0 12.275.264c-1.28-.3-2.606-.345-3.903-.132a10.05 10.05 0 0 0-8.25 8.311 9.877 9.877 0 0 0 1.202 6.491l-1.24 4.078a.727.727 0 0 0 .178.721.72.72 0 0 0 .72.19l4.17-1.193A9.87 9.87 0 0 0 9.998 20c.54 0 1.079-.043 1.612-.128ZM1.558 18.458l1.118-3.69-.145-.24A8.647 8.647 0 0 1 1.36 8.634a8.778 8.778 0 0 1 7.21-7.27 8.765 8.765 0 0 1 8.916 3.995 8.748 8.748 0 0 1-2.849 12.09 8.763 8.763 0 0 1-3.22 1.188 8.68 8.68 0 0 1-5.862-1.118l-.232-.138-3.764 1.076ZM6.006 9a1.001 1.001 0 0 0-.708 1.707A1 1 0 1 0 6.006 9Zm4.002 0a1.001 1.001 0 0 0-.195 1.981 1 1 0 1 0 .195-1.98Zm4.003 0a1.001 1.001 0 1 0 0 2.003 1.001 1.001 0 0 0 0-2.003Z"></path>
+                                            </svg>
                                         </div>
+                                    </Link>
+
+                                    <Link id='navbar_create_post' to={"/submit"} className="flex justify-center items-center w-fit h-fit">
+                                        <div className='hover:bg-reddit_search_light w-8 xs:w-24 h-10  rounded-full flex justify-center items-center cursor-pointer '>
+                                            <PlusIcon className="h-6.5 w-7  text-gray-300" />
+                                            <p className=' ml-1 mr-0.5 text-gray-300 hidden xs:block text-sm'>Create </p>
+                                        </div>
+                                    </Link>
 
 
-                                        <Link id='navbar_chat' to={"/chat"} className="flex justify-center items-center w-fit h-fit">
-                                            <div className='hover:bg-reddit_search_light ml-0 xs:ml-0.5 w-10 h-10 rounded-full flex justify-center items-center cursor-pointer '>
-                                                <svg rpl="" fill="white" height="20" icon-name="chat-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M11.61 19.872a10.013 10.013 0 0 0 6.51-4.035A9.999 9.999 0 0 0 12.275.264c-1.28-.3-2.606-.345-3.903-.132a10.05 10.05 0 0 0-8.25 8.311 9.877 9.877 0 0 0 1.202 6.491l-1.24 4.078a.727.727 0 0 0 .178.721.72.72 0 0 0 .72.19l4.17-1.193A9.87 9.87 0 0 0 9.998 20c.54 0 1.079-.043 1.612-.128ZM1.558 18.458l1.118-3.69-.145-.24A8.647 8.647 0 0 1 1.36 8.634a8.778 8.778 0 0 1 7.21-7.27 8.765 8.765 0 0 1 8.916 3.995 8.748 8.748 0 0 1-2.849 12.09 8.763 8.763 0 0 1-3.22 1.188 8.68 8.68 0 0 1-5.862-1.118l-.232-.138-3.764 1.076ZM6.006 9a1.001 1.001 0 0 0-.708 1.707A1 1 0 1 0 6.006 9Zm4.002 0a1.001 1.001 0 0 0-.195 1.981 1 1 0 1 0 .195-1.98Zm4.003 0a1.001 1.001 0 1 0 0 2.003 1.001 1.001 0 0 0 0-2.003Z"></path>
+                                    <div className="flex relative justify-center items-center w-fit h-fit">
+                                        <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative"
+                                            onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }}
+                                            onMouseEnter={handleMouseEnterBellIcon}
+                                            onMouseLeave={handleMouseLeaveBellIcon}
+                                        >
+                                            <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer relative'>
+                                                <svg rpl="" fill="white" height="20" icon-name="notification-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M11 18h1a2 2 0 0 1-4 0h3Zm8-3.792v.673A1.12 1.12 0 0 1 17.883 16H2.117A1.12 1.12 0 0 1 1 14.881v-.673a3.947 3.947 0 0 1 1.738-3.277A2.706 2.706 0 0 0 3.926 8.7V7.087a6.07 6.07 0 0 1 12.138 0l.01 1.613a2.7 2.7 0 0 0 1.189 2.235A3.949 3.949 0 0 1 19 14.208Zm-1.25 0a2.7 2.7 0 0 0-1.188-2.242A3.956 3.956 0 0 1 14.824 8.7V7.088a4.819 4.819 0 1 0-9.638 0v1.615a3.956 3.956 0 0 1-1.738 3.266 2.7 2.7 0 0 0-1.198 2.239v.542h15.5v-.542Z"></path>
                                                 </svg>
-                                            </div>
-                                        </Link>
-
-                                        <Link id='navbar_create_post' to={"/submit"} className="flex justify-center items-center w-fit h-fit">
-                                            <div className='hover:bg-reddit_search_light w-9  xs:w-22 h-9  rounded-full flex justify-center items-center cursor-pointer '>
-                                                <PlusIcon className="h-6.5 w-7  text-gray-300" />
-                                                <p className=' ml-1 mr-0.5 text-gray-300 hidden xs:block text-sm'>Create </p>
-                                            </div>
-                                        </Link>
-
-
-                                        <div className="flex relative justify-center items-center w-fit h-fit">
-                                            <div id='navbar_bell' ref={bellMenuRef} className="flex justify-center items-center w-fit h-fit relative"
-                                                onClick={(e) => { e.stopPropagation(); setIsOpenBellMenu(prev => !prev); setIsOpenProfileMenu(false); }}
-                                                onMouseEnter={handleMouseEnterBellIcon}
-                                                onMouseLeave={handleMouseLeaveBellIcon}
-                                            >
-                                                <div className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1 rounded-full flex justify-center items-center cursor-pointer'>
-                                                    <svg rpl="" fill="white" height="20" icon-name="notification-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M11 18h1a2 2 0 0 1-4 0h3Zm8-3.792v.673A1.12 1.12 0 0 1 17.883 16H2.117A1.12 1.12 0 0 1 1 14.881v-.673a3.947 3.947 0 0 1 1.738-3.277A2.706 2.706 0 0 0 3.926 8.7V7.087a6.07 6.07 0 0 1 12.138 0l.01 1.613a2.7 2.7 0 0 0 1.189 2.235A3.949 3.949 0 0 1 19 14.208Zm-1.25 0a2.7 2.7 0 0 0-1.188-2.242A3.956 3.956 0 0 1 14.824 8.7V7.088a4.819 4.819 0 1 0-9.638 0v1.615a3.956 3.956 0 0 1-1.738 3.266 2.7 2.7 0 0 0-1.198 2.239v.542h15.5v-.542Z"></path>
-                                                    </svg>
-                                                </div>
-                                                {showInboxTextTransition && (
-                                                    <span
-                                                        style={{
-                                                            position: 'absolute',
-                                                            zIndex: 100,
-                                                            bottom: '-35px',
-                                                            left: '50%',
-                                                            transform: 'translateX(-50%)',
-                                                            backgroundColor: '#e0e0e0',
-                                                            color: '#333',
-                                                            fontSize: '0.75rem',
-                                                            fontWeight: 'bold',
-                                                            padding: '0.25rem 0.5rem',
-                                                            borderRadius: '4px',
-                                                            whiteSpace: 'nowrap',
-                                                            opacity: showInboxTooltip ? 1 : 0,
-                                                            transition: 'opacity 1s linear',
-                                                        }}
-                                                    >
-                                                        Open inbox
+                                                {unreadNotificationsCount > 0 && (
+                                                    <span style={{
+                                                        position: 'absolute',
+                                                        top: '-6px',
+                                                        right: '-6px',
+                                                        backgroundColor: 'red',
+                                                        color: 'white',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: 'bold',
+                                                        padding: '0.25em 0.5em',
+                                                        borderRadius: '50%',
+                                                        minWidth: '20px',
+                                                        height: '20px',
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                    }}>
+                                                        {unreadNotificationsCount}
                                                     </span>
                                                 )}
                                             </div>
-
-                                            {isOpenBellMenu && (
-                                                <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} />
+                                            {showInboxTextTransition && (
+                                                <span
+                                                    style={{
+                                                        position: 'absolute',
+                                                        zIndex: 100,
+                                                        bottom: '-35px',
+                                                        left: '50%',
+                                                        transform: 'translateX(-50%)',
+                                                        backgroundColor: '#e0e0e0',
+                                                        color: '#333',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: 'bold',
+                                                        padding: '0.25rem 0.5rem',
+                                                        borderRadius: '4px',
+                                                        whiteSpace: 'nowrap',
+                                                        opacity: showInboxTooltip ? 1 : 0,
+                                                        transition: 'opacity 1s linear',
+                                                    }}
+                                                >
+                                                    Open inbox
+                                                </span>
                                             )}
                                         </div>
-                                    </>
 
-
-
+                                        {isOpenBellMenu && (
+                                            <NotificationList notifications={notifications} isNewNotificationsPage={false} reference={bellMenuRefExpanded} setIsOpenBellMenu={setIsOpenBellMenu} />
+                                        )}
+                                    </div>
 
                                     <div className="flex justify-center items-center w-fit h-fit">
                                         <div id='navbar_profile' ref={profileMenuRef} onClick={(e) => { setIsOpenProfileMenu((prev) => !prev); setIsOpenBellMenu(false); }} className='hover:bg-reddit_search_light w-10 h-10 xs:ml-1.5 rounded-full flex justify-center items-center cursor-pointer '>
@@ -427,7 +414,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
                                         {isOpenProfileMenu && (<div ref={profileMenuRefExpanded} className=' w-62 mr-46 mt-90 h-72 bg-reddit_lightGreen absolute text-white text-sm pt-2.5 space-y-2 rounded-xl font-extralight flex flex-col'>
 
-                                            <div id="profile_view" href="" className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
+                                            <a id="profile_view" href={`${testingUrl}/user/${user}/`} className=' w-full mb-2.5 mt-2 pl-6  hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>
                                                 <div className='flex flex-row w-full'>
 
                                                     <div className='  w-9 h-9 rounded-full'>
@@ -440,7 +427,7 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            </a>
                                             <Separator />
 
                                             <a id="profile_modmode" href="M" className='w-full pl-8 hover:bg-reddit_hover h-14 flex items-center cursor-pointer'>

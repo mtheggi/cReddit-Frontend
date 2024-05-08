@@ -14,7 +14,7 @@ import React, { useState, useEffect, useRef } from 'react';
  * @param {boolean} props.isNewNotificationsPage - Indicates if the notification is being displayed on a new notifications page.
  * @returns {JSX.Element} A single notification item with interactive elements.
  */
-const NotificationItem = ({ notificationKey, title, date, description, image, onRemove, isNewNotificationsPage }) => {
+const NotificationItem = ({ notificationKey, title, date, description, image, onRemove, isNewNotificationsPage, isRead }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleDropdown = (event) => {
         event.stopPropagation();
@@ -60,8 +60,10 @@ const NotificationItem = ({ notificationKey, title, date, description, image, on
 
     const titleSpacingStyle = isNewNotificationsPage ? { marginBottom: '6px' } : {}; 
 
+    const itemStyle = isRead ? {} : { backgroundColor: '#343a40' };
+
     return (
-        <div className="relative flex items-start justify-between py-2 px-1 cursor-pointer hover:bg-reddit_dark-brighter rounded-md w-full">
+        <div className="relative flex items-start justify-between py-2 px-1 cursor-pointer hover:bg-reddit_dark-brighter rounded-md w-full" style={itemStyle}>
             <div className="flex space-x-3 w-full">
                 <div className="flex-shrink-0">
                     <img src={image} alt="Notification Image" className="h-8 w-8 rounded-full" />

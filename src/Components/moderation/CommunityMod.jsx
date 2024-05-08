@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import propsTypes from "prop-types";
 import { Link } from "react-router-dom";
@@ -55,12 +55,18 @@ function EmptyStart({ color, isBookmarked }) {
  * @returns {JSX.Element} The rendered community icon component.
  */
 
-const CommunityMod = ({ text, divId, icon }) => {
+const CommunityMod = ({ text, divId, icon, Selected }) => {
 
+    const [isSelected, setIsSelected] = useState(Selected.name === text);
 
+    useEffect(() => {
+        setIsSelected(Selected.name === text);
+    }
+        , [Selected]);
 
     return (
-        <div id={divId} data-testid={divId} className="testClass flex h-[48px] mb-1 flex-row ml-0.5  justify-between pl-3 pr-4 hover:bg-reddit_hover SideIcon-Container rounded-lg items-center cursor-pointer">
+        <div id={divId} data-testid={divId} className={`testClass mt-1 flex h-[48px] mb-1 flex-row ml-0.5  justify-between pl-3 pr-4 rounded-lg items-center cursor-pointer ${isSelected ? ' bg-reddit_search' :
+            'hover:bg-reddit_hover'}`}>
             <div className="flex flex-row items-center justify-start">
                 <img src={icon} className="h-[30px] w-[32px] rounded-full" alt="randomImgs" />
                 <span className="text-gray-200 text-[13px] tracking-wider truncate letter font-normal ml-3">{text}</span>

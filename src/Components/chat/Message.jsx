@@ -2,7 +2,7 @@ import moment from "moment";
 import Separator from "../sidebar/Nav-Icons/Separator";
 const Message = ({ Message, isFirstMessage, time, username, profilePicture }) => {
 
-    console.log(username);
+
 
     if (!username) {
 

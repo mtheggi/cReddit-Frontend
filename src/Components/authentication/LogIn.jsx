@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
-import { postRequest } from "../../services/Requests";
+import { getRequest, postRequest } from "../../services/Requests";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 import { UserContext } from "@/context/UserContext";
+import {generateToken} from "@/firebase";
+import { useNotifications } from '../notifications/NotificationContext'; 
+import avatar from '../../assets/avatar.png';
+import { use } from "marked";
+
 
 /**
  * React component for user login.
@@ -26,10 +31,16 @@ const LogIn = ({
 }) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [username, setUsername] = useState("");
+  const [fcmToken, setFcmToken] =useState(null);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
   const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
   const [oauthLoginError, setOauthLoginError] = useState(null);
+ 
+  
+  const {
+    notifications, setNotifications, flushNotifications
+  } = useNotifications();
 
   /**
    * Validates the login username.
@@ -60,23 +71,65 @@ const LogIn = ({
    * @returns {Promise<void>} A Promise that resolves when the login process is complete.
    * @async
    */
+
+
+
+ useEffect (()=>{
+
+  const getFCM = async () =>
+    {
+      const token = await generateToken();
+      setFcmToken(token);
+    }
+
+    getFCM();
+ },[])
+
   const handleLoginSubmit = async () => {
     if (
       username &&
       password &&
       validateLoginUsername(username) &&
       validateLoginPassword(password) &&
-      loginError == null
+      loginError == null &&
+      fcmToken
     ) {
       const response = await postRequest(`${baseUrl}/user/login`, {
         username,
         password,
+        fcmToken
       });
       if (response.status !== 200 && response.status !== 201) {
         setLoginError(response.data.message);
         LoginFailedToast(response.data.message);
       } else {
         LoginSuccessToast("Logged in successfully");
+  
+        // Fetch notifications
+        const notificationsResponse = await getRequest(`${baseUrl}/notification/`);
+        if (notificationsResponse.status === 200 || notificationsResponse.status === 201) {
+
+
+  
+          // Check if the notifications data exists and is an array
+          if (Array.isArray(notificationsResponse.data.notifications)) {
+            const formattedNotifications = notificationsResponse.data.notifications.map(notif => ({
+              key: notif._id,
+              title: notif.title,
+              date: new Date(notif.createdAt).toLocaleDateString('en-US'),
+              time: new Date(notif.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+              description: notif.content,
+              image: avatar,
+              isRead: notif.isRead
+            }));
+  
+            // Update the state with the new notifications list
+            setNotifications(formattedNotifications);
+          } else {
+            console.error('No notifications array found');
+          }
+        }
+  
         setTimeout(() => {
           setIsOpenedLoginMenu(false);
           setIsLoggedIn(true);
@@ -84,6 +137,8 @@ const LogIn = ({
       }
     }
   };
+  
+  
 
 
   useEffect(() => {
@@ -94,9 +149,10 @@ const LogIn = ({
      * @async
       */
     async function sendToken() {
-      if (OAuthAccessToken) {
+      if (OAuthAccessToken && fcmToken) {
         const response = await postRequest(`${baseUrl}/user/auth/google`, {
           googleToken: OAuthAccessToken,
+          fcmToken
         });
         if (response.status !== 200 && response.status !== 201) {
           setOauthLoginError(response.data.message);
@@ -286,15 +342,14 @@ const LogIn = ({
           <div
             onClick={handleLoginSubmit}
             id="login_submit"
-            className={` ${
-              username &&
-              password &&
-              validateLoginUsername(username) &&
-              validateLoginPassword(password) &&
-              loginError == null
+            className={` ${username &&
+                password &&
+                validateLoginUsername(username) &&
+                validateLoginPassword(password) &&
+                loginError == null
                 ? " bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white"
                 : "text-gray-500"
-            } w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}
+              } w-120 mt-1 h-[48px] items-center justify-center inline-flex mx-auto rounded-3xl bg-reddit_search`}
           >
             <span className="flex items-center justify-center">
               <span className="flex items-center gap-[8px] text-[14px] font-[600] ">
