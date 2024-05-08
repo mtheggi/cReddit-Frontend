@@ -5,9 +5,9 @@ const NSFW = ({ setOver18 }) => {
     const navigate = useNavigate();
     return (
 
-        <div className="w-1/2 flex h-70 flex-col justify-between items-center max-w-[500px] text-left text-white">
+        <div className="w-1/2 flex h-70 flex-col -mt-10 justify-between items-center max-w-[520px] text-left text-white">
 
-            <div className="h-12 w-12 mb-3"><Plus18 /></div>
+            <div className="h-16 w-16 mb-3"><Plus18 /></div>
             <h1 className="m-3 font-bold text-24" > Mature Content </h1>
             <p className="text-14 mb-3 mt-0">This page may contain mature or adult content. To continue, confirm you’re over 18 and we’ll update your settings to show mature content.</p>
             <p className="w-full text-14 font-normal mb-2">

@@ -69,7 +69,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
             if (response.status == 200) {
                 setOtherUserInfo(response.data);
                 setIsBlocked(response.data?.isBlocked);
-                setIsNSFWAccount((!response.data?.isNSFW && response.data?.showAdultContent));
+                setIsNSFWAccount((response.data?.isNSFW && !userInfo?.showAdultContent));
             } else if (response.status == 401) {
                 // TODO : check NSFW 
                 setIsNSFWAccount(true);

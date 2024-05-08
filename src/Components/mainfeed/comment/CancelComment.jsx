@@ -10,6 +10,7 @@ import Modal from "react-bootstrap/Modal";
 function CancelComment(props) {
   return (
     <Modal
+      style={{ opacity: 1, zIndex: 9999 }}
       {...props}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
@@ -34,10 +35,11 @@ function CancelComment(props) {
             <button
               id="discard-comment-button"
               className="h-9 items-center rounded-3xl font-plex ml-2 bg-red-700"
+              onClick={props.onDiscard}
+
             >
               <p
                 className="text-white text-md pl-3 pr-3 mr-6 ml-6"
-                onClick={props.onHide}
               >
                 Discard
               </p>

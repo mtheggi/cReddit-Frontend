@@ -92,7 +92,11 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
      * @returns {Promise<void>}
      * */
     const handleCreateCommunity = async () => {
-        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        if (communityName.includes(' ')) {
+            setCommunityNameError("Community name should not contain spaces");
+            return;
+        }
+        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature, type: selectedRadio.replace("-community-type", "").toLowerCase() })
         if (!response) return;
         if (response.status !== 200 && response.status !== 201) {
             setCommunityNameError(response.data.message);
@@ -118,7 +122,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
         <div className="community-modal flex flex-row items-center justify-center">
             <div className="overlay"></div>
-            <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark min-w-88  z-20 text-white rounded-xl w-100% h-100% pt-auto flex flex-col xs:py-2 xs:h-fit xs:w-120 px-3 ">
+            <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark min-w-88  z-30 text-white rounded-xl w-100% h-100% pt-auto flex flex-col xs:py-2 xs:h-fit xs:w-120 px-3 ">
 
                 <div className="flex flex-col my-auto">
                     <div className="card-header flex flex-row justify-center sm:justify-between  mb-2"  >

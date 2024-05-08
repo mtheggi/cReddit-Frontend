@@ -28,15 +28,14 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     const { isLoggedIn } = useContext(UserContext);
     const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
     const [loadingPost, setLoadingPost] = useState(false);
-    const [homeFeedScroll, setHomeFeedScroll] = useState(0);
     const mainfeedRef = useRef();
 
     const [selectedSort, setSelectedSort] = useState(() => {
-        const storedSort = localStorage.getItem('homeSelectedSort');
+        const storedSort = localStorage.getItem('othersSelected');
         if (storedSort) {
             return storedSort;
         } else {
-            localStorage.setItem('homeSelectedSort', 'New');
+            localStorage.setItem('othersSelected', 'New');
             return 'New';
         }
     });
@@ -55,14 +54,14 @@ const ProfileFeed = ({ userName, selectedPage }) => {
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 setPage(prevPage => prevPage + 1);
-                console.log("Intersecting");
+
             }
         });
         if (node) observer.current.observe(node);
 
     }, [feedLoading, hasMore]);
 
-    console.log("selected page ", selectedPage)
+
 
     /**
      * Fetches a single post by its ID. If the post is already in the state, it uses that.
@@ -104,12 +103,13 @@ const ProfileFeed = ({ userName, selectedPage }) => {
 
 
     useEffect(() => {
+        if (prevSort.current !== selectedSort) {
         setPosts([]);
         setPage(1);
         setComments([]);
-        setIsSortChanged(prev => (prevSort.current !== selectedSort ? prev + 1 : prev));
-        console.log("prevSort.current", prevSort.current, "selectedSort", selectedSort);
-        console.log("useEffect1");
+        setIsSortChanged(prev => (prev + 1 ));
+        }
+     
     }, [selectedSort]);
 
 
@@ -135,7 +135,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
             }
         }
 
-        console.log("useEffect2");
+
 
         if (!navigate.pathname.includes("/comments/")) {
             getHomeFeed();
@@ -144,7 +144,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
     useEffect(() => {
         const getComments = async () => {
-            console.log("comments selected sort ", selectedSort)
+
             try {
                 setHasMore(true);
                 setIsFeedLoading(true);
@@ -198,7 +198,6 @@ const ProfileFeed = ({ userName, selectedPage }) => {
 
         const handleScroll = () => {
             const scrollThreshold = 58;
-            setHomeFeedScroll(mainfeedElement.scrollTop);
             if (mainfeedElement.scrollTop > scrollThreshold) {
                 setIsOpenCateg(false);
                 setIsOpenView(false);
@@ -218,16 +217,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
     });
 
 
-    useEffect(() => {
-        if (navigate.pathname.includes("/comments/")) {
-            localStorage.setItem('homeFeedScroll', homeFeedScroll);
-        }
-        else {
-            setTimeout(() => {
-                mainfeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
-            }, 10);
-        }
-    }, [navigate.pathname]);
+  
 
 
     return (
@@ -260,7 +250,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                             </div>
                       
 
-                            <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Hot"); }}
+                            <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "Hot"); }}
                                 id="mainfeed_category_hot"
                                 href=""
                                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -268,7 +258,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                                 <p className="no-select">Hot</p>
                             </div>
 
-                            <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "New"); }}
+                            <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "New"); }}
                                 id="mainfeed_category_new"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -276,7 +266,7 @@ const ProfileFeed = ({ userName, selectedPage }) => {
                                 <p className="no-select">New</p>
                             </div>
 
-                            <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('homeSelectedSort', "Top"); }}
+                            <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem('othersSelected', "Top"); }}
                                 id="mainfeed_category_top"
                                 href=""
                                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"

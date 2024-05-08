@@ -9,7 +9,7 @@ import { UserContext } from "@/context/UserContext";
 import { useLocation } from "react-router-dom";
 import { useState, useEffect, useRef, useContext } from "react";
 import { SidebarContext } from "@/context/SidebarContext";
-// import PopularCarousel from "../Components/popular/PopularCarousel";
+import PopularCarousel from "../Components/popular/PopularCarousel";
 
 const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
   const { isLoggedIn } = useContext(UserContext);
@@ -30,16 +30,15 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
 
   const navigate = useLocation();
   const [homeFeedScroll, setHomeFeedScroll] = useState(0);
-  const prevPath = useRef (navigate.pathname);
+  const prevPath = useRef(navigate.pathname);
 
 
   useEffect(() => {
     if (navigate.pathname.includes("/comments/")) {
       localStorage.setItem('homeFeedScroll', homeFeedScroll);
-      console.log('scroll saved', homeFeedScroll);
+
     }
-    else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/"))
-    {
+    else if (prevPath.current.includes("/comments/") && !navigate.pathname.includes("/comments/")) {
       setTimeout(() => {
         homefeedRef.current.scrollTop = localStorage.getItem('homeFeedScroll');
       }, 10);
@@ -182,16 +181,56 @@ const Home = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRef }) => {
         </div>
 
         <div ref={homefeedRef} id="homefeed" className="flex-col w-full items-center flex overflow-auto scrollbar_mod_mf">
-          <div className="flex flex-row w-fit">
-            <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
-              <Mainfeed />
-            </div>
 
-            <div
-              className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
-              <Recent userHistoryRes={userHistoryRes} />
-            </div>
-          </div>
+          {
+            location.pathname === "/popular" ?
+              <>
+                <div className=" w-full px-6 mt-[18px] lg:max-w-[1155px]">
+                  <PopularCarousel />
+                </div>
+                <div className="flex flex-row w-fit">
+                  <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                    <Mainfeed mode={"popular"} />
+                  </div>
+
+                  <div
+                    className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                    <Recent userHistoryRes={userHistoryRes} />
+                  </div>
+                </div>
+              </>
+
+              :
+              location.pathname === "/all" ?
+                <>
+                  <div className="flex flex-row w-fit">
+                    <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                      <Mainfeed mode={"all"} />
+                    </div>
+
+                    <div
+                      className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                      <Recent userHistoryRes={userHistoryRes} />
+                    </div>
+                  </div>
+                </>
+                :
+
+                <>
+                  <div className="flex flex-row w-fit">
+                    <div className='w-fit  lg:max-w-[820px] mt-2 flex flex-row flex-grow lg:flex-grow-0 mx-2.5  ' ref={mainfeedRef}>
+                      <Mainfeed mode={"home"} />
+                    </div>
+
+                    <div
+                      className="w-fit min-w-fit scrollbar_mod overflow-auto sticky lg:mr-5  xl:mr-2% top-0 h-[94vh]" ref={recentRef} >
+                      <Recent userHistoryRes={userHistoryRes} />
+                    </div>
+                  </div>
+                </>
+          }
+
+
         </div>
       </div>
     </div>
