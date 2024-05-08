@@ -109,7 +109,7 @@ const ModTools = () => {
 
             {selectedSubReddit && isQueue && <Queue selectedSubReddit={selectedSubReddit} />}
             {selectedSubReddit && isUserManagement && <UserManagment selectedSubReddit={selectedSubReddit} showAlertForTime={showAlertForTime} />}
-            {selectedSubReddit && isScheduledPosts && <SchedualePost selectedSubReddit={selectedSubReddit} />}
+            {selectedSubReddit && isScheduledPosts && <SchedulePost selectedSubReddit={selectedSubReddit} />}
             {subbreddit.length == 0 && <Empty message={"You are not a moderator in any community"} />}
 
 

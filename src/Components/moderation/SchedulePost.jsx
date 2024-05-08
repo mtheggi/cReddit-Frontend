@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getRequest } from "@/services/Requests";
-import ScheduledPost from "./ScheduledPost";
+import ScheduledPost from "./ScheduledPost.jsx";
 import { baseUrl } from "@/constants";
 
 const SchedulePost = ({ selectedSubReddit }) => {
@@ -50,6 +50,7 @@ const SchedulePost = ({ selectedSubReddit }) => {
           >
             <ScheduledPost
               username={post.username}
+              profilePicture = {post.profilePicture}
               content={post.content}
               title={post.title}
               isSpoiler={post.isSpoiler}
