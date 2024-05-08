@@ -1,17 +1,18 @@
-import React from "react";
-import axios from "axios";
-import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import { Client_ID, NODE_ENV } from "./constants.js";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { UserContextProvider } from "./context/UserContext.jsx";
-import { ServerContextProvider } from "./context/ServerContext.jsx";
-import { NavbarContextProvider } from "./context/NavbarContext.jsx";
-import { StrictMode } from "react";
-import { NotificationProvider } from "./Components/notifications/NotificationContext";
+import React from 'react'
+import axios from 'axios';
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import { Client_ID, NODE_ENV } from './constants.js'
+import { GoogleOAuthProvider } from '@react-oauth/google'
+import { UserContextProvider } from './context/UserContext.jsx'
+import { ServerContextProvider } from './context/ServerContext.jsx'
+import { NavbarContextProvider } from './context/NavbarContext.jsx';
+import { StrictMode } from 'react';
+import { NotificationProvider } from './Components/notifications/NotificationContext';
+import { ChatContextProvider } from './context/ChatContext.jsx';
 import { SidebarContextProvider } from "./context/SidebarContext.jsx";
 
-axios.interceptors.request.use((config) => {
+axios.interceptors.request.use(config => {
   config.withCredentials = true;
   return config;
 });

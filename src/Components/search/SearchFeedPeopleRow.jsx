@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 
 const SearchFeedPeopleRow = ({
     username,
@@ -7,11 +8,13 @@ const SearchFeedPeopleRow = ({
     isNSFW,
     lastElementRef
 }) => {
-
+    const navigate = useNavigate();
     return (
 
         <>
-            <div ref={lastElementRef} className="h-fit w-full flex flex-row pl-3 pr-2 py-6 rounded-xl cursor-pointer border-[#2F383B] hover:bg-reddit_hover">
+            <div onClick={
+                ()=>{navigate(`/user/${username}`)}
+            } ref={lastElementRef} className="h-fit w-full flex flex-row pl-3 pr-2 py-[17px] rounded-xl cursor-pointer border-[#2F383B] hover:bg-reddit_hover">
                 <div className="h-full">
                     <img src={profilePicture} alt="" className="w-12 h-12 min-w-12 rounded-full" />
                 </div>

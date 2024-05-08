@@ -40,6 +40,10 @@ export default {
         reddit_light_undo: "#223237",
         reddit_Blocked: "#e5b60b",
         reddit_Blocked_hover: "#fadb61",
+        reddit_dark_Chat: "#080808",
+        reddit_dark_Chat_hover: "#131313",
+        reddit_dark_search_chat: "#0b1416",
+        reddit_dark_Chat_Create: "#1a282d"
       },
       gridTemplateColumns: {
         16: "repeat(16, minmax(0, 1fr))",
@@ -376,8 +380,12 @@ export default {
 
       msm: "530px",
 
+      mmsm: "572px",
+
       sm: "640px",
       // => @media (min-width: 640px) { ... }
+
+      mmd: "680px",
 
       md: "768px",
       // => @media (min-width: 768px) { ... }

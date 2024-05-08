@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 
 const SearchSubredditRow = ({
     _id,
@@ -18,6 +19,7 @@ const SearchSubredditRow = ({
             return num;
         }
     }
+    const navigate = useNavigate();
 
     function handleClick(e) {
         e.stopPropagation();
@@ -35,6 +37,7 @@ const SearchSubredditRow = ({
         searchHistory.push([`r/${name}`, icon]);
         localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
         setSearchHistory(JSON.parse(localStorage.getItem('searchHistory')));
+        navigate(`/r/${name}/`);
         setIsFocused(false);
     }
 

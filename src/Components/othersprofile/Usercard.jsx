@@ -84,9 +84,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
             }
         }
     }
-    useEffect(() => {
-        console.log(isOpenedLoginMenu, "isOpenedLoginMenu");
-    }, [isOpenedLoginMenu])
+   
 
     const handleBlock = async (e) => {
         e.stopPropagation();
@@ -182,7 +180,7 @@ const Usercard = ({ otherUserInfo, isBlocked, setIsBlocked }) => {
                                 {!isFollow ? <FollowIcon /> : <UnfollowIcon />}
                                 <p className="ml-2 font-bold" data-testid="follow-btn-text" >{!isFollow ? "Follow" : "Unfollow "}</p>
                             </button>
-                            <button onClick={() => { navigate("/chat") }} id="chat-btn-usercard" className="flex flex-row bg-reddit_search hover:bg-reddit_search_light px-3 py-2 h-8 justify-start rounded-full text-sm items-center">
+                            <button onClick={(e) => { e.stopPropagation(); if (!isLoggedIn) { setIsOpenedLoginMenu(true); return; }; navigate("/chat") }} id="chat-btn-usercard" className="flex flex-row bg-reddit_search hover:bg-reddit_search_light px-3 py-2 h-8 justify-start rounded-full text-sm items-center">
                                 <ChatBubbleOvalLeftEllipsisIcon className="w-6 h-6 text-gray-300" />
                                 <p className="ml-2 font-bold">Chat </p>
                             </button>

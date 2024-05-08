@@ -15,7 +15,9 @@ function AddComment({
   setIsCommenting,
   setPostComments,
   setIsPaginationLoading,
-  setLoadingAddComment
+  setLoadingAddComment,
+  setSelectedPost,
+  setPosts
 }) {
 
   return (
@@ -37,6 +39,8 @@ function AddComment({
         setIsCommenting={setIsCommenting}
         setIsPaginationLoading={setIsPaginationLoading}
         setLoadingAddComment={setLoadingAddComment}
+        setSelectedPost={setSelectedPost}
+        setPosts={setPosts}
       />
     </div>
   );
