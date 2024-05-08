@@ -25,7 +25,7 @@ const MessagesInbox = ({
   const handleDelete = async () => {
     try {
       await deleteRequest(`${baseUrl}/message/${id}`);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error deleting message:", error);
     }
