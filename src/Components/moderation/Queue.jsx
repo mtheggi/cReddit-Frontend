@@ -46,21 +46,23 @@ const Queue = ({ selectedSubReddit }) => {
         }
 
         Fetch();
-    }, [selectedPage])
+    }, [selectedPage, selectedSubReddit])
 
     console.log(posts)
     return (
         <div id="mod_content" className="flex flex-col  w-full h-full">
-            <div className="w-full px-4 mb-3 mt-[9px] h-fit min-h-[250px]  flex flex-col border-b-[1px] border-[#252C2E]">
+            <div className="w-full px-4 mb-3 mt-[9px] h-fit min-h-[190px] flex flex-col border-b-[1px] border-[#252C2E]">
 
-                <div className="w-fit px-3 h-11 mb-4 flex flex-row justify-start items-center cursor-pointer ">
-                    <img src={icon} className="h-11 w-11 rounded-full mr-4 " />
-                    <h1 className="text-[33px] font-semibold text-gray-200"> r/{name}</h1>
+                <div className="flex mt-2 flex-row">
+                    <div className="w-fit px-3 h-11 mb-4 flex flex-row justify-start items-center cursor-pointer ">
+                        <img src={icon} className="h-11 w-11 rounded-full mr-4 " />
+                        <h1 className="text-[33px] font-semibold text-gray-200"> r/{name} :</h1>
+                    </div>
+                    <h1 className="text-[33px] mb-3 mt-1 font-semibold text-gray-200"> Queue</h1>
+
                 </div>
 
-                <h1 className="text-[33px] mb-3 mt-1 font-semibold text-gray-200"> Queue</h1>
-
-                <p className="text-gray-200 mb-1 mt-1 font-light text-[14px]">Anything that needs moderator attention will show up in needs review.</p>
+                <p className="text-gray-200 mb-1 font-light text-[14px]">Anything that needs moderator attention will show up in needs review.</p>
 
                 <div className="w-[470px] h-12  mt-auto mb-2 flex flex-row items-center space-x-16">
                     <div className={`${selectedPage === 'reported' ? 'bg-reddit_search ' : " "}hover:bg-reddit_search w-fit px-3 h-9 mb-1 flex flex-row items-center cursor-pointer rounded-3xl`}

@@ -7,7 +7,7 @@ import Separator from "../sidebar/Nav-Icons/Separator";
 import { getRequest, postRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 
-export function BannedModal({ setIsOpenBannedModal, isOpenBannedModal, bannedModalRef}) {
+export function BannedModal({ setIsOpenBannedModal, isOpenBannedModal, bannedModalRef }) {
     const [charCount, setCharCount] = useState(300);
 
 
@@ -35,9 +35,24 @@ export function BannedModal({ setIsOpenBannedModal, isOpenBannedModal, bannedMod
                             <input maxLength={100} placeholder="Reason" type="text" className="w-full h-10 text-[13px] rounded-sm focus:outline-none focus:ring-0  border-[#343536] text-[gray-200] bg-[#1A1A1B] mt-2" />
 
                             <h1 className="text-[10px] mt-4 font-semibold text-gray-400 ">MOD NOTE</h1>
-                            <input maxLength={300} placeholder="Note" type="text" className="w-full h-10 text-[13px] rounded-sm focus:outline-none focus:ring-0  border-[#343536] text-[gray-200] bg-[#1A1A1B] mt-2" />
+                            <input onChange={(e) => setCharCount(300 - e.target.value.length)} maxLength={300} placeholder="Note" type="text" className="w-full h-10 text-[13px] rounded-sm focus:outline-none focus:ring-0  border-[#343536] text-[gray-200] bg-[#1A1A1B] mt-2" />
+                            <p className="text-[12px] mt-[3px] text-gray-500">{charCount} characters remaining</p>
 
-                            
+                            <h1 className="text-[10px] mt-4 font-semibold text-gray-400 ">HOW LONG?</h1>
+                            <div className="flex flex-row items-center">
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="999"
+                                    className="w-[75px] h-10 text-[13px] rounded-sm focus:outline-none focus:ring-0  border-[#343536] text-[gray-200] bg-[#1A1A1B] mt-2"
+                                />
+                                <div className="w-fit px-1 h-[39px] -mb-2 flex flex-row items-center border-1">
+                                    <h1>Days</h1>
+                                </div>
+                            </div>
+
+
+
                         </div>
                     </div>
                 </div>

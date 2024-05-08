@@ -154,19 +154,6 @@ const DropDownMenu = ({
             <h1 className="ml-[14px] text-[14px] text-gray-200">Mod Queue</h1>
           </div>
 
-          {/* {moderatedSubreddits &&
-            moderatedSubreddits.map((subreddit, index) => {
-              return (
-                <CommunityIcon
-                  icon={subreddit.icon}
-                  key={index}
-                  text={`r/${subreddit.name}`}
-                  divId={`sidebar_community_icon${index}`}
-                  href={`/r/${subreddit.name}`}
-                />
-              );
-            })} */}
-
         </div>
       </div>
 
