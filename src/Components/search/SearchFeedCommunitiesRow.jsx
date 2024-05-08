@@ -1,5 +1,6 @@
 
 
+import { useNavigate } from "react-router-dom";
 const SearchFeedCommunitiesRow = ({
     name,
     description,
@@ -20,6 +21,7 @@ const SearchFeedCommunitiesRow = ({
         }
     }
 
+    const navigate = useNavigate();
     return (
 
         <>

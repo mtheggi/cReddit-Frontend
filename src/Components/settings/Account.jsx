@@ -1,6 +1,7 @@
 import Subtitle from "./components/Subtitle";
 import Setting from "./Setting";
 import DisconnectButton from "./components/DisconnectButton";
+import { useState, useEffect } from "react";
 import { postRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import { useNavigate } from "react-router-dom";
