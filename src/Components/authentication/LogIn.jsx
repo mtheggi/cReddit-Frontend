@@ -7,9 +7,10 @@ import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 import { UserContext } from "@/context/UserContext";
-import fcmToken from "@/firebase";
+import {generateToken} from "@/firebase";
 import { useNotifications } from '../notifications/NotificationContext'; 
 import avatar from '../../assets/avatar.png';
+import { use } from "marked";
 
 
 /**
@@ -30,11 +31,13 @@ const LogIn = ({
 }) => {
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
   const [username, setUsername] = useState("");
+  const [fcmToken, setFcmToken] =useState(null);
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
   const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
   const [oauthLoginError, setOauthLoginError] = useState(null);
-
+ 
+  
   const {
     notifications, setNotifications, flushNotifications
   } = useNotifications();
@@ -68,6 +71,20 @@ const LogIn = ({
    * @returns {Promise<void>} A Promise that resolves when the login process is complete.
    * @async
    */
+
+
+
+ useEffect (()=>{
+
+  const getFCM = async () =>
+    {
+      const token = await generateToken();
+      setFcmToken(token);
+    }
+
+    getFCM();
+ },[])
+
   const handleLoginSubmit = async () => {
     if (
       username &&

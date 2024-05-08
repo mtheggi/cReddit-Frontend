@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import FloatingInput from "../FloatingInput";
-import { postRequest } from "../../../services/Requests";
+import { postRequest, getRequest } from "../../../services/Requests";
 import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "../LoginToast";
 import { baseUrl } from "../../../constants";
 import { UserContext } from "@/context/UserContext";
-import fcmToken from "@/firebase";
+import { generateToken } from "@/firebase";
+import { useNotifications } from '../../notifications/NotificationContext';
+import avatar from '../../../assets/avatar.png';
 
 /**
  * React component for user signup.
@@ -28,6 +30,11 @@ const SignUp = ({
   const [internalReturnBack, setInternalReturnBack] = useState(null);
   const [signupError, setSignupError] = useState(null);
   const { isLoggedIn, setIsLoggedIn } = useContext(UserContext);
+  const [fcmToken, setFcmToken] =useState(null);
+
+  const {
+    notifications, setNotifications, flushNotifications
+  } = useNotifications();
 
   /**
    * Effect hook to close the dropdown when clicked outside.
@@ -96,6 +103,16 @@ const SignUp = ({
     }
   };
 
+  useEffect(() => {
+
+    const getFCM = async () => {
+      const token = await generateToken();
+      setFcmToken(token);
+    }
+
+    getFCM();
+  }, [])
+
   /**
    * Handles the signup form submission.
    */
@@ -124,6 +141,32 @@ const SignUp = ({
         LoginFailedToast(response.data.message);
       } else {
         LoginSuccessToast("Signed up successfully");
+
+        // Fetch notifications
+        const notificationsResponse = await getRequest(`${baseUrl}/notification/`);
+        if (notificationsResponse.status === 200 || notificationsResponse.status === 201) {
+          console.log("Notifications Retrieved");
+          console.log(notificationsResponse.data);
+
+          // Check if the notifications data exists and is an array
+          if (Array.isArray(notificationsResponse.data.notifications)) {
+            const formattedNotifications = notificationsResponse.data.notifications.map(notif => ({
+              key: notif._id,
+              title: notif.title,
+              date: new Date(notif.createdAt).toLocaleDateString('en-US'),
+              time: new Date(notif.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+              description: notif.content,
+              image: avatar,
+              isRead: notif.isRead
+            }));
+
+            // Update the state with the new notifications list
+            setNotifications(formattedNotifications);
+          } else {
+            console.error('No notifications array found');
+          }
+        }
+
         setTimeout(() => {
           setIsOpenedSecondSignupMenu(false);
           setIsOpenedSignupMenu(false);
@@ -253,11 +296,10 @@ const SignUp = ({
                     setDropdownOpen(!dropdownOpen);
                   }}
                   data-dropdown-toggle="gender_dropdown_menu"
-                  className={`text-gray-400 cursor-pointer pl-4 border-1 ${
-                    signupError != null
+                  className={`text-gray-400 cursor-pointer pl-4 border-1 ${signupError != null
                       ? "border-red-400"
                       : "border-transparent"
-                  } hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}
+                    } hover:bg-reddit_search_light bg-reddit_search w-28 h-13 rounded-2xl focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}
                 >
                   {gender}
                   <div className="w-fit flex ml-auto mr-5 flex-row">
@@ -282,9 +324,8 @@ const SignUp = ({
 
               <div
                 id="gender_dropdown_menu"
-                className={`z-10 absolute mt-24 ml-34  ${
-                  dropdownOpen ? "" : "hidden"
-                } bg-reddit_hover divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}
+                className={`z-10 absolute mt-24 ml-34  ${dropdownOpen ? "" : "hidden"
+                  } bg-reddit_hover divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600`}
               >
                 <ul
                   className="py-2 text-sm"
@@ -321,18 +362,17 @@ const SignUp = ({
               <div
                 id="signup_submit"
                 onClick={handleSignupSubmit}
-                className={`${
-                  NavbarSignupEmail &&
-                  validateEmail(NavbarSignupEmail) &&
-                  username &&
-                  validateUsername(username) &&
-                  password &&
-                  validatePassword(password) &&
-                  signupError == null &&
-                  gender != "Gender"
+                className={`${NavbarSignupEmail &&
+                    validateEmail(NavbarSignupEmail) &&
+                    username &&
+                    validateUsername(username) &&
+                    password &&
+                    validatePassword(password) &&
+                    signupError == null &&
+                    gender != "Gender"
                     ? " bg-reddit_upvote hover:bg-orange-800 cursor-pointer text-white"
                     : "text-gray-500"
-                } flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}
+                  } flex w-full h-[48px]  items-center justify-center rounded-3xl bg-reddit_search`}
               >
                 <span className="flex items-center gap-[8px] text-[14px] font-[600]">
                   Sign Up

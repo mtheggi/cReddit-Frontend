@@ -4,6 +4,7 @@ import DisconnectButton from "./components/DisconnectButton";
 import { postRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import { useNavigate } from "react-router-dom";
+import { generateToken } from "@/firebase";
 /**
  * Account is a React component that displays the user's account settings.
  * It allows the user to connect their account to Twitter and Apple.
@@ -23,17 +24,26 @@ function Account({
   connectedToApple,
   connectedToGoogle,
   setUserSettings,
-}) 
-{
+}) {
   const navigate = useNavigate();
+  const [fcmToken, setFcmToken] = useState(null);
+  useEffect(() => {
+
+    const getFCM = async () => {
+      const token = await generateToken();
+      setFcmToken(token);
+    }
+
+    getFCM();
+  }, [])
   const handleDeleteAccount = async () => {
     const response = await postRequest(`${baseUrl}/user/`, {
-        fcmToken
+      fcmToken
     });
     if (response.status == 200 || response.status == 201) {
-        setIsLoggedIn(false);
-        setIsOpenProfileMenu(false);
-        navigate('');
+      setIsLoggedIn(false);
+      setIsOpenProfileMenu(false);
+      navigate('');
     }
   }
   return (

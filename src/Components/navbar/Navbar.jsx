@@ -21,7 +21,7 @@ import { useNotifications } from '../notifications/NotificationContext';
 import { NavbarContext } from '@/context/NavbarContext';
 
 import { CurrencyPoundTwoTone } from '@mui/icons-material';
-import fcmToken, { generateToken, messaging } from "../../firebase";
+import { generateToken, messaging } from "../../firebase";
 import { onMessage } from 'firebase/messaging';
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -72,6 +72,19 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
     } = useNotifications();
 
     const navigate = useNavigate();
+
+
+  const [fcmToken, setFcmToken] = useState(null);
+  useEffect (()=>{
+ 
+   const getFCM = async () =>
+     {
+       const token = await generateToken();
+       setFcmToken(token);
+     }
+ 
+     getFCM();
+  },[])
 
     /**
      * Function to handle logout.

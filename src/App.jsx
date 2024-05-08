@@ -37,10 +37,10 @@ function App() {
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/firebase-messaging-sw.js')
-      .then(function(registration) {
+      .then(function (registration) {
         console.log('Service Worker Registered', registration);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         console.log('Service Worker registration failed: ', err);
       });
   }
@@ -146,7 +146,7 @@ function App() {
           />
           {isLoggedIn && <Route path="/settings/*" element={<Settings />} />}
           {isLoggedIn && <Route path="/submit/*" element={<CreatePost />} />}
-            <Route path={"/verify/:token"} element={<VerifyEmail/>}/>
+          <Route path={"/verify/:token"} element={<VerifyEmail />} />
           <Route
             path="/notifications"
             element={
@@ -157,7 +157,7 @@ function App() {
               />
             }
           />
-          <Route path="/passwordrecovery/:token" element={<PasswordRecovery  />}  />
+          <Route path="/passwordrecovery/:token" element={<PasswordRecovery />} />
           <Route
             path="/best/communities"
             element={
@@ -169,7 +169,13 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route path="/r/:name" element={<Community />} />
+          <Route path="/r/:name" element={<SidebarContextProvider>
+            <Community
+              isVisibleLeftSidebar={isVisibleLeftSidebar}
+              setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
+              navbarRef={navbarRef}
+            />
+          </SidebarContextProvider>} />
 
           <Route
             path="/user/:username/:page?"
