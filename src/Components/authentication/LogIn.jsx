@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 import { UserContext } from "@/context/UserContext";
 import fcmToken from "@/firebase";
+import { useNotifications } from '../notifications/NotificationContext'; 
 
 
 /**
@@ -32,6 +33,10 @@ const LogIn = ({
   const [loginError, setLoginError] = useState(null);
   const [OAuthAccessToken, setOAuthAccessToken] = useState(null);
   const [oauthLoginError, setOauthLoginError] = useState(null);
+
+  const {
+    notifications, setNotifications, flushNotifications
+  } = useNotifications();
 
   /**
    * Validates the login username.
@@ -81,6 +86,7 @@ const LogIn = ({
         LoginFailedToast(response.data.message);
       } else {
         LoginSuccessToast("Logged in successfully");
+        flushNotifications()
         setTimeout(() => {
           setIsOpenedLoginMenu(false);
           setIsLoggedIn(true);

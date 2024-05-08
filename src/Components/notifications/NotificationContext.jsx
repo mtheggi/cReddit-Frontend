@@ -19,6 +19,10 @@ export const NotificationProvider = ({ children }) => {
         setNotifications(prev => [notification, ...prev]);
     };
 
+    const flushNotifications = () => {
+        setNotifications(prev => []);
+    };
+
     const removeNotification = (id) => {
         setNotifications(currentNotifications =>
             currentNotifications.filter(notification => notification.key !== id)
@@ -46,6 +50,7 @@ export const NotificationProvider = ({ children }) => {
             setNotifications,
             addNotification,
             flushAndAddNotifications,
+            flushNotifications,
             removeNotification
         }}>
             {children}
