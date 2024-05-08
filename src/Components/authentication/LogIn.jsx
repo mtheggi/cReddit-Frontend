@@ -91,8 +91,7 @@ const LogIn = ({
       password &&
       validateLoginUsername(username) &&
       validateLoginPassword(password) &&
-      loginError == null &&
-      fcmToken
+      loginError == null
     ) {
       const response = await postRequest(`${baseUrl}/user/login`, {
         username,

@@ -126,7 +126,6 @@ const SignUp = ({
       password &&
       validatePassword(password) &&
       gender != "Gender"
-      && fcmToken
     ) {
       const email = NavbarSignupEmail;
       const response = await postRequest(`${baseUrl}/user`, {
