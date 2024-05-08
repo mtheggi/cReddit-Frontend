@@ -1,7 +1,7 @@
 
 import { describe, it, expect, afterEach } from 'vitest';
 import { fireEvent, render, screen, cleanup } from '@testing-library/react';
-import Usercard from '../../src/Components/usercard/Usercard.jsx'; // Assuming the React component is in a file named Usercard.js
+import Usercard from '../../src/Components/othersprofile/Usercard.jsx'; // Assuming the React component is in a file named Usercard.js
 import '@testing-library/jest-dom/vitest';
 afterEach(() => {
     cleanup();

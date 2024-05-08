@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useNotifications} from './NotificationContext';
 import { putRequest, getRequest } from '../../services/Requests';
 import { baseUrl } from "../../constants";
+import { testingUrl } from '@/constants';
+
 
 /**
  * Component for displaying a list of notifications, handling different tabs and the ability to navigate to a detailed notifications page.
@@ -158,12 +160,13 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                     Notifications
                 </div>
 
-                <div 
+                <a 
+                href={`${testingUrl}/message/messages`}
                     style={{ cursor: 'pointer', padding: '8px 16px', fontSize: '14px', fontWeight: 'bold', color: activeTab === 'Messages' ? '#ffffff' : '#888888', borderBottom: activeTab === 'Messages' ? '3px solid #3b82f6' : 'none' }}
                     onClick={() => setActiveTab('Messages')}
                 >
                     Messages
-                </div>
+                </a>
             </div>
 
             <div className='w-full px-2 py-2 flex justify-between items-center'>

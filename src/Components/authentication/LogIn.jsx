@@ -161,7 +161,6 @@ const LogIn = ({
   const handleGoogleLogin = useGoogleLogin({
     clientId: { Client_ID },
     onSuccess: (codeResponse) => {
-      console.log(codeResponse);
       setOAuthAccessToken(codeResponse.access_token);
     },
     onError: (error) => console.log("Login Failed:", error),

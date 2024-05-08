@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { HomeIcon } from "@heroicons/react/24/solid";
+import { useLocation } from 'react-router-dom';
 import "./Nav-Icons.css";
 /**
  * Renders a navigation icon with a link.
@@ -13,10 +14,13 @@ import "./Nav-Icons.css";
  */
 const NavIcon = ({ href, children, text, id }) => {
     const isSidebarRecent = id.startsWith('sidebar_recent');
+    const location = useLocation();
+    const path= text=="Home"?"":text
+    
 
     return (
         <Link id={id}
-            className={`w-full SideIcon-Container text-sm font-extralight  items-center flex flex-row relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10 my-1'}`}
+            className={`w-full ${isSidebarRecent?'mb-1':''}  ${location.pathname==`/${path.toLowerCase()}`?'bg-reddit_search':'SideIcon-Container'} text-sm font-extralight  items-center flex flex-row relative justify-start content-center align-baseline rounded-lg pl-3.5 pr-3 ${isSidebarRecent ? 'h-[46px]' : 'h-10 my-1'}`}
             to={href}>
             <span className="items-center ">
                 {children}

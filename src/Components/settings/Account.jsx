@@ -83,8 +83,6 @@ function Account({
       />
       {/* */}
 
-
-
       {/* <Setting
         title="Connect to Google"
         message="Connect account to log in to Reddit with Google."

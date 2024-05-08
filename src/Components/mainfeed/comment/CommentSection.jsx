@@ -16,16 +16,17 @@ import PostComment from "./PostComment";
  * @param {string} props.postId - The ID of the post to add a comment to.
  * @param {boolean} props.isCommenting - Whether the user is currently adding a comment.
  * @param {Function} props.setIsCommenting - A function to set the isCommenting state.
- * @param {Function} props.onAddComment - A function to call when a comment is added.
  */
 
 function CommentSection({
   postId,
   isCommenting,
   setIsCommenting,
-  onAddComment,
   setPostComments,
-  selectedSort
+  setIsPaginationLoading,
+  setLoadingAddComment,
+  setSelectedPost,
+  setPosts
 }) {
   /**
   * State variable for the comment text. Initially set to an empty string.
@@ -53,18 +54,10 @@ function CommentSection({
    * @type {React.RefObject}
    */
   const textareaRef = useRef();
-
   const handleFileChange = (e) => {
     setImage(e.target.files[0]);
   }
 
-  const getSinglePostComments = async (selectedPostId) => {
-    const response = await getRequest(`${baseUrl}/post/${selectedPostId}/comments?sort=${selectedSort.toLowerCase()}`)
-    if (response.status == 200 || response.status == 201) {
-      setPostComments(response.data);
-    }
-
-  }
 
   useEffect(() => {
     if (isCommenting) {
@@ -72,16 +65,27 @@ function CommentSection({
     }
   }, [isCommenting]);
 
-  async function addComment() {
+
+  const addComment = async () => {
     if (!(image || (comment && comment.trim() !== ""))) return;
+    setIsPaginationLoading(true);
+    setLoadingAddComment(true);
     const newComment = await submitComment(postId, image, comment);
-    if (!newComment) return;
-    onAddComment(newComment);
-    await getSinglePostComments(postId);
+    if (!newComment) {
+      setIsPaginationLoading(false);
+      setLoadingAddComment(false);
+      return;
+    }
+    setPostComments(prev => [newComment, ...prev]);
+    setSelectedPost(prev => ({...prev, commentCount: prev.commentCount + 1}));
+    setPosts(prev => prev.map(post => post._id === postId ? {...post, commentCount: post.commentCount + 1} : post));
+    setIsPaginationLoading(false);
+    setLoadingAddComment(false);
     setComment("");
     setImage(null);
     setIsCommenting(false);
   }
+
   const dropzoneRef = useRef();
 
   return (
@@ -95,6 +99,7 @@ function CommentSection({
 
       {!image && (
         <textarea id="comment_text"
+
           disabled={image ? true : false}
           ref={textareaRef}
           className="w-full block resize-none rounded-2xl pl-3 pr-5 pb-2 pt-2 text-sm text-gray-300 bg-reddit_greenyDark dark:bg-gray-700 border-0 outline-none"
@@ -130,9 +135,10 @@ function CommentSection({
           >
             <p className="text-white text-xs font-bold pl-3 pr-3">Cancel</p>
           </button>
+
           <div id="submit_comment"
-            onClick={addComment}
-            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${( image || (comment && comment.trim() !== "") ) ? "cursor-pointer":"cursor-not-allowed"} `}
+            onClick={() => addComment()}
+            className={`h-8 items-center flex flex-row rounded-3xl font-plex ml-2 ${(image || (comment && comment.trim() !== "")) ? "cursor-pointer" : "cursor-not-allowed"} `}
             style={{ backgroundColor: buttonColor }}
             onMouseEnter={() => setButtonColor("#6b610c")}
             onMouseLeave={() => setButtonColor("#4d4608")}
@@ -148,10 +154,14 @@ function CommentSection({
       <CancelComment
         show={modalShow}
         onHide={() => {
-          setImage(null);
           setModalShow(false);
-          setIsCommenting(false);
+        }}
+
+        onDiscard={() => {
+          setModalShow(false);
           setComment("");
+          setImage(null);
+          setIsCommenting(false);
         }}
       />
     </div>

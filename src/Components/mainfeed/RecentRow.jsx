@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import redditLogo from '../../assets/reddit_logo.png';
 import Separator from '../sidebar/Nav-Icons/Separator';
+import { Link } from 'react-router-dom';
 // 50 pic, 70
 
 /**
@@ -65,12 +66,14 @@ const RecentRow = ({ id, post }) => {
 
                 <div className='flex flex-col h-full min-w-10/12'>
 
-                    <a id={id + "_community_recent"} href="" className='w-fit h-fit flex'>
+                    <Link id={id + "_community_recent"} to={
+                        isCommunity ? `/r/${post.communityName}` : `/user/${post.username}`
+                    } className='w-fit h-fit flex'>
                         <div className=' w-full h-8 flex no-select flex-row items-center'>
                             <img src={post.profilePicture} alt="profile_picture" className="w-7 h-7 rounded-xl" />
                             <p className='text-gray-400 font-normal text-xs ml-1.5 hover:underline cursor-pointer'>{isCommunity ? `r/${post.communityName}` : `u/${post.username}`}</p>
                         </div>
-                    </a>
+                    </Link>
 
                     <div id={id + "_post_header_recent"} onClick={handleSubmitPost} className='w-fit h-fit flex'>
                         <div className={`${containsImage ? 'max-w-56' : ''} w-full max-h-18 text-gray-400 text-sm py-2 font-semibold  overflow-auto break-words`}>

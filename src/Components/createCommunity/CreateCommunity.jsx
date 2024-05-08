@@ -81,7 +81,6 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
    * @param {Object} e - The event object.
    */
     const handleRadioChange = (e) => {
-        console.log(selectedRadio);
         setSelectedRadio(e.target.id);
     }
 
@@ -93,13 +92,16 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
      * @returns {Promise<void>}
      * */
     const handleCreateCommunity = async () => {
-        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature })
+        if (communityName.includes(' ')) {
+            setCommunityNameError("Community name should not contain spaces");
+            return;
+        }
+        const response = await postRequest(`${baseUrl}/subreddit`, { name: communityName, isNSFW: isMature, type: selectedRadio.replace("-community-type", "").toLowerCase() })
         if (!response) return;
         if (response.status !== 200 && response.status !== 201) {
             setCommunityNameError(response.data.message);
         } else {
             SuccessToast("Community created successfully");
-            console.log("Community created successfully");
             setTimeout(() => {
                 setIsCommunityOpen(false);
                 navigate(`/r/${communityName}`);
@@ -120,7 +122,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
 
         <div className="community-modal flex flex-row items-center justify-center">
             <div className="overlay"></div>
-            <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark min-w-88  z-20 text-white rounded-xl w-100% h-100% pt-auto flex flex-col xs:py-2 xs:h-fit xs:w-120 px-3 ">
+            <div ref={communityCardRef} id="community-card" className="bg-reddit_greenyDark min-w-88  z-30 text-white rounded-xl w-100% h-100% pt-auto flex flex-col xs:py-2 xs:h-fit xs:w-120 px-3 ">
 
                 <div className="flex flex-col my-auto">
                     <div className="card-header flex flex-row justify-center sm:justify-between  mb-2"  >
@@ -131,7 +133,7 @@ const CreateCommunity = ({ setIsCommunityOpen, communityCardRef }) => {
                                 <span className="flex items-center text-2xl xs:text-2xl font-semibold pt-1 ml-3 mb-2.5 sm:mb-0">Create a Community</span>
                             </span>
                         </div>
-                        <button onClick={() => { setIsCommunityOpen(false) }} className="h-8 w-8 rounded-full mt-2 bg-reddit_search  hover:bg-reddit_search_light"> <XMarkIcon className="h-6 w-6 ml-1 text-gray-50" /> </button>
+                        <button onClick={() => { setIsCommunityOpen(false) }} id="close-create-community" className="h-8 w-8 rounded-full mt-2 bg-reddit_search  hover:bg-reddit_search_light"> <XMarkIcon className="h-6 w-6 ml-1 text-gray-50" /> </button>
                     </div>
                     <div id="card-content" className="flex flex-col ">
                         <p className="mb-3 text-sm text-gray-400 hidden sm:block">Build and grow a community about something you care about. We will help you set things up.</p>

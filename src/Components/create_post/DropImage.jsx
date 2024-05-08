@@ -17,10 +17,10 @@ import { useDropzone } from "react-dropzone";
 function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
 
   const [previewSrc, setPreviewSrc] = useState(null);
+  const [isVideo, setIsVideo] = useState(false);
 
 
   useEffect(() => {
-    console.log(userBanner);
 
     if(userProfilePicture)
     {
@@ -51,6 +51,7 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
       },
     });
     setPreviewSrc(URL.createObjectURL(acceptedFiles[0]));
+    setIsVideo(acceptedFiles[0].type.startsWith('video'));
   }, [handleFileChange]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -68,6 +69,8 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
  * @param {Function} setPreviewSrc - The function to set the preview source.
  */
   const removeImage = (event) => {
+    if(id.includes("settings"))
+    return;
     event.stopPropagation();
     setPreviewSrc(null);
     handleFileChange({
@@ -90,9 +93,9 @@ function DropImage({ id, handleFileChange, userProfilePicture, userBanner }) {
       </p>}
       {previewSrc && <div className="w-full px-2 py-2 h-full relative justify-center flex flex-row ">
         <div className="w-96 h-full py-1 flex flex-row justify-center bg-black rounded-md ">
-          <img className="h-full" src={previewSrc} alt="preview" />
+          {isVideo? (<video className="h-full" src={previewSrc} alt=""  />) : (<img className="h-full" src={previewSrc} alt="preview" />) }
         </div>
-        <div className="absolute hover:bg-reddit_search_light rounded-full w-9 h-9 flex flex-row justify-center items-center right-2 top-1" onClick={removeImage}>
+        <div className={`absolute ${id.includes("settings")?"hidden":"hover:bg-reddit_search_light"} rounded-full w-8 h-8 flex flex-row justify-center items-center right-2 top-1`} onClick={removeImage}>
           <XMarkIcon className="w-7 text-gray-200 h-7" />
         </div>
       </div>}

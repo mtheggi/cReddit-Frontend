@@ -8,6 +8,7 @@ import { baseUrl } from "../../constants";
 import Loading from "../Loading/Loading";
 import { useLocation } from "react-router-dom";
 import Comment from "./comment/Comment";
+import AlertDemo from "../alert/AlertDemo";
 
 
 /**
@@ -18,39 +19,73 @@ import Comment from "./comment/Comment";
  * @component
  * @returns {JSX.Element} The rendered Mainfeed component.
  */
-const Mainfeed = () => {
+const Mainfeed = ({ mode }) => {
   const [isOpenCateg, setIsOpenCateg] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
+
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState({});
   const { isLoggedIn } = useContext(UserContext);
-  const [page, setPage] = useState(1);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(false);
   const [isSinglePostSelected, setIsSinglePostSelected] = useState(false);
   const [loadingPost, setLoadingPost] = useState(false);
-  const [selectedSort, setSelectedSort] = useState("Best");
+  const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
 
+  const showAlertForTime = (condition, message) => {
+    setAlertState({ show: true, message: message, condition: condition });
+
+    setTimeout(() => {
+      setAlertState({ show: false, message: "", condition: "" });
+    }, 3000);
+  };
+
+  const [selectedSort, setSelectedSort] = useState(() => {
+
+    const storedSort = localStorage.getItem(`${mode}SelectedSort`);
+
+    if (storedSort) {
+      return storedSort;
+    } else {
+      localStorage.setItem(`${mode}SelectedSort`, 'Best');
+      return 'Best';
+    }
+  });
+  const [page, setPage] = useState(1);
+  const prevSort = useRef(selectedSort);
+  const [hasMore, setHasMore] = useState(false);
+  const [isSortChanged, setIsSortChanged] = useState(0);
+  const [feedLoading, setIsFeedLoading] = useState(false);
   const menuRefCateg = useRef();
   const menuRefView = useRef();
   const navigate = useLocation();
-  const prevSelectedSort = useRef(selectedSort);
-  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+  const observer = useRef();
+  const lastPostRef = useCallback(node => {
+    if (feedLoading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        setPage(prevPage => prevPage + 1);
+
+      }
+    });
+    if (node) observer.current.observe(node);
+
+  }, [feedLoading, hasMore]);
+
+  const existingPost = useRef(null);
 
 
-/**
- * Fetches a single post by its ID. If the post is already in the state, it uses that.
- * Otherwise, it sends a GET request to fetch the post.
- * @async
- * @function getSinglePost
- * @param {string} selectedPostId - The ID of the post to fetch.
- */
+
+  /**
+   * Fetches a single post by its ID. If the post is already in the state, it uses that.
+   * Otherwise, it sends a GET request to fetch the post.
+   * @async
+   * @function getSinglePost
+   * @param {string} selectedPostId - The ID of the post to fetch.
+   */
   const getSinglePost = async (selectedPostId) => {
     setLoadingPost(true);
-    const existingPost = posts.find(post => post._id === selectedPostId);
-    if (existingPost) {
-      setSelectedPost(existingPost);
+    existingPost.current = posts.find(post => post._id === selectedPostId);
+    if (existingPost.current) {
+      setSelectedPost(existingPost.current);
     } else {
       const response = await getRequest(`${baseUrl}/post/${selectedPostId}`);
       if (response.status == 200 || response.status == 201) {
@@ -60,41 +95,70 @@ const Mainfeed = () => {
     setLoadingPost(false);
   }
 
+  /**
+   * Fetches posts from the API. It sends a GET request to the API to fetch posts, based on the page number and selected sort.
+   * @async
+   * @function fetchPosts
+   * @returns {Promise} The response from the API.
+   */
+  const fetchPosts = async (page, selectedSort) => {
+    if (location.pathname == "/popular") {
+      page += 1;
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
+    else {
+      const response = await getRequest(`${baseUrl}/post/home-feed?page=${page}&limit=10&sort=${selectedSort.toLowerCase()}`);
+      return response;
+    }
+  }
+
   useEffect(() => {
-    let isSortChanged = (prevSelectedSort.current !== selectedSort);
-    let pageNum = isSortChanged ? 1 : page;
+    if (prevSort.current !== selectedSort && isLoggedIn) {
+      setPosts([]);
+      setPage(1);
+      setIsSortChanged(prev => (prev + 1));
+    }
+  }, [selectedSort]);
+
+
+  useEffect(() => {
+    setPosts([]);
+    setPage(1);
+  }, [isLoggedIn]);
+
+
+
+  useEffect(() => {
+
+    if (existingPost.current) {
+      existingPost.current = null;
+      return;
+    }
+
     const getHomeFeed = async () => {
-      setLoading(true);
-      setError(false);
       try {
-        const response = await getRequest(`${baseUrl}/post/home-feed?page=${pageNum}&limit=15&sort=${selectedSort.toLowerCase()}`);
-        if (response.status == 200 || response.status == 201) {
-          if (isSortChanged) {
-            setPosts(response.data);
-          } else {
-            setPosts(prevPosts => [...prevPosts, ...response.data]);
-          }
-          setHasMore(response.data.length > 0);
+        setHasMore(true);
+        setIsFeedLoading(true);
+        const { status, data } = await fetchPosts(page, selectedSort);
+        if (status === 200 || status === 201) {
+          setPosts(prevComments => [...prevComments, ...data]);
+          setHasMore(data.length > 0);
         } else {
-          setError(true);
+          throw new Error('Error fetching comments');
         }
       } catch (error) {
-        setError(true);
+
       } finally {
-        setLoading(false);
+        setIsFeedLoading(false);
       }
     }
 
-    const url = navigate.pathname;
-    const regex = /.*\/comments\/([A-Za-z0-9]*)\/?.*/;
-    const match = url.match(regex);
-
-    if (!match) {
+    if (!navigate.pathname.includes("/comments/")) {
       getHomeFeed();
-      prevSelectedSort.current = selectedSort;
-
+      prevSort.current = selectedSort;
     }
-  }, [isLoggedIn, page, navigate.pathname, selectedSort]);
+  }, [page, isSortChanged, navigate.pathname, isLoggedIn]);
 
 
   useEffect(() => {
@@ -112,87 +176,31 @@ const Mainfeed = () => {
   }, [navigate.pathname]);
 
 
-  /**
- * Handles the scroll event for the main feed. If the user has scrolled to the bottom,
- * it increments the page number to load more posts.
- *
- * @callback handleScroll
- */
-  const handleScroll = useCallback(() => {
-    const mainfeedElement = document.getElementById("mainfeed");
-    const threshold = 10;
-    if (!hasScrolledToEnd && mainfeedElement.scrollTop + mainfeedElement.clientHeight >= mainfeedElement.scrollHeight - threshold) {
-      setPage(prevPage => prevPage + 1);
-      setHasScrolledToEnd(true);
-    } else if (mainfeedElement.scrollTop + mainfeedElement.clientHeight < mainfeedElement.scrollHeight) {
-      setHasScrolledToEnd(false);
-    }
-  }, [hasScrolledToEnd]);
-
-
-  useEffect(() => {
-    const mainfeedElement = document.getElementById("mainfeed");
-
-    if (mainfeedElement) {
-      mainfeedElement.addEventListener("scroll", handleScroll);
-    }
-    return () => {
-      if (mainfeedElement) {
-        mainfeedElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, [handleScroll]);
-
 
   useEffect(() => {
     let closeDropdown = (e) => {
       if (menuRefCateg.current && !menuRefCateg.current.contains(e.target)) {
         setIsOpenCateg(false);
       }
-      if (menuRefView.current && !menuRefView.current.contains(e.target)) {
-        setIsOpenView(false);
-      }
+
     };
     document.addEventListener("click", closeDropdown);
 
-    const mainfeedElement = document.getElementById("mainfeed");
-
-    const handleScroll = () => {
-      const scrollThreshold = 58;
-      if (mainfeedElement.scrollTop > scrollThreshold) {
-        setIsOpenCateg(false);
-        setIsOpenView(false);
-      }
-    };
-
-    if (mainfeedElement) {
-      mainfeedElement.addEventListener("scroll", handleScroll);
-    }
 
     return () => {
       document.removeEventListener("click", closeDropdown);
-      if (mainfeedElement) {
-        mainfeedElement.removeEventListener("scroll", handleScroll);
-      }
+
     };
   });
 
-  const handleVote = (id, newVotes, newIsUpvoted, newIsDownvoted) => {
-    setPosts(prevPosts => prevPosts.map(post => {
-      if (post.id === id) {
-        return { ...post, netVotes: newVotes, isUpvoted: newIsUpvoted, isDownvoted: newIsDownvoted };
-      }
-      return post;
-    }));
-  };
 
 
 
   return (
     <div
       id="mainfeed"
-      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 overflow-auto scrollbar_mod_mf overflow-x-hidden "
-    >
+      className="flex flex-col w-full h-full bg-reddit_greenyDark no-select px-1 py-1 ">
+      {alertState.show && <AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
       {!isSinglePostSelected && <div className="flex items-center h-8 min-h-8 mb-2 px-2 w-full">
         <div
           id="mainfeed_category_dropdown"
@@ -209,13 +217,15 @@ const Mainfeed = () => {
             <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
           </div>
 
+
+
           {isOpenCateg && (
-            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-1 rounded-lg  font-extralight flex flex-col">
+            <div className=" w-20 h-60 bg-reddit_search absolute mt-2.5 -ml-2.5 text-white text-sm pt-2.5 z-20 rounded-lg  font-extralight flex flex-col">
               <div className="w-full pl-4 rounded-lg h-9 flex items-center font-normal">
                 <p className="no-select">Sort by</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Best"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Best"); }}
                 id="mainfeed_category_best"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -223,7 +233,7 @@ const Mainfeed = () => {
                 <p className="no-select">Best</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Hot"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Hot"); }}
                 id="mainfeed_category_hot"
                 href=""
                 className="w-full pl-4 hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -231,7 +241,7 @@ const Mainfeed = () => {
                 <p className="no-select">Hot</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("New"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "New"); }}
                 id="mainfeed_category_new"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -239,7 +249,7 @@ const Mainfeed = () => {
                 <p className="no-select">New</p>
               </div>
 
-              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false) }}
+              <div onClick={() => { setSelectedSort("Top"); setIsOpenCateg(false); localStorage.setItem(`${mode}SelectedSort`, "Top"); }}
                 id="mainfeed_category_top"
                 href=""
                 className="w-full pl-4  hover:bg-reddit_hover h-12 flex items-center cursor-pointer"
@@ -250,64 +260,46 @@ const Mainfeed = () => {
             </div>
           )}
         </div>
-        <div ref={menuRefView} className="relative">
-          <div
-            id="mainfeed_view_type"
-            onClick={() => setIsOpenView((prev) => !prev)}
-            className={`flex w-14 h-7 rounded-full hover:bg-reddit_search_light ${isOpenView ? "bg-reddit_search_light" : ""
-              } justify-center items-center cursor-pointer`}
-          >
-            <ViewColumnsIcon className="h-4.5 w-5 text-gray-500 rotate-90" />
-            <ChevronDownIcon className="h-3 ml-0.5 w-3 text-gray-400" />
-          </div>
 
-          {isOpenView && (
-            <div className=" w-30 h-33 bg-reddit_lightGreen absolute -ml-7 mt-2.5 text-white text-sm pt-2 z-1 rounded-lg  font-extralight flex flex-col">
-              <div className="w-full pl-3  rounded-lg h-8 flex items-center font-medium">
-                <p className="no-select">View</p>
-              </div>
-              <a
-                id="mainfeed_view_card"
-                href=""
-                className="w-full pl-6 hover:bg-reddit_hover h-11 flex items-center cursor-pointer"
-              >
-                <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                <p className="ml-2 no-select">Card</p>
-              </a>
-              <a
-                id="mainfeed_view_classic"
-                href=""
-                className="w-full pl-6 hover:bg-reddit_hover h-11 flex rounded-b-lg items-center cursor-pointer"
-              >
-                <ViewColumnsIcon className="h-4.5 w-5 text-white rotate-90" />
-                {/* Todo change the icon, make the buttons change color when clicked, and when any click anyhwere else, close the dropdown */}
-                <p className="ml-2 no-select">Classic</p>
-              </a>
-            </div>
-          )}
-        </div>
+
       </div>}
       <div className={`${isSinglePostSelected ? "hidden" : ''} h-1 px-2.5 flex w-full`}>
         <Separator />
       </div>
 
 
-      {!isSinglePostSelected && posts.map((post, i) => (
-        <Post id={post._id} key={i} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected}  {...post} />
-      ))}
-
-      {isSinglePostSelected && loadingPost && <Loading />}
-
-      {isSinglePostSelected && !loadingPost &&
+      {feedLoading && page == 1 ? <Loading /> :
         <>
-          <Post id={selectedPost._id} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
-          <Comment postId={selectedPost._id} />
+          {!isSinglePostSelected && posts.map((post, i) => {
+            if (posts.length === i + 1) {
+              return <Post id={post._id} key={post._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} lastPostRef={lastPostRef} />
+            }
+            else {
+              return <Post id={post._id} key={post._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...post} />
+            }
+          })}
         </>
       }
 
+
+      {isSinglePostSelected &&
+        (
+          loadingPost ? <Loading /> :
+            <>
+              <Post id={selectedPost._id} showAlertForTime={showAlertForTime} setPosts={setPosts} isSinglePostSelected={isSinglePostSelected} {...selectedPost} />
+              <Comment postId={selectedPost._id} setSelectedPost={setSelectedPost} setPosts={setPosts} />
+            </>
+        )
+      }
+
+
+      <div className="mt-14">
+        {!isSinglePostSelected && feedLoading && page != 1 && <Loading />}
+      </div>
+
+
       {
-        <div className="w-full max-h-15 mt-10">
-          {loading && !isSinglePostSelected && <Loading />}
+        <div className="w-full h-6 mt-2">
           <div className="relative w-full h-full">
             <div className="text-gray-400 text-sm mt-1.5">
               <p className=" text-transparent">

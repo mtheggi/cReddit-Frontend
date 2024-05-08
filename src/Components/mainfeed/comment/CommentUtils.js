@@ -1,5 +1,6 @@
 import { baseUrl } from "../../../constants";
 import { postRequest, getRequest, postRequestImg, patchRequest } from "../../../services/Requests";
+import PostComment from "./PostComment";
 
 
 export async function submitComment(postId, image, text) {
@@ -14,12 +15,16 @@ export async function submitComment(postId, image, text) {
         formData.append('images', image);
 
     let res = await postRequestImg(url, formData);
-    if (res.status !== 200 && res.status !== 201) return null;
+    if (res.status !== 200 && res.status != 201) {
+        setIsPaginationLoading(false);
+        return null;
+    }
+    
+    res = await getRequest(`${baseUrl}/comment/${res.data.commentId}`);
+    if(res.status!=200 && res.status!=201) return null;
 
-    url = `${baseUrl}/comment/${res.data.commentId}`;
-    res = await getRequest(url);
-
-    return res.data;
+    const newComment = res.data;
+    return (newComment);
 }
 
 export async function UpDownVoteComment(commentId, voteType) {

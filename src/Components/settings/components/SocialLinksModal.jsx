@@ -30,6 +30,7 @@ const socials = [
 function SocialLinksModal(props) {
   return (
     <Modal
+      style={{ opacity: 1, zIndex: 9999 }}
       {...props}
       size="md"
       aria-labelledby="contained-modal-title-vcenter"
