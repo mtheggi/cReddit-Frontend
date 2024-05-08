@@ -2,19 +2,6 @@ import React from "react";
 import { baseUrl } from "@/constants";
 import { deleteRequest, patchRequest } from "@/services/Requests";
 
-/**
- * Component representing a message in the inbox.
- * @param {Object} props - The properties passed to the component.
- * @param {string} props.id - The ID of the message.
- * @param {string} props.from - The sender of the message.
- * @param {string} props.to - The recipient of the message.
- * @param {string} props.subject - The subject of the message.
- * @param {string} props.text - The content of the message.
- * @param {boolean} props.isRead - Indicates if the message has been read.
- * @param {boolean} props.isDeleted - Indicates if the message has been deleted.
- * @param {string} props.createdAt - The creation date of the message.
- * @returns {JSX.Element|null} JSX element representing the message, or null if the message is deleted.
- */
 const MessagesInbox = ({
   id,
   from,
@@ -33,9 +20,8 @@ const MessagesInbox = ({
 
   const isInvitation = subject.toLowerCase().includes("invitation to moderate");
 
-  /**
-   * Handles the deletion of the message.
-   */
+  const communityName = isInvitation ? subject.split("/r/")[1] : null;
+
   const handleDelete = async () => {
     try {
       await deleteRequest(`${baseUrl}/message/${id}`);
@@ -45,15 +31,30 @@ const MessagesInbox = ({
     }
   };
 
-  /**
-   * Handles marking the message as read.
-   */
   const handleMarkAsRead = async () => {
     try {
       await patchRequest(`${baseUrl}/message/${id}/mark-as-read`);
       window.location.reload();
     } catch (error) {
       console.error("Error marking message as read:", error);
+    }
+  };
+
+  const handleAccept = async () => {
+    try {
+      await patchRequest(`${baseUrl}/accept-invite/${communityName}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error accepting invitation:", error);
+    }
+  };
+
+  const handleReject = async () => {
+    try {
+      await patchRequest(`${baseUrl}/reject-invite/${communityName}`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error rejecting invitation:", error);
     }
   };
 
@@ -72,10 +73,16 @@ const MessagesInbox = ({
           <div className="pl-[28px] clear-left mt-[1.5rem]">{text}</div>
           {isInvitation && (
             <div className="my-[1.5rem] flex justify-center">
-              <button className="bg-green-500 text-white px-4 py-2 mr-2 rounded-md">
+              <button
+                className="bg-green-500 text-white px-4 py-2 mr-2 rounded-md"
+                onClick={handleAccept}
+              >
                 Accept
               </button>
-              <button className="bg-red-500 text-white px-4 py-2 rounded-md">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-md"
+                onClick={handleReject}
+              >
                 Reject
               </button>
             </div>
