@@ -1,12 +1,16 @@
 import { baseUrl } from "@/constants";
 import QueueRow from "./QueueRow";
-import { getRequest } from "@/services/Requests";
+import { getRequest, patchRequest } from "@/services/Requests";
 import { useState, useEffect, useRef } from "react";
 import UserManagmentRow from "./BannedRow";
 import BannedRow from "./BannedRow";
 import Loading from "../Loading/Loading";
 import { BannedModal } from "./BannedModal";
-const UserManagment = ({ selectedSubReddit}) => {
+import Empty from "./Empty";
+import ModeratorsRow from "./ModeratorsRow";
+import ApprovedRow from "./ApprovedRow";
+import {ApproveModal} from "./ApproveModal"
+const UserManagment = ({ selectedSubReddit, showAlertForTime }) => {
 
     const { name, icon } = selectedSubReddit
 
@@ -14,16 +18,36 @@ const UserManagment = ({ selectedSubReddit}) => {
     const [bannedUsers, setBannedUsers] = useState([]);
     const [moderators, setModerators] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [communityRules, setCommunityRules] = useState([]);
     const [isOpenBannedModal, setIsOpenBannedModal] = useState(false);
+    const [isOpenApproveModal, setIsOpenApproveModal] = useState(false);
     const bannedModalRef = useRef();
+    const approveModalRef = useRef();
     const [selectedPage, setSelectedPage] = useState(() => {
         const saved = localStorage.getItem('selectedUserManagementPage');
         return saved ? JSON.parse(saved) : "Banned";
     });
 
+
     useEffect(() => {
         localStorage.setItem('selectedUserManagementPage', JSON.stringify(selectedPage));
     }, [selectedPage]);
+
+
+    const leaveAsMod = async () => {
+
+
+        const response = await patchRequest(`${baseUrl}/mod/leave/${selectedSubReddit.name}`);
+        if (response.status === 200 || response.status === 201) {
+            showAlertForTime("success", response.data.message);
+            window.location.reload();
+        }
+        else {
+            showAlertForTime("error", response.data.message);
+        }
+
+
+    }
 
 
 
@@ -31,6 +55,9 @@ const UserManagment = ({ selectedSubReddit}) => {
         let closeDropdown = (e) => {
             if (bannedModalRef.current && !bannedModalRef.current.contains(e.target)) {
                 setIsOpenBannedModal(false);
+            }
+            if (approveModalRef.current && !approveModalRef.current.contains(e.target)) {
+                setIsOpenApproveModal(false);
             }
 
         };
@@ -105,54 +132,23 @@ const UserManagment = ({ selectedSubReddit}) => {
         };
     });
 
-
     useEffect(() => {
-        const getUserManagement = async () => {
-            setLoading(true);
-            try {
-                const response = await getRequest(`${baseUrl}/mod/get-${selectedPage.toLowerCase()}-users/${selectedSubReddit.name}`);
-                if (response.status === 200 || response.status === 201) {
-                    if (selectedPage == "Approved") {
-                        setApprovedUsers(response.data);
-                    } else if (selectedPage == "Banned") {
-                        setBannedUsers(response.data.bannedUsers);
-                    }
-                }
-            }
-            catch (e) {
+        const Fetch = async () => {
+            const response = await getRequest(`${baseUrl}/subreddit/${selectedSubReddit.name}/rules`);
 
-            }
-            finally {
-                setLoading(false);
+            if (response.status === 200 || response.status === 201) {
+                setCommunityRules(response.data);
             }
         }
+        if (selectedSubReddit)
+            Fetch();
+    }, [selectedSubReddit])
 
-        const getModerators = async () => {
-            setLoading(true);
-            try {
-                const response = await getRequest(`${baseUrl}/subreddit/${selectedSubReddit.name}`);
-                if (response.status === 200 || response.status === 201) {
-                    setModerators(response.data.moderators);
-                }
-            }
-            catch (e) {
-
-            }
-            finally {
-                setLoading(false);
-            }
-        }
-
-        if (selectedPage == "Moderators")
-            getModerators();
-        else
-            getUserManagement();
-    }, [selectedPage]);
 
     return (
         <div id="mod_content" className="flex flex-col  w-full h-full">
             <div className="w-full px-4  mt-[9px] min-h-[190px]  flex flex-col border-b-[1px] border-[#252C2E]">
-                <div className="flex mt-2 flex-row">
+                <div className="flex mt-2 -ml-4  flex-row">
                     <div className="w-fit px-3 h-11 mb-4 flex flex-row justify-start items-center cursor-pointer ">
                         <img src={icon} className="h-11 w-11 rounded-full mr-4 " />
                         <h1 className="text-[33px] font-semibold text-gray-200"> r/{name} :</h1>
@@ -175,8 +171,14 @@ const UserManagment = ({ selectedSubReddit}) => {
                             <h1 className="text-white text-[14px]">Moderators</h1>
                         </div>
                     </div>
-                    {selectedPage == "Banned" && <div onClick={(e) => { e.stopPropagation(); setIsOpenBannedModal(true) }} className="flex flex-row px-2 cursor-pointer hover:bg-white  h-8 rounded-3xl bg-gray-200 items-center ml-auto">
+                    {selectedPage == "Banned" && <div id="ban_user" onClick={(e) => { e.stopPropagation(); setIsOpenBannedModal(true) }} className="flex flex-row px-2 cursor-pointer hover:bg-white  h-8 rounded-3xl bg-gray-200 items-center ml-auto">
                         <h1 className="text-[13px] font-semibold">Ban User</h1>
+                    </div>}
+                    {selectedPage == "Moderators" && <div id="leave_mod" onClick={leaveAsMod} className="flex flex-row px-2 cursor-pointer hover:bg-white  h-8 rounded-3xl bg-gray-200 items-center ml-auto">
+                        <h1 className="text-[13px] font-semibold">Leave as mod</h1>
+                    </div>}
+                    {selectedPage == "Approved" && <div id="approve_user" onClick={(e)=>{ e.stopPropagation(); setIsOpenApproveModal(true)}} className="flex flex-row px-2 cursor-pointer hover:bg-white  h-8 rounded-3xl bg-gray-200 items-center ml-auto">
+                        <h1 className="text-[13px] font-semibold">Approve user</h1>
                     </div>}
                 </div>
             </div>
@@ -187,25 +189,41 @@ const UserManagment = ({ selectedSubReddit}) => {
 
             <div id="mapped_mod_user_managemenet" className="  flex flex-col h-full w-full ">
 
+
+                {selectedPage == "Banned" && bannedUsers.length == 0 && !loading &&
+                    <Empty message={"There is no banned users in this community"} />
+                }
+
+
+                {selectedPage == "Approved" && approvedUsers.length == 0 && !loading &&
+                    <Empty message={"There is no approved users in this community"} />
+                }
+
+
+                {selectedPage == "Moderators" && moderators.length == 0 && !loading &&
+                    <Empty message={"There is no moderators in this community"} />
+                }
+
                 {selectedPage == "Banned" && bannedUsers.length > 0 && !loading && bannedUsers.map((user, index) => {
                     return <div key={index} className="w-full flex-col hover:bg-reddit_hover px-[32px] border-b-[1px] border-[#252C2E] py-[11px]">
-                        <BannedRow username={user.username} reasonToBan={user.reasonToBan} days={user.days} profilePicture={user.profilePicture} />
+                        <BannedRow communityRules={communityRules} setBannedUsers={setBannedUsers} username={user.username} selectedSubReddit={selectedSubReddit} reasonToBan={user.reasonToBan} days={user.days} profilePicture={user.profilePicture} showAlertForTime={showAlertForTime} />
                     </div>
                 })}
 
-                {/* {selectedPage == "Approved" && approvedUsers.length > 0 && !loading && approvedUsers.map((user, index) => {
+
+                {selectedPage == "Approved" && approvedUsers.length > 0 && !loading && approvedUsers.map((user, index) => {
                     return <div key={index} className="w-full flex-col hover:bg-reddit_hover px-[32px] border-b-[1px] border-[#252C2E] py-[11px]">
-                        <UserManagmentRow username={user.name} profilePicture={user.profilePicture} button="Remove" />
+                        <ApprovedRow username={user.user} profilePicture={user.profilePicture} setApprovedUsers={setApprovedUsers} selectedSubReddit={selectedSubReddit} showAlertForTime={showAlertForTime} />
                     </div>
                 }
                 )}
 
                 {selectedPage == "Moderators" && moderators.length > 0 && !loading && moderators.map((user, index) => {
                     return <div key={index} className="w-full flex-col hover:bg-reddit_hover px-[32px] border-b-[1px] border-[#252C2E] py-[11px]">
-                        <UserManagmentRow username={user.name} profilePicture={user.profilePicture} />
+                        <ModeratorsRow username={user.username} profilePicture={user.profilePicture} showAlertForTime={showAlertForTime} />
                     </div>
                 }
-                )} */}
+                )}
 
 
 
@@ -213,8 +231,12 @@ const UserManagment = ({ selectedSubReddit}) => {
 
 
             </div>
-            {isOpenBannedModal && <BannedModal setIsOpenBannedModal={setIsOpenBannedModal} isOpenBannedModal={isOpenBannedModal} bannedModalRef={bannedModalRef} />
+            {isOpenBannedModal && <BannedModal bannedUsers={bannedUsers} setBannedUsers={setBannedUsers} communityRules={communityRules} showAlertForTime={showAlertForTime} setIsOpenBannedModal={setIsOpenBannedModal} isOpenBannedModal={isOpenBannedModal} bannedModalRef={bannedModalRef} selectedSubreddit={selectedSubReddit} />
             }
+            {
+            isOpenApproveModal && <ApproveModal selectedSubreddit={selectedSubReddit} approveModalRef={approveModalRef} setIsOpenApproveModal={setIsOpenApproveModal} showAlertForTime={showAlertForTime} setApprovedUsers={setApprovedUsers}/>
+            }
+
         </div>
 
 

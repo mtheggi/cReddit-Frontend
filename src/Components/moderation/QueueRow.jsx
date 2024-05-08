@@ -7,7 +7,6 @@ import { patchRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 
 const QueueRow = ({ post }) => {
-    console.log("what the fuck")
     const [isLocked, setIsLocked] = useState(post?.isLocked)
     const [isApproved, setIsApproved] = useState(post?.isApproved)
     const [isRemoved, setIsRemoved] = useState(post?.isRemoved)

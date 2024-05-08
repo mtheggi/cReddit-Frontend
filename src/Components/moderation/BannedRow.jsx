@@ -1,8 +1,29 @@
 
 import { useNavigate } from "react-router-dom";
+import { useState, useRef } from "react";
+import { EditBanModal } from "./EditBanModal";
+import { patchRequest } from "@/services/Requests";
+import { baseUrl } from "@/constants";
 
-const BannedRow = ({ username, profilePicture, reasonToBan, days }) => {
+
+const BannedRow = ({ username, communityRules, profilePicture, reasonToBan, days, showAlertForTime, selectedSubReddit, setBannedUsers }) => {
     const navigate = useNavigate();
+    const bannedModalRef = useRef(null);
+    const [isOpenEditBanModal, setIsOpenEditBanModal] = useState(false);
+
+    const unbanUser = async () => {
+        const response = await patchRequest(`${baseUrl}/mod/unban/${selectedSubReddit.name}`, {
+            username: username
+        })
+
+        if (response.status === 200 || response.status === 201) {
+            showAlertForTime("success", response.data.message);
+            setBannedUsers((prev) => prev.filter((user) => user.username !== username));
+        }
+        else {
+            showAlertForTime("error", response.data.message);
+        }
+    }
     return (
 
         <div className="w-full h-fit py-2  flex flex-row items-center border-b-1 border-gray-700">
@@ -16,8 +37,15 @@ const BannedRow = ({ username, profilePicture, reasonToBan, days }) => {
             <p className="text-[11px] text-gray-600 ml-4 mr-2">.</p>
             <p className="text-[11px] text-gray-600">{reasonToBan.substring(0, 16)}</p>
             <div className="ml-auto">
-                <button className="bg-reddit_search hover:bg-reddit_search_light w-fit px-3 py-1 rounded-xl h-8  text-white text-[14px]">Edit</button>
+                <button onClick={()=>setIsOpenEditBanModal(true)} className="bg-reddit_search hover:bg-reddit_search_light w-fit px-3 py-1 rounded-xl h-8  text-white text-[14px]">Edit</button>
             </div>
+            <div className="ml-3">
+                <button onClick={unbanUser} className="bg-reddit_search hover:bg-reddit_search_light w-fit px-[10px] py-1 rounded-xl h-8  text-red-600 hover:text-red-600 text-[14px]">Unban</button>
+            </div>
+            {isOpenEditBanModal && <EditBanModal setBannedUsers={setBannedUsers} communityRules={communityRules} username={username} showAlertForTime={showAlertForTime} setIsOpenBannedModal={setIsOpenEditBanModal} issOpenBannedModal={isOpenEditBanModal} bannedModalRef={bannedModalRef} selectedSubreddit={selectedSubReddit} />
+            }
+
+
         </div>
 
     );

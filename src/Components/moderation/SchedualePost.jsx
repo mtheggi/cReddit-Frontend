@@ -6,7 +6,7 @@ const SchedualePost = ({selectedSubReddit}) => {
     return (
         <div id="mod_content" className="flex flex-col  w-full h-full">
             <div className="w-full px-4  mt-[9px] min-h-[190px]  flex flex-col border-b-[1px] border-[#252C2E]">
-                <div className="flex mt-2 flex-row">
+                <div className="flex mt-2 -ml-4  flex-row">
                     <div className="w-fit px-3 h-11 mb-4 flex flex-row justify-start items-center cursor-pointer ">
                         <img src={icon} className="h-11 w-11 rounded-full mr-4 " />
                         <h1 className="text-[33px] font-semibold text-gray-200"> r/{name} :</h1>

@@ -131,7 +131,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                 }));
                 setNotifications(updatedNotifications);
                 
-                console.log("All notifications marked as read:", response);
+
             } else {
                 console.error("Error marking all notifications as read:", response.status, response.statusText);
             }

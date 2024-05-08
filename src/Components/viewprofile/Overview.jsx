@@ -67,7 +67,7 @@ const Overview = ({ userInfo }) => {
           `${baseUrl}/user/${userInfo.username}/overview?page=${currentPage}&limit=${profileLimit}`
         );
         if (response.status === 200 || response.status === 201) {
-          console.log(response.data);
+
           if (response.data.length === 0) {
             setHasMore(false);
           } else {

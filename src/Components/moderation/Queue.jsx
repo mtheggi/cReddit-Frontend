@@ -30,7 +30,6 @@ const Queue = ({ selectedSubReddit }) => {
                 if (response.status === 200) {
                     const newStructure = response.data.map((post) => { return { ...post.post, userPic: post.userPic } })
                     setPosts(newStructure)
-                    console.log("new Structure", newStructure)
                     setIsLoading(false);
                 }
             } else {
@@ -48,12 +47,11 @@ const Queue = ({ selectedSubReddit }) => {
         Fetch();
     }, [selectedPage, selectedSubReddit])
 
-    console.log(posts)
     return (
         <div id="mod_content" className="flex flex-col  w-full h-full">
             <div className="w-full px-4 mb-3 mt-[9px] h-fit min-h-[190px] flex flex-col border-b-[1px] border-[#252C2E]">
 
-                <div className="flex mt-2 flex-row">
+                <div className="flex mt-2 -ml-4 flex-row">
                     <div className="w-fit px-3 h-11 mb-4 flex flex-row justify-start items-center cursor-pointer ">
                         <img src={icon} className="h-11 w-11 rounded-full mr-4 " />
                         <h1 className="text-[33px] font-semibold text-gray-200"> r/{name} :</h1>
