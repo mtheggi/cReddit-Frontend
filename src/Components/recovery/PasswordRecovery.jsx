@@ -61,7 +61,7 @@ const PasswordRecovery = () => {
         theme="colored"
       />
       <div className='overlay'></div>
-      <div className='z-20 flex flex-col w-100% h-100% msm:w-132 msm:h-150'>
+      <div className='z-30 flex flex-col w-100% h-100% msm:w-132 msm:h-150'>
         <div className="flex min-w-88 flex-col w-full h-full msm:px-8 pl-2 pr-2 bg-reddit_menu msm:rounded-3xl">
           <div className="h-full w-full flex flex-col">
             <div className="flex flex-col h-full px-10 pt-8">
