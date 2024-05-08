@@ -49,8 +49,8 @@ const CreatePost = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     const [selectedDate, setSelectedDate] = useState('');
-  const [selectedTime, setSelectedTime] = useState('');
-  const [enUsDateTime, setEnUsDateTime] = useState('');
+    const [selectedTime, setSelectedTime] = useState('');
+    const [enUsDateTime, setEnUsDateTime] = useState('');
 
     let initialHeight = '38px';
     let communityName = "";
@@ -147,10 +147,16 @@ const CreatePost = () => {
         if (type == "Link" && content.trim() == "")
             return null
 
-        console.log('Scheduled for:', enUsFormat);
+        if (!location.pathname.includes('/r/')) {
+            const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW });
+            return response
+        }
+        else
+        {
+            const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW, date: enUsFormat});
+            return response
+        }
 
-        const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW, date: enUsFormat });
-        return response
     }
 
 
@@ -161,31 +167,31 @@ const CreatePost = () => {
      * @returns {Object} - The response from the post request.
      */
     const handleSubmitImg = async (enUsFormat) => {
-      try {
-        if (commNameInputRef.current.value.substring(2) != user)
-          communityName = commNameInputRef.current.value.substring(2);
+        try {
+            if (commNameInputRef.current.value.substring(2) != user)
+                communityName = commNameInputRef.current.value.substring(2);
 
-        const formData = new FormData();
-        formData.append("images", file);
-        formData.append("type", type);
-        formData.append("communityName", communityName);
-        formData.append("title", title);
-        formData.append("isSpoiler", isSpoiler);
-        formData.append("isNSFW", isNSFW);
-        formData.append("date", enUsFormat);
-        const response = await postRequestImg(`${baseUrl}/post`, formData);
+            const formData = new FormData();
+            formData.append("images", file);
+            formData.append("type", type);
+            formData.append("communityName", communityName);
+            formData.append("title", title);
+            formData.append("isSpoiler", isSpoiler);
+            formData.append("isNSFW", isNSFW);
+            formData.append("date", enUsFormat);
+            const response = await postRequestImg(`${baseUrl}/post`, formData);
 
-        if (response && response.status != 200 && response.status != 201) {
-          showAlertForTime("error", response.data.message);
+            if (response && response.status != 200 && response.status != 201) {
+                showAlertForTime("error", response.data.message);
+            }
+            return response;
+        } catch (error) {
+            if (error.response) {
+                showAlertForTime("error", error.response.data.message);
+            } else {
+                showAlertForTime("error", error.message);
+            }
         }
-        return response;
-      } catch (error) {
-        if (error.response) {
-          showAlertForTime("error", error.response.data.message);
-        } else {
-          showAlertForTime("error", error.message);
-        }
-      }
     };
 
     /**
@@ -203,15 +209,15 @@ const CreatePost = () => {
         const pollOptions = nonEmptyInputFields.map(field => field.value);
         const expirationDate = getExpirationDate(voteDurationValue);
         const response = await postRequest(`${baseUrl}/post`, {
-          type: type,
-          communityName: communityName,
-          title: title,
-          content: content,
-          pollOptions: pollOptions,
-          expirationDate: expirationDate,
-          isSpoiler: isSpoiler,
-          isNSFW: isNSFW,
-          date: enUsFormat,
+            type: type,
+            communityName: communityName,
+            title: title,
+            content: content,
+            pollOptions: pollOptions,
+            expirationDate: expirationDate,
+            isSpoiler: isSpoiler,
+            isNSFW: isNSFW,
+            date: enUsFormat,
         });
         return response
     }
@@ -350,39 +356,39 @@ const CreatePost = () => {
 
 
     // State variables to store date and time values
-  
-
-  // Function to handle submitting the post or scheduling it
-  const handleSubmit = () => {
-    if (selectedDate && selectedTime) {
-      // Convert date and time to enUs format
-      const enUsFormat = convertToEnUsFormat(selectedDate, selectedTime);
-
-      handleSubmitPost(enUsFormat);
-      // Schedule the post
-      // console.log('Scheduled for:', enUsFormat);
-    } else {
-      // Submit the post
-      console.log('Submit the post');
-    }
-  };
-
-  const convertToEnUsFormat = (date, time) => {
-    // Assuming date format: YYYY-MM-DD
-    const [year, month, day] = date.split('-');
-    // Assuming time format: HH:MM
-    const [hour, minute] = time.split(':');
-
-    // Construct enUs format: MM/DD/YYYY HH:MM
-    return `${month}/${day}/${year} ${hour}:${minute}`;
-  };
 
 
-  // Get the current path of the URL
-  const currentPath = window.location.pathname;
+    // Function to handle submitting the post or scheduling it
+    const handleSubmit = () => {
+        if (selectedDate && selectedTime) {
+            // Convert date and time to enUs format
+            const enUsFormat = convertToEnUsFormat(selectedDate, selectedTime);
 
-  // Check if the current path matches the specified pattern
-  const isSubmitPage = currentPath.startsWith('/submit/r/');
+            handleSubmitPost(enUsFormat);
+            // Schedule the post
+            // console.log('Scheduled for:', enUsFormat);
+        } else {
+            // Submit the post
+            console.log('Submit the post');
+        }
+    };
+
+    const convertToEnUsFormat = (date, time) => {
+        // Assuming date format: YYYY-MM-DD
+        const [year, month, day] = date.split('-');
+        // Assuming time format: HH:MM
+        const [hour, minute] = time.split(':');
+
+        // Construct enUs format: MM/DD/YYYY HH:MM
+        return `${month}/${day}/${year} ${hour}:${minute}`;
+    };
+
+
+    // Get the current path of the URL
+    const currentPath = window.location.pathname;
+
+    // Check if the current path matches the specified pattern
+    const isSubmitPage = currentPath.startsWith('/submit/r/');
 
 
 
@@ -618,67 +624,65 @@ const CreatePost = () => {
                         </div>
                     </div>
                     <div className='flex flex-row space-x-3 mr-3 h-full mt-2.5 mb-2.5 font-semibold ml-auto'>
-      {/* Conditional rendering for the "Post" button */}
-      {!isSubmitPage && (
-        <>
-      <div
-        onClick={handleSubmitPost}
-        className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${
-          (title.trim() === '' ||
-            (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
-              commNameInputRef.current.value.substring(2) !== user) ||
-            (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
-            (file === null && type === 'Images & Video') ||
-            (type === 'Link' && content.trim() === '') ||
-            isLoading)
-            ? 'cursor-not-allowed text-gray-600'
-            : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
-        }`}
-      >
-        <p className='ml-1 mr-0.5 text-sm'>Post</p>
-      </div>
-      </>
-      )}
+                        {/* Conditional rendering for the "Post" button */}
+                        {!isSubmitPage && (
+                            <>
+                                <div
+                                    onClick={handleSubmitPost}
+                                    className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
+                                            (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
+                                                commNameInputRef.current.value.substring(2) !== user) ||
+                                            (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
+                                            (file === null && type === 'Images & Video') ||
+                                            (type === 'Link' && content.trim() === '') ||
+                                            isLoading)
+                                            ? 'cursor-not-allowed text-gray-600'
+                                            : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
+                                        }`}
+                                >
+                                    <p className='ml-1 mr-0.5 text-sm'>Post</p>
+                                </div>
+                            </>
+                        )}
 
-      {/* Conditional rendering for the "Schedule" button and selectors */}
-      {isSubmitPage && (
-        <>
-          <div
-            onClick={handleSubmit}
-            className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${
-              (title.trim() === '' ||
-                (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
-                  commNameInputRef.current.value.substring(2) !== user) ||
-                (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
-                (file === null && type === 'Images & Video') ||
-                (type === 'Link' && content.trim() === '') ||
-                isLoading)
-                ? 'cursor-not-allowed text-gray-600'
-                : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
-            }`}
-          >
-            <p className='ml-1 mr-0.5 text-sm'>Schedule</p>
-          </div>
-          {/* Date and time selectors */}
-          <div>
-  {/* Date selector */}
-  <input
-    type='date'
-    value={selectedDate}
-    onChange={(e) => setSelectedDate(e.target.value)}
-    className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mr-[10px]'
-  />
-  {/* Time selector */}
-  <input
-    type='time'
-    value={selectedTime}
-    onChange={(e) => setSelectedTime(e.target.value)}
-    className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
-  />
-</div>
-        </>
-      )}
-    </div>
+                        {/* Conditional rendering for the "Schedule" button and selectors */}
+                        {isSubmitPage && (
+                            <>
+                                <div
+                                    onClick={handleSubmit}
+                                    className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
+                                            (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
+                                                commNameInputRef.current.value.substring(2) !== user) ||
+                                            (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
+                                            (file === null && type === 'Images & Video') ||
+                                            (type === 'Link' && content.trim() === '') ||
+                                            isLoading)
+                                            ? 'cursor-not-allowed text-gray-600'
+                                            : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
+                                        }`}
+                                >
+                                    <p className='ml-1 mr-0.5 text-sm'>Schedule</p>
+                                </div>
+                                {/* Date and time selectors */}
+                                <div>
+                                    {/* Date selector */}
+                                    <input
+                                        type='date'
+                                        value={selectedDate}
+                                        onChange={(e) => setSelectedDate(e.target.value)}
+                                        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mr-[10px]'
+                                    />
+                                    {/* Time selector */}
+                                    <input
+                                        type='time'
+                                        value={selectedTime}
+                                        onChange={(e) => setSelectedTime(e.target.value)}
+                                        className='rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50'
+                                    />
+                                </div>
+                            </>
+                        )}
+                    </div>
                 </div>
             </div>
 
