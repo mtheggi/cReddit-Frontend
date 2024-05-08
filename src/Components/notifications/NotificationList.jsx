@@ -199,11 +199,11 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                                 </div>
                                 {earlierNotifications.map(notification => (
                                     <NotificationItem
-                                        key={notification.key}  // Ensure you are passing a unique key here
+                                        key={notification.key} 
                                         notificationKey={notification.key}
                                         title={notification.title}
                                         description={notification.description}
-                                        date={notification.date}  // And here, it uses notification.date
+                                        date={notification.date} 
                                         image={notification.image}
                                         onRemove={removeNotification}
                                         isNewNotificationsPage={isNewNotificationsPage}
