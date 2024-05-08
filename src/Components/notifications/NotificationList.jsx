@@ -181,14 +181,15 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                         </div>
                         {todayNotifications.map(notification => (
                             <NotificationItem
-                                key={notification.key}  // Ensure you are passing a unique key here
+                                key={notification.key} 
                                 notificationKey={notification.key}
                                 title={notification.title}
                                 description={notification.description}
-                                date={notification.time}  // Based on your object structure, this should be notification.time
+                                date={notification.time} 
                                 image={notification.image}
                                 onRemove={removeNotification}
                                 isNewNotificationsPage={isNewNotificationsPage}
+                                isRead={notification.isRead}
                             />
                         ))}
                         {earlierNotifications.length > 0 && (
@@ -206,6 +207,7 @@ const NotificationList = ({ notifications, isNewNotificationsPage, reference, se
                                         image={notification.image}
                                         onRemove={removeNotification}
                                         isNewNotificationsPage={isNewNotificationsPage}
+                                        isRead={notification.isRead}
                                     />
                                 ))}
                             </>
