@@ -9,6 +9,9 @@ import { baseUrl } from "@/constants";
 import Loading from "@/Components/Loading/Loading";
 import CommunityMod from "@/Components/moderation/CommunityMod";
 import { useNavigate } from "react-router-dom";
+import NotModeratorInAny from "@/Components/moderation/NotModeratorInAny";
+import Empty from "@/Components/moderation/Empty";
+import AlertDemo from "@/Components/alert/AlertDemo";
 
 const ModTools = () => {
     const [isQueue, setIsQueue] = useState(true);
@@ -17,9 +20,19 @@ const ModTools = () => {
     const [subbreddit, setSubbreddit] = useState([]);
     const [subredditLoading, setSubbredditLoading] = useState(false);
     const [selectedSubReddit, setSelectedSubreddit] = useState(null);
+    const [alertState, setAlertState] = useState({ show: false, message: "", condition: "" });
     const navigate = useNavigate();
 
-    console.log(isQueue);
+
+    const showAlertForTime = (condition, message) => {
+        setAlertState({ show: true, message: message, condition: condition });
+
+        setTimeout(() => {
+            setAlertState({ show: false, message: "", condition: "" });
+        }, 3000);
+    };
+
+
     useEffect(() => {
 
         const fetchSubreddits = async () => {
@@ -36,9 +49,11 @@ const ModTools = () => {
         fetchSubreddits();
     }, [])
 
-    console.log(selectedSubReddit);
+
     return (
         <div className="w-full h-full overflow-x-auto mt-[60px] flex flex-row">
+
+            {alertState.show && < AlertDemo conditon={alertState.condition} message={alertState.message} showAlert={alertState.show} />}
 
             <div id="mod_sidebar" className="w-[260px] sticky top-0 h-screen flex  flex-col min-w-[260px] px-[16px] py-3 border-r-[1px]  border-[#252C2E]">
 
@@ -62,19 +77,19 @@ const ModTools = () => {
                 </div>
 
 
-                <div onClick={() => { setIsQueue(true); setIsUserManagement(false); setIsScheduledPosts(false); }} id="mod_queues" className="w-full h-10 my-1 items-center flex cursor-pointer hover:bg-reddit_search rounded-lg px-[11px] flex-row">
+                <div onClick={() => { setIsQueue(true); setIsUserManagement(false); setIsScheduledPosts(false); }} id="mod_queues" className={`w-full ${isQueue ? 'bg-reddit_search_light' : 'hover:bg-reddit_search'} h-10 my-1 items-center flex cursor-pointer  rounded-lg px-[11px] flex-row`}>
                     <svg rpl="" fill="#83959B" height="20" icon-name="posts-fill" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"> <path d="M2.625 15.375V16A1.627 1.627 0 0 1 1 14.375V2.624A1.627 1.627 0 0 1 2.625 1h11.75A1.627 1.627 0 0 1 16 2.624H5.629a3.008 3.008 0 0 0-3 3l-.004 9.751ZM19 5.625v11.75A1.627 1.627 0 0 1 17.375 19H5.625A1.627 1.627 0 0 1 4 17.375V5.625A1.627 1.627 0 0 1 5.625 4h11.75A1.627 1.627 0 0 1 19 5.625ZM15 14H8v1.5h7V14Zm0-3H8v1.5h7V11Zm0-3H8v1.5h7V8Z"></path>
                     </svg>
                     <h1 className="text-[#83959B] font-medium text-[14px] ml-2">Queues</h1>
                 </div>
 
 
-                <div onClick={() => { setIsQueue(false); setIsUserManagement(true); setIsScheduledPosts(false); }} id="user_management" className="w-full h-10 my-1 items-center flex  cursor-pointer  hover:bg-reddit_search rounded-lg px-[11px]   flex-row">
+                <div onClick={() => { setIsQueue(false); setIsUserManagement(true); setIsScheduledPosts(false); }} id="user_management" className={`w-full h-10 my-1 items-center flex  cursor-pointer ${isUserManagement ? 'bg-reddit_search_light' : 'hover:bg-reddit_search'}    rounded-lg px-[11px]   flex-row`}>
                     <svg rpl="" fill="#83959B" height="20" icon-name="profile-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0ZM4.866 17.07a3.99 3.99 0 0 1 3.991-2.77h2.286a3.99 3.99 0 0 1 3.991 2.766 8.685 8.685 0 0 1-10.268 0v.004Zm11.3-.87a5.354 5.354 0 0 0-5.024-3.146H8.857A5.354 5.354 0 0 0 3.833 16.2a8.75 8.75 0 1 1 12.334 0h-.001ZM10.059 5a3.229 3.229 0 1 0 0 6.458 3.229 3.229 0 0 0 0-6.458Zm0 5.208a1.98 1.98 0 1 1 0-3.959 1.98 1.98 0 0 1 0 3.959Z"></path> </svg>
                     <h1 className="text-[#83959B] ml-2 font-medium text-[14px]">User Management</h1>
                 </div>
 
-                <div onClick={() => { setIsQueue(false); setIsUserManagement(false); setIsScheduledPosts(true); }} id="scheduled_posts" className="w-full h-10 mb-3 my-1 items-center flex  cursor-pointer hover:bg-reddit_search rounded-lg px-[11px] flex-row">
+                <div onClick={() => { setIsQueue(false); setIsUserManagement(false); setIsScheduledPosts(true); }} id="scheduled_posts" className={`w-full h-10 mb-3 my-1 items-center flex  cursor-pointer ${isScheduledPosts ? 'bg-reddit_search_light' : 'hover:bg-reddit_search'}  rounded-lg px-[11px] flex-row`}>
                     <svg rpl="" fill="#83959B" height="20" icon-name="calendar-outline" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"><path d="M17.374 2H16V.25h-1.25V2h-9.5V.251H4V2H2.626A1.627 1.627 0 0 0 1 3.626v13.748A1.627 1.627 0 0 0 2.626 19h14.748A1.627 1.627 0 0 0 19 17.374V3.626A1.627 1.627 0 0 0 17.374 2ZM2.626 3.25H4v1h1.25v-1h9.5v1H16v-1h1.374a.377.377 0 0 1 .376.376V7H2.25V3.626a.377.377 0 0 1 .376-.376Zm14.748 14.5H2.626a.377.377 0 0 1-.376-.376V8.25h15.5v9.124a.378.378 0 0 1-.376.376Z"></path> </svg>
                     <h1 className="text-[#83959B] ml-2 font-medium text-[14px]">Scheduled Posts</h1>
                 </div>
@@ -95,8 +110,9 @@ const ModTools = () => {
             </div>
 
             {selectedSubReddit && isQueue && <Queue selectedSubReddit={selectedSubReddit} />}
-            {selectedSubReddit && isUserManagement && <UserManagment selectedSubReddit={selectedSubReddit} />}
+            {selectedSubReddit && isUserManagement && <UserManagment selectedSubReddit={selectedSubReddit} showAlertForTime={showAlertForTime} />}
             {selectedSubReddit && isScheduledPosts && <SchedualePost selectedSubReddit={selectedSubReddit} />}
+            {subbreddit.length == 0 && <Empty message={"You are not a moderator in any community"} />}
 
 
         </div>
