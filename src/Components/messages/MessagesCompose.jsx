@@ -51,7 +51,7 @@ const MessagesCompose = () => {
             <span className="mt-auto text-gray-900"> (username)</span>
             <div className="mt-[5px] align-top">
               <input
-                className="2xs:w-[200px] md:w-[300px] lg:w-[400px] text-[#000000] h-[2.5rem] p-[10px]"
+                className="2xs:w-[200px] md:w-[300px] lg:w-[400px] text-[#000000] bg-white h-[2.5rem] p-[10px]"
                 value={to}
                 onChange={(e) => setTo(e.target.value)}
                 required
@@ -63,7 +63,7 @@ const MessagesCompose = () => {
             <span className="mt-auto capitalize">subject</span>
             <div className="mt-[5px] align-top">
               <input
-                className="2xs:w-[200px] md:w-[300px] lg:w-[400px] text-[#000000] h-[2.5rem] p-[10px]"
+                className="2xs:w-[200px] md:w-[300px] lg:w-[400px] text-[#000000] bg-white h-[2.5rem] p-[10px]"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 required
