@@ -5,7 +5,7 @@ import "./index.css";
 import Navbar from "./Components/navbar/Navbar";
 import Home from "./views/Home";
 import NotFound from "./views/NotFound";
-import Search from "./views/Search"
+import Search from "./views/Search";
 import { useContext, useState, useRef, useEffect } from "react";
 import Settings from "./Components/settings/Settings";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -18,13 +18,15 @@ import Community from "./views/Community";
 import TopCommunities from "./Components/topcommunities/TopCommunities";
 import NotificationPage from "./views/NotificationPage";
 import PasswordRecovery from "./Components/recovery/PasswordRecovery";
-import { SidebarContextProvider } from "./context/SidebarContext";
+import {
+  SidebarContextProvider,
+  SidebarContext,
+} from "./context/SidebarContext";
 import OthersProfile from "./views/OthersProfile";
 import Chat from "./views/Chat";
 import ModTools from "./views/ModTools";
 import { ChatContextProvider } from "./context/ChatContext";
-
-
+import Message from "./Components/messages/Message";
 
 function App() {
   const [isVisibleLeftSidebar, setIsVisibleLeftSidebar] = useState(false);
@@ -33,7 +35,19 @@ function App() {
   const { isLoading, isLoggedIn } = useContext(UserContext);
   const [isSearchInMobile, setIsSearchInMobile] = useState(false);
 
+  const { setIsCommunityOpen, communityButtonRef, userHistoryRes, sidebarRef } =
+    useContext(SidebarContext);
   const navbarRef = useRef();
+
+  const sidebarProps = {
+    isVisibleLeftSidebar,
+    setIsVisibleLeftSidebar,
+    setIsCommunityOpen,
+    communityButtonRef,
+    userHistoryRes,
+    sidebarRef,
+  };
+
   return isLoading ? (
     <div className="App h-screen flex flex-col bg-reddit_greenyDark overflow-x-hidden">
       <Loading />
@@ -132,24 +146,14 @@ function App() {
               </SidebarContextProvider>
             }
           />
-          <Route
-            path="/r/:name"
-            element={
-              <SidebarContextProvider>
-                <Community
-                  isVisibleLeftSidebar={isVisibleLeftSidebar}
-                  setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
-                  navbarRef={navbarRef}
-                />
-              </SidebarContextProvider>
-            }
-          />
+          <Route path="/r/:name" element={<Community />} />
 
           <Route
             path="/user/:username/:page?"
             element={
               <SidebarContextProvider>
-                <OthersProfile isVisibleLeftSidebar={isVisibleLeftSidebar}
+                <OthersProfile
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                 />
@@ -160,7 +164,8 @@ function App() {
             path="/search/:query/:type"
             element={
               <SidebarContextProvider>
-                <Search isVisibleLeftSidebar={isVisibleLeftSidebar}
+                <Search
+                  isVisibleLeftSidebar={isVisibleLeftSidebar}
                   setIsVisibleLeftSidebar={setIsVisibleLeftSidebar}
                   navbarRef={navbarRef}
                   isSearchInMobile={isSearchInMobile}
@@ -227,6 +232,10 @@ function App() {
             }
           />
 
+          <Route
+            path="/message/*"
+            element={<Message sidebarProps={sidebarProps} />}
+          />
         </Routes>
       </div>
 
