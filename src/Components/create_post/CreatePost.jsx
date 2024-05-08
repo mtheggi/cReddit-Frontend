@@ -160,32 +160,33 @@ const CreatePost = () => {
      * @async
      * @returns {Object} - The response from the post request.
      */
-    const handleSubmitImg = async () => {
-        try {
-            if (commNameInputRef.current.value.substring(2) != user)
-              communityName = commNameInputRef.current.value.substring(2);
-        
-            const formData = new FormData();
-            formData.append('images', file);
-            formData.append('type', type);
-            formData.append('communityName', communityName);
-            formData.append('title', title);
-            formData.append('isSpoiler', isSpoiler);
-            formData.append('isNSFW', isNSFW);
-            const response = await postRequestImg(`${baseUrl}/post`, formData);
-        
-            if (response && response.status != 200 && response.status != 201) {
-              showAlertForTime("error", response.data.message);
-            }
-            return response;
-          } catch (error) {
-            if (error.response) {
-                showAlertForTime("error", error.response.data.message);
-            } else {
-                showAlertForTime("error", error.message);
-            }
-          }
-    }
+    const handleSubmitImg = async (enUsFormat) => {
+      try {
+        if (commNameInputRef.current.value.substring(2) != user)
+          communityName = commNameInputRef.current.value.substring(2);
+
+        const formData = new FormData();
+        formData.append("images", file);
+        formData.append("type", type);
+        formData.append("communityName", communityName);
+        formData.append("title", title);
+        formData.append("isSpoiler", isSpoiler);
+        formData.append("isNSFW", isNSFW);
+        formData.append("date", enUsFormat);
+        const response = await postRequestImg(`${baseUrl}/post`, formData);
+
+        if (response && response.status != 200 && response.status != 201) {
+          showAlertForTime("error", response.data.message);
+        }
+        return response;
+      } catch (error) {
+        if (error.response) {
+          showAlertForTime("error", error.response.data.message);
+        } else {
+          showAlertForTime("error", error.message);
+        }
+      }
+    };
 
     /**
  * Handles the submission of poll posts.
@@ -193,7 +194,7 @@ const CreatePost = () => {
  * @async
  * @returns {Object} - The response from the post request.
  */
-    const handleSubmitPoll = async () => {
+    const handleSubmitPoll = async (enUsFormat) => {
 
         if (commNameInputRef.current.value.substring(2) != user)
             communityName = commNameInputRef.current.value.substring(2);
@@ -201,7 +202,17 @@ const CreatePost = () => {
         const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
         const pollOptions = nonEmptyInputFields.map(field => field.value);
         const expirationDate = getExpirationDate(voteDurationValue);
-        const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, pollOptions: pollOptions, expirationDate: expirationDate, isSpoiler: isSpoiler, isNSFW: isNSFW });
+        const response = await postRequest(`${baseUrl}/post`, {
+          type: type,
+          communityName: communityName,
+          title: title,
+          content: content,
+          pollOptions: pollOptions,
+          expirationDate: expirationDate,
+          isSpoiler: isSpoiler,
+          isNSFW: isNSFW,
+          date: enUsFormat,
+        });
         return response
     }
 
@@ -240,12 +251,12 @@ const CreatePost = () => {
                 let res = null;
                 if (type === "Poll") {
                     if (checkInputFieldsNotEmpty()) {
-                        res = await handleSubmitPoll();
+                        res = await handleSubmitPoll(enUsFormat);
                     }
                 }
                 else if (type === "Images & Video") {
                     if (file != null)
-                        res = await handleSubmitImg();
+                        res = await handleSubmitImg(enUsFormat);
 
                 }
                 else {
