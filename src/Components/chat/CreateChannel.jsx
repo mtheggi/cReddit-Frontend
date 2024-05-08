@@ -61,7 +61,7 @@ const CreateChannel = () => {
                     className={`flex flex-row px-2 py-2 h-8 justify-between rounded-full text-sm items-center mr-3 bg-reddit_blue hover:bg-reddit_light_blue ${(tags.length === 0 || (groupName === "" && tags.length > 1)) ? " cursor-not-allowed" : ""}`}
                     disabled={tags.length === 0 || (groupName === "" && tags.length > 1)}
                 >
-                    <p className="font-bold text-white " data-testid="cancel-create-chat" >Create Chat</p>
+                    <p className="font-bold text-white " id="btn-create-chat" data-testid="btn-create-chat" >Create Chat</p>
                 </button>
 
             </div>

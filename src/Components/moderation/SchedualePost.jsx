@@ -25,18 +25,7 @@ const SchedualePost = () => {
             </div>
 
 
-            {/* <div className="w-full h-full flex flex-col items-center mt-20 ">
-            <img className="w-[200px] h-[200px]" src="https://www.redditstatic.com/shreddit/assets/snoomojis/cat_blep.png" alt="cat blep" />
-            <h1 className="text-white font-medium text-[24px]">Queue is clean.</h1>
-            <p className="text-gray-400 mt-1">Kitteh is pleased</p>
-        </div> */}
 
-            <div id="mapped_mod" className="  flex flex-col h-full w-full ">
-                <div className="w-full flex-col hover:bg-reddit_hover px-[32px] border-b-[1px] border-[#252C2E] py-4">
-                    <QueueRow />
-
-                </div>
-            </div>
 
         </div>
 

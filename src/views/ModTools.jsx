@@ -8,6 +8,7 @@ import { getRequest } from "@/services/Requests";
 import { baseUrl } from "@/constants";
 import Loading from "@/Components/Loading/Loading";
 import CommunityMod from "@/Components/moderation/CommunityMod";
+import { useNavigate } from "react-router-dom";
 
 const ModTools = () => {
     const [isQueue, setIsQueue] = useState(true);
@@ -16,6 +17,8 @@ const ModTools = () => {
     const [subbreddit, setSubbreddit] = useState([]);
     const [subredditLoading, setSubbredditLoading] = useState(false);
     const [selectedSubReddit, setSelectedSubreddit] = useState(null);
+    const navigate = useNavigate();
+
     console.log(isQueue);
     useEffect(() => {
 
@@ -33,12 +36,13 @@ const ModTools = () => {
         fetchSubreddits();
     }, [])
 
+    console.log(selectedSubReddit);
     return (
         <div className="w-full h-full mt-[60px] flex flex-row">
 
             <div id="mod_sidebar" className="w-[260px] flex  flex-col min-w-[260px] px-[16px] py-3 border-r-[1px]  border-[#252C2E]">
 
-                <div id="exit_mod" className="flex flex-row mb-[10px] w-full h-10 rounded-lg items-center cursor-pointer px-[11px] mt-3 hover:bg-reddit_search">
+                <div id="exit_mod" onClick={() => { navigate('/') }} className="flex flex-row mb-[10px] w-full h-10 rounded-lg items-center cursor-pointer px-[11px] mt-3 hover:bg-reddit_search">
                     <svg className=" rotate-90 mr-4" rpl="" fill="#83959B" height="16" icon-name="down-arrow-outline" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"> <g clipPath="url(#clip0_4084_297)"><path d="M10.442 19.442l9-9-.884-.884-7.933 7.933V1h-1.25v16.491L1.442 9.558l-.884.884 9 9a.624.624 0 00.884 0z"></path></g><defs><clipPath id="clip0_4084_297"><path d="M0 0h20v20H0z" transform="rotate(90 10 10)"></path></clipPath></defs></svg>
                     <h1 className="text-[#83959B] font-light text-[14px] ">Exit mod tools</h1>
                 </div>
@@ -79,18 +83,20 @@ const ModTools = () => {
                 {
                     subredditLoading ? <Loading /> :
                         subbreddit.map((sub, index) => {
-                            return <CommunityMod key={index} text={sub.name} icon={sub.icon} />
-
-
+                            return (
+                                <div onClick={() => { setSelectedSubreddit(sub) }} key={index} id={`${sub.name}-icon-mod`} >
+                                    <CommunityMod key={index} text={sub.name} icon={sub.icon} Selected={selectedSubReddit} />
+                                    <Separator />
+                                </div>
+                            )
                         })
-
                 }
 
             </div>
 
-            {selectedSubReddit && isQueue && <Queue />}
-            {selectedSubReddit && isUserManagement && <UserManagment />}
-            {selectedSubReddit && isScheduledPosts && <SchedualePost />}
+            {selectedSubReddit && isQueue && <Queue selectedSubReddit={selectedSubReddit} />}
+            {selectedSubReddit && isUserManagement && <UserManagment selectedSubReddit={selectedSubReddit} />}
+            {selectedSubReddit && isScheduledPosts && <SchedualePost selectedSubReddit={selectedSubReddit} />}
 
 
         </div>
