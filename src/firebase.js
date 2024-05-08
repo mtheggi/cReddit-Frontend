@@ -31,5 +31,5 @@ export const generateToken = async () => {
 
 }
 
-const fcmToken = await generateToken();
+const fcmToken = generateToken();
 export default fcmToken;
