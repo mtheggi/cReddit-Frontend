@@ -86,7 +86,7 @@ const OthersProfile = ({ isVisibleLeftSidebar, setIsVisibleLeftSidebar, navbarRe
 
         if (!isOthersProfile) {
             if (ismyProfile) {
-                // TODO : navigate to my profile
+                navigate('/my-user/' + userInfo.username);
             } else {
                 console.log("invalid route");
                 navigate('/404')

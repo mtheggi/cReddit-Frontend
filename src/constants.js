@@ -9,4 +9,10 @@ export const baseUrl = 'https://api.creddit.tech';
 export const socketBaseUrl = 'https://api.creddit.tech'
 // export const baseUrl = "http://localhost:3000";
 // export const socketBaseUrl = "http://localhost:3000";
+// export const baseUrl = 'https://creddit.tech/API';
 
+// export const testingUrl = "http://localhost:5173";
+
+export const testingUrl = "https://creddit.tech";
+export const messagesLimit = 3;
+export const profileLimit = 10;
