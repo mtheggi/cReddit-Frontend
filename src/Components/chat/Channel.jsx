@@ -16,6 +16,7 @@ const Channel = ({ index, roomInfo }) => {
     const { socket, rooms, selectedRoomId, setSelectedRoomId, setIsChannelSelected, setIsAddChat, setSelectedRoom } = useContext(ChatContext);
     const { user } = useContext(UserContext);
 
+
     const [myIsRead, setMyIsRead] = useState(isRead);
     useEffect(() => {
         const newAvatar = generator.generateRandomAvatar(_id);
@@ -51,6 +52,7 @@ const Channel = ({ index, roomInfo }) => {
     };
 
     const limitName = (name) => {
+
         const maxChars = windowWidth <= 768 ? 6 : 12;
         if (name.length > maxChars) {
             return name.slice(0, maxChars) + "...";
@@ -93,7 +95,7 @@ const Channel = ({ index, roomInfo }) => {
             <div className="flex flex-col py-1 w-full">
                 <div className="flex flex-row justify-between items-baseline ">
                     <p className="text-white text-sm">{limitName(name)}</p>
-                    <p className="text-gray-500 text-xs">{moment(createdAt).calendar()}</p>
+                    <p className="text-gray-500 text-xs">{moment(createdAt).fromNow()}</p>
                 </div>
 
                 <div className="flex flex-row justify-between">

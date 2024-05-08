@@ -89,12 +89,13 @@ const ChatBox = () => {
             {/* Chatbox Head  */}
             <div className="flex flex-row justify-between items-center w-full py-2 px-3">
                 <p className="text-white font-bold text-lg "> {selectedRoom?.name} </p>
-                <div id="chat-leaving" data-testid="chat-leaving" className="group relative flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
+
+                {selectedRoom?.members?.length > 2 && <div id="chat-leaving" data-testid="chat-leaving" className="group relative flex flex-row justify-center items-center w-9 h-9 rounded-full hover:bg-reddit_hover cursor-pointer"
                     onClick={() => { handleLeaveRoom(); }} >
                     <UserMinusIcon className="h-6 w-6 text-white" />
                     <span className="opacity-0 inset-x-0 bottom-0 mb-2  group-hover:opacity-100 absolute bg-gray-800 text-white text-xs rounded-md px-2 py-1 transition-opacity duration-300 ease-in-out">Leave</span>
 
-                </div>
+                </div>}
 
             </div>
 
@@ -126,6 +127,7 @@ const ChatBox = () => {
                 <CameraIcon className="h-7 w-7 ml-1 text-gray-500 cursor-pointer" />
 
                 <InputEmoji placeholder="send message"
+                    id="chat-message-input"
                     type="text"
                     onChange={(e) => { setTextMessage(e) }}
                     value={textMessage}

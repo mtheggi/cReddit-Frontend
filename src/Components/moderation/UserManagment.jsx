@@ -16,14 +16,76 @@ const UserManagment = ({ selectedSubReddit = {
     const [moderators, setModerators] = useState([]);
     const [loading, setLoading] = useState(true);
     const [isOpenBannedModal, setIsOpenBannedModal] = useState(false);
-    const bannedModalRef = useRef();
+    const bannedModalRef = useRef();     
     const [selectedPage, setSelectedPage] = useState(() => {
-        const saved = localStorage.getItem('selectedUserManagementPage');
-        return saved ? JSON.parse(saved) : "Banned";
-    });
+            const saved = localStorage.getItem('selectedUserManagementPage');
+            return saved ? JSON.parse(saved) : "Banned";
+          });
+          
+          useEffect(() => {
+            localStorage.setItem('selectedUserManagementPage', JSON.stringify(selectedPage));
+          }, [selectedPage]);
+
+
+
+  useEffect(() => {
+    let closeDropdown = (e) => {
+      if (bannedModalRef.current && !bannedModalRef.current.contains(e.target)) {
+        setIsOpenBannedModal(false);
+      }
+
+    };
+    document.addEventListener("click", closeDropdown);
+
+
+    return () => {
+      document.removeEventListener("click", closeDropdown);
+
+    };
+  });
+
 
     useEffect(() => {
-        localStorage.setItem('selectedUserManagementPage', JSON.stringify(selectedPage));
+        const getUserManagement = async () => {
+            setLoading(true);
+            try {
+                const response = await getRequest(`${baseUrl}/mod/get-${selectedPage.toLowerCase()}-users/${selectedSubReddit.name}`);
+                if (response.status === 200 || response.status === 201) {
+                    if (selectedPage == "Approved") {
+                        setApprovedUsers(response.data);
+                    } else if (selectedPage == "Banned") {
+                        setBannedUsers(response.data.bannedUsers);
+                    }
+                }
+            }
+            catch (e) {
+
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+
+        const getModerators = async () => {
+            setLoading(true);
+            try {
+                const response = await getRequest(`${baseUrl}/subreddit/${selectedSubReddit.name}`);
+                if (response.status === 200 || response.status === 201) {
+                    setModerators(response.data.moderators);
+                }
+            }
+            catch (e) {
+
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+
+        if (selectedPage == "Moderators")
+            getModerators();
+        else
+            getUserManagement();
     }, [selectedPage]);
 
 
@@ -113,6 +175,7 @@ const UserManagment = ({ selectedSubReddit = {
                     </div>}
                 </div>
             </div>
+
 
 
 
