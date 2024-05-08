@@ -269,7 +269,10 @@ function App() {
               }
             />)}
 
-
+          <Route
+            path="/message/*"
+            element={<Message sidebarProps={sidebarProps} />}
+          />
         </Routes>
       </div>
 
