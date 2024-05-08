@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import GAButtons from "./GAButtons";
 import FloatingInput from "./FloatingInput";
-import { postRequest } from "../../services/Requests";
+import { getRequest, postRequest } from "../../services/Requests";
 import { useGoogleLogin } from "@react-oauth/google";
 import { Client_ID, baseUrl } from "../../constants";
 import { ToastContainer, toast } from "react-toastify";
@@ -9,6 +9,7 @@ import { LoginSuccessToast, LoginFailedToast } from "./LoginToast";
 import { UserContext } from "@/context/UserContext";
 import fcmToken from "@/firebase";
 import { useNotifications } from '../notifications/NotificationContext'; 
+import avatar from '../../assets/avatar.png';
 
 
 /**
@@ -73,8 +74,8 @@ const LogIn = ({
       password &&
       validateLoginUsername(username) &&
       validateLoginPassword(password) &&
-      loginError == null
-      && fcmToken
+      loginError == null &&
+      fcmToken
     ) {
       const response = await postRequest(`${baseUrl}/user/login`, {
         username,
@@ -86,7 +87,32 @@ const LogIn = ({
         LoginFailedToast(response.data.message);
       } else {
         LoginSuccessToast("Logged in successfully");
-        flushNotifications()
+  
+        // Fetch notifications
+        const notificationsResponse = await getRequest(`${baseUrl}/notification/`);
+        if (notificationsResponse.status === 200 || notificationsResponse.status === 201) {
+          console.log("Notifications Retrieved");
+          console.log(notificationsResponse.data);
+  
+          // Check if the notifications data exists and is an array
+          if (Array.isArray(notificationsResponse.data.notifications)) {
+            const formattedNotifications = notificationsResponse.data.notifications.map(notif => ({
+              key: notif._id,
+              title: notif.title,
+              date: new Date(notif.createdAt).toLocaleDateString('en-US'),
+              time: new Date(notif.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+              description: notif.content,
+              image: avatar,
+              isRead: notif.isRead
+            }));
+  
+            // Update the state with the new notifications list
+            setNotifications(formattedNotifications);
+          } else {
+            console.error('No notifications array found');
+          }
+        }
+  
         setTimeout(() => {
           setIsOpenedLoginMenu(false);
           setIsLoggedIn(true);
@@ -94,6 +120,8 @@ const LogIn = ({
       }
     }
   };
+  
+  
 
 
   useEffect(() => {
