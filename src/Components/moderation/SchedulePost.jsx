@@ -33,7 +33,7 @@ const SchedulePost = ({ selectedSubReddit }) => {
         </p>
 
         <a
-          href={`${currentUrl}/submit/r/${selectedSubReddit.name}`}
+          href={`${currentUrl}/submit/mod/r/${selectedSubReddit.name}`}
           className="bg-gray-700 hover:bg-gray-500 rounded-full px-[5px] py-[2px] my-[10px] text-white w-[150px] text-[14px]"
         >
           <button className="w-full h-full focus:outline-none">

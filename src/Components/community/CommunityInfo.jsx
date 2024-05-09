@@ -2,32 +2,32 @@ import { useEffect, useState, useContext } from "react";
 import Rule from "./Rule";
 import Moderator from "./Moderator";
 
-const tempModerators = [
-  {
-    id: "1",
-    pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-    name: "Baroudy1452",
-    moderatorSince: "1/1/2001",
-  },
-  {
-    id: "2",
-    pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-    name: "JIMMY",
-    moderatorSince: "1/1/2001",
-  },
-  {
-    id: "3",
-    pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-    name: "JIMMY2",
-    moderatorSince: "1/1/2001",
-  },
-  {
-    id: "4",
-    pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
-    name: "JIMMY3",
-    "moderatorSince:": "1/1/2001",
-  },
-];
+// const tempModerators = [
+//   {
+//     id: "1",
+//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
+//     name: "Baroudy1452",
+//     moderatorSince: "1/1/2001",
+//   },
+//   {
+//     id: "2",
+//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
+//     name: "JIMMY",
+//     moderatorSince: "1/1/2001",
+//   },
+//   {
+//     id: "3",
+//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
+//     name: "JIMMY2",
+//     moderatorSince: "1/1/2001",
+//   },
+//   {
+//     id: "4",
+//     pic: "https://loremflickr.com/cache/resized/65535_53360451161_9fac9d6750_z_640_480_nofilter.jpg",
+//     name: "JIMMY3",
+//     "moderatorSince:": "1/1/2001",
+//   },
+// ];
 
 /**
  * CommunityInfo component displays the CommunityInfo posts of a user.
@@ -36,18 +36,7 @@ const tempModerators = [
  * @param {Object} userHistoryRes - The user's history response object.
  * @returns {JSX.Element} - The rendered CommunityInfo component.
  */
-const CommunityInfo = ({ name, description, topic, rules }) => {
-  const [moderators, setModerators] = useState(tempModerators);
-
-  useEffect(() => {
-    async function getModerators() {
-      // const response = await getRequest(`${baseUrl}/subreddit/${name}/moderators`);
-      // setModerators(response.data);
-      // console.log(response.data);
-    }
-    getModerators();
-  }, []);
-
+const CommunityInfo = ({ name, description, topic, rules, moderators }) => {
   return (
     <div
       id="community_info"
@@ -80,30 +69,14 @@ const CommunityInfo = ({ name, description, topic, rules }) => {
       <hr className="border-gray-500 border-1 w-full mt-4 mb-4" />
 
       <h2 className="text-sm text-gray-400 font-plex mb-2 pl-5">RULES</h2>
-      {/* {rules.map((rule, index) => (
-        <Rule
-          id={`community_info__rule_${index}`}
-          i={index + 1}
-          text={rule.text}
-          description={rule.text + "desc1"}
-        />
-      ))} */}
       {rules.map((rule, index) => (
         <Rule
           id={`community_info__rule_${index}`}
-          i={index + 2}
+          i={index}
           text={rule.text}
-          description={rule.text + "desc2"}
+          description={rule.appliesTo}
         />
       ))}
-      {/* {rules.map((rule, index) => (
-        <Rule
-          id={`community_info__rule_${index}`}
-          i={index + 3}
-          text={rule.text}
-          description={rule.text + "desc3"}
-        />
-      ))} */}
 
       <hr className="border-gray-500 border-1 w-full mt-4 mb-4" />
 
@@ -113,13 +86,12 @@ const CommunityInfo = ({ name, description, topic, rules }) => {
           <div className="flex flex-col items-center mb-3">
             <Moderator
               id={`community_info__moderator_${i}`}
-              text={`r/${moderator.name}`}
-              href="#"
+              text={`u/${moderator.username}`}
             >
               <img
                 id={`community_info__moderator_${i}__pic`}
-                src={moderator.pic}
-                alt={`${moderator.name} community`}
+                src={moderator.profilePicture}
+                alt={`${moderator.username} profile picture`}
                 className="h-[30px] w-[32px] rounded-full"
               />
             </Moderator>

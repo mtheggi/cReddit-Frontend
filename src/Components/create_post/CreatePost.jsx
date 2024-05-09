@@ -79,7 +79,11 @@ const CreatePost = () => {
     }
 
     useEffect(() => {
-        if (location.pathname.includes('/r/')) {
+        if (location.pathname.includes('mod/r/')) {
+            let pathParts = location.pathname.split('/');
+            commNameInputRef.current.value = `r/${pathParts[4]}`;
+        }
+        else if (location.pathname.includes('/r/')) {
             let pathParts = location.pathname.split('/');
             commNameInputRef.current.value = `r/${pathParts[3]}`;
         }
@@ -110,15 +114,7 @@ const CreatePost = () => {
         setFile(e.target.files[0]);
     }
 
-    /**
- * Checks if a community is joined.
- * @function isCommunityJoined
- * @param {string} communityName - The name of the community.
- * @returns {boolean} - Returns true if the community is joined, false otherwise.
- */
-    const isCommunityExist = (communityName) => {
-        return (joinedSubreddits.some(subreddit => subreddit.name === communityName) || communityResults.some(subreddit => subreddit.name === communityName));
-    }
+
 
     /**
  * Gets the expiration date.
@@ -147,13 +143,12 @@ const CreatePost = () => {
         if (type == "Link" && content.trim() == "")
             return null
 
-        if (!location.pathname.includes('/r/')) {
+        if (!location.pathname.includes('mod/r/')) {
             const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW });
             return response
         }
-        else
-        {
-            const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW, date: enUsFormat});
+        else {
+            const response = await postRequest(`${baseUrl}/post`, { type: type, communityName: communityName, title: title, content: content, isSpoiler: isSpoiler, isNSFW: isNSFW, date: enUsFormat });
             return response
         }
 
@@ -178,7 +173,11 @@ const CreatePost = () => {
             formData.append("title", title);
             formData.append("isSpoiler", isSpoiler);
             formData.append("isNSFW", isNSFW);
-            formData.append("date", enUsFormat);
+
+            if (location.pathname.includes("mod/r/"))
+                formData.append("date", enUsFormat);
+
+
             const response = await postRequestImg(`${baseUrl}/post`, formData);
 
             if (response && response.status != 200 && response.status != 201) {
@@ -201,6 +200,7 @@ const CreatePost = () => {
  * @returns {Object} - The response from the post request.
  */
     const handleSubmitPoll = async (enUsFormat) => {
+        let response;
 
         if (commNameInputRef.current.value.substring(2) != user)
             communityName = commNameInputRef.current.value.substring(2);
@@ -208,17 +208,33 @@ const CreatePost = () => {
         const nonEmptyInputFields = inputFields.filter(field => field.value.trim() !== "");
         const pollOptions = nonEmptyInputFields.map(field => field.value);
         const expirationDate = getExpirationDate(voteDurationValue);
-        const response = await postRequest(`${baseUrl}/post`, {
-            type: type,
-            communityName: communityName,
-            title: title,
-            content: content,
-            pollOptions: pollOptions,
-            expirationDate: expirationDate,
-            isSpoiler: isSpoiler,
-            isNSFW: isNSFW,
-            date: enUsFormat,
-        });
+
+
+        if (location.pathname.includes("mod/r/")) {
+            response = await postRequest(`${baseUrl}/post`, {
+                type: type,
+                communityName: communityName,
+                title: title,
+                content: content,
+                pollOptions: pollOptions,
+                expirationDate: expirationDate,
+                isSpoiler: isSpoiler,
+                isNSFW: isNSFW,
+                date: enUsFormat,
+            });
+        }
+        else {
+            response = await postRequest(`${baseUrl}/post`, {
+                type: type,
+                communityName: communityName,
+                title: title,
+                content: content,
+                pollOptions: pollOptions,
+                expirationDate: expirationDate,
+                isSpoiler: isSpoiler,
+                isNSFW: isNSFW
+            });
+        }
         return response
     }
 
@@ -252,35 +268,33 @@ const CreatePost = () => {
     const handleSubmitPost = async (enUsFormat) => {
         if (isLoading) return;
         setIsLoading(true);
-        if (isCommunityExist(commNameInputRef.current.value.substring(2)) || commNameInputRef.current.value.substring(2) == user) {
-            if (title.trim() !== "") {
-                let res = null;
-                if (type === "Poll") {
-                    if (checkInputFieldsNotEmpty()) {
-                        res = await handleSubmitPoll(enUsFormat);
-                    }
+        if (title.trim() !== "") {
+            let res = null;
+            if (type === "Poll") {
+                if (checkInputFieldsNotEmpty()) {
+                    res = await handleSubmitPoll(enUsFormat);
                 }
-                else if (type === "Images & Video") {
-                    if (file != null)
-                        res = await handleSubmitImg(enUsFormat);
-
-                }
-                else {
-                    res = await handleSubmitOtherTypes(enUsFormat);
-                }
-
-                if (res != null && (res.status === 200 || res.status === 201)) {
-                    if (communityName == "")
-                        navigate(`/u/${user}/comments/${res.data.postId}`);
-                    else
-                        navigate(`/r/${communityName}/comments/${res.data.postId}`);
-                }
-
-                if (res != null && res.status != 200 && res.status != 201) {
-                    showAlertForTime("error", res.data.message);
-                }
-                setIsLoading(false);
             }
+            else if (type === "Images & Video") {
+                if (file != null)
+                    res = await handleSubmitImg(enUsFormat);
+
+            }
+            else {
+                res = await handleSubmitOtherTypes(enUsFormat);
+            }
+
+            if (res != null && (res.status === 200 || res.status === 201)) {
+                if (communityName == "")
+                    navigate(`/u/${user}/comments/${res.data.postId}`);
+                else
+                    navigate(`/r/${communityName}/comments/${res.data.postId}`);
+            }
+
+            if (res != null && res.status != 200 && res.status != 201) {
+                showAlertForTime("error", res.data.message);
+            }
+            setIsLoading(false);
         }
     }
 
@@ -388,7 +402,7 @@ const CreatePost = () => {
     const currentPath = window.location.pathname;
 
     // Check if the current path matches the specified pattern
-    const isSubmitPage = currentPath.startsWith('/submit/r/');
+    const isSubmitPage = currentPath.includes('mod/r/');
 
 
 
@@ -405,8 +419,8 @@ const CreatePost = () => {
                 </div>
 
                 <div className='w-full h-[40px] ml-[0.2px] relative mt-3'>
-                    <div onClick={(e) => { e.stopPropagation(); setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
-                        <input autoComplete='off' onChange={() => { getSearchResults(commNameInputRef.current.value); !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("JOINED COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
+                    <div onClick={(e) => { e.stopPropagation(); !location.pathname.includes("mod/r/") && setCommunityDropdownOpen(prev => !prev); commNameInputRef.current.focus(); }} id="create_post_community_dropdown_button" data-testid="create_post_community_dropdown_button" className={`cursor-pointer pl-1 no-select border-[1px] border-gray-500 hover:bg-reddit_search_light bg-reddit_search w-62 h-10 rounded-sm focus:outline-none font-normal text-sm text-center  items-center flex flex-row" type="button`}>
+                        <input autoComplete='off' disabled={location.pathname.includes("mod/r/")} onChange={() => { getSearchResults(commNameInputRef.current.value); !CommunityDropdownOpen && setCommunityDropdownOpen(true); commNameInputRef.current.value != "" && setYourOrAllCommunities("ALL COMMUNITIES"); commNameInputRef.current.value == "" && setYourOrAllCommunities("JOINED COMMUNITIES"); }} ref={commNameInputRef} type="text" placeholder='Choose a community' className='bg-transparent text-gray-300 text-[14px] border-0 focus:outline-none focus:ring-0' id="create_post_chosen_community" />
                         <div className="w-fit flex ml-auto mr-5 flex-row">
                             <svg className="w-2.5 h-2.5  ms-3 mt-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="#F05152" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -630,14 +644,12 @@ const CreatePost = () => {
                                 <div
                                     onClick={handleSubmitPost}
                                     className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
-                                            (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
-                                                commNameInputRef.current.value.substring(2) !== user) ||
-                                            (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
-                                            (file === null && type === 'Images & Video') ||
-                                            (type === 'Link' && content.trim() === '') ||
-                                            isLoading)
-                                            ? 'cursor-not-allowed text-gray-600'
-                                            : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
+                                        (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
+                                        (file === null && type === 'Images & Video') ||
+                                        (type === 'Link' && content.trim() === '') ||
+                                        isLoading)
+                                        ? 'cursor-not-allowed text-gray-600'
+                                        : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
                                         }`}
                                 >
                                     <p className='ml-1 mr-0.5 text-sm'>Post</p>
@@ -651,14 +663,13 @@ const CreatePost = () => {
                                 <div
                                     onClick={handleSubmit}
                                     className={`group bg-gray-100 w-18 h-9 rounded-full flex justify-center items-center ${(title.trim() === '' ||
-                                            (!isCommunityExist(commNameInputRef.current.value.substring(2)) &&
-                                                commNameInputRef.current.value.substring(2) !== user) ||
-                                            (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
-                                            (file === null && type === 'Images & Video') ||
-                                            (type === 'Link' && content.trim() === '') ||
-                                            isLoading)
-                                            ? 'cursor-not-allowed text-gray-600'
-                                            : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
+
+                                        (type === 'Poll' && !checkInputFieldsNotEmpty()) ||
+                                        (file === null && type === 'Images & Video') ||
+                                        (type === 'Link' && content.trim() === '') ||
+                                        isLoading)
+                                        ? 'cursor-not-allowed text-gray-600'
+                                        : 'cursor-pointer hover:bg-reddit_upvote hover:text-white'
                                         }`}
                                 >
                                     <p className='ml-1 mr-0.5 text-sm'>Schedule</p>

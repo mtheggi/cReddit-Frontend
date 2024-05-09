@@ -7,12 +7,15 @@ import SearchUserRow from './SearchUserRow';
 import { baseUrl } from '@/constants';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-
 /**
- * Component for the searchbar in the navbar.
+ * `Searchbar` is a React component that provides a search bar interface.
  * @component
- * @returns {JSX.Element} The Searchbar component.
- *  */
+ * @param {Object} props - The props that are passed to this component.
+ * @param {string} props.placeholder - The placeholder text for the search bar.
+ * @param {Function} props.onSubmit - The function to call when the search form is submitted.
+ * @returns {JSX.Element} The `Searchbar` component.
+ */
+
 const Searchbar = ({ isSearchInMobile }) => {
     const [placeholder, setPlaceholder] = useState('Search in Reddit');
     const [userResults, setUserResults] = useState([]);
@@ -70,7 +73,11 @@ const Searchbar = ({ isSearchInMobile }) => {
     }, [location.pathname, searchGlobal]);
 
 
-
+    /**
+ * Fetches search results for a given query.
+ * @async
+ * @param {string} query - The search query.
+ */
     const getSearchResults = async (query) => {
         if (query.length == 0 || query.trim() == "" || (location.pathname.includes('/user/') || location.pathname.includes('/r/') || location.pathname.includes('/my-user')) && !location.pathname.includes('/submit/') && !location.pathname.includes('/r/mod') && !searchGlobal)
             return;
@@ -108,6 +115,10 @@ const Searchbar = ({ isSearchInMobile }) => {
         };
     });
 
+    /**
+    * Navigates to the search page for a given query.
+    * @param {string} query - The search query.
+    */
     const goToSearchPage = (query) => {
         if (query.trim() == "")
             return;
@@ -135,7 +146,7 @@ const Searchbar = ({ isSearchInMobile }) => {
 
                             {(location.pathname.includes("/user/") || location.pathname.includes("/my-user/")) && <h1 className='text-white text-[13px] truncate font-medium'>u/{location.pathname.split('/')[2]}</h1>}
                             {location.pathname.includes("/r/") && <h1 className='text-white text-[13px] truncate font-medium'>r/{location.pathname.split("/")[2]}</h1>}
-                            <div onClick={()=>setSearchGlobal(true)} className=' ml-1 w-8 flex flex-row items-center justify-center h-8 rounded-full hover:bg-reddit_search_light cursor-pointer'>
+                            <div onClick={() => setSearchGlobal(true)} className=' ml-1 w-8 flex flex-row items-center justify-center h-8 rounded-full hover:bg-reddit_search_light cursor-pointer'>
                                 <svg rpl="" fill="white" height="16" icon-name="clear-fill" viewBox="0 0 20 20" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.832 12.418-1.414 1.414L10 11.414l-2.418 2.418-1.414-1.414L8.586 10 6.168 7.582l1.414-1.414L10 8.586l2.418-2.418 1.414 1.414L11.414 10l2.418 2.418Z"></path></svg>
                             </div>
                         </div>
