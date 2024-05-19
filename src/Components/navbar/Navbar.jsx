@@ -74,17 +74,16 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
     const navigate = useNavigate();
 
 
-  const [fcmToken, setFcmToken] = useState(null);
-  useEffect (()=>{
- 
-   const getFCM = async () =>
-     {
-       const token = await generateToken();
-       setFcmToken(token);
-     }
- 
-     getFCM();
-  },[])
+    const [fcmToken, setFcmToken] = useState(null);
+    useEffect(() => {
+
+        const getFCM = async () => {
+            const token = await generateToken();
+            setFcmToken(token);
+        }
+
+        getFCM();
+    }, [])
 
     /**
      * Function to handle logout.
@@ -212,9 +211,12 @@ const Navbar = ({ setIsVisibleLeftSidebar, navbarRef, isSearchInMobile, setIsSea
 
                     <div className="flex mr-4 xs:mr-1 relative left-3 xl:left-7 h-full items-center">
                         <Link id='navbar_reddit' className='w-fit h-fit flex mr-2 xs:mr-0 items-center' to="">
-                            <img src={redditLogo} alt="Logo" className="w-8  h-8 min-w-8" />
+                            <img src={redditLogo} alt="Logo" className="w-8 rounded-full  h-8 min-w-8" />
 
-                            <svg className="h-[22px] ml-2 hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
+                            <div className='flex ml-1 mt-[3px] -mr-[1px] flex-row items-center h-full w-fit'>
+                                <svg  width="23" height="18" viewBox="0 0 50.401 72.401" xmlns="http://www.w3.org/2000/svg"><g id="" strokeLinecap="round" fillRule="evenodd" stroke="white" stroke-width="0.4mm" fill="white"><path d="M 48.901 3.6 L 46.001 11.6 Q 42.901 10.1 39.651 9.2 Q 36.858 8.427 33.215 8.318 A 40.705 40.705 0 0 0 32.001 8.3 A 21.173 21.173 0 0 0 24.096 9.755 A 19.981 19.981 0 0 0 20.551 11.6 A 21.167 21.167 0 0 0 14.185 18.181 A 26.978 26.978 0 0 0 12.601 21.1 Q 9.701 27.3 9.701 36.1 Q 9.701 44.5 12.551 50.8 A 25.677 25.677 0 0 0 16.137 56.628 A 21.423 21.423 0 0 0 20.451 60.6 A 19.703 19.703 0 0 0 31.596 64.097 A 23.894 23.894 0 0 0 32.001 64.1 A 33.715 33.715 0 0 0 35.972 63.879 Q 38.448 63.585 40.501 62.9 Q 44.101 61.7 47.501 59.8 L 50.401 67.7 A 37.561 37.561 0 0 1 45.906 69.744 A 47.894 47.894 0 0 1 41.951 71.05 A 33.592 33.592 0 0 1 36.985 72.041 Q 34.504 72.355 31.706 72.395 A 57.414 57.414 0 0 1 30.901 72.4 A 32.384 32.384 0 0 1 21.576 71.099 A 27.961 27.961 0 0 1 14.801 68.05 A 28.6 28.6 0 0 1 4.924 57.605 A 34.916 34.916 0 0 1 3.901 55.65 A 37.611 37.611 0 0 1 0.801 45.933 Q 0.026 41.667 0.001 36.814 A 62.816 62.816 0 0 1 0.001 36.5 Q 0.001 25.8 3.951 17.55 Q 7.901 9.3 15.151 4.65 A 29.371 29.371 0 0 1 27.831 0.239 A 37.292 37.292 0 0 1 32.101 0 A 45.639 45.639 0 0 1 37.159 0.268 A 35.2 35.2 0 0 1 41.201 0.95 A 38.224 38.224 0 0 1 48.675 3.495 A 35.605 35.605 0 0 1 48.901 3.6 Z" vector-effect="non-scaling-stroke" /></g></svg>
+                            </div>
+                            <svg className="h-[22px] hidden lg:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 514 149" >
                                 <g className=' fill-white'>
                                     <path d="m71.62,45.92l-12.01,28.56c-1.51-.76-5.11-1.61-8.51-1.61s-6.81.85-10.12,2.46c-6.53,3.31-11.35,9.93-11.35,19.48v52.3H-.26V45.35h29.04v14.28h.57c6.81-9.08,17.21-15.79,30.74-15.79,4.92,0,9.65.95,11.54,2.08Z"></path>
                                     <path d="m65.84,96.52c0-29.41,20.15-52.68,50.32-52.68,27.33,0,46.91,19.96,46.91,48.05,0,4.92-.47,9.55-1.51,14h-68.48c3.12,10.69,12.39,19.01,26.29,19.01,7.66,0,18.54-2.74,24.4-7.28l9.27,22.32c-8.61,5.86-21.75,8.7-33.29,8.7-32.25,0-53.91-20.81-53.91-52.11Zm26.67-9.36h43.03c0-13.05-8.89-19.96-19.77-19.96-12.3,0-20.62,7.94-23.27,19.96Z"></path>

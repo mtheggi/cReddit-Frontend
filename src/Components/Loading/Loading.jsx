@@ -10,7 +10,7 @@ import { useLocation } from 'react-router-dom';
 const Loading = () => {
     return (
         <div className={`w-full -mb-8 h-full flex flex-col items-center justify-center`}>
-            <img src={RedditLogo} alt="Reddit Logo" className=" w-14" />
+            <img src={RedditLogo} alt="Reddit Logo" className=" w-14 rounded-full" />
             <img src={LoadingGift} alt="Loading" className='h-8 w-17' />
         </div>
     );
