@@ -1,21 +1,36 @@
-# IDS Documentation  
-### Component
-    * id = "specifed name" 
-        - Explaination
-### NotificationItem.jsx
-         
-    * Notification Options button ID = "notification-item-dropdown-button" 
-                                     - Pressing on this button displays a dropdown list that gives the user the option to hide the notification
-    * Hide Notification button ID = "notification-item-hide-notification-button"
-                                  - Pressing on this button removes the associated notification from the current list of notifications  
+# cReddit : reddit clone <img src="./src/assets/reddit_logo2.png" width="30" height="30"> 
 
-### PasswordRecovery.jsx
-         
-    * New Password Input ID = "password_recovery_new_password"
-                            - This is where the user types in their new password
-    * Confirm Password Input ID = "password_recovery_confirm_password"
-                                - This is where the user retypes the password to check for correctness
-    * Continue Button ID = "password_recovery_submit"
-                         - Clicking on this button enforces the password change (not implemented yet)
-                                
-### DEV OPS TEST 
+<img src="./src/assets/1716047901564.jpeg"> </img>
+
+# Introduction 
+cReddit is a Reddit clone that allows users to create posts, comment on posts, upvote and downvote posts and comments, and search for posts. The app is built using React,NodeJs .
+# Full demo video 
+https://github.com/mtheggi/cReddit-Frontend/assets/88272272/63c34eb0-624f-455a-88aa-70809cabee25
+
+
+# Project Links
+
+- [**Website**](https://creddit.tech/)
+- [**Mobile App**](https://github.com/SS-Ltd/cReddit-CrossPlatform/releases/tag/V3.0.1)
+
+## Frontend Team 🎨
+- Ahmed Abdelaal
+- Bassel Mohamed
+- Malek Elsaka (team Leader)
+- Marwan Abbas
+- Mohamed Heggi
+
+## lesson learned
+- agile methodology 
+- how to work with a team
+- state management using context API 
+- axios interceptors 
+- making responsive desgin 
+- using tailwind css
+- data pagination ,
+- ... more 
+
+
+
+
+
